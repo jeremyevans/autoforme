@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>AutoForme Demo</title>
+<link rel="stylesheet" type="text/css" href="/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/application.css" />
+</head>
+
+<body>
+<div class="container navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a href="/" class="brand">AutoForme Demo</a>
+
+      <ul class="nav">
+        <li><a href="/Artist/browse">Artist</a></li>
+        <li><a href="/Album/browse">Album</a></li>
+        <li><a href="/Track/browse">Track</a></li>
+        <li><a href="/Tag/edit">Tag</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="content">
+  <% if flash[:notice] %>
+    <div class="alert alert-success"><p><%= flash[:notice] %></p></div>
+  <% end %>
+  <% if flash[:error] %>
+    <div class="alert alert-error"><p><%= flash[:error] %></p></div>
+  <% end %>
+  <%= yield %>
+</div>
+
+</body></html>

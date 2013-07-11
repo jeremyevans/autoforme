@@ -1,0 +1,32 @@
+AutoForme is the spiritual successor to scaffolding_extensions,
+though it has a completely different implementation.  It's
+designed to do most of scaffolding_extensions can do, but be
+more extensible.  Here are a few basic differences:
+
+1) Uses Forme to create the forms, instead of building them manually,
+   which allows for greater flexibility.
+
+2) Does not use templates at all.  Renders all output to strings,
+   which makes it much easier to integrate into web frameworks,
+   and much easier to test.
+
+3) Doesn't modify/extend model or controller classes at all.
+
+4) Expects that the web framework provides the layout for the page,
+   and does not allow overridding of the output by using your own
+   template.  Instead, you should skip the handling of that action
+   and just handle it yourself.
+
+5) All configuration is done through a block-based DSL in the
+   controller.
+
+6) Have unit tests for all functionality.
+
+7) Use a standard capybara/rack-test based integration test suite for
+   testing web framework integration.
+
+The following scaffolding_extensions features will not be supported:
+
+1) Merging objects
+
+2) NULL/NOT NULL columns for searches
