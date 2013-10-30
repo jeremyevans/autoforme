@@ -179,9 +179,9 @@ module AutoForme
         table_page(:search, *model.search_results(request))
       else
         page do
-          Forme.form(:action=>url_for("search/1")) do |f|
+          Forme.form(model.new, :action=>url_for("search/1")) do |f|
             model.columns_for(:search).each do |column|
-              f.input(:text, :name=>column, :label=>column, :id=>column)
+              f.input(column, :name=>column, :id=>column)
             end
             f.button('Search')
           end

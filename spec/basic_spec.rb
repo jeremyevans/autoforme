@@ -6,6 +6,9 @@ describe AutoForme do
     model_setup(:Artist=>[:artists])
     app_setup(Artist)
   end
+  after(:all) do
+    Object.remove_const(:Artist)
+  end
 
   it "should have basic functionality working" do
     visit("/Artist/new")
@@ -27,7 +30,7 @@ describe AutoForme do
     page.current_path.should =~ %r{/Artist/edit/\d+}
 
     click_link 'Search'
-    fill_in 'name', :with=>'Upd'
+    fill_in 'Name', :with=>'Upd'
     click_button 'Search'
     all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", ""]
     all('td').last.find('input')[:value].should == 'Delete'
