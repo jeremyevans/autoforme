@@ -19,6 +19,7 @@ module AutoForme
     opts_attribute :edit_columns
     opts_attribute :show_columns
     opts_attribute :browse_columns
+    opts_attribute :search_form_columns
     opts_attribute :search_columns
 
     opts_attribute :table_class

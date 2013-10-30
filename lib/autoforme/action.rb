@@ -180,7 +180,7 @@ module AutoForme
       else
         page do
           Forme.form(model.new, :action=>url_for("search/1")) do |f|
-            model.columns_for(:search).each do |column|
+            model.columns_for(:search_form).each do |column|
               f.input(column, :name=>column, :id=>column)
             end
             f.button('Search')

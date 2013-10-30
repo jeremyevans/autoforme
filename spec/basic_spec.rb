@@ -64,7 +64,8 @@ describe AutoForme do
       edit_columns(cols - [:n4])
       show_columns(cols - [:n3])
       browse_columns(cols - [:n2])
-      search_columns(cols - [:n1])
+      search_form_columns(cols - [:n1])
+      search_columns(cols - [:n0])
     end
   end
   after(:all) do
@@ -110,7 +111,7 @@ describe AutoForme do
     fill_in 'N4', :with=>'V4'
     fill_in 'N5', :with=>'Q5'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Q0", "Q2", "Q3", "V4", "Q5", "Show", "Edit", ""]
+    all('td').map{|s| s.text}.should == ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", ""]
 
     click_link 'Artist'
     all('td').map{|s| s.text}.should == ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", ""]

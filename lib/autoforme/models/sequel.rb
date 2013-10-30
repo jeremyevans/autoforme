@@ -33,7 +33,7 @@ module AutoForme
 
       def search_results(request)
         ds = @model.dataset
-        columns_for(:search).each do |c|
+        columns_for(:search_form).each do |c|
           if (v = request.params[c]) && !v.empty?
             if column_type(c) == :string
               ds = ds.where(::Sequel.ilike(c, "%#{ds.escape_like(v.to_s)}%"))
