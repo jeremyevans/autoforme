@@ -22,12 +22,11 @@ module AutoFormeSpec
   TYPE_MAP = {:string=>String}
   def self.db_setup(tables)
     db = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite:/')
-    db.loggers << Logger.new($stdout)
+    #db.loggers << Logger.new($stdout)
     tables.each do |table, columns|
       db.create_table(table) do
         primary_key :id
         columns.each do |name, type, opts|
-          p [name, type, opts]
           column name, TYPE_MAP[type], opts||{}
         end
       end
