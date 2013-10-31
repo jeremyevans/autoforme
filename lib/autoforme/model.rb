@@ -4,7 +4,7 @@ module AutoForme
     extend OptsAttributes
 
     def self.for(type, model_class, &block)
-      model = AutoForme.get_model(type).new(model_class)
+      model = AutoForme.model_class_for(type).new(model_class)
       model.instance_exec(&block) if block
       model
     end

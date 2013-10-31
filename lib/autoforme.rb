@@ -18,7 +18,7 @@ module AutoForme
       @mutex.synchronize{map[type] = klass}
     end
 
-    singleton_class.send(:define_method, :"get_#{map_type}") do |type|
+    singleton_class.send(:define_method, :"#{map_type}_class_for") do |type|
       unless klass = @mutex.synchronize{map[type]}
         require "autoforme/#{map_type}s/#{type}"
         unless klass = @mutex.synchronize{map[type]}
