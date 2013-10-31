@@ -4,13 +4,13 @@ describe AutoForme do
   before(:all) do
     db_setup(:artists=>[[:name, :string]])
     model_setup(:Artist=>[:artists])
-    app_setup(Artist)
   end
   after(:all) do
     Object.send(:remove_const, :Artist)
   end
 
   it "should have basic functionality working" do
+    app_setup(Artist)
     visit("/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
@@ -58,6 +58,12 @@ describe AutoForme do
         n0
       end
     end
+  end
+  after(:all) do
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should support different columns per action type" do
     cols = Artist.columns - [:id]
     app_setup(Artist) do
       new_columns(cols - [:n5])
@@ -67,12 +73,7 @@ describe AutoForme do
       search_form_columns(cols - [:n1])
       search_columns(cols - [:n0])
     end
-  end
-  after(:all) do
-    Object.send(:remove_const, :Artist)
-  end
 
-  it "should support different columns per action type" do
     visit("/Artist/new")
     fill_in 'N0', :with=>'V0'
     fill_in 'N1', :with=>'V1'
