@@ -3,13 +3,14 @@ module AutoForme
   class Model
     extend OptsAttributes
 
-    def self.for(type, model_class, &block)
-      model = AutoForme.model_class_for(type).new(model_class)
+    def self.for(framework, type, model_class, &block)
+      model = AutoForme.model_class_for(type).new(model_class, framework)
       model.instance_exec(&block) if block
       model
     end
 
     attr_reader :model
+    attr_reader :framework
     attr_reader :opts
     
     opts_attribute :supported_actions
@@ -30,8 +31,9 @@ module AutoForme
     opts_attribute :browse_per_page
     opts_attribute :search_per_page
 
-    def initialize(model)
+    def initialize(model, framework)
       @model = model
+      @framework = framework
       @opts = {}
     end
 
@@ -44,10 +46,7 @@ module AutoForme
     end
 
     def columns_for(type)
-      send("#{type}_columns") || columns || default_columns
-    end
-    def default_columns
-      @model.columns - Array(@model.primary_key)
+      send("#{type}_columns") || columns || framework.columns_for(type, model)
     end
 
     def select_options(type)
@@ -55,10 +54,7 @@ module AutoForme
     end
 
     def limit_for(type)
-      send("#{type}_per_page") || per_page || default_limit
-    end
-    def default_limit
-      25
+      send("#{type}_per_page") || per_page || framework.limit_for(type)
     end
 
     def display_name_for(obj)
@@ -72,10 +68,7 @@ module AutoForme
     end
 
     def table_class_for(type)
-      send("#{type}_table_class") || table_class || default_table_class
-    end
-    def default_table_class
-      "table table-bordered table-striped"
+      send("#{type}_table_class") || table_class || framework.table_class_for(type)
     end
 
     DEFAULT_ACTIONS = %w'new create show edit update delete destroy browse search results'.freeze

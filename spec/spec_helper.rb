@@ -17,6 +17,8 @@ require './spec/sinatra_spec_helper'
 
   attr_reader :app
   attr_reader :db
+  attr_reader :framework
+  attr_reader :model
 
   def app=(app)
     @app = Capybara.app = app
@@ -31,7 +33,9 @@ require './spec/sinatra_spec_helper'
   end
 
   def app_setup(klass=nil, &block)
-    self.app = AutoFormeSpec::App.autoforme(klass, &block)
+    app, @framework = AutoFormeSpec::App.autoforme(klass, &block)
+    self.app = app
+    @model = @framework.models[klass.name] if klass
   end
   
   after do
