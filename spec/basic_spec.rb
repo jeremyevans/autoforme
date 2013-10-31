@@ -47,6 +47,95 @@ describe AutoForme do
     click_link 'Artist'
     all('td').map{|s| s.text}.should == []
   end
+
+  it "should support specifying table class for data tables" do
+    app_setup(Artist) do
+      table_class 'foo'
+    end
+    visit("/Artist/browse")
+    first('table')['class'].should == 'foo'
+    click_link 'Search'
+    click_button 'Search'
+    first('table')['class'].should == 'foo'
+  end
+
+  it "should support specifying table class for data tables per type" do
+    app_setup(Artist) do
+      browse_table_class 'foo'
+      search_table_class 'bar'
+    end
+    visit("/Artist/browse")
+    first('table')['class'].should == 'foo'
+    click_link 'Search'
+    click_button 'Search'
+    first('table')['class'].should == 'bar'
+  end
+
+  it "should support specifying numbers of rows per page" do
+    app_setup(Artist) do
+      per_page 2
+    end
+    5.times{|i| Artist.create(:name=>i.to_s)}
+    visit("/Artist/browse")
+    first('li.disabled a').text.should == 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    click_link 'Next'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    click_link 'Next'
+    all('tr td:first-child').map{|s| s.text}.should == %w'4'
+    first('li.disabled a').text.should == 'Next'
+    click_link 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    click_link 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    first('li.disabled a').text.should == 'Previous'
+
+    click_link 'Search'
+    click_button 'Search'
+    first('li.disabled a').text.should == 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    click_link 'Next'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    click_link 'Next'
+    all('tr td:first-child').map{|s| s.text}.should == %w'4'
+    first('li.disabled a').text.should == 'Next'
+    click_link 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    click_link 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    first('li.disabled a').text.should == 'Previous'
+  end
+
+  it "should support specifying numbers of rows per page per type" do
+    app_setup(Artist) do
+      browse_per_page 2
+      search_per_page 3
+    end
+    5.times{|i| Artist.create(:name=>i.to_s)}
+    visit("/Artist/browse")
+    first('li.disabled a').text.should == 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    click_link 'Next'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    click_link 'Next'
+    all('tr td:first-child').map{|s| s.text}.should == %w'4'
+    first('li.disabled a').text.should == 'Next'
+    click_link 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    click_link 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    first('li.disabled a').text.should == 'Previous'
+
+    click_link 'Search'
+    click_button 'Search'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
+    click_link 'Next'
+    all('tr td:first-child').map{|s| s.text}.should == %w'3 4'
+    first('li.disabled a').text.should == 'Next'
+    click_link 'Previous'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
+    first('li.disabled a').text.should == 'Previous'
+  end
 end
 
 describe AutoForme do
@@ -63,7 +152,44 @@ describe AutoForme do
     Object.send(:remove_const, :Artist)
   end
 
-  it "should support different columns per action type" do
+  it "should support specifying columns per type" do
+    app_setup(Artist) do
+      columns([:n0, :n2])
+    end
+
+    visit("/Artist/new")
+    fill_in 'N0', :with=>'V0'
+    fill_in 'N2', :with=>'V2'
+    page.body.should_not =~ /N[1345]/i
+    click_button 'Create'
+
+    click_link 'Show'
+    select 'V0'
+    click_button 'Show'
+    page.body.should_not =~ /[VN][1345]/i
+    page.body.should =~ /[VN]0/i
+    page.body.should =~ /[VN]2/i
+
+    click_link 'Edit'
+    select 'V0'
+    click_button 'Edit'
+    fill_in 'N0', :with=>'Q0'
+    fill_in 'N2', :with=>'Q2'
+    page.body.should_not =~ /N[1345]/i
+    click_button 'Update'
+
+    click_link 'Search'
+    fill_in 'N0', :with=>'Q0'
+    fill_in 'N2', :with=>'Q2'
+    page.body.should_not =~ /N[1345]/i
+    click_button 'Search'
+    all('td').map{|s| s.text}.should == ["Q0", "Q2", "Show", "Edit", ""]
+
+    click_link 'Artist'
+    all('td').map{|s| s.text}.should == ["Q0", "Q2", "Show", "Edit", ""]
+  end
+
+  it "should support specifying columns per type" do
     cols = Artist.columns - [:id]
     app_setup(Artist) do
       new_columns(cols - [:n5])
