@@ -32,15 +32,12 @@ describe AutoForme do
     click_link 'Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", ""]
-    all('td').last.find('input')[:value].should == 'Delete'
+    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     click_link 'Artist'
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", ""]
-    all('td').last.find('input')[:value].should == 'Delete'
+    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
-    click_link 'Delete'
-    select 'TestArtistUpdate'
+    all('td').last.find('a').click
     click_button 'Delete'
     page.current_path.should == '/Artist/delete'
 
@@ -183,9 +180,9 @@ describe AutoForme do
     fill_in 'N4', :with=>'V4'
     fill_in 'N5', :with=>'Q5'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", ""]
+    all('td').map{|s| s.text}.should == ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
 
     click_link 'Artist'
-    all('td').map{|s| s.text}.should == ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", ""]
+    all('td').map{|s| s.text}.should == ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
   end
 end

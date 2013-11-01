@@ -32,7 +32,7 @@ module AutoForme
       end
       html << "<th>Show</th>" if show = model.supported_action?("show")
       html << "<th>Edit</th>" if edit = model.supported_action?("edit")
-      html << "<th>Delete</th>" if destroy = model.supported_action?("destroy")
+      html << "<th>Delete</th>" if delete = model.supported_action?("delete")
       html << "</tr></thead>"
 
       html << "<tbody>"
@@ -43,7 +43,7 @@ module AutoForme
         end
         html << "<td><a href=\"#{action.url_for("show/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-info\">Show</a></td>" if show
         html << "<td><a href=\"#{action.url_for("edit/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-primary\">Edit</a></td>" if edit
-        html << "<td>#{Forme.form(:action=>action.url_for("delete/#{model.primary_key_value(obj)}"), :method=>:post){|f| f.button(:value=>'Delete', :class=>'btn btn-mini btn-danger')}}</td>" if destroy
+        html << "<td><a href=\"#{action.url_for("delete/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-danger\">Delete</a></td>" if delete
         html << "</tr>"
       end
       html << "</tbody></table>"
