@@ -2,11 +2,13 @@ require 'rubygems'
 require 'sinatra/base'
 require 'autoforme'
 require 'sinatra/flash'
+require 'rack/csrf'
 
 class AutoFormeSpec::App < Sinatra::Base
   disable :run
   enable :sessions
   register Sinatra::Flash
+  use Rack::Csrf
 
   def self.autoforme(klass=nil, &block)
     sc = Class.new(self)

@@ -151,7 +151,7 @@ describe AutoForme do
     fill_in 'N2', :with=>'V2'
     fill_in 'N3', :with=>'V3'
     fill_in 'N4', :with=>'V4'
-    page.body.should_not =~ /N5/i
+    page.body.should_not =~ /<label>N5/i
     click_button 'Create'
 
     click_link 'Show'
@@ -171,13 +171,13 @@ describe AutoForme do
     fill_in 'N1', :with=>'Q1'
     fill_in 'N2', :with=>'Q2'
     fill_in 'N3', :with=>'Q3'
-    page.body.should_not =~ /[VN]4/i
+    page.body.should_not =~ /<label>N4/i
     fill_in 'N5', :with=>'Q5'
     click_button 'Update'
 
     click_link 'Search'
     fill_in 'N0', :with=>'Q0'
-    page.body.should_not =~ /[QN]1/i
+    page.body.should_not =~ /<label>N1/i
     fill_in 'N2', :with=>'Q2'
     fill_in 'N3', :with=>'Q3'
     fill_in 'N4', :with=>'V4'

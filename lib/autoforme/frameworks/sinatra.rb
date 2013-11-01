@@ -7,10 +7,11 @@ module AutoForme
           @request = controller.request
           @params = controller.params
           captures = @params[:captures] || []
-          @method = @request.env['REQUEST_METHOD']
+          @env = @request.env
+          @method = @env['REQUEST_METHOD']
           @model = captures[0]
           @action = captures[1]
-          @path = @request.env['SCRIPT_NAME']
+          @path = @env['SCRIPT_NAME']
           @id = @params[:id] || captures[2]
         end
 
@@ -27,7 +28,11 @@ module AutoForme
         end
 
         def query_string
-          @request.env['QUERY_STRING']
+          @env['QUERY_STRING']
+        end
+
+        def csrf_token_hash
+          {::Rack::Csrf.field=>::Rack::Csrf.token(@env)} if defined?(::Rack::Csrf)
         end
       end
 

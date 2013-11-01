@@ -59,9 +59,18 @@ module AutoForme
       html
     end
 
+    def form_opts
+      opts = {}
+      hidden_tags = opts[:hidden_tags] = []
+      if csrf = request.csrf_token_hash
+        hidden_tags << lambda{|tag| csrf if tag.attr[:method].to_s.upcase == 'POST'}
+      end
+      opts
+    end
+
     def new_page(obj, opts={})
       page do
-        Forme.form(obj, :action=>url_for("create")) do |f|
+        Forme.form(obj, {:action=>url_for("create")}, form_opts) do |f|
           model.columns_for(:new).each do |column|
             f.input(column)
           end
@@ -87,7 +96,7 @@ module AutoForme
     def list_page(type, opts={})
       page do
         form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
-        Forme.form(form_attributes) do |f|
+        Forme.form(form_attributes, form_opts) do |f|
           f.input(:select, :options=>model.select_options(type), :name=>'id', :id=>'id')
           f.button(type.to_s.capitalize)
         end
@@ -113,7 +122,7 @@ module AutoForme
 
     def edit_page(obj)
       page do
-        Forme.form(obj, :action=>url_for("update/#{obj.id}")) do |f|
+        Forme.form(obj, {:action=>url_for("update/#{obj.id}")}, form_opts) do |f|
           model.columns_for(:edit).each do |column|
             f.input(column)
           end
@@ -179,7 +188,7 @@ module AutoForme
         table_page(:search, *model.search_results(request))
       else
         page do
-          Forme.form(model.new, :action=>url_for("search/1")) do |f|
+          Forme.form(model.new, {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
             model.columns_for(:search_form).each do |column|
               f.input(column, :name=>column, :id=>column)
             end
