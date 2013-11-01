@@ -23,6 +23,13 @@ module AutoForme
     opts_attribute :search_form_columns
     opts_attribute :search_columns
 
+    opts_attribute :order
+    opts_attribute :edit_order
+    opts_attribute :show_order
+    opts_attribute :delete_order
+    opts_attribute :browse_order
+    opts_attribute :search_order
+
     opts_attribute :table_class
     opts_attribute :browse_table_class
     opts_attribute :search_table_class
@@ -50,7 +57,11 @@ module AutoForme
     end
 
     def select_options(type)
-      @model.map{|obj| [display_name_for(obj), primary_key_value(obj)]}
+      all_rows_for(type).map{|obj| [display_name_for(obj), primary_key_value(obj)]}
+    end
+
+    def order_for(type)
+      send("#{type}_order") || order || framework.order_for(type, model)
     end
 
     def limit_for(type)

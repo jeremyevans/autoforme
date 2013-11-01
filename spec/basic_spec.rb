@@ -185,4 +185,34 @@ describe AutoForme do
     click_link 'Artist'
     all('td').map{|s| s.text}.should == ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
   end
+
+  it "should support specifying order per type" do
+    app_setup(Artist) do
+      edit_order :n0
+      show_order [:n1, :n2]
+      delete_order :n3
+      browse_order [:n1, :n0]
+      search_order :n4
+    end
+
+    Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
+    Artist.create(:n0=>'2', :n1=>'2', :n2=>'1', :n3=>'3', :n4=>'4')
+    Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
+
+    visit("/Artist/show")
+    all('option').map{|s| s.text}.should == %w'2 1 0'
+
+    click_link 'Edit'
+    all('option').map{|s| s.text}.should == %w'0 1 2'
+
+    click_link 'Delete'
+    all('option').map{|s| s.text}.should == %w'2 0 1'
+
+    click_link 'Search'
+    click_button 'Search'
+    all('tr td:first-child').map{|s| s.text}.should == %w'0 2 1'
+
+    click_link 'Artist'
+    all('tr td:first-child').map{|s| s.text}.should == %w'1 2 0'
+  end
 end

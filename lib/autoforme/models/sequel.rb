@@ -31,8 +31,20 @@ module AutoForme
         @model.with_pk!(pk)
       end
 
-      def search_results(request)
+      def dataset_for(type)
         ds = @model.dataset
+        if order = order_for(type)
+          ds = ds.order(*order)
+        end
+        ds
+      end
+
+      def all_rows_for(type)
+        dataset_for(type).all
+      end
+
+      def search_results(request)
+        ds = dataset_for(:search)
         columns_for(:search_form).each do |c|
           if (v = request.params[c]) && !v.empty?
             if column_type(c) == :string
@@ -46,7 +58,7 @@ module AutoForme
       end
 
       def browse(request)
-        paginate(request, @model)
+        paginate(request, dataset_for(:browse))
       end
 
       def paginate(request, ds)

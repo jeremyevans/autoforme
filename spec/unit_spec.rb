@@ -47,6 +47,18 @@ describe AutoForme do
     model.columns_for(:browse).should == [:bar]
   end
 
+  it "should handle order lookup" do
+    model.order_for(:browse).should == nil
+    def (framework).order_for(type, model)
+      [type, model.name.to_sym]
+    end
+    model.order_for(:browse).should == [:browse, :Artist]
+    model.order [:foo]
+    model.order_for(:browse).should == [:foo]
+    model.browse_order :bar
+    model.order_for(:browse).should == :bar
+  end
+
   it "should handle supported actions lookup" do
     model.supported_action?('new').should be_true
     model.supported_action?('update').should be_true
