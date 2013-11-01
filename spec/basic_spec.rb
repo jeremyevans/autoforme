@@ -90,6 +90,34 @@ describe AutoForme do
     all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
     first('li.disabled a').text.should == 'Previous'
   end
+
+  it "should support specifying supported actions" do
+    app_setup(Artist) do
+      supported_actions %w'new edit browse search'
+    end
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.current_path.should == '/Artist/new'
+    page.html.should_not =~ /Show/
+    page.html.should_not =~ /Delete/
+
+    click_link 'Edit'
+    select 'TestArtistNew'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'TestArtistUpdate'
+    click_button 'Update'
+    page.html.should =~ /Name.+TestArtistUpdate/m
+    page.current_path.should =~ %r{/Artist/edit/\d+}
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'Upd'
+    click_button 'Search'
+    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
+
+    click_link 'Artist'
+    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
+  end
 end
 
 describe AutoForme do

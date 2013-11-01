@@ -71,9 +71,10 @@ module AutoForme
       send("#{type}_table_class") || table_class || framework.table_class_for(type)
     end
 
-    DEFAULT_ACTIONS = %w'new create show edit update delete destroy browse search results'.freeze
+    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search'.freeze
+    ACTION_MAP = {'create'=>'new', 'update'=>'edit', 'destroy'=>'delete'}
     def supported_action?(action)
-      (supported_actions || DEFAULT_ACTIONS).include?(action)
+      (supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS).include?(ACTION_MAP.fetch(action, action))
     end
   end
 end

@@ -13,6 +13,8 @@ module AutoForme
 
     opts_attribute :model_type
 
+    opts_attribute :supported_actions
+
     opts_attribute :table_class
     opts_attribute :browse_table_class
     opts_attribute :search_table_class

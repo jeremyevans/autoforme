@@ -7,8 +7,11 @@ describe AutoForme do
     Object.send(:remove_const, :Artist)
   end
 
-  it "should handle table class lookup" do
+  before do
     app_setup(Artist)
+  end
+
+  it "should handle table class lookup" do
     model.table_class_for(:browse).should == 'table table-bordered table-striped'
     framework.table_class 'foo'
     model.table_class_for(:browse).should == 'foo'
@@ -21,7 +24,6 @@ describe AutoForme do
   end
 
   it "should handle per page lookup" do
-    app_setup(Artist)
     model.limit_for(:browse).should == 25
     framework.per_page 1
     model.limit_for(:browse).should == 1
@@ -34,7 +36,6 @@ describe AutoForme do
   end
 
   it "should handle columns lookup" do
-    app_setup(Artist)
     model.columns_for(:browse).should == [:name]
     def (framework).columns_for(type, model)
       [type, model.name.to_sym]
@@ -44,5 +45,19 @@ describe AutoForme do
     model.columns_for(:browse).should == [:foo]
     model.browse_columns [:bar]
     model.columns_for(:browse).should == [:bar]
+  end
+
+  it "should handle supported actions lookup" do
+    model.supported_action?('new').should be_true
+    model.supported_action?('update').should be_true
+    model.supported_action?('search').should be_true
+    framework.supported_actions ['new', 'search']
+    model.supported_action?('new').should be_true
+    model.supported_action?('update').should be_false
+    model.supported_action?('search').should be_true
+    model.supported_actions ['edit', 'search']
+    model.supported_action?('new').should be_false
+    model.supported_action?('update').should be_true
+    model.supported_action?('search').should be_true
   end
 end
