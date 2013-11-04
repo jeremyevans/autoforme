@@ -2,19 +2,9 @@ require 'rubygems'
 require 'sequel'
 require 'logger'
 
-if defined?(RSpec)
-  RSpec.configure do |c|
-    c.around(:each) do |example|
-      db.transaction(:rollback=>:always){example.run}
-    end
-  end
-else
-  class Spec::Example::ExampleGroup
-    def execute(runner, opts, &block)
-      x = nil
-      opts[:@db].transaction(:rollback=>:always){x = super(runner, opts, &block)}
-      x
-    end
+RSpec.configure do |c|
+  c.around(:each) do |example|
+    db.transaction(:rollback=>:always){example.run}
   end
 end
 
