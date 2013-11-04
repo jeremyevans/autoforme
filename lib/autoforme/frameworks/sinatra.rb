@@ -10,7 +10,7 @@ module AutoForme
           @env = @request.env
           @method = @env['REQUEST_METHOD']
           @model = captures[0]
-          @action = captures[1]
+          @action_type = captures[1]
           @path = @env['SCRIPT_NAME']
           @id = @params[:id] || captures[2]
         end

@@ -8,7 +8,7 @@ module AutoForme
     def initialize(model, request)
       @model = model
       @request = request
-      @type = request.action
+      @type = request.action_type
     end
 
     def supported?

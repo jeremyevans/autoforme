@@ -54,7 +54,7 @@ module AutoForme
       end
 
       def paginate(request, ds)
-        limit = limit_for(request.action)
+        limit = limit_for(request.action_type)
         offset = ((request.id.to_i||1)-1) * limit
         objs = ds.limit(limit+1, (offset if offset > 0)).all
         next_page = false
