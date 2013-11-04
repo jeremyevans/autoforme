@@ -1,3 +1,5 @@
+require './spec/spec_helper'
+
 describe AutoForme do
   before(:all) do
     db_setup(:artists=>[[:name, :string]])
