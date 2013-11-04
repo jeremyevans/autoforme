@@ -3,17 +3,17 @@ module AutoForme
   class Action
     attr_reader :model
     attr_reader :request
-    attr_reader :action
+    attr_reader :type
 
     def initialize(model, request)
       @model = model
       @request = request
-      @action = request.action
+      @type = request.action
     end
 
     def supported?
       return false unless idempotent? || request.post?
-      return false unless model.supported_action?(action)
+      return false unless model.supported_action?(type)
       true
     end
 
@@ -22,7 +22,7 @@ module AutoForme
     end
 
     def idempotent?
-      action !~ /\A(?:create|update|destroy|add_\w+|remove_\w+)\z/
+      type !~ /\A(?:create|update|destroy|add_\w+|remove_\w+)\z/
     end
 
     def model_params
@@ -40,14 +40,14 @@ module AutoForme
 
 
     def handle
-      send("handle_#{action}")
+      send("handle_#{type}")
     end
 
     def tabs
       content = '<ul class="nav nav-tabs">'
-      %w'browse new show edit delete search'.each do |action|
-        if model.supported_action?(action)
-          content << "<li class=\"#{'active' if request.action == action}\"><a href=\"#{url_for(action)}\">#{action == 'browse' ? request.model : action.capitalize}</a></li>"
+      %w'browse new show edit delete search'.each do |action_type|
+        if model.supported_action?(action_type)
+          content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{action_type == 'browse' ? request.model : action_type.capitalize}</a></li>"
         end
       end
       content << '</ul>'
@@ -114,7 +114,7 @@ module AutoForme
     end
     def handle_show
       if request.id
-        show_page(model.with_pk(action, request.id))
+        show_page(model.with_pk(type, request.id))
       else
         list_page(:show)
       end
@@ -132,13 +132,13 @@ module AutoForme
     end
     def handle_edit
       if request.id
-        edit_page(model.with_pk(action, request.id))
+        edit_page(model.with_pk(type, request.id))
       else
         list_page(:edit)
       end
     end
     def handle_update
-      obj = model.with_pk(action, request.id)
+      obj = model.with_pk(type, request.id)
       model.set_fields(obj, :edit, model_params)
       if model.save(obj)
         request.set_flash_notice("Updated #{request.model}")
