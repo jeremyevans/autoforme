@@ -61,6 +61,18 @@ describe AutoForme do
     model.order_for(:browse).should == :bar
   end
 
+  it "should handle filter lookup" do
+    model.filter_for(:browse).should == nil
+    def (framework).filter_for(type, model)
+      lambda{|ds| 1}
+    end
+    model.filter_for(:browse).call(nil).should == 1
+    model.filter{|ds| 2}
+    model.filter_for(:browse).call(nil).should == 2
+    model.browse_filter{|ds| 3}
+    model.filter_for(:browse).call(nil).should == 3
+  end
+
   it "should handle supported actions lookup" do
     model.supported_action?('new').should be_true
     model.supported_action?('update').should be_true

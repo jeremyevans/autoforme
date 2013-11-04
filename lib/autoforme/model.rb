@@ -30,6 +30,13 @@ module AutoForme
     opts_attribute :browse_order
     opts_attribute :search_order
 
+    opts_attribute :filter
+    opts_attribute :edit_filter
+    opts_attribute :show_filter
+    opts_attribute :delete_filter
+    opts_attribute :browse_filter
+    opts_attribute :search_filter
+
     opts_attribute :table_class
     opts_attribute :browse_table_class
     opts_attribute :search_table_class
@@ -45,7 +52,7 @@ module AutoForme
     end
 
     def destroy(pk)
-      with_pk(pk).destroy
+      with_pk(:delete, pk).destroy
     end
 
     def new
@@ -58,6 +65,11 @@ module AutoForme
 
     def select_options(type)
       all_rows_for(type).map{|obj| [display_name_for(obj), primary_key_value(obj)]}
+    end
+
+    def filter_for(type)
+      type = ACTION_MAP.fetch(type, type)
+      send("#{type}_filter") || filter || framework.filter_for(type, model)
     end
 
     def order_for(type)

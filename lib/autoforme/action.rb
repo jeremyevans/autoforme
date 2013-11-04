@@ -114,7 +114,7 @@ module AutoForme
     end
     def handle_show
       if request.id
-        show_page(model.with_pk(request.id))
+        show_page(model.with_pk(action, request.id))
       else
         list_page(:show)
       end
@@ -132,13 +132,13 @@ module AutoForme
     end
     def handle_edit
       if request.id
-        edit_page(model.with_pk(request.id))
+        edit_page(model.with_pk(action, request.id))
       else
         list_page(:edit)
       end
     end
     def handle_update
-      obj = model.with_pk(request.id)
+      obj = model.with_pk(action, request.id)
       model.set_fields(obj, :edit, model_params)
       if model.save(obj)
         request.set_flash_notice("Updated #{request.model}")

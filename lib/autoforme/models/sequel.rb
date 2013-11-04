@@ -27,24 +27,16 @@ module AutoForme
         @model.send(:underscore, @model.name)
       end
 
-      def with_pk(pk)
-        @model.with_pk!(pk)
-      end
-
-      def dataset_for(type)
-        ds = @model.dataset
-        if order = order_for(type)
-          ds = ds.order(*order)
-        end
-        ds
+      def with_pk(type, pk)
+        dataset_for(type).with_pk!(pk)
       end
 
       def all_rows_for(type)
-        dataset_for(type).all
+        all_dataset_for(type).all
       end
 
       def search_results(request)
-        ds = dataset_for(:search)
+        ds = all_dataset_for(:search)
         columns_for(:search_form).each do |c|
           if (v = request.params[c]) && !v.empty?
             if column_type(c) == :string
@@ -58,7 +50,7 @@ module AutoForme
       end
 
       def browse(request)
-        paginate(request, dataset_for(:browse))
+        paginate(request, all_dataset_for(:browse))
       end
 
       def paginate(request, ds)
@@ -76,6 +68,25 @@ module AutoForme
       def column_type(column)
         (sch = model.db_schema[column]) && sch[:type]
       end
+
+      private
+
+      def dataset_for(type)
+        ds = @model.dataset
+        if filter = filter_for(type)
+          ds = filter.call(ds)
+        end
+        ds
+      end
+
+      def all_dataset_for(type)
+        ds = dataset_for(type)
+        if order = order_for(type)
+          ds = ds.order(*order)
+        end
+        ds
+      end
+
     end
   end
 

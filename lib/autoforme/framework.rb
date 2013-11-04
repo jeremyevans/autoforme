@@ -37,6 +37,10 @@ module AutoForme
       nil
     end
 
+    def filter_for(type, model)
+      nil
+    end
+
     def limit_for(type)
       send("#{type}_per_page") || per_page || default_limit
     end
