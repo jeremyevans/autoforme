@@ -7,6 +7,8 @@ require 'rack/csrf'
 class AutoFormeSpec::App < Sinatra::Base
   disable :run
   enable :sessions
+  enable :raise_errors
+  set :environment, "test"
   register Sinatra::Flash
   use Rack::Csrf
 
