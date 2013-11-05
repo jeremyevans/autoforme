@@ -25,7 +25,7 @@ module AutoForme
     end
 
     def idempotent?
-      type !~ /\A(?:create|update|destroy|add_\w+|remove_\w+)\z/
+      type == normalized_type
     end
 
     def model_params
