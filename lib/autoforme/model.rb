@@ -51,8 +51,8 @@ module AutoForme
       @opts = {}
     end
 
-    def destroy(pk)
-      with_pk(:delete, pk).destroy
+    def destroy(action, pk)
+      with_pk(action, pk).destroy
     end
 
     def new
@@ -63,8 +63,8 @@ module AutoForme
       send("#{type}_columns") || columns || framework.columns_for(type, model)
     end
 
-    def select_options(type)
-      all_rows_for(type).map{|obj| [display_name_for(obj), primary_key_value(obj)]}
+    def select_options(action)
+      all_rows_for(action).map{|obj| [display_name_for(obj), primary_key_value(obj)]}
     end
 
     def filter_for(type)

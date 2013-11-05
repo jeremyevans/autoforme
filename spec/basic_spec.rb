@@ -218,11 +218,11 @@ describe AutoForme do
 
   it "should support specifying filter per type" do
     app_setup(Artist) do
-      edit_filter{|ds| ds.where{n0 > 1}}
-      show_filter{|ds| ds.where{n1 > 3}}
-      delete_filter{|ds| ds.where{n2 > 2}}
-      browse_filter{|ds| ds.where{n3 > 6}}
-      search_filter{|ds| ds.where{n4 > 4}}
+      edit_filter{|ds, action| ds.where{n0 > 1}}
+      show_filter{|ds, action| ds.where{n1 > 3}}
+      delete_filter{|ds, action| ds.where{n2 > 2}}
+      browse_filter{|ds, action| ds.where{n3 > 6}}
+      search_filter{|ds, action| ds.where{n4 > 4}}
     end
 
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
@@ -248,6 +248,35 @@ describe AutoForme do
     all('tr td:first-child').map{|s| s.text}.should == %w'1'
 
     click_link 'Artist'
+    all('tr td:first-child').map{|s| s.text}.should == %w'1'
+  end
+
+  it "should support specifying filter per type using params from request" do
+    app_setup(Artist) do
+      edit_filter{|ds, action| ds.where{n0 > action.request.params[:f]}}
+      show_filter{|ds, action| ds.where{n1 > action.request.params[:f]}}
+      delete_filter{|ds, action| ds.where{n2 > action.request.params[:f]}}
+      browse_filter{|ds, action| ds.where{n3 > action.request.params[:f]}}
+      search_filter{|ds, action| ds.where{n4 > action.request.params[:f]}}
+    end
+
+    Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
+    Artist.create(:n0=>'2', :n1=>'2', :n2=>'1', :n3=>'3', :n4=>'4')
+    Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
+
+    visit("/Artist/show?f=3")
+    all('option').map{|s| s.text}.should == %w'0'
+
+    visit("/Artist/edit?f=1")
+    all('option').map{|s| s.text}.should == %w'2'
+
+    visit("/Artist/delete?f=2")
+    all('option').map{|s| s.text}.should == %w'1'
+
+    visit("/Artist/search/1?f=4")
+    all('tr td:first-child').map{|s| s.text}.should == %w'1'
+
+    visit("/Artist/browse?f=6")
     all('tr td:first-child').map{|s| s.text}.should == %w'1'
   end
 end

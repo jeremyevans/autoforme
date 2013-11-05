@@ -27,18 +27,19 @@ module AutoForme
         @model.send(:underscore, @model.name)
       end
 
-      def with_pk(type, pk)
-        dataset_for(type).with_pk!(pk)
+      def with_pk(action, pk)
+        dataset_for(action).with_pk!(pk)
       end
 
-      def all_rows_for(type)
-        all_dataset_for(type).all
+      def all_rows_for(action)
+        all_dataset_for(action).all
       end
 
-      def search_results(request)
-        ds = all_dataset_for(:search)
+      def search_results(action)
+        params = action.request.params
+        ds = all_dataset_for(action)
         columns_for(:search_form).each do |c|
-          if (v = request.params[c]) && !v.empty?
+          if (v = params[c]) && !v.empty?
             if column_type(c) == :string
               ds = ds.where(::Sequel.ilike(c, "%#{ds.escape_like(v.to_s)}%"))
             else
@@ -46,16 +47,16 @@ module AutoForme
             end
           end
         end
-        paginate(request, ds)
+        paginate(action, ds)
       end
 
-      def browse(request)
-        paginate(request, all_dataset_for(:browse))
+      def browse(action)
+        paginate(action, all_dataset_for(action))
       end
 
-      def paginate(request, ds)
-        limit = limit_for(request.action_type)
-        offset = ((request.id.to_i||1)-1) * limit
+      def paginate(action, ds)
+        limit = limit_for(action.normalized_type)
+        offset = ((action.request.id.to_i||1)-1) * limit
         objs = ds.limit(limit+1, (offset if offset > 0)).all
         next_page = false
         if objs.length > limit
@@ -71,17 +72,17 @@ module AutoForme
 
       private
 
-      def dataset_for(type)
+      def dataset_for(action)
         ds = @model.dataset
-        if filter = filter_for(type)
-          ds = filter.call(ds)
+        if filter = filter_for(action.normalized_type)
+          ds = filter.call(ds, action)
         end
         ds
       end
 
-      def all_dataset_for(type)
-        ds = dataset_for(type)
-        if order = order_for(type)
+      def all_dataset_for(action)
+        ds = dataset_for(action)
+        if order = order_for(action.normalized_type)
           ds = ds.order(*order)
         end
         ds

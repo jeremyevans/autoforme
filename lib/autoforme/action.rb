@@ -100,7 +100,7 @@ module AutoForme
       page do
         form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
         Forme.form(form_attributes, form_opts) do |f|
-          f.input(:select, :options=>model.select_options(type), :name=>'id', :id=>'id')
+          f.input(:select, :options=>model.select_options(self), :name=>'id', :id=>'id')
           f.button(type.to_s.capitalize)
         end
       end
@@ -117,7 +117,7 @@ module AutoForme
     end
     def handle_show
       if request.id
-        show_page(model.with_pk(type, request.id))
+        show_page(model.with_pk(self, request.id))
       else
         list_page(:show)
       end
@@ -135,13 +135,13 @@ module AutoForme
     end
     def handle_edit
       if request.id
-        edit_page(model.with_pk(type, request.id))
+        edit_page(model.with_pk(self, request.id))
       else
         list_page(:edit)
       end
     end
     def handle_update
-      obj = model.with_pk(normalized_type, request.id)
+      obj = model.with_pk(self, request.id)
       model.set_fields(obj, :edit, model_params)
       if model.save(obj)
         request.set_flash_notice("Updated #{request.model}")
@@ -156,7 +156,7 @@ module AutoForme
       list_page(:delete, :form=>{:action=>url_for('destroy'), :method=>:post})
     end
     def handle_destroy
-      model.destroy(request.id)
+      model.destroy(self, request.id)
       request.set_flash_notice("Deleted #{request.model}")
       redirect("delete")
     end
@@ -183,12 +183,12 @@ module AutoForme
       end
     end
     def handle_browse
-      table_page(:browse, *model.browse(request))
+      table_page(:browse, *model.browse(self))
     end
 
     def handle_search
       if request.id
-        table_page(:search, *model.search_results(request))
+        table_page(:search, *model.search_results(self))
       else
         page do
           Forme.form(model.new, {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
