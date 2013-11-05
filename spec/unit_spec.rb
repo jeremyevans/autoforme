@@ -75,15 +75,15 @@ describe AutoForme do
 
   it "should handle supported actions lookup" do
     model.supported_action?('new').should be_true
-    model.supported_action?('update').should be_true
+    model.supported_action?('edit').should be_true
     model.supported_action?('search').should be_true
     framework.supported_actions ['new', 'search']
     model.supported_action?('new').should be_true
-    model.supported_action?('update').should be_false
+    model.supported_action?('edit').should be_false
     model.supported_action?('search').should be_true
     model.supported_actions ['edit', 'search']
     model.supported_action?('new').should be_false
-    model.supported_action?('update').should be_true
+    model.supported_action?('edit').should be_true
     model.supported_action?('search').should be_true
   end
 end

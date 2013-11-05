@@ -4,16 +4,19 @@ module AutoForme
     attr_reader :model
     attr_reader :request
     attr_reader :type
+    attr_reader :normalized_type
 
+    NORMALIZED_ACTION_MAP = {'create'=>'new', 'update'=>'edit', 'destroy'=>'delete'}
     def initialize(model, request)
       @model = model
       @request = request
       @type = request.action_type
+      @normalized_type = NORMALIZED_ACTION_MAP.fetch(@type, @type)
     end
 
     def supported?
       return false unless idempotent? || request.post?
-      return false unless model.supported_action?(type)
+      return false unless model.supported_action?(normalized_type)
       true
     end
 
@@ -138,7 +141,7 @@ module AutoForme
       end
     end
     def handle_update
-      obj = model.with_pk(type, request.id)
+      obj = model.with_pk(normalized_type, request.id)
       model.set_fields(obj, :edit, model_params)
       if model.save(obj)
         request.set_flash_notice("Updated #{request.model}")

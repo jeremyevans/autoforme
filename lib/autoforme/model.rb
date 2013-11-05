@@ -68,7 +68,6 @@ module AutoForme
     end
 
     def filter_for(type)
-      type = ACTION_MAP.fetch(type, type)
       send("#{type}_filter") || filter || framework.filter_for(type, model)
     end
 
@@ -95,9 +94,8 @@ module AutoForme
     end
 
     DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search'.freeze
-    ACTION_MAP = {'create'=>'new', 'update'=>'edit', 'destroy'=>'delete'}
-    def supported_action?(action)
-      (supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS).include?(ACTION_MAP.fetch(action, action))
+    def supported_action?(type)
+      (supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS).include?(type)
     end
   end
 end
