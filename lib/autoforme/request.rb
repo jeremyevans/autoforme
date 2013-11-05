@@ -18,6 +18,7 @@ module AutoForme
     attr_reader :path
     attr_reader :id
     attr_reader :params
+    attr_reader :session
 
     def post?
       method == 'POST'

@@ -251,7 +251,7 @@ describe AutoForme do
     all('tr td:first-child').map{|s| s.text}.should == %w'1'
   end
 
-  it "should support specifying filter per type using params from request" do
+  it "should support specifying filter per type using request params" do
     app_setup(Artist) do
       edit_filter{|ds, action| ds.where{n0 > action.request.params[:f]}}
       show_filter{|ds, action| ds.where{n1 > action.request.params[:f]}}
@@ -278,5 +278,39 @@ describe AutoForme do
 
     visit("/Artist/browse?f=6")
     all('tr td:first-child').map{|s| s.text}.should == %w'1'
+  end
+
+  it "should support specifying filter per type using request session" do
+    app_setup(Artist) do
+      filter{|ds, action| ds.where(:n1=>action.request.session['n1'])}
+      order :n2
+    end
+
+    Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
+    Artist.create(:n0=>'2', :n1=>'2', :n2=>'1', :n3=>'3', :n4=>'4')
+    Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
+    visit '/session/set?n1=2'
+
+    visit("/Artist/show")
+    all('option').map{|s| s.text}.should == %w'2 1'
+
+    click_link 'Edit'
+    all('option').map{|s| s.text}.should == %w'2 1'
+    select '2'
+    click_button 'Edit'
+    click_button 'Update'
+
+    click_link 'Delete'
+    all('option').map{|s| s.text}.should == %w'2 1'
+    select '1'
+    click_button 'Delete'
+    Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
+
+    click_link 'Search'
+    click_button 'Search'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+
+    click_link 'Artist'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
   end
 end

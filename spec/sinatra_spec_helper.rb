@@ -12,6 +12,11 @@ class AutoFormeSpec::App < Sinatra::Base
   register Sinatra::Flash
   use Rack::Csrf
 
+  get '/session/set' do
+    session.merge!(params)
+    ''
+  end
+
   def self.autoforme(klass=nil, &block)
     sc = Class.new(self)
     framework = nil

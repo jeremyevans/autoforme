@@ -6,6 +6,7 @@ module AutoForme
           @controller = controller
           @request = controller.request
           @params = controller.params
+          @session = controller.session
           captures = @params[:captures] || []
           @env = @request.env
           @method = @env['REQUEST_METHOD']
