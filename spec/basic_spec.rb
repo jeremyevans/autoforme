@@ -45,6 +45,43 @@ describe AutoForme do
     all('td').map{|s| s.text}.should == []
   end
 
+  it "should support specifying column options per type" do
+    app_setup(Artist) do
+      new_column_options(:name=>{:label=>'New Artist Name'})
+      edit_column_options(:name=>{:label=>'Edit Artist Name'})
+      show_column_options(:name=>{:label=>'Show Artist Name'})
+      browse_column_options(:name=>{:label=>'Browse Artist Name'})
+      search_form_column_options(:name=>{:label=>'Search Form Artist Name'})
+      search_column_options(:name=>{:label=>'Search Artist Name'})
+    end
+
+    visit("/Artist/new")
+    fill_in 'New Artist Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.current_path.should == '/Artist/new'
+
+    click_link 'Show'
+    select 'TestArtistNew'
+    click_button 'Show'
+    page.html.should =~ /Show Artist Name.+TestArtistNew/m
+
+    click_link 'Edit'
+    select 'TestArtistNew'
+    click_button 'Edit'
+    fill_in 'Edit Artist Name', :with=>'TestArtistUpdate'
+    click_button 'Update'
+    page.html.should =~ /Edit Artist Name.+TestArtistUpdate/m
+    page.current_path.should =~ %r{/Artist/edit/\d+}
+
+    click_link 'Search'
+    fill_in 'Search Form Artist Name', :with=>'Upd'
+    click_button 'Search'
+    all('th').map{|s| s.text}.should == ["Search Artist Name", "Show", "Edit", "Delete"]
+
+    click_link 'Artist'
+    all('th').map{|s| s.text}.should == ["Browse Artist Name", "Show", "Edit", "Delete"]
+  end
+
   it "should support specifying table class for data tables per type" do
     app_setup(Artist) do
       browse_table_class 'foo'

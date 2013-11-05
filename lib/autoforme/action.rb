@@ -75,7 +75,7 @@ module AutoForme
       page do
         Forme.form(obj, {:action=>url_for("create")}, form_opts) do |f|
           model.columns_for(:new).each do |column|
-            f.input(column)
+            f.input(column, model.column_options_for(:new, column))
           end
           f.button('Create')
         end
@@ -110,7 +110,7 @@ module AutoForme
       page do
         Forme.form(obj, {}, :formatter=>:readonly) do |f|
           model.columns_for(:show).each do |column|
-            f.input(column)
+            f.input(column, model.column_options_for(:show, column))
           end
         end
       end
@@ -127,7 +127,7 @@ module AutoForme
       page do
         Forme.form(obj, {:action=>url_for("update/#{obj.id}")}, form_opts) do |f|
           model.columns_for(:edit).each do |column|
-            f.input(column)
+            f.input(column, model.column_options_for(:edit, column))
           end
           f.button('Update')
         end
@@ -193,7 +193,7 @@ module AutoForme
         page do
           Forme.form(model.new, {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
             model.columns_for(:search_form).each do |column|
-              f.input(column, :name=>column, :id=>column)
+              f.input(column, model.column_options_for(:search_form, column).merge(:name=>column, :id=>column))
             end
             f.button('Search')
           end

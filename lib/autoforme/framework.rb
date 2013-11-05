@@ -33,6 +33,10 @@ module AutoForme
       model.columns - Array(model.primary_key)
     end
 
+    def column_options_for(type, model)
+      nil
+    end
+
     def order_for(type, model)
       nil
     end

@@ -23,6 +23,14 @@ module AutoForme
     opts_attribute :search_form_columns
     opts_attribute :search_columns
 
+    opts_attribute :column_options
+    opts_attribute :new_column_options
+    opts_attribute :edit_column_options
+    opts_attribute :show_column_options
+    opts_attribute :browse_column_options
+    opts_attribute :search_form_column_options
+    opts_attribute :search_column_options
+
     opts_attribute :order
     opts_attribute :edit_order
     opts_attribute :show_order
@@ -61,6 +69,19 @@ module AutoForme
 
     def columns_for(type)
       send("#{type}_columns") || columns || framework.columns_for(type, model)
+    end
+
+    def column_options_for(type, column)
+      opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
+      opts = opts[column] if opts
+      opts || {}
+    end
+
+    def column_label_for(type, column)
+      unless label = column_options_for(type, column)[:label]
+        label = column.to_s.capitalize
+      end
+      label
     end
 
     def select_options(action)
