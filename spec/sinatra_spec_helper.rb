@@ -17,6 +17,21 @@ class AutoFormeSpec::App < Sinatra::Base
     ''
   end
 
+  template :layout do
+    <<HTML
+<DOCTYPE html>
+<html><body>
+<% if flash[:notice] %>
+  <div class="alert alert-success"><p><%= flash[:notice] %></p></div>
+<% end %>
+<% if flash[:error] %>
+  <div class="alert alert-error"><p><%= flash[:error] %></p></div>
+<% end %>
+<%= yield %>
+</body></html>"
+HTML
+  end
+
   def self.autoforme(klass=nil, &block)
     sc = Class.new(self)
     framework = nil

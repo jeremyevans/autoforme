@@ -14,6 +14,7 @@ describe AutoForme do
     visit("/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
+    page.html.should =~ /Created Artist/
     page.current_path.should == '/Artist/new'
 
     click_link 'Show'
@@ -26,6 +27,7 @@ describe AutoForme do
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
+    page.html.should =~ /Updated Artist/
     page.html.should =~ /Name.+TestArtistUpdate/m
     page.current_path.should =~ %r{/Artist/edit/\d+}
 
@@ -39,6 +41,7 @@ describe AutoForme do
 
     all('td').last.find('a').click
     click_button 'Delete'
+    page.html.should =~ /Deleted Artist/
     page.current_path.should == '/Artist/delete'
 
     click_link 'Artist'
