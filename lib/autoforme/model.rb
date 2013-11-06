@@ -95,6 +95,11 @@ module AutoForme
       send(type) || framework.hook_for(type, model)
     end
 
+    opts_attribute :class_display_name
+    def class_name
+      class_display_name || model.name
+    end
+
     def initialize(model, framework)
       @model = model
       @framework = framework

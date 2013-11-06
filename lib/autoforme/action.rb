@@ -50,7 +50,7 @@ module AutoForme
       content = '<ul class="nav nav-tabs">'
       %w'browse new show edit delete search'.each do |action_type|
         if model.supported_action?(action_type)
-          content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{action_type == 'browse' ? request.model : action_type.capitalize}</a></li>"
+          content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{action_type == 'browse' ? model.class_name : action_type.capitalize}</a></li>"
         end
       end
       content << '</ul>'
@@ -90,10 +90,10 @@ module AutoForme
       model.hook(:before_create, self, obj)
       if model.save(obj)
         model.hook(:after_create, self, obj)
-        request.set_flash_notice("Created #{request.model}")
+        request.set_flash_notice("Created #{model.class_name}")
         redirect("new")
       else
-        request.set_flash_now_error("Error Creating #{request.model}")
+        request.set_flash_now_error("Error Creating #{model.class_name}")
         new_page(obj)
       end
     end
@@ -148,10 +148,10 @@ module AutoForme
       model.hook(:before_update, self, obj)
       if model.save(obj)
         model.hook(:after_update, self, obj)
-        request.set_flash_notice("Updated #{request.model}")
+        request.set_flash_notice("Updated #{model.class_name}")
         redirect("edit/#{model.primary_key_value(obj)}")
       else
-        request.set_flash_now_error("Error Updating #{request.model}")
+        request.set_flash_now_error("Error Updating #{model.class_name}")
         edit_page(obj)
       end
     end
@@ -164,7 +164,7 @@ module AutoForme
       model.hook(:before_destroy, self, obj)
       model.destroy(obj)
       model.hook(:after_destroy, self, obj)
-      request.set_flash_notice("Deleted #{request.model}")
+      request.set_flash_notice("Deleted #{model.class_name}")
       redirect("delete")
     end
 

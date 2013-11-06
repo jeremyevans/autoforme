@@ -210,6 +210,32 @@ describe AutoForme do
     click_link 'Artist'
     all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
   end
+
+  it "should have basic functionality working" do
+    app_setup(Artist) do
+      class_display_name :FooArtist
+    end
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.html.should =~ /Created FooArtist/
+    page.current_path.should == '/Artist/new'
+
+    click_link 'Edit'
+    select 'TestArtistNew'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'TestArtistUpdate'
+    click_button 'Update'
+    page.html.should =~ /Updated FooArtist/
+
+    click_link 'FooArtist'
+    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+
+    all('td').last.find('a').click
+    click_button 'Delete'
+    page.html.should =~ /Deleted FooArtist/
+  end
+
 end
 
 describe AutoForme do
