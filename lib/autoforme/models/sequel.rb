@@ -35,6 +35,15 @@ module AutoForme
         all_dataset_for(action).all
       end
 
+      def session_value(column)
+        filter do |ds, action|
+          ds.where(column=>action.request.session[column])
+        end
+        before_create do |obj, action|
+          obj.send("#{column}=", action.request.session[column])
+        end
+      end
+
       def search_results(action)
         params = action.request.params
         ds = all_dataset_for(action)

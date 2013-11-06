@@ -405,4 +405,44 @@ describe AutoForme do
     click_link 'Artist'
     all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
   end
+
+  it "should support session_value for restricting access by matching session variable to column value" do
+    app_setup(Artist) do
+      session_value :n1
+      columns [:n0, :n2]
+      order :n2
+    end
+
+    Artist.create(:n0=>'0', :n1=>'4', :n2=>'1')
+    visit '/session/set?n1=2'
+
+    visit("/Artist/new")
+    fill_in 'N0', :with=>'1'
+    fill_in 'N2', :with=>'3'
+    click_button 'Create'
+    fill_in 'N0', :with=>'2'
+    fill_in 'N2', :with=>'1'
+    click_button 'Create'
+
+    click_link 'Show'
+    all('option').map{|s| s.text}.should == %w'2 1'
+
+    click_link 'Edit'
+    all('option').map{|s| s.text}.should == %w'2 1'
+    select '2'
+    click_button 'Edit'
+    click_button 'Update'
+
+    click_link 'Search'
+    click_button 'Search'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+
+    click_link 'Artist'
+    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+
+    click_link 'Delete'
+    all('option').map{|s| s.text}.should == %w'2 1'
+    select '1'
+    click_button 'Delete'
+  end
 end
