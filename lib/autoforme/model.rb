@@ -27,7 +27,7 @@ module AutoForme
     opts_attribute :search_form_columns
     opts_attribute :search_columns
     def columns_for(type)
-      send("#{type}_columns") || columns || framework.columns_for(type, model)
+      send("#{type}_columns") || columns || framework.columns_for(type, model) || default_columns
     end
 
     opts_attribute :column_options
@@ -130,6 +130,10 @@ module AutoForme
         label = column.to_s.capitalize
       end
       label
+    end
+
+    def default_columns
+      model.columns - Array(model.primary_key)
     end
 
     def select_options(action)

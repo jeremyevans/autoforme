@@ -36,7 +36,7 @@ module AutoForme
     end
 
     def columns_for(type, model)
-      model.columns - Array(model.primary_key)
+      nil
     end
 
     def column_options_for(type, model)
