@@ -213,13 +213,14 @@ describe AutoForme do
 
   it "should have basic functionality working" do
     app_setup(Artist) do
-      class_display_name :FooArtist
+      class_display_name "FooArtist"
+      link_name "BarArtist"
     end
-    visit("/Artist/new")
+    visit("/BarArtist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
     page.html.should =~ /Created FooArtist/
-    page.current_path.should == '/Artist/new'
+    page.current_path.should == '/BarArtist/new'
 
     click_link 'Edit'
     select 'TestArtistNew'

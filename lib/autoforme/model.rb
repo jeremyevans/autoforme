@@ -100,6 +100,11 @@ module AutoForme
       class_display_name || model.name
     end
 
+    opts_attribute :link_name
+    def link
+      link_name || class_name
+    end
+
     def initialize(model, framework)
       @model = model
       @framework = framework

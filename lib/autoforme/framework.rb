@@ -68,7 +68,8 @@ module AutoForme
     end
 
     def autoforme(model_class, &block)
-      @models[model_class.name] = Model.for(self, model_type, model_class, &block)
+      model = Model.for(self, model_type, model_class, &block)
+      @models[model.link] = model
     end
 
     def action_for(request)

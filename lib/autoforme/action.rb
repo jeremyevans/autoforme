@@ -33,7 +33,7 @@ module AutoForme
     end
 
     def url_for(page)
-      "#{request.path}/#{request.model}/#{page}"
+      "#{request.path}/#{model.link}/#{page}"
     end
 
     def redirect(page)
