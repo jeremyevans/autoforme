@@ -97,6 +97,18 @@ describe AutoForme do
     model.filter_for(:browse).call(nil, nil).should == 3
   end
 
+  it "should handle display_name lookup" do
+    model.display_name_for(:edit).should == nil
+    def (framework).display_name_for(type, model)
+      :"#{type}_#{model.name}"
+    end
+    model.display_name_for(:edit).should == :edit_Artist
+    model.display_name :foo
+    model.display_name_for(:edit).should == :foo
+    model.edit_display_name :bar
+    model.display_name_for(:edit).should == :bar
+  end
+
   it "should handle supported actions lookup" do
     model.supported_action?('new').should be_true
     model.supported_action?('edit').should be_true

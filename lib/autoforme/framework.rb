@@ -18,10 +18,16 @@ module AutoForme
     opts_attribute :table_class
     opts_attribute :browse_table_class
     opts_attribute :search_table_class
+    def table_class_for(type)
+      send("#{type}_table_class") || table_class || default_table_class
+    end
 
     opts_attribute :per_page
     opts_attribute :browse_per_page
     opts_attribute :search_per_page
+    def limit_for(type)
+      send("#{type}_per_page") || per_page || default_limit
+    end
 
     def initialize(controller)
       @controller = controller
@@ -45,16 +51,14 @@ module AutoForme
       nil
     end
 
-    def limit_for(type)
-      send("#{type}_per_page") || per_page || default_limit
+    def display_name_for(type, model)
+      nil
     end
+
     def default_limit
       25
     end
 
-    def table_class_for(type)
-      send("#{type}_table_class") || table_class || default_table_class
-    end
     def default_table_class
       "table table-bordered table-striped"
     end

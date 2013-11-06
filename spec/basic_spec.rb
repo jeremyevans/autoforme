@@ -82,6 +82,29 @@ describe AutoForme do
     all('th').map{|s| s.text}.should == ["Browse Artist Name", "Show", "Edit", "Delete"]
   end
 
+  it "should support specifying display names per type" do
+    app_setup(Artist) do
+      edit_display_name{|obj| obj.name[1..-1]}
+      show_display_name{|obj| obj.name[2..-2]}
+      delete_display_name :class
+    end
+    Artist.create(:name=>'TestArtistNew')
+    visit("/Artist/show")
+    select 'stArtistN'
+    click_button 'Show'
+    page.html.should =~ /Name.+TestArtistNew/m
+
+    click_link 'Edit'
+    select 'estArtistNe'
+    click_button 'Edit'
+    page.html.should =~ /Name.+TestArtistNew/m
+
+    click_link 'Delete'
+    select 'Artist'
+    click_button 'Delete'
+    Artist.count.should == 0
+  end
+
   it "should support specifying table class for data tables per type" do
     app_setup(Artist) do
       browse_table_class 'foo'
