@@ -87,7 +87,9 @@ module AutoForme
     def handle_create
       obj = model.new
       model.set_fields(obj, :new, model_params)
+      model.hook(:before_create, self, obj)
       if model.save(obj)
+        model.hook(:after_create, self, obj)
         request.set_flash_notice("Created #{request.model}")
         redirect("new")
       else
@@ -143,7 +145,9 @@ module AutoForme
     def handle_update
       obj = model.with_pk(self, request.id)
       model.set_fields(obj, :edit, model_params)
+      model.hook(:before_update, self, obj)
       if model.save(obj)
+        model.hook(:after_update, self, obj)
         request.set_flash_notice("Updated #{request.model}")
         redirect("edit/#{model.primary_key_value(obj)}")
       else
@@ -156,7 +160,10 @@ module AutoForme
       list_page(:delete, :form=>{:action=>url_for('destroy'), :method=>:post})
     end
     def handle_destroy
-      model.destroy(self, request.id)
+      obj = model.with_pk(self, request.id)
+      model.hook(:before_destroy, self, obj)
+      model.destroy(obj)
+      model.hook(:after_destroy, self, obj)
       request.set_flash_notice("Deleted #{request.model}")
       redirect("delete")
     end

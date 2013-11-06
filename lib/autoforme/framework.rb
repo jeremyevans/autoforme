@@ -55,6 +55,10 @@ module AutoForme
       nil
     end
 
+    def hook_for(type, model)
+      nil
+    end
+
     def default_limit
       25
     end

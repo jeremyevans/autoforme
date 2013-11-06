@@ -105,6 +105,38 @@ describe AutoForme do
     Artist.count.should == 0
   end
 
+  it "should support create, update, delete hooks" do
+    a = []
+    app_setup(Artist) do
+      before_create{|obj, action| obj.name = obj.name.reverse}
+      before_update{|obj, action| obj.name = obj.name.upcase}
+      before_destroy{|obj, action| raise if obj.name == obj.name.reverse}
+      after_create{|obj, action| a << action.type }
+      after_update{|obj, action| a << action.type }
+      after_destroy{|obj, action| a << action.type }
+    end
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    a.should == ['create']
+
+    click_link 'Edit'
+    select 'weNtsitrAtseT'
+    click_button 'Edit'
+    click_button 'Update'
+    a.should == ['create', 'update']
+
+    click_link 'Delete'
+    Artist.create(:name=>'A')
+    select 'WENTSITRATSET'
+    click_button 'Delete'
+    a.should == ['create', 'update', 'destroy']
+
+    select 'A'
+    proc{click_button 'Delete'}.should raise_error
+    a.should == ['create', 'update', 'destroy']
+  end
+
   it "should support specifying table class for data tables per type" do
     app_setup(Artist) do
       browse_table_class 'foo'

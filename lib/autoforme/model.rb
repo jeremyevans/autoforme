@@ -85,14 +85,30 @@ module AutoForme
       send("#{type}_display_name") || display_name || framework.display_name_for(type, model)
     end
 
+    opts_attribute :before_create
+    opts_attribute :before_update
+    opts_attribute :before_destroy
+    opts_attribute :after_create
+    opts_attribute :after_update
+    opts_attribute :after_destroy
+    def hook_for(type)
+      send(type) || framework.hook_for(type, model)
+    end
+
     def initialize(model, framework)
       @model = model
       @framework = framework
       @opts = {}
     end
 
-    def destroy(action, pk)
-      with_pk(action, pk).destroy
+    def destroy(obj)
+      obj.destroy
+    end
+
+    def hook(type, action, obj)
+      if v = hook_for(type)
+        v.call(obj, action)
+      end
     end
 
     def new
