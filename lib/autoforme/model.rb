@@ -111,6 +111,14 @@ module AutoForme
       @opts = {}
     end
 
+    def column_value(obj, column)
+      v = obj.send(column)
+      if v.is_a?(base_class)
+        v = default_object_display_name(v)
+      end
+      v
+    end
+
     def destroy(obj)
       obj.destroy
     end
@@ -130,10 +138,6 @@ module AutoForme
         label = column.to_s.capitalize
       end
       label
-    end
-
-    def default_columns
-      model.columns - Array(model.primary_key)
     end
 
     def select_options(action)

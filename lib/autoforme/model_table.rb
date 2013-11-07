@@ -39,7 +39,7 @@ module AutoForme
       objs.each do |obj|
         html << "<tr>"
         columns.each do |column|
-          html << "<td>#{h obj.send(column)}</td>"
+          html << "<td>#{h model.column_value(obj, column)}</td>"
         end
         html << "<td><a href=\"#{action.url_for("show/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-info\">Show</a></td>" if show
         html << "<td><a href=\"#{action.url_for("edit/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-primary\">Edit</a></td>" if edit

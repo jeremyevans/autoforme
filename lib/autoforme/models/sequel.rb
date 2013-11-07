@@ -6,12 +6,23 @@ module AutoForme
         @model.plugin :forme
       end
 
+      def base_class
+        ::Sequel::Model
+      end
+
       def new_search
         @model.call({})
       end
 
       def set_fields(obj, type, params)
-        obj.set_fields(params, columns_for(type))
+        obj.set_fields(params, set_columns(type))
+      end
+
+      def set_columns(type)
+        columns_for(type).map do |c|
+          a = model.association_reflection(c)
+          a ? a[:key] : c
+        end
       end
 
       def save(obj)
@@ -35,6 +46,17 @@ module AutoForme
         all_dataset_for(action).all
       end
 
+      def default_columns
+        columns = model.columns - Array(model.primary_key)
+        model.all_association_reflections.each do |reflection|
+          next unless reflection[:type] == :many_to_one
+          if i = columns.index(reflection[:key])
+            columns[i] = reflection[:name]
+          end
+        end
+        columns.sort_by{|s| s.to_s}
+      end
+
       def session_value(column)
         filter do |ds, action|
           ds.where(column=>action.request.session[column])
@@ -47,7 +69,7 @@ module AutoForme
       def search_results(action)
         params = action.request.params
         ds = all_dataset_for(action)
-        columns_for(:search_form).each do |c|
+        set_columns(:search_form).each do |c|
           if (v = params[c]) && !v.empty?
             if column_type(c) == :string
               ds = ds.where(::Sequel.ilike(c, "%#{ds.escape_like(v.to_s)}%"))
