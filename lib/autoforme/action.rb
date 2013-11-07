@@ -110,11 +110,12 @@ module AutoForme
 
     def show_page(obj)
       page do
-        Forme.form(obj, {}, :formatter=>:readonly) do |f|
-          model.columns_for(:show).each do |column|
-            f.input(column, model.column_options_for(:show, column))
-          end
+        t = ''
+        f = Forme::Form.new(obj, :formatter=>:readonly)
+        model.columns_for(:show).each do |column|
+          t << f.input(column, model.column_options_for(:show, column)).to_s
         end
+        t
       end
     end
     def handle_show
