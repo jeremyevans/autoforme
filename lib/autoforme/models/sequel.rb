@@ -25,6 +25,14 @@ module AutoForme
         end
       end
 
+      def association?(column)
+        model.association_reflection(column)
+      end
+
+      def associated_class(assoc)
+        model.association_reflection(assoc).associated_class
+      end
+
       def save(obj)
         obj.raise_on_save_failure = false
         obj.save

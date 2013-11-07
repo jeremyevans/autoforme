@@ -40,7 +40,11 @@ module AutoForme
     def column_options_for(type, column)
       opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
       opts = opts[column] if opts
-      opts || {}
+      opts ||= {}
+      if !opts[:name_method] && association?(column) && associated_model = framework.model_classes[associated_class(column)]
+        opts = opts.merge(:name_method=>lambda{|obj| associated_model.object_display_name(:association, obj)})
+      end
+      opts
     end
 
     opts_attribute :order
@@ -78,6 +82,7 @@ module AutoForme
     end
 
     opts_attribute :display_name
+    opts_attribute :association_display_name
     opts_attribute :show_display_name
     opts_attribute :edit_display_name
     opts_attribute :delete_display_name
@@ -113,7 +118,9 @@ module AutoForme
 
     def column_value(obj, column)
       v = obj.send(column)
-      if v.is_a?(base_class)
+      if association?(column) && associated_model = framework.model_classes[associated_class(column)]
+        v = associated_model.object_display_name(:association, v)
+      elsif v.is_a?(base_class)
         v = default_object_display_name(v)
       end
       v
@@ -145,7 +152,8 @@ module AutoForme
     end
 
     def object_display_name(action, obj)
-      case v = display_name_for(action.normalized_type)
+      type = action.is_a?(Symbol) ? action : action.normalized_type
+      case v = display_name_for(type)
       when Symbol
         obj.send(v)
       when Proc, Method

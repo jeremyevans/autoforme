@@ -9,6 +9,7 @@ module AutoForme
 
     attr_reader :controller
     attr_reader :models
+    attr_reader :model_classes
     attr_reader :opts
 
     opts_attribute :model_type
@@ -32,6 +33,7 @@ module AutoForme
     def initialize(controller)
       @controller = controller
       @models = {}
+      @model_classes = {}
       @opts = {}
     end
 
@@ -69,6 +71,7 @@ module AutoForme
 
     def autoforme(model_class, &block)
       model = Model.for(self, model_type, model_class, &block)
+      @model_classes[model.model] = model
       @models[model.link] = model
     end
 
