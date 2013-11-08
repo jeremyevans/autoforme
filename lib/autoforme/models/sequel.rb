@@ -78,7 +78,7 @@ module AutoForme
 
       def search_results(action)
         params = action.request.params
-        ds = all_dataset_for(action)
+        ds = apply_associated_eager(:search, all_dataset_for(action))
         set_columns(:search_form).each do |c|
           if (v = params[c]) && !v.empty?
             if column_type(c) == :string
@@ -92,7 +92,7 @@ module AutoForme
       end
 
       def browse(action)
-        paginate(action, all_dataset_for(action))
+        paginate(action, apply_associated_eager(:browse, all_dataset_for(action)))
       end
 
       def paginate(action, ds)
@@ -105,6 +105,20 @@ module AutoForme
           objs.pop
         end
         [next_page, objs]
+      end
+
+      def apply_associated_eager(type, ds)
+        columns_for(type).each do |col|
+          if association?(col)
+            if model = framework.model_classes[associated_class(col)]
+              eager = model.eager_for(:association)
+              ds = ds.eager(col=>eager)
+            else
+              ds = ds.eager(col)
+            end
+          end
+        end
+        ds
       end
 
       def column_type(column)

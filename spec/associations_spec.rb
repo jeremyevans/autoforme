@@ -3,7 +3,7 @@ require './spec/spec_helper'
 describe AutoForme do
   before(:all) do
     db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string], [:artist_id, :integer, {:table=>:artists}]])
-    model_setup(:Artist=>[:artists], :Album=>[:albums, [[:many_to_one, :artist]]])
+    model_setup(:Artist=>[:artists, [[:one_to_many, :albums]]], :Album=>[:albums, [[:many_to_one, :artist]]])
   end
   after(:all) do
     Object.send(:remove_const, :Album)
@@ -187,7 +187,7 @@ describe AutoForme do
     click_button 'Delete'
   end
 
-  it "should be able to eager load associations when loading model" do
+  it "should be able to order on eager_graphed associations when loading model" do
     app_setup do
       autoforme Artist
       autoforme Album do
@@ -243,6 +243,72 @@ describe AutoForme do
     click_link 'Delete'
     all('select option').map{|s| s.text}.should == ['A-Y', 'A-ZZ', 'B-X']
     select 'B-X'
+    click_button 'Delete'
+  end
+
+  it "should have many_to_one association lookup use order/eager/eager_graph/filter for associated model" do
+    app_setup do
+      autoforme Artist do
+        order :name
+        eager :albums
+        filter{|ds, action| ds.where{name > 'M'}}
+        display_name{|obj| "#{obj.name} #{obj.albums.length}"}
+      end
+      autoforme Album do
+        columns [:name, :artist]
+        order [:name]
+      end
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'J'
+    click_button 'Create'
+    fill_in 'Name', :with=>'Z'
+    click_button 'Create'
+    fill_in 'Name', :with=>'Y'
+    click_button 'Create'
+    fill_in 'Name', :with=>'X'
+    click_button 'Create'
+
+    visit("/Album/new")
+    fill_in 'Name', :with=>'E'
+    all('select option').map{|s| s.text}.should == ['', 'X 0', 'Y 0', 'Z 0']
+    select 'X'
+    click_button 'Create'
+    fill_in 'Name', :with=>'D'
+    all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 0', 'Z 0']
+    select 'Y'
+    click_button 'Create'
+    fill_in 'Name', :with=>'C'
+    all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 1', 'Z 0']
+    select 'Y'
+    click_button 'Create'
+
+    click_link 'Show'
+    select 'D'
+    click_button 'Show'
+    page.html.should =~ /Name.+D/m
+    page.html.should =~ /Artist.+Y 2/m
+
+    click_link 'Edit'
+    select 'C'
+    click_button 'Edit'
+    all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 2', 'Z 0']
+    select 'X 1'
+    click_button 'Update'
+
+    click_link 'Search'
+    all('select option').map{|s| s.text}.should == ['', 'X 2', 'Y 1', 'Z 0']
+    select 'X 2'
+    click_button 'Search'
+    all('tr td:first-child').map{|s| s.text}.should == %w'C E'
+
+    click_link 'Album'
+    all('tr td:first-child').map{|s| s.text}.should == %w'C D E'
+
+    click_link 'Delete'
+    all('select option').map{|s| s.text}.should == ['C', 'D', 'E']
+    select 'C'
     click_button 'Delete'
   end
 end

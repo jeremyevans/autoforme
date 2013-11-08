@@ -41,17 +41,32 @@ module AutoForme
       opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
       opts = opts[column] if opts
       opts ||= {}
-      if !opts[:name_method] && association?(column) && associated_model = framework.model_classes[associated_class(column)]
-        opts = opts.merge(:name_method=>lambda{|obj| associated_model.object_display_name(:association, obj)})
-      end
-      if type == :search_form
-        col = set_column(column)
-        opts = opts.merge(:name=>col, :id=>col)
+      if association?(column) && associated_model = framework.model_classes[associated_class(column)]
+        opts = opts.dup
+        unless opts[:name_method]
+          opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, obj)}
+        end
+
+        case type
+        when :edit, :new, :search_form
+          unless opts[:options]
+            r = Request.new
+            r.instance_variable_set(:@action_type, 'association')
+            opts[:options] = associated_model.select_options(Action.new(nil, r), opts)
+          end
+
+          if type == :search_form
+            col = set_column(column)
+            opts[:name] = col unless opts[:name]
+            opts[:id] = col unless opts[:id]
+          end
+        end
       end
       opts
     end
 
     opts_attribute :order
+    opts_attribute :association_order
     opts_attribute :edit_order
     opts_attribute :show_order
     opts_attribute :delete_order
@@ -62,6 +77,7 @@ module AutoForme
     end
 
     opts_attribute :eager
+    opts_attribute :association_eager
     opts_attribute :edit_eager
     opts_attribute :show_eager
     opts_attribute :delete_eager
@@ -72,6 +88,7 @@ module AutoForme
     end
 
     opts_attribute :eager_graph
+    opts_attribute :association_eager_graph
     opts_attribute :edit_eager_graph
     opts_attribute :show_eager_graph
     opts_attribute :delete_eager_graph
@@ -82,6 +99,7 @@ module AutoForme
     end
 
     opts_attribute :filter
+    opts_attribute :association_filter
     opts_attribute :edit_filter
     opts_attribute :show_filter
     opts_attribute :delete_filter
@@ -179,8 +197,15 @@ module AutoForme
       label
     end
 
-    def select_options(action)
-      all_rows_for(action).map{|obj| [object_display_name(action, obj), primary_key_value(obj)]}
+    def select_options(action, opts={})
+      case nm = opts[:name_method]
+      when Symbol, String
+        all_rows_for(action).map{|obj| [obj.send(nm), primary_key_value(obj)]}
+      when nil
+        all_rows_for(action).map{|obj| [object_display_name(action, obj), primary_key_value(obj)]}
+      else
+        all_rows_for(action).map{|obj| [nm.call(obj), primary_key_value(obj)]}
+      end
     end
 
     def object_display_name(action, obj)
