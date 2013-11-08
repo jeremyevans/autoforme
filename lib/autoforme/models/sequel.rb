@@ -129,6 +129,9 @@ module AutoForme
         if eager = eager_for(action.normalized_type)
           ds = ds.eager(eager)
         end
+        if eager_graph = eager_graph_for(action.normalized_type)
+          ds = ds.eager_graph(eager_graph)
+        end
         ds
       end
 

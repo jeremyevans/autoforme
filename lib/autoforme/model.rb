@@ -71,6 +71,16 @@ module AutoForme
       send("#{type}_eager") || eager
     end
 
+    opts_attribute :eager_graph
+    opts_attribute :edit_eager_graph
+    opts_attribute :show_eager_graph
+    opts_attribute :delete_eager_graph
+    opts_attribute :browse_eager_graph
+    opts_attribute :search_eager_graph
+    def eager_graph_for(type)
+      send("#{type}_eager_graph") || eager_graph
+    end
+
     opts_attribute :filter
     opts_attribute :edit_filter
     opts_attribute :show_filter
