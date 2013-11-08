@@ -124,6 +124,9 @@ module AutoForme
         if order = order_for(action.normalized_type)
           ds = ds.order(*order)
         end
+        if eager = eager_for(action.normalized_type)
+          ds = ds.eager(eager)
+        end
         ds
       end
 
