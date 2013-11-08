@@ -27,6 +27,7 @@ module AutoFormeSpec
   def self.model_setup(db, models)
     models.each do |name, (table, associations)|
       klass = Class.new(Sequel::Model(db[table]))
+      Object.const_set(name, klass)
       klass.class_eval do 
         if associations
           associations.each do |type, assoc, opts|
@@ -34,7 +35,6 @@ module AutoFormeSpec
           end
         end
       end
-      Object.const_set(name, klass)
     end
   end
 end
