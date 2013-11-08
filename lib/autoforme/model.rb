@@ -44,6 +44,10 @@ module AutoForme
       if !opts[:name_method] && association?(column) && associated_model = framework.model_classes[associated_class(column)]
         opts = opts.merge(:name_method=>lambda{|obj| associated_model.object_display_name(:association, obj)})
       end
+      if type == :search_form
+        col = set_column(column)
+        opts = opts.merge(:name=>col, :id=>col)
+      end
       opts
     end
 

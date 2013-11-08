@@ -19,10 +19,12 @@ module AutoForme
       end
 
       def set_columns(type)
-        columns_for(type).map do |c|
-          a = model.association_reflection(c)
-          a ? a[:key] : c
-        end
+        columns_for(type).map{|c| set_column(c)}
+      end
+
+      def set_column(column)
+        a = model.association_reflection(column)
+        a ? a[:key] : column
       end
 
       def association?(column)
