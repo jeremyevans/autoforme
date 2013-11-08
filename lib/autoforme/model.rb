@@ -116,11 +116,19 @@ module AutoForme
       @opts = {}
     end
 
-    def column_value(obj, column)
+    def column_value(action, obj, column)
       v = obj.send(column)
-      if association?(column) && associated_model = framework.model_classes[associated_class(column)]
-        v = associated_model.object_display_name(:association, v)
-      elsif v.is_a?(base_class)
+      if association?(column) 
+        opts = column_options_for(action.normalized_type, column) 
+        case nm = opts[:name_method]
+        when Symbol, String
+          v = v.send(nm)
+        when nil
+        else
+          v = nm.call(v)
+        end
+      end
+      if v.is_a?(base_class)
         v = default_object_display_name(v)
       end
       v
