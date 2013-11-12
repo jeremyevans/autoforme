@@ -76,9 +76,9 @@ module AutoForme
         end
       end
 
-      def search_results(action)
-        params = action.request.params
-        ds = apply_associated_eager(:search, all_dataset_for(action.normalized_type, action.request))
+      def search_results(type, request)
+        params = request.params
+        ds = apply_associated_eager(:search, all_dataset_for(type, request))
         set_columns(:search_form).each do |c|
           if (v = params[c]) && !v.empty?
             if column_type(c) == :string
@@ -88,16 +88,16 @@ module AutoForme
             end
           end
         end
-        paginate(action, ds)
+        paginate(type, request, ds)
       end
 
-      def browse(action)
-        paginate(action, apply_associated_eager(:browse, all_dataset_for(action.normalized_type, action.request)))
+      def browse(type, request)
+        paginate(type, request, apply_associated_eager(:browse, all_dataset_for(type, request)))
       end
 
-      def paginate(action, ds)
-        limit = limit_for(action.normalized_type)
-        offset = ((action.request.id.to_i||1)-1) * limit
+      def paginate(type, request, ds)
+        limit = limit_for(type)
+        offset = ((request.id.to_i||1)-1) * limit
         objs = ds.limit(limit+1, (offset if offset > 0)).all
         next_page = false
         if objs.length > limit
