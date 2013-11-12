@@ -48,8 +48,8 @@ module AutoForme
         @model.send(:underscore, @model.name)
       end
 
-      def with_pk(action, pk)
-        dataset_for(action.normalized_type, action.request).with_pk!(pk)
+      def with_pk(type, request)
+        dataset_for(type, request).with_pk!(request.id)
       end
 
       def all_rows_for(type, request)
