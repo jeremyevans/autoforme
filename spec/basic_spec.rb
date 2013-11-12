@@ -111,12 +111,12 @@ describe AutoForme do
   it "should support create, update, delete hooks" do
     a = []
     app_setup(Artist) do
-      before_create{|obj, action| obj.name = obj.name.reverse}
-      before_update{|obj, action| obj.name = obj.name.upcase}
-      before_destroy{|obj, action| raise if obj.name == obj.name.reverse}
-      after_create{|obj, action| a << action.type }
-      after_update{|obj, action| a << action.type }
-      after_destroy{|obj, action| a << action.type }
+      before_create{|obj, req| obj.name = obj.name.reverse}
+      before_update{|obj, req| obj.name = obj.name.upcase}
+      before_destroy{|obj, req| raise if obj.name == obj.name.reverse}
+      after_create{|obj, req| a << req.action_type }
+      after_update{|obj, req| a << req.action_type }
+      after_destroy{|obj, req| a << req.action_type }
     end
     visit("/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'

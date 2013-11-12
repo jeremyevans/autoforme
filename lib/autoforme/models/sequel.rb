@@ -71,8 +71,8 @@ module AutoForme
         filter do |ds, action|
           ds.where(column=>action.request.session[column])
         end
-        before_create do |obj, action|
-          obj.send("#{column}=", action.request.session[column])
+        before_create do |obj, req|
+          obj.send("#{column}=", req.session[column])
         end
       end
 

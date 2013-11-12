@@ -136,9 +136,9 @@ module AutoForme
       obj.destroy
     end
 
-    def hook(type, action, obj)
+    def hook(type, request, obj)
       if v = hook_for(type)
-        v.call(obj, action)
+        v.call(obj, request)
       end
     end
 
