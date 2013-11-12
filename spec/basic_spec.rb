@@ -375,11 +375,11 @@ describe AutoForme do
 
   it "should support specifying filter per type using request params" do
     app_setup(Artist) do
-      edit_filter{|ds, action| ds.where{n0 > action.request.params[:f]}}
-      show_filter{|ds, action| ds.where{n1 > action.request.params[:f]}}
-      delete_filter{|ds, action| ds.where{n2 > action.request.params[:f]}}
-      browse_filter{|ds, action| ds.where{n3 > action.request.params[:f]}}
-      search_filter{|ds, action| ds.where{n4 > action.request.params[:f]}}
+      edit_filter{|ds, req| ds.where{n0 > req.params[:f]}}
+      show_filter{|ds, req| ds.where{n1 > req.params[:f]}}
+      delete_filter{|ds, req| ds.where{n2 > req.params[:f]}}
+      browse_filter{|ds, req| ds.where{n3 > req.params[:f]}}
+      search_filter{|ds, req| ds.where{n4 > req.params[:f]}}
     end
 
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
@@ -404,7 +404,7 @@ describe AutoForme do
 
   it "should support specifying filter per type using request session" do
     app_setup(Artist) do
-      filter{|ds, action| ds.where(:n1=>action.request.session['n1'])}
+      filter{|ds, req| ds.where(:n1=>req.session['n1'])}
       order :n2
     end
 

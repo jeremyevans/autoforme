@@ -32,15 +32,13 @@ module AutoForme
       if association?(column) && associated_model = framework.model_classes[associated_class(column)]
         opts = opts.dup
         unless opts[:name_method]
-          opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, obj)}
+          opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, Request.new, obj)}
         end
 
         case type
         when :edit, :new, :search_form
           unless opts[:options]
-            r = Request.new
-            r.instance_variable_set(:@action_type, 'association')
-            opts[:options] = associated_model.select_options(Action.new(nil, r), opts)
+            opts[:options] = associated_model.select_options(:association, Request.new, opts)
           end
 
           if type == :search_form
@@ -153,19 +151,18 @@ module AutoForme
       label
     end
 
-    def select_options(action, opts={})
+    def select_options(type, request, opts={})
       case nm = opts[:name_method]
       when Symbol, String
-        all_rows_for(action).map{|obj| [obj.send(nm), primary_key_value(obj)]}
+        all_rows_for(type, request).map{|obj| [obj.send(nm), primary_key_value(obj)]}
       when nil
-        all_rows_for(action).map{|obj| [object_display_name(action, obj), primary_key_value(obj)]}
+        all_rows_for(type, request).map{|obj| [object_display_name(type, request, obj), primary_key_value(obj)]}
       else
-        all_rows_for(action).map{|obj| [nm.call(obj), primary_key_value(obj)]}
+        all_rows_for(type, request).map{|obj| [nm.call(obj), primary_key_value(obj)]}
       end
     end
 
-    def object_display_name(action, obj)
-      type = action.is_a?(Symbol) ? action : action.normalized_type
+    def object_display_name(type, request, obj)
       case v = display_name_for(type)
       when Symbol
         obj.send(v)

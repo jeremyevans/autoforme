@@ -49,11 +49,11 @@ module AutoForme
       end
 
       def with_pk(action, pk)
-        dataset_for(action).with_pk!(pk)
+        dataset_for(action.normalized_type, action.request).with_pk!(pk)
       end
 
-      def all_rows_for(action)
-        all_dataset_for(action).all
+      def all_rows_for(type, request)
+        all_dataset_for(type, request).all
       end
 
       def default_columns
@@ -68,8 +68,8 @@ module AutoForme
       end
 
       def session_value(column)
-        filter do |ds, action|
-          ds.where(column=>action.request.session[column])
+        filter do |ds, req|
+          ds.where(column=>req.session[column])
         end
         before_create do |obj, req|
           obj.send("#{column}=", req.session[column])
@@ -78,7 +78,7 @@ module AutoForme
 
       def search_results(action)
         params = action.request.params
-        ds = apply_associated_eager(:search, all_dataset_for(action))
+        ds = apply_associated_eager(:search, all_dataset_for(action.normalized_type, action.request))
         set_columns(:search_form).each do |c|
           if (v = params[c]) && !v.empty?
             if column_type(c) == :string
@@ -92,7 +92,7 @@ module AutoForme
       end
 
       def browse(action)
-        paginate(action, apply_associated_eager(:browse, all_dataset_for(action)))
+        paginate(action, apply_associated_eager(:browse, all_dataset_for(action.normalized_type, action.request)))
       end
 
       def paginate(action, ds)
@@ -127,23 +127,23 @@ module AutoForme
 
       private
 
-      def dataset_for(action)
+      def dataset_for(type, request)
         ds = @model.dataset
-        if filter = filter_for(action.normalized_type)
-          ds = filter.call(ds, action)
+        if filter = filter_for(type)
+          ds = filter.call(ds, request)
         end
         ds
       end
 
-      def all_dataset_for(action)
-        ds = dataset_for(action)
-        if order = order_for(action.normalized_type)
+      def all_dataset_for(type, request)
+        ds = dataset_for(type, request)
+        if order = order_for(type)
           ds = ds.order(*order)
         end
-        if eager = eager_for(action.normalized_type)
+        if eager = eager_for(type)
           ds = ds.eager(eager)
         end
-        if eager_graph = eager_graph_for(action.normalized_type)
+        if eager_graph = eager_graph_for(type)
           ds = ds.eager_graph(eager_graph)
         end
         ds

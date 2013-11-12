@@ -102,7 +102,7 @@ module AutoForme
       page do
         form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
         Forme.form(form_attributes, form_opts) do |f|
-          f.input(:select, :options=>model.select_options(self), :name=>'id', :id=>'id')
+          f.input(:select, :options=>model.select_options(type, request), :name=>'id', :id=>'id')
           f.button(type.to_s.capitalize)
         end
       end
