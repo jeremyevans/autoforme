@@ -19,24 +19,12 @@ module AutoForme
       (supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS).include?(type)
     end
 
-    opts_attribute :columns
-    opts_attribute :new_columns
-    opts_attribute :edit_columns
-    opts_attribute :show_columns
-    opts_attribute :browse_columns
-    opts_attribute :search_form_columns
-    opts_attribute :search_columns
+    opts_attribute :columns, %w'new edit show browse search_form search'
     def columns_for(type)
       send("#{type}_columns") || columns || framework.columns_for(type, model) || default_columns
     end
 
-    opts_attribute :column_options
-    opts_attribute :new_column_options
-    opts_attribute :edit_column_options
-    opts_attribute :show_column_options
-    opts_attribute :browse_column_options
-    opts_attribute :search_form_column_options
-    opts_attribute :search_column_options
+    opts_attribute :column_options, %w'new edit show browse search_form search'
     def column_options_for(type, column)
       opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
       opts = opts[column] if opts
@@ -65,69 +53,37 @@ module AutoForme
       opts
     end
 
-    opts_attribute :order
-    opts_attribute :association_order
-    opts_attribute :edit_order
-    opts_attribute :show_order
-    opts_attribute :delete_order
-    opts_attribute :browse_order
-    opts_attribute :search_order
+    opts_attribute :order, %w'association edit show delete browse search'
     def order_for(type)
       send("#{type}_order") || order || framework.order_for(type, model)
     end
 
-    opts_attribute :eager
-    opts_attribute :association_eager
-    opts_attribute :edit_eager
-    opts_attribute :show_eager
-    opts_attribute :delete_eager
-    opts_attribute :browse_eager
-    opts_attribute :search_eager
+    opts_attribute :eager, %w'association edit show delete browse search'
     def eager_for(type)
       send("#{type}_eager") || eager
     end
 
-    opts_attribute :eager_graph
-    opts_attribute :association_eager_graph
-    opts_attribute :edit_eager_graph
-    opts_attribute :show_eager_graph
-    opts_attribute :delete_eager_graph
-    opts_attribute :browse_eager_graph
-    opts_attribute :search_eager_graph
+    opts_attribute :eager_graph, %w'association edit show delete browse search'
     def eager_graph_for(type)
       send("#{type}_eager_graph") || eager_graph
     end
 
-    opts_attribute :filter
-    opts_attribute :association_filter
-    opts_attribute :edit_filter
-    opts_attribute :show_filter
-    opts_attribute :delete_filter
-    opts_attribute :browse_filter
-    opts_attribute :search_filter
+    opts_attribute :filter, %w'association edit show delete browse search'
     def filter_for(type)
       send("#{type}_filter") || filter || framework.filter_for(type, model)
     end
 
-    opts_attribute :table_class
-    opts_attribute :browse_table_class
-    opts_attribute :search_table_class
+    opts_attribute :table_class, %w'browse search'
     def table_class_for(type)
       send("#{type}_table_class") || table_class || framework.table_class_for(type)
     end
 
-    opts_attribute :per_page
-    opts_attribute :browse_per_page
-    opts_attribute :search_per_page
+    opts_attribute :per_page, %w'association edit show delete browse search'
     def limit_for(type)
       send("#{type}_per_page") || per_page || framework.limit_for(type)
     end
 
-    opts_attribute :display_name
-    opts_attribute :association_display_name
-    opts_attribute :show_display_name
-    opts_attribute :edit_display_name
-    opts_attribute :delete_display_name
+    opts_attribute :display_name, %w'association show edit delete'
     def display_name_for(type)
       send("#{type}_display_name") || display_name || framework.display_name_for(type, model)
     end
