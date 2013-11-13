@@ -97,7 +97,7 @@ module AutoForme
     end
     def handle_create
       obj = model.new
-      model.set_fields(obj, :new, model_params)
+      model.set_fields(obj, :new, request, model_params)
       model.hook(:before_create, request, obj)
       if model.save(obj)
         model.hook(:after_create, request, obj)
@@ -156,7 +156,7 @@ module AutoForme
     end
     def handle_update
       obj = model.with_pk(normalized_type, request, request.id)
-      model.set_fields(obj, :edit, model_params)
+      model.set_fields(obj, :edit, request, model_params)
       model.hook(:before_update, request, obj)
       if model.save(obj)
         model.hook(:after_update, request, obj)

@@ -273,15 +273,15 @@ describe AutoForme do
     visit("/Album/new")
     fill_in 'Name', :with=>'E'
     all('select option').map{|s| s.text}.should == ['', 'X 0', 'Y 0', 'Z 0']
-    select 'X'
+    select 'X 0'
     click_button 'Create'
     fill_in 'Name', :with=>'D'
     all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 0', 'Z 0']
-    select 'Y'
+    select 'Y 0'
     click_button 'Create'
     fill_in 'Name', :with=>'C'
     all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 1', 'Z 0']
-    select 'Y'
+    select 'Y 1'
     click_button 'Create'
 
     click_link 'Show'
@@ -310,6 +310,12 @@ describe AutoForme do
     all('select option').map{|s| s.text}.should == ['C', 'D', 'E']
     select 'C'
     click_button 'Delete'
+
+    visit("/Album/new")
+    Artist.where(:name=>'Y').update(:name=>'A')
+    fill_in 'Name', :with=>'F'
+    select 'Y 1' 
+    proc{click_button 'Create'}.should raise_error(Sequel::NoMatchingRow)
   end
 end
 

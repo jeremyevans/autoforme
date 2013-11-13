@@ -14,8 +14,26 @@ module AutoForme
         @model.call({})
       end
 
-      def set_fields(obj, type, params)
-        obj.set_fields(params, set_columns(type))
+      def set_fields(obj, type, request, params)
+        columns_for(type).each do |col|
+          column = col
+
+          if association?(col)
+            ref = model.association_reflection(col)
+            ds = ref.associated_dataset
+            if model_class = associated_model_class(col)
+              ds = model_class.apply_dataset_options(:association, request, ds)
+            end
+
+            if v = params[ref[:key]]
+              v = ds.first!(ref.primary_key=>v)
+            end
+          else
+            v = params[col]
+          end
+
+          obj.send("#{column}=", v)
+        end
       end
 
       def set_columns(type)
