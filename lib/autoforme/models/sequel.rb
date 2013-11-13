@@ -36,15 +36,6 @@ module AutoForme
         end
       end
 
-      def set_columns(type)
-        columns_for(type).map{|c| set_column(c)}
-      end
-
-      def set_column(column)
-        a = model.association_reflection(column)
-        a ? a[:key] : column
-      end
-
       def association?(column)
         model.association_reflection(column)
       end
@@ -101,9 +92,16 @@ module AutoForme
       def search_results(type, request)
         params = request.params
         ds = apply_associated_eager(:search, all_dataset_for(type, request))
-        set_columns(:search_form).each do |c|
+        columns_for(:search_form).each do |c|
           if (v = params[c]) && !v.empty?
-            if column_type(c) == :string
+            if association?(c)
+              ref = model.association_reflection(c)
+              ads = ref.associated_dataset
+              if model_class = associated_model_class(c)
+                ads = model_class.apply_dataset_options(:association, request, ads)
+              end
+              ds = ds.where(ref[:key]=>ads.where(ref.primary_key=>v).select(ref.primary_key))
+            elsif column_type(c) == :string
               ds = ds.where(::Sequel.ilike(c, "%#{ds.escape_like(v.to_s)}%"))
             else
               ds = ds.where(c=>v.to_s)

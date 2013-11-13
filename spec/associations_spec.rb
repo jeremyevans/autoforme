@@ -316,6 +316,12 @@ describe AutoForme do
     fill_in 'Name', :with=>'F'
     select 'Y 1' 
     proc{click_button 'Create'}.should raise_error(Sequel::NoMatchingRow)
+
+    visit("/Album/search")
+    select 'X 1' 
+    Artist.where(:name=>'X').update(:name=>'B')
+    click_button 'Search'
+    all('tr td:first-child').map{|s| s.text}.should == []
   end
 end
 
