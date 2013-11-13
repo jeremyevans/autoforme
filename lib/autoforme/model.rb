@@ -29,7 +29,7 @@ module AutoForme
       opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
       opts = opts[column] if opts
       opts ||= {}
-      if association?(column) && associated_model = framework.model_classes[associated_class(column)]
+      if association?(column) && associated_model = associated_model_class(column)
         opts = opts.dup
         unless opts[:name_method]
           opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, request, obj)}
@@ -110,6 +110,10 @@ module AutoForme
       @model = model
       @framework = framework
       @opts = {}
+    end
+
+    def associated_model_class(assoc)
+      framework.model_classes[associated_class(assoc)]
     end
 
     def column_value(type, request, obj, column)
