@@ -120,7 +120,7 @@ module AutoForme
     end
     def handle_show
       if request.id
-        show_page(model.with_pk(normalized_type, request))
+        show_page(model.with_pk(normalized_type, request, request.id))
       else
         list_page(:show)
       end
@@ -138,13 +138,13 @@ module AutoForme
     end
     def handle_edit
       if request.id
-        edit_page(model.with_pk(normalized_type, request))
+        edit_page(model.with_pk(normalized_type, request, request.id))
       else
         list_page(:edit)
       end
     end
     def handle_update
-      obj = model.with_pk(normalized_type, request)
+      obj = model.with_pk(normalized_type, request, request.id)
       model.set_fields(obj, :edit, model_params)
       model.hook(:before_update, request, obj)
       if model.save(obj)
@@ -161,7 +161,7 @@ module AutoForme
       list_page(:delete, :form=>{:action=>url_for('destroy'), :method=>:post})
     end
     def handle_destroy
-      obj = model.with_pk(normalized_type, request)
+      obj = model.with_pk(normalized_type, request, request.id)
       model.hook(:before_destroy, request, obj)
       model.destroy(obj)
       model.hook(:after_destroy, request, obj)
