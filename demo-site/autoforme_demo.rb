@@ -11,6 +11,7 @@ Forme.default_config = :mine
 class AutoFormeDemo < Sinatra::Base
   disable :run
   enable :sessions
+  enable :static
 
   register Sinatra::Flash
 
@@ -36,15 +37,3 @@ END
     end
   end
 end
-
-class FileServer
-  def initialize(app, root)
-    @app = app
-    @rfile = Rack::File.new(root)
-  end
-  def call(env)
-    res = @rfile.call(env)
-    res[0] == 200 ? res : @app.call(env)
-  end
-end
-
