@@ -88,7 +88,7 @@ module AutoForme
           model.columns_for(:new).each do |column|
             f.input(column, model.column_options_for(:new, request, column))
           end
-          f.button('Create')
+          f.button(:value=>'Create', :class=>'btn btn-primary')
         end
       end
     end
@@ -114,7 +114,7 @@ module AutoForme
         form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
         Forme.form(form_attributes, form_opts) do |f|
           f.input(:select, :options=>model.select_options(type, request), :name=>'id', :id=>'id', :label=>model.class_name)
-          f.button(type.to_s.capitalize)
+          f.button(:value=>type.to_s.capitalize, :class=>"btn btn-#{type.to_s == 'delete' ? 'danger' : 'primary'}")
         end
       end
     end
@@ -143,7 +143,7 @@ module AutoForme
           model.columns_for(:edit).each do |column|
             f.input(column, model.column_options_for(:edit, request, column))
           end
-          f.button('Update')
+          f.button(:value=>'Update', :class=>'btn btn-primary')
         end
       end
     end
@@ -214,7 +214,7 @@ module AutoForme
             model.columns_for(:search_form).each do |column|
               f.input(column, model.column_options_for(:search_form, request, column))
             end
-            f.button('Search')
+            f.button(:value=>'Search', :class=>'btn btn-primary')
           end
         end
       end
@@ -229,14 +229,14 @@ module AutoForme
             Forme.form(obj, {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")}, form_opts) do |f|
               f.input(assoc, :name=>'add[]', :id=>'add', :label=>'Associate With', :dataset=>model.unassociated_mtm_objects(request, assoc, obj))
               f.input(assoc, :name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>nil)
-              f.button('Update')
+              f.button(:value=>'Update', :class=>'btn btn-primary')
             end
           end
         else
           page do
             Forme.form({:action=>"mtm_edit/#{model.primary_key_value(obj)}"}, form_opts) do |f|
               f.input(:select, :options=>model.mtm_association_select_options(obj, request), :name=>'association', :id=>'association', :label=>'Association')
-              f.button('Edit')
+              f.button(:value=>'Edit', :class=>'btn btn-primary')
             end
           end
         end
