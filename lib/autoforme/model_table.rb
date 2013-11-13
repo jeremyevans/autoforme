@@ -8,11 +8,11 @@ module AutoForme
     attr_reader :objs
     attr_reader :opts
 
-    def initialize(action, type, objs, opts={})
+    def initialize(action, objs, opts={})
       @action = action
       @request = action.request
       @model = action.model
-      @type = type
+      @type = action.normalized_type
       @columns = model.columns_for(type)
       @objs = objs
       @opts = opts

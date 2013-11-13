@@ -185,18 +185,18 @@ module AutoForme
       end
       html << "</ul>"
     end
-    def table_page(type, next_page, objs)
+    def table_page(next_page, objs)
       page do
-        ModelTable.new(self, type, objs).to_s << table_pager(normalized_type, next_page)
+        ModelTable.new(self, objs).to_s << table_pager(normalized_type, next_page)
       end
     end
     def handle_browse
-      table_page(:browse, *model.browse(type, request))
+      table_page(*model.browse(type, request))
     end
 
     def handle_search
       if request.id
-        table_page(:search, *model.search_results(normalized_type, request))
+        table_page(*model.search_results(normalized_type, request))
       else
         page do
           Forme.form(model.new, {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
