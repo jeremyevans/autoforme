@@ -128,7 +128,7 @@ module AutoForme
 
     def edit_page(obj)
       page do
-        Forme.form(obj, {:action=>url_for("update/#{obj.id}")}, form_opts) do |f|
+        Forme.form(obj, {:action=>url_for("update/#{model.primary_key_value(obj)}")}, form_opts) do |f|
           model.columns_for(:edit).each do |column|
             f.input(column, model.column_options_for(:edit, request, column))
           end
