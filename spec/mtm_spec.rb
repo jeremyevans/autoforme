@@ -49,7 +49,7 @@ describe AutoForme do
     all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
   end
 
-  it "should have many to many association editing working when other association is not using autoforme" do
+  it "should have many to many association editing working when associated class is not using autoforme" do
     app_setup do
       autoforme Artist do
         mtm_associations [:albums]
@@ -144,5 +144,41 @@ describe AutoForme do
     click_button "Edit"
     all('select')[0].all('option').map{|s| s.text}.should == []
     all('select')[1].all('option').map{|s| s.text}.should == []
+  end
+
+  it "should support column options on mtm_edit page" do
+    app_setup do
+      autoforme Artist do
+        mtm_associations :albums
+        mtm_edit_column_options :add_albums=>{:as=>:checkbox}, :remove_albums=>{:as=>:checkbox, :name_method=>proc{|obj| obj.name * 2}}
+      end
+      autoforme Album
+    end
+
+    Artist.create(:name=>'Artist1')
+    Album.create(:name=>'Album1')
+    Album.create(:name=>'Album2')
+    Album.create(:name=>'Album3')
+
+    visit("/Artist/mtm_edit")
+    select("Artist1")
+    click_button "Edit"
+
+    select("albums")
+    click_button "Edit"
+
+    check "Album1"
+    click_button "Update"
+    Artist.first.albums.map{|x| x.name}.should == %w'Album1'
+
+    check "Album1Album1"
+    check "Album2"
+    check "Album3"
+    click_button "Update"
+    Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2 Album3'
+
+    check "Album1"
+    check "Album2Album2"
+    check "Album3Album3"
   end
 end

@@ -227,8 +227,8 @@ module AutoForme
           assoc = assoc.to_sym
           page do
             Forme.form(obj, {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")}, form_opts) do |f|
-              f.input(assoc, :name=>'add[]', :id=>'add', :label=>'Associate With', :dataset=>model.unassociated_mtm_objects(request, assoc, obj))
-              f.input(assoc, :name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>nil)
+              f.input(assoc, {:name=>'add[]', :id=>'add', :label=>'Associate With', :dataset=>model.unassociated_mtm_objects(request, assoc, obj)}.merge(model.column_options_for(:mtm_edit, request, :"add_#{assoc}")))
+              f.input(assoc, {:name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>[]}.merge(model.column_options_for(:mtm_edit, request, :"remove_#{assoc}")))
               f.button(:value=>'Update', :class=>'btn btn-primary')
             end
           end

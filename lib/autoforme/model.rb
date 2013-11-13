@@ -39,7 +39,7 @@ module AutoForme
       send("#{type}_columns") || columns || framework.columns_for(type, model) || default_columns
     end
 
-    opts_attribute :column_options, %w'new edit show browse search_form search'
+    opts_attribute :column_options, %w'new edit show browse search_form search mtm_edit'
     def column_options_for(type, request, column)
       opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
       opts = opts[column] if opts
