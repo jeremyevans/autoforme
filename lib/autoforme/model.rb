@@ -55,12 +55,6 @@ module AutoForme
           unless opts[:options] || opts[:dataset]
             opts[:dataset] = lambda{|ds| associated_model.apply_dataset_options(:association, request, ds)}
           end
-
-          if type == :search_form
-            col = set_column(column)
-            opts[:name] = col unless opts[:name]
-            opts[:id] = col unless opts[:id]
-          end
         end
       end
       opts

@@ -212,7 +212,8 @@ module AutoForme
         page do
           Forme.form(model.new, {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
             model.columns_for(:search_form).each do |column|
-              f.input(column, model.column_options_for(:search_form, request, column))
+              col = model.set_column(column)
+              f.input(column, {:name=>col, :id=>col}.merge(model.column_options_for(:search_form, request, column)))
             end
             f.button(:value=>'Search', :class=>'btn btn-primary')
           end

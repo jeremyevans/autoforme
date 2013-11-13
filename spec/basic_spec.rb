@@ -36,6 +36,11 @@ describe AutoForme do
     click_button 'Search'
     all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
+    click_link 'Search'
+    fill_in 'Name', :with=>'Foo'
+    click_button 'Search'
+    all('td').map{|s| s.text}.should == []
+
     click_link 'Artist'
     all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
