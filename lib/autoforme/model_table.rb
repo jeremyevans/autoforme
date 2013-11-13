@@ -30,7 +30,7 @@ module AutoForme
 
       html << "<thead><tr>"
       columns.each do |column|
-        html << "<th>#{h model.column_label_for(type, column)}</th>"
+        html << "<th>#{h model.column_label_for(type, request, column)}</th>"
       end
       html << "<th>Show</th>" if show = model.supported_action?("show")
       html << "<th>Edit</th>" if edit = model.supported_action?("edit")

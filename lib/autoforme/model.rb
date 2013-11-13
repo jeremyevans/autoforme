@@ -25,20 +25,20 @@ module AutoForme
     end
 
     opts_attribute :column_options, %w'new edit show browse search_form search'
-    def column_options_for(type, column)
+    def column_options_for(type, request, column)
       opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
       opts = opts[column] if opts
       opts ||= {}
       if association?(column) && associated_model = framework.model_classes[associated_class(column)]
         opts = opts.dup
         unless opts[:name_method]
-          opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, Request.new, obj)}
+          opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, request, obj)}
         end
 
         case type
         when :edit, :new, :search_form
           unless opts[:options]
-            opts[:options] = associated_model.select_options(:association, Request.new, opts)
+            opts[:options] = associated_model.select_options(:association, request, opts)
           end
 
           if type == :search_form
@@ -115,7 +115,7 @@ module AutoForme
     def column_value(type, request, obj, column)
       v = obj.send(column)
       if association?(column) 
-        opts = column_options_for(type, column) 
+        opts = column_options_for(type, request, column) 
         case nm = opts[:name_method]
         when Symbol, String
           v = v.send(nm)
@@ -144,8 +144,8 @@ module AutoForme
       @model.new
     end
 
-    def column_label_for(type, column)
-      unless label = column_options_for(type, column)[:label]
+    def column_label_for(type, request, column)
+      unless label = column_options_for(type, request, column)[:label]
         label = column.to_s.capitalize
       end
       label
