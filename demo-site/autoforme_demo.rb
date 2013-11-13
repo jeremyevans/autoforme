@@ -27,7 +27,9 @@ END
   AutoForme.for(:sinatra, self) do
     model_type :sequel
     autoforme(Artist)
-    autoforme(Album)
+    autoforme(Album) do
+      mtm_associations :all
+    end
     autoforme(Track) do
       columns [:number, :name, :length]
       per_page 2

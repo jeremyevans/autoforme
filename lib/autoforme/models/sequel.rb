@@ -35,6 +35,10 @@ module AutoForme
         model.association_reflection(assoc).associated_class
       end
 
+      def mtm_association_names
+        model.all_association_reflections.select{|r| r[:type] == :many_to_many}.map{|r| r[:name].to_s}
+      end
+
       def save(obj)
         obj.raise_on_save_failure = false
         obj.save
@@ -139,6 +143,41 @@ module AutoForme
           ds = ds.eager_graph(eager_graph)
         end
         ds
+      end
+
+      def mtm_update(request, assoc, obj, add, remove)
+        ref = model.association_reflection(assoc)
+        assoc_class = associated_model_class(assoc)
+        model.db.transaction do
+          [[add, ref.add_method], [remove, ref.remove_method]].each do |ids, meth|
+            if ids
+              ids.each do |id|
+                obj.send(meth, assoc_class ? assoc_class.with_pk(:association, request, id) : ref.associated_dataset.with_pk!(id))
+              end
+            end
+          end
+        end
+      end
+
+      def associated_mtm_objects(request, assoc, obj)
+        ds = obj.send("#{assoc}_dataset")
+        if assoc_class = associated_model_class(assoc)
+          ds = assoc_class.apply_dataset_options(:association, request, ds)
+        end
+        ds
+      end
+
+      def unassociated_mtm_objects(request, assoc, obj)
+        ref = model.association_reflection(assoc)
+        assoc_class = associated_model_class(assoc)
+        lambda do |ds|
+          subquery = model.db.from(ref[:join_table]).
+            select(ref.qualified_right_key).
+            where(ref.qualified_left_key=>obj.pk)
+          ds = ds.exclude(::Sequel.qualify(ref.associated_class.table_name, model.primary_key)=>subquery)
+          ds = assoc_class.apply_dataset_options(:association, request, ds) if assoc_class
+          ds
+        end
       end
 
       private

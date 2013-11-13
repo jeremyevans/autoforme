@@ -14,9 +14,24 @@ module AutoForme
     attr_reader :opts
     
     opts_attribute :supported_actions
-    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search'.freeze
+    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
     def supported_action?(type)
       (supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS).include?(type)
+    end
+
+    opts_attribute :mtm_associations
+    def supported_mtm_edit?(request)
+      return false unless assoc = request.params['association']
+      case v = (mtm_associations || framework.mtm_associations_for(model))
+      when :all
+        mtm_association_names.include?(assoc)
+      when Array
+        v.map{|x| x.to_s}.include?(assoc)
+      when nil
+        false
+      else
+        v.to_s == assoc
+      end
     end
 
     opts_attribute :columns, %w'new edit show browse search_form search'
@@ -153,6 +168,19 @@ module AutoForme
         label = column.to_s.capitalize
       end
       label
+    end
+
+    def mtm_association_select_options(obj, request)
+      case v = (mtm_associations || framework.mtm_associations_for(model))
+      when :all
+        mtm_association_names
+      when Array
+        v.map{|x| x.to_s}
+      when nil
+        []
+      else
+        [v.to_s]
+      end
     end
 
     def select_options(type, request, opts={})

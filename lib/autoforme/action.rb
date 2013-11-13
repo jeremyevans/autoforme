@@ -6,7 +6,7 @@ module AutoForme
     attr_reader :type
     attr_reader :normalized_type
 
-    NORMALIZED_ACTION_MAP = {'create'=>'new', 'update'=>'edit', 'destroy'=>'delete'}
+    NORMALIZED_ACTION_MAP = {'create'=>'new', 'update'=>'edit', 'destroy'=>'delete', 'mtm_update'=>'mtm_edit'}
     def initialize(model, request)
       @model = model
       @request = request
@@ -17,6 +17,7 @@ module AutoForme
     def supported?
       return false unless idempotent? || request.post?
       return false unless model.supported_action?(normalized_type)
+      return false if normalized_type == 'mtm_edit' && request.id && request.params['association'] && !model.supported_mtm_edit?(request)
       true
     end
 
@@ -48,12 +49,22 @@ module AutoForme
 
     def tabs
       content = '<ul class="nav nav-tabs">'
-      %w'browse new show edit delete search'.each do |action_type|
+      %w'browse new show edit delete search mtm_edit'.each do |action_type|
         if model.supported_action?(action_type)
-          content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{action_type == 'browse' ? model.class_name : action_type.capitalize}</a></li>"
+          content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{tab_name(action_type)}</a></li>"
         end
       end
       content << '</ul>'
+    end
+    def tab_name(type)
+      case type
+      when 'browse'
+        model.class_name
+      when 'mtm_edit'
+        'MTM'
+      else
+        type.capitalize
+      end
     end
 
     def page
@@ -207,6 +218,38 @@ module AutoForme
           end
         end
       end
+    end
+
+    def handle_mtm_edit
+      if id = request.id
+        obj = model.with_pk(:edit, request, request.id)
+        if assoc = request.params['association']
+          assoc = assoc.to_sym
+          page do
+            Forme.form(obj, {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")}, form_opts) do |f|
+              f.input(assoc, :name=>'add[]', :id=>'add', :label=>'Associate With', :dataset=>model.unassociated_mtm_objects(request, assoc, obj))
+              f.input(assoc, :name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>nil)
+              f.button('Update')
+            end
+          end
+        else
+          page do
+            Forme.form({:action=>"mtm_edit/#{model.primary_key_value(obj)}"}, form_opts) do |f|
+              f.input(:select, :options=>model.mtm_association_select_options(obj, request), :name=>'association', :id=>'association', :label=>'Association')
+              f.button('Edit')
+            end
+          end
+        end
+      else
+        list_page(:edit, :form=>{})
+      end
+    end
+    def handle_mtm_update
+      obj = model.with_pk(:edit, request, request.id)
+      assoc = request.params['association'].to_sym
+      model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
+      request.set_flash_notice("Updated #{assoc} association for #{model.class_name}")
+      redirect("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")
     end
   end
 end
