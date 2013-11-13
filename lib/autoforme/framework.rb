@@ -16,16 +16,12 @@ module AutoForme
 
     opts_attribute :supported_actions
 
-    opts_attribute :table_class
-    opts_attribute :browse_table_class
-    opts_attribute :search_table_class
+    opts_attribute :table_class, %w'browse search'
     def table_class_for(type)
       send("#{type}_table_class") || table_class || default_table_class
     end
 
-    opts_attribute :per_page
-    opts_attribute :browse_per_page
-    opts_attribute :search_per_page
+    opts_attribute :per_page, %w'browse search'
     def limit_for(type)
       send("#{type}_per_page") || per_page || default_limit
     end
