@@ -312,3 +312,31 @@ describe AutoForme do
     click_button 'Delete'
   end
 end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string], [:artist_id, :integer, {:table=>:artists}]])
+    model_setup(:Artist=>[:artists, [[:one_to_many, :albums]]], :Album=>[:albums, [[:many_to_one, :artist, {:conditions=>{:name=>'A'..'M'}, :order=>:name}]]])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Album)
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should have select options respect association options" do
+    app_setup do
+      autoforme Artist
+      autoforme Album do
+        columns [:name, :artist]
+        edit_column_options(:artist=>{:dataset=>proc{|ds| ds.where(:name=>'B'..'O').reverse_order(:name)}})
+      end
+    end
+
+    %w'A1 E1 L1 N1'.each{|n| Artist.create(:name=>n)}
+    visit("/Album/new")
+    all('select option').map{|s| s.text}.should == ["", "A1", "E1", "L1"]
+
+    visit("/Album/edit/#{Album.create(:name=>'Album1').id}")
+    all('select option').map{|s| s.text}.should == ["", "L1", "E1"]
+  end
+end

@@ -37,8 +37,8 @@ module AutoForme
 
         case type
         when :edit, :new, :search_form
-          unless opts[:options]
-            opts[:options] = associated_model.select_options(:association, request, opts)
+          unless opts[:options] || opts[:dataset]
+            opts[:dataset] = lambda{|ds| associated_model.apply_dataset_options(:association, request, ds)}
           end
 
           if type == :search_form

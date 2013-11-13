@@ -125,18 +125,10 @@ module AutoForme
         (sch = model.db_schema[column]) && sch[:type]
       end
 
-      private
-
-      def dataset_for(type, request)
-        ds = @model.dataset
+      def apply_dataset_options(type, request, ds)
         if filter = filter_for(type)
           ds = filter.call(ds, request)
         end
-        ds
-      end
-
-      def all_dataset_for(type, request)
-        ds = dataset_for(type, request)
         if order = order_for(type)
           ds = ds.order(*order)
         end
@@ -149,6 +141,19 @@ module AutoForme
         ds
       end
 
+      private
+
+      def dataset_for(type, request)
+        ds = @model.dataset
+        if filter = filter_for(type)
+          ds = filter.call(ds, request)
+        end
+        ds
+      end
+
+      def all_dataset_for(type, request)
+        apply_dataset_options(type, request, @model.dataset)
+      end
     end
   end
 
