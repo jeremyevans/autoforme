@@ -53,6 +53,21 @@ describe AutoForme do
     all('td').map{|s| s.text}.should == []
   end
 
+  it "should have delete button on edit page" do
+    app_setup(Artist)
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+
+    click_link 'Edit'
+    select 'TestArtistNew'
+    click_button 'Edit'
+    click_button 'Delete'
+    Artist.count.should == 1
+    click_button 'Delete'
+    Artist.count.should == 0
+  end
+
   it "should support specifying column options per type" do
     app_setup(Artist) do
       new_column_options(:name=>{:label=>'New Artist Name'})

@@ -139,12 +139,15 @@ module AutoForme
 
     def edit_page(obj)
       page do
-        Forme.form(obj, {:action=>url_for("update/#{model.primary_key_value(obj)}")}, form_opts) do |f|
+        t = Forme.form(obj, {:action=>url_for("update/#{model.primary_key_value(obj)}")}, form_opts) do |f|
           model.columns_for(:edit).each do |column|
             f.input(column, model.column_options_for(:edit, request, column))
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
-        end
+        end.to_s
+        t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}) do |f|
+          f.button(:value=>'Delete', :class=>'btn btn-danger')
+        end.to_s
       end
     end
     def handle_edit
