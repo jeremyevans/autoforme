@@ -150,9 +150,11 @@ describe AutoForme do
     app_setup do
       autoforme Artist do
         mtm_associations :albums
-        mtm_edit_column_options :add_albums=>{:as=>:checkbox}, :remove_albums=>{:as=>:checkbox, :name_method=>proc{|obj| obj.name * 2}}
+        mtm_edit_column_options :albums=>{:as=>:checkbox, :remove=>{:name_method=>proc{|obj| obj.name * 2}}}
       end
-      autoforme Album
+      autoforme Album do
+        display_name{|obj, req| obj.name + "2"}
+      end
     end
 
     Artist.create(:name=>'Artist1')
@@ -167,17 +169,17 @@ describe AutoForme do
     select("albums")
     click_button "Edit"
 
-    check "Album1"
+    check "Album12"
     click_button "Update"
     Artist.first.albums.map{|x| x.name}.should == %w'Album1'
 
     check "Album1Album1"
-    check "Album2"
-    check "Album3"
+    check "Album22"
+    check "Album32"
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2 Album3'
 
-    check "Album1"
+    check "Album12"
     check "Album2Album2"
     check "Album3Album3"
   end
