@@ -2,6 +2,7 @@ module AutoForme
   class ModelTable
     attr_reader :action
     attr_reader :model
+    attr_reader :request
     attr_reader :type
     attr_reader :columns
     attr_reader :objs
@@ -9,6 +10,7 @@ module AutoForme
 
     def initialize(action, type, objs, opts={})
       @action = action
+      @request = action.request
       @model = action.model
       @type = type
       @columns = model.columns_for(type)
@@ -39,7 +41,7 @@ module AutoForme
       objs.each do |obj|
         html << "<tr>"
         columns.each do |column|
-          html << "<td>#{h model.column_value(action, obj, column)}</td>"
+          html << "<td>#{h model.column_value(type, request, obj, column)}</td>"
         end
         html << "<td><a href=\"#{action.url_for("show/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-info\">Show</a></td>" if show
         html << "<td><a href=\"#{action.url_for("edit/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-primary\">Edit</a></td>" if edit

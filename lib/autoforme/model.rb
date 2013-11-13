@@ -112,10 +112,10 @@ module AutoForme
       @opts = {}
     end
 
-    def column_value(action, obj, column)
+    def column_value(type, request, obj, column)
       v = obj.send(column)
       if association?(column) 
-        opts = column_options_for(action.normalized_type, column) 
+        opts = column_options_for(type, column) 
         case nm = opts[:name_method]
         when Symbol, String
           v = v.send(nm)
