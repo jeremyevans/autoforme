@@ -141,6 +141,11 @@ module AutoForme
         model.columns_for(:show).each do |column|
           t << f.input(column, model.column_options_for(:show, request, column)).to_s
         end
+        if model.supported_action?('edit')
+          t << Forme.form({:action=>url_for("edit/#{model.primary_key_value(obj)}")}) do |f|
+            f.button(:value=>'Edit', :class=>'btn btn-primary')
+          end.to_s
+        end
         t << association_links(obj).to_s
       end
     end

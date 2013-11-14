@@ -88,9 +88,6 @@ describe AutoForme do
     select 'TestArtistNew'
     click_button 'Show'
     page.html.should =~ /Show Artist Name.+TestArtistNew/m
-
-    click_link 'Edit'
-    select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Edit Artist Name', :with=>'TestArtistUpdate'
     click_button 'Update'
