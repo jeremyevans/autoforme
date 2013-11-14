@@ -16,8 +16,19 @@ module AutoForme
 
     def supported?
       return false unless idempotent? || request.post?
-      return false unless model.supported_action?(normalized_type)
-      return false if normalized_type == 'mtm_edit' && request.id && request.params['association'] && !model.supported_mtm_edit?(request.params['association'])
+
+      case type
+      when 'mtm_edit'
+        return false unless model.supported_action?(type)
+        if request.id && request.params['association']
+          return false unless model.supported_mtm_edit?(request.params['association'])
+        end
+      when 'mtm_update'
+        return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'])
+      else
+        return false unless model.supported_action?(normalized_type)
+      end
+
       true
     end
 
@@ -170,6 +181,7 @@ module AutoForme
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
         end
+        t << inline_mtm_edit_forms(obj).to_s
         t << association_links(obj).to_s
       end
     end
@@ -264,7 +276,7 @@ module AutoForme
         else
           page do
             Forme.form({:action=>"mtm_edit/#{model.primary_key_value(obj)}"}, form_opts) do |f|
-              f.input(:select, :options=>model.mtm_association_select_options(obj, request), :name=>'association', :id=>'association', :label=>'Association')
+              f.input(:select, :options=>model.mtm_association_select_options, :name=>'association', :id=>'association', :label=>'Association')
               f.button(:value=>'Edit', :class=>'btn btn-primary')
             end
           end
@@ -278,24 +290,23 @@ module AutoForme
       assoc = request.params['association'].to_sym
       model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
       request.set_flash_notice("Updated #{assoc} association for #{model.class_name}")
-      redirect("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")
+      if request.params['redir'] == 'edit'
+        redirect("edit/#{model.primary_key_value(obj)}")
+      else
+        redirect("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")
+      end
     end
 
     def association_links(obj)
       assocs = model.association_links_for(type) 
-      read_only = type == 'show'
       return if assocs.empty?
+      read_only = type == 'show'
       t = '<h3 class="associated_records_header">Associated Records</h3>'
       t << "<ul class='association_links'>\n"
       assocs.each do |assoc|
         mc = model.associated_model_class(assoc)
-        assoc_name = humanize(assoc)
         t << "<li>"
-        if mc && mc.supported_action?('browse')
-          t << "<a href=\"#{base_url_for("#{mc.link}/browse")}\">#{assoc_name}</a>"
-        else
-          t << assoc_name
-        end
+        t << association_class_link(mc, assoc)
         t << "\n "
 
         case model.association_type(assoc)
@@ -336,6 +347,14 @@ module AutoForme
       end
       t << "</ul>"
     end
+    def association_class_link(mc, assoc)
+      assoc_name = humanize(assoc)
+      if mc && mc.supported_action?('browse')
+        "<a href=\"#{base_url_for("#{mc.link}/browse")}\">#{assoc_name}</a>"
+      else
+        assoc_name
+      end
+    end
     def association_link(mc, assoc_obj)
       if mc
         t = mc.object_display_name(:association, request, assoc_obj)
@@ -346,6 +365,38 @@ module AutoForme
       else
         model.default_object_display_name(assoc_obj)
       end
+    end
+
+    def inline_mtm_edit_forms(obj)
+      assocs = model.inline_mtm_assocs
+      return if assocs.empty?
+      t = "<div class='inline_mtm_add_associations'>"
+      assocs.each do |assoc|
+        t << Forme.form(obj, {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit")}, form_opts) do |f|
+          opts = model.column_options_for(:mtm_edit, request, assoc)
+          add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
+          f.input(assoc, {:name=>'add[]', :id=>"add_#{assoc}", :dataset=>model.unassociated_mtm_objects(request, assoc, obj), :multiple=>false, :add_blank=>true}.merge(add_opts))
+          f.button(:value=>'Add', :class=>'btn btn-primary')
+        end.to_s
+      end
+      t << "</div>"
+      t << "<div class='inline_mtm_remove_associations'><ul>"
+      assocs.each do |assoc|
+        mc = model.associated_model_class(assoc)
+        t << "<li>"
+        t << association_class_link(mc, assoc)
+        t << "<ul id='#{assoc}_remove_list'>"
+        obj.send(assoc).each do |assoc_obj|
+          t << "<li>"
+          t << association_link(mc, assoc_obj)
+          t << Forme.form({:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post'}, form_opts) do |f|
+            f.button(:value=>'Remove', :class=>'btn btn-danger')
+          end.to_s
+          t << "</li>"
+        end
+        t << "</ul></li>"
+      end
+      t << "</ul></div>"
     end
   end
 end

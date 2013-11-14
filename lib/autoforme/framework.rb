@@ -45,6 +45,10 @@ module AutoForme
       nil
     end
 
+    def inline_mtm_associations_for(model)
+      nil
+    end
+
     def order_for(type, model)
       nil
     end

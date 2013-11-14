@@ -20,11 +20,19 @@ module AutoForme
     end
 
     opts_attribute :mtm_associations
-    def mtm_association_select_options(obj, request)
+    def mtm_association_select_options
       normalize_mtm_associations(mtm_associations || framework.mtm_associations_for(model))
     end
     def supported_mtm_edit?(assoc)
-      normalize_mtm_associations(mtm_associations || framework.mtm_associations_for(model)).map{|x| x.to_s}.include?(assoc)
+      mtm_association_select_options.map{|x| x.to_s}.include?(assoc)
+    end
+    def supported_mtm_update?(assoc)
+      supported_mtm_edit?(assoc) || inline_mtm_assocs.map{|x| x.to_s}.include?(assoc) 
+    end
+
+    opts_attribute :inline_mtm_associations
+    def inline_mtm_assocs
+      normalize_mtm_associations(inline_mtm_associations || framework.inline_mtm_associations_for(model))
     end
 
     opts_attribute :columns, %w'new edit show browse search_form search'

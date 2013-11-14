@@ -49,6 +49,39 @@ describe AutoForme do
     all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
   end
 
+  it "should have inline many to many association editing working" do
+    app_setup do
+      autoforme Artist do
+        inline_mtm_associations :albums
+      end
+      autoforme Album
+    end
+
+    Artist.create(:name=>'Artist1')
+    Album.create(:name=>'Album1')
+    Album.create(:name=>'Album2')
+    Album.create(:name=>'Album3')
+
+    visit("/Artist/edit")
+    select("Artist1")
+    click_button "Edit"
+    select 'Album1'
+    click_button 'Add'
+    page.html.should =~ /Updated albums association for Artist/
+    Artist.first.albums.map{|x| x.name}.should == %w'Album1'
+
+    select 'Album2'
+    click_button 'Add'
+    Artist.first.refresh.albums.map{|x| x.name}.sort.should == %w'Album1 Album2'
+
+    click_button 'Remove'
+    Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2'
+
+    select 'Album3'
+    click_button 'Add'
+    Artist.first.refresh.albums.map{|x| x.name}.sort.should == %w'Album2 Album3'
+  end
+
   it "should have working many to many association links on show and edit pages" do
     app_setup do
       autoforme Artist do

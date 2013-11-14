@@ -5,3 +5,8 @@ table caption {
 }
 label { display: inline; margin-right: 5px; }
 input, textarea, select { width: auto; }
+.inline_mtm_add_associations form,
+.inline_mtm_add_associations div,
+.inline_mtm_remove_associations form,
+.inline_mtm_remove_associations div,
+.inline_mtm_remove_associations input.btn {display: inline; margin: 5px;}

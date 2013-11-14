@@ -28,8 +28,9 @@ END
     model_type :sequel
     autoforme(Artist)
     autoforme(Album) do
-      mtm_associations :all
-      association_links :all
+      mtm_associations :tags
+      inline_mtm_associations :tags
+      association_links [:artist, :tracks]
     end
     autoforme(Track) do
       columns [:album, :number, :name, :length]
