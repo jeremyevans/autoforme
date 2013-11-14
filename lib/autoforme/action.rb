@@ -160,9 +160,11 @@ module AutoForme
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
         end.to_s
-        t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}) do |f|
-          f.button(:value=>'Delete', :class=>'btn btn-danger')
-        end.to_s
+        if model.supported_action?('delete')
+          t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}) do |f|
+            f.button(:value=>'Delete', :class=>'btn btn-danger')
+          end.to_s
+        end
         t << association_links(obj).to_s
       end
     end
