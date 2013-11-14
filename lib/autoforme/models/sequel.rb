@@ -44,8 +44,29 @@ module AutoForme
         model.association_reflection(assoc).associated_class
       end
 
+      def association_type(assoc)
+        case model.association_reflection(assoc)[:type]
+        when :many_to_one, :one_to_one
+          :one
+        when :one_to_many
+          :new
+        when :many_to_many
+          :edit
+        end
+      end
+
+      def associated_new_column_values(obj, assoc)
+        ref = model.association_reflection(assoc)
+        ref[:keys].zip(ref[:primary_keys].map{|k| obj.send(k)})
+      end
+
       def mtm_association_names
-        model.all_association_reflections.select{|r| r[:type] == :many_to_many}.map{|r| r[:name].to_s}
+        model.all_association_reflections.select{|r| r[:type] == :many_to_many}.map{|r| r[:name].to_s}.sort
+      end
+
+      def association_names
+        types = [:many_to_one, :one_to_one, :one_to_many, :many_to_many]
+        model.all_association_reflections.select{|r| types.include?(r[:type])}.map{|r| r[:name]}.sort_by{|n| n.to_s}
       end
 
       def save(obj)

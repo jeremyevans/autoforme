@@ -69,6 +69,10 @@ module AutoForme
       "table table-bordered table-striped"
     end
 
+    def association_links_for(type, model)
+      nil
+    end
+
     def autoforme(model_class, &block)
       model = Model.for(self, model_type, model_class, &block)
       @model_classes[model.model] = model

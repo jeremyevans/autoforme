@@ -17,7 +17,7 @@ module AutoForme
     def supported?
       return false unless idempotent? || request.post?
       return false unless model.supported_action?(normalized_type)
-      return false if normalized_type == 'mtm_edit' && request.id && request.params['association'] && !model.supported_mtm_edit?(request)
+      return false if normalized_type == 'mtm_edit' && request.id && request.params['association'] && !model.supported_mtm_edit?(request.params['association'])
       true
     end
 
@@ -33,8 +33,12 @@ module AutoForme
       request.params[model.params_name]
     end
 
+    def base_url_for(page)
+      "#{request.path}/#{page}"
+    end
+
     def url_for(page)
-      "#{request.path}/#{model.link}/#{page}"
+      base_url_for("#{model.link}/#{page}")
     end
 
     def redirect(page)
@@ -42,9 +46,13 @@ module AutoForme
       nil
     end
 
-
     def handle
       send("handle_#{type}")
+    end
+
+    def humanize(string)
+      string = string.to_s
+      string.respond_to?(:humanize) ? string.humanize : string.gsub(/_/, " ").capitalize
     end
 
     def tabs
@@ -93,7 +101,7 @@ module AutoForme
       end
     end
     def handle_new
-      new_page(model.new)
+      new_page(model.new(request.params[model.link]))
     end
     def handle_create
       obj = model.new
@@ -126,7 +134,7 @@ module AutoForme
         model.columns_for(:show).each do |column|
           t << f.input(column, model.column_options_for(:show, request, column)).to_s
         end
-        t
+        t << association_links(obj).to_s
       end
     end
     def handle_show
@@ -148,6 +156,7 @@ module AutoForme
         t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}) do |f|
           f.button(:value=>'Delete', :class=>'btn btn-danger')
         end.to_s
+        t << association_links(obj).to_s
       end
     end
     def handle_edit
@@ -256,6 +265,73 @@ module AutoForme
       model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
       request.set_flash_notice("Updated #{assoc} association for #{model.class_name}")
       redirect("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")
+    end
+
+    def association_links(obj)
+      assocs = model.association_links_for(type) 
+      read_only = type == 'show'
+      return if assocs.empty?
+      t = '<h3 class="associated_records_header">Associated Records</h3>'
+      t << "<ul class='association_links'>\n"
+      assocs.each do |assoc|
+        mc = model.associated_model_class(assoc)
+        assoc_name = humanize(assoc)
+        t << "<li>"
+        if mc && mc.supported_action?('browse')
+          t << "<a href=\"#{base_url_for("#{mc.link}/browse")}\">#{assoc_name}</a>"
+        else
+          t << assoc_name
+        end
+        t << "\n "
+
+        case model.association_type(assoc)
+        when :one
+          if assoc_obj = obj.send(assoc)
+            t << " - "
+            t << association_link(mc, assoc_obj)
+          end
+          assoc_objs = []
+        when :edit
+          if !read_only && model.supported_mtm_edit?(assoc.to_s)
+            t << "(<a href=\"#{url_for("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")}\">associate</a>)"
+          end
+          assoc_objs = obj.send(assoc)
+        when :new
+          if !read_only && mc && mc.supported_action?('new')
+            params = model.associated_new_column_values(obj, assoc).map do |col, value|
+              "#{mc.link}%5b#{col}%5d=#{value}"
+            end
+            t << "(<a href=\"#{base_url_for("#{mc.link}/new?#{params.join('&amp;')}")}\">create</a>)"
+          end
+          assoc_objs = obj.send(assoc)
+        else
+          assoc_objs = []
+        end
+
+        unless assoc_objs.empty?
+          t << "<ul>\n"
+          assoc_objs.each do |assoc_obj|
+            t << "<li>"
+            t << association_link(mc, assoc_obj)
+            t << "</li>"
+          end
+          t << "</ul>"
+        end
+
+        t << "</li>"
+      end
+      t << "</ul>"
+    end
+    def association_link(mc, assoc_obj)
+      if mc
+        t = mc.object_display_name(:association, request, assoc_obj)
+        if mc.supported_action?(type)
+          t = "<a href=\"#{base_url_for("#{mc.link}/#{type}/#{mc.primary_key_value(assoc_obj)}")}\">#{t}</a>"
+        end
+        t
+      else
+        model.default_object_display_name(assoc_obj)
+      end
     end
   end
 end

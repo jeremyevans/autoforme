@@ -29,9 +29,10 @@ END
     autoforme(Artist)
     autoforme(Album) do
       mtm_associations :all
+      association_links :all
     end
     autoforme(Track) do
-      columns [:number, :name, :length]
+      columns [:album, :number, :name, :length]
       per_page 2
     end
     autoforme(Tag) do

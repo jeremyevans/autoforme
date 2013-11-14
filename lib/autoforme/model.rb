@@ -20,8 +20,8 @@ module AutoForme
     end
 
     opts_attribute :mtm_associations
-    def supported_mtm_edit?(request)
-      return false unless assoc = request.params['association']
+    def supported_mtm_edit?(assoc)
+      return false unless assoc
       case v = (mtm_associations || framework.mtm_associations_for(model))
       when :all
         mtm_association_names.include?(assoc)
@@ -95,6 +95,20 @@ module AutoForme
       send("#{type}_display_name") || display_name || framework.display_name_for(type, model)
     end
 
+    opts_attribute :association_links, %w'edit show'
+    def association_links_for(type)
+      case v = send("#{type}_association_links") || association_links || framework.association_links_for(type, model)
+      when nil
+        []
+      when Array
+        v
+      when :all
+        association_names
+      else
+        [v]
+      end
+    end
+
     opts_attribute :before_create
     opts_attribute :before_update
     opts_attribute :before_destroy
@@ -153,8 +167,19 @@ module AutoForme
       end
     end
 
-    def new
-      @model.new
+    def new(params=nil)
+      obj = @model.new
+      if params
+        columns_for(:new).each do |col|
+          if association?(col)
+            col = model.association_reflection(col)[:key]
+          end
+          if v = params[col]
+            obj.send("#{col}=", v)
+          end
+        end
+      end
+      obj
     end
 
     def column_label_for(type, request, column)

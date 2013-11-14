@@ -49,6 +49,44 @@ describe AutoForme do
     all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
   end
 
+  it "should have working many to many association links on show and edit pages" do
+    app_setup do
+      autoforme Artist do
+        mtm_associations :albums
+        association_links [:albums]
+      end
+      autoforme Album do
+        mtm_associations [:artists]
+        association_links :artists
+      end
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'Artist1'
+    click_button 'Create'
+
+    click_link 'Edit'
+    select 'Artist1'
+    click_button 'Edit'
+    click_link 'Albums'
+    click_link 'New'
+    fill_in 'Name', :with=>'Album1'
+    click_button 'Create'
+    click_link 'Edit'
+    select 'Album1'
+    click_button 'Edit'
+    click_link 'associate'
+    select("Artist1", :from=>"Associate With")
+    click_button 'Update'
+    click_link 'Show'
+    select 'Album1'
+    click_button 'Show'
+    click_link 'Artist1'
+    page.current_path.should =~ %r{Artist/show/\d+}
+    click_link 'Album1'
+    page.current_path.should =~ %r{Album/show/\d+}
+  end
+
   it "should have many to many association editing working when associated class is not using autoforme" do
     app_setup do
       autoforme Artist do
