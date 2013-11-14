@@ -73,6 +73,10 @@ module AutoForme
       false
     end
 
+    def ajax_association_links?(model)
+      false
+    end
+
     def default_table_class
       "table table-bordered table-striped"
     end

@@ -32,6 +32,10 @@ module AutoForme
           @env['QUERY_STRING']
         end
 
+        def xhr?
+          @env['HTTP_X_REQUESTED_WITH'] =~ /XMLHttpRequest/i
+        end
+        
         def csrf_token_hash
           {::Rack::Csrf.field=>::Rack::Csrf.token(@env)} if defined?(::Rack::Csrf)
         end
@@ -42,7 +46,9 @@ module AutoForme
         framework = self
         block = lambda do
           if @autoforme_action = framework.action_for(Request.new(self))
-            erb "<%= @autoforme_action.handle %>"
+            opts = {}
+            opts[:layout] = false if @autoforme_action.request.xhr?
+            erb "<%= @autoforme_action.handle %>", opts
           else
             pass
           end

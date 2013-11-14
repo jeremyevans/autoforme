@@ -14,7 +14,7 @@ module AutoForme
     attr_reader :opts
     
     opts_attribute :supported_actions
-    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
+    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit association_links'.freeze
     def supported_action?(type)
       (supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS).include?(type)
     end
@@ -112,8 +112,16 @@ module AutoForme
 
     opts_attribute :lazy_load_association_links
     def lazy_load_association_links?
-      v = lazy_load_association_links
+      v = ajax_association_links?
+      v = lazy_load_association_links if v.nil?
       v = framework.lazy_load_association_links?(model) if v.nil?
+      v
+    end
+
+    opts_attribute :ajax_association_links
+    def ajax_association_links?
+      v = ajax_association_links
+      v = framework.ajax_association_links?(model) if v.nil?
       v
     end
 

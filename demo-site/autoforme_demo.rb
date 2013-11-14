@@ -30,7 +30,7 @@ END
     autoforme(Album) do
       mtm_associations :tags
       inline_mtm_associations :tags
-      lazy_load_association_links true
+      ajax_association_links true
       association_links [:artist, :tracks]
     end
     autoforme(Track) do

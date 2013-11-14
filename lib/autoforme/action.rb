@@ -25,6 +25,8 @@ module AutoForme
         end
       when 'mtm_update'
         return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'])
+      when 'association_links'
+        return false unless model.supported_action?(request.params['type'] || 'edit')
       else
         return false unless model.supported_action?(normalized_type)
       end
@@ -296,9 +298,26 @@ module AutoForme
       end
     end
 
+    def handle_association_links
+      @type = request.params['type'] || 'edit'
+      obj = model.with_pk(type, request, request.id)
+      association_links(obj)
+    end
+
     def association_links(obj)
       if model.lazy_load_association_links? && normalized_type != 'association_links' && request.params['associations'] != 'show'
-        "<div id='lazy_load_association_links'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
+        t = "<div id='lazy_load_association_links'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
+        if model.ajax_association_links?
+          t << <<JS
+<script type="text/javascript">
+$('#lazy_load_association_links').click(function(){
+  $('#lazy_load_association_links').load("#{url_for("association_links/#{model.primary_key_value(obj)}?type=#{type}")}");
+  return false;
+});
+</script>
+JS
+        end
+        t
       elsif type == 'show'
         association_link_list(obj).to_s
       else
