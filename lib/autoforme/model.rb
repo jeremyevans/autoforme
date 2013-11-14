@@ -110,6 +110,13 @@ module AutoForme
       end
     end
 
+    opts_attribute :lazy_load_association_links
+    def lazy_load_association_links?
+      v = lazy_load_association_links
+      v = framework.lazy_load_association_links?(model) if v.nil?
+      v
+    end
+
     opts_attribute :before_create
     opts_attribute :before_update
     opts_attribute :before_destroy

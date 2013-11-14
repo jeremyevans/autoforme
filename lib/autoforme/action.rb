@@ -157,7 +157,7 @@ module AutoForme
             f.button(:value=>'Edit', :class=>'btn btn-primary')
           end.to_s
         end
-        t << association_links(obj).to_s
+        t << association_links(obj)
       end
     end
     def handle_show
@@ -181,8 +181,7 @@ module AutoForme
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
         end
-        t << inline_mtm_edit_forms(obj).to_s
-        t << association_links(obj).to_s
+        t << association_links(obj)
       end
     end
     def handle_edit
@@ -298,6 +297,16 @@ module AutoForme
     end
 
     def association_links(obj)
+      if model.lazy_load_association_links? && normalized_type != 'association_links' && request.params['associations'] != 'show'
+        "<div id='lazy_load_association_links'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
+      elsif type == 'show'
+        association_link_list(obj).to_s
+      else
+        "#{inline_mtm_edit_forms(obj)}#{association_link_list(obj)}"
+      end
+    end
+
+    def association_link_list(obj)
       assocs = model.association_links_for(type) 
       return if assocs.empty?
       read_only = type == 'show'

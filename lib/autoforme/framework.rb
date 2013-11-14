@@ -69,6 +69,10 @@ module AutoForme
       25
     end
 
+    def lazy_load_association_links?(model)
+      false
+    end
+
     def default_table_class
       "table table-bordered table-striped"
     end

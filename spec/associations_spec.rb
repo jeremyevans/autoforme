@@ -366,6 +366,59 @@ describe AutoForme do
     click_link 'Albums'
     page.current_path.should == '/Album/browse'
   end
+
+  it "should support lazy loading association links on show and edit pages" do
+    app_setup do
+      autoforme Artist do
+        lazy_load_association_links true
+        association_links :all
+      end
+      autoforme Album do
+        lazy_load_association_links true
+        association_links :all
+        columns [:name, :artist]
+      end
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'Artist1'
+    click_button 'Create'
+
+    click_link 'Edit'
+    select 'Artist1'
+    click_button 'Edit'
+    page.html.should_not =~ /create/
+    click_link 'Show Associations'
+    click_link 'create'
+    fill_in 'Name', :with=>'Album1'
+    click_button 'Create'
+
+    click_link 'Show'
+    select 'Album1'
+    click_button 'Show'
+    click_link 'Show Associations'
+    click_link 'Artist1'
+    page.current_path.should =~ %r{Artist/show/\d+}
+    click_link 'Show Associations'
+    click_link 'Album1'
+    page.current_path.should =~ %r{Album/show/\d+}
+    click_link 'Show Associations'
+    click_link 'Artist'
+    page.current_path.should == '/Artist/browse'
+
+    click_link 'Edit'
+    select 'Artist1'
+    click_button 'Edit'
+    click_link 'Show Associations'
+    click_link 'Album1'
+    page.current_path.should =~ %r{Album/edit/\d+}
+    click_link 'Show Associations'
+    click_link 'Artist1'
+    page.current_path.should =~ %r{Artist/edit/\d+}
+    click_link 'Show Associations'
+    click_link 'Albums'
+    page.current_path.should == '/Album/browse'
+  end
 end
 
 describe AutoForme do
