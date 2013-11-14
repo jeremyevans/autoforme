@@ -61,11 +61,11 @@ module AutoForme
       end
 
       def mtm_association_names
-        model.all_association_reflections.select{|r| r[:type] == :many_to_many}.map{|r| r[:name].to_s}.sort
+        association_names([:many_to_many])
       end
 
-      def association_names
-        types = [:many_to_one, :one_to_one, :one_to_many, :many_to_many]
+      SUPPORTED_ASSOCIATION_TYPES = [:many_to_one, :one_to_one, :one_to_many, :many_to_many]
+      def association_names(types=SUPPORTED_ASSOCIATION_TYPES)
         model.all_association_reflections.select{|r| types.include?(r[:type])}.map{|r| r[:name]}.sort_by{|n| n.to_s}
       end
 

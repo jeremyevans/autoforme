@@ -20,18 +20,11 @@ module AutoForme
     end
 
     opts_attribute :mtm_associations
+    def mtm_association_select_options(obj, request)
+      normalize_mtm_associations(mtm_associations || framework.mtm_associations_for(model))
+    end
     def supported_mtm_edit?(assoc)
-      return false unless assoc
-      case v = (mtm_associations || framework.mtm_associations_for(model))
-      when :all
-        mtm_association_names.include?(assoc)
-      when Array
-        v.map{|x| x.to_s}.include?(assoc)
-      when nil
-        false
-      else
-        v.to_s == assoc
-      end
+      normalize_mtm_associations(mtm_associations || framework.mtm_associations_for(model)).map{|x| x.to_s}.include?(assoc)
     end
 
     opts_attribute :columns, %w'new edit show browse search_form search'
@@ -182,19 +175,6 @@ module AutoForme
       obj
     end
 
-    def mtm_association_select_options(obj, request)
-      case v = (mtm_associations || framework.mtm_associations_for(model))
-      when :all
-        mtm_association_names
-      when Array
-        v.map{|x| x.to_s}
-      when nil
-        []
-      else
-        [v.to_s]
-      end
-    end
-
     def select_options(type, request, opts={})
       case nm = opts[:name_method]
       when Symbol, String
@@ -226,6 +206,16 @@ module AutoForme
         obj.name
       else
         primary_key_value(obj)
+      end
+    end
+
+    private
+
+    def normalize_mtm_associations(assocs)
+      if assocs == :all
+        mtm_association_names
+      else
+        Array(assocs)
       end
     end
   end
