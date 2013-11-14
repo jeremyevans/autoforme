@@ -61,18 +61,6 @@ describe AutoForme do
     model.column_options_for(:browse, nil, :foo).should == {3=>4}
   end
 
-  it "should handle column label lookup" do
-    model.column_label_for(:browse, nil, :foo).should == 'Foo'
-    def (framework).column_options_for(type, model)
-      {:foo=>{:label=>"#{type} #{model.name}"}}
-    end
-    model.column_label_for(:browse, nil, :foo).should == "browse Artist"
-    model.column_options :foo=>{:label=>"A"}
-    model.column_label_for(:browse, nil, :foo).should == "A"
-    model.browse_column_options :foo=>{:label=>"B"}
-    model.column_label_for(:browse, nil, :foo).should == "B"
-  end
-
   it "should handle order lookup" do
     model.order_for(:browse).should == nil
     def (framework).order_for(type, model)

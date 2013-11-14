@@ -182,13 +182,6 @@ module AutoForme
       obj
     end
 
-    def column_label_for(type, request, column)
-      unless label = column_options_for(type, request, column)[:label]
-        label = column.to_s.capitalize
-      end
-      label
-    end
-
     def mtm_association_select_options(obj, request)
       case v = (mtm_associations || framework.mtm_associations_for(model))
       when :all

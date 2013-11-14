@@ -55,6 +55,13 @@ module AutoForme
       string.respond_to?(:humanize) ? string.humanize : string.gsub(/_/, " ").capitalize
     end
 
+    def column_label_for(type, request, model, column)
+      unless label = model.column_options_for(type, request, column)[:label]
+        label = humanize(column)
+      end
+      label
+    end
+
     def tabs
       content = '<ul class="nav nav-tabs">'
       %w'browse new show edit delete search mtm_edit'.each do |action_type|
