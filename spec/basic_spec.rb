@@ -123,6 +123,7 @@ describe AutoForme do
     click_link 'Delete'
     select 'Artist'
     click_button 'Delete'
+    click_button 'Delete'
     Artist.count.should == 0
   end
 
@@ -151,9 +152,11 @@ describe AutoForme do
     Artist.create(:name=>'A')
     select 'WENTSITRATSET'
     click_button 'Delete'
+    click_button 'Delete'
     a.should == ['create', 'update', 'destroy']
 
     select 'A'
+    click_button 'Delete'
     proc{click_button 'Delete'}.should raise_error
     a.should == ['create', 'update', 'destroy']
   end
@@ -273,6 +276,7 @@ describe AutoForme do
 
     click_link 'Delete'
     fill_in 'Artist', :with=>"#{a.id} - foo"
+    click_button 'Delete'
     click_button 'Delete'
     Artist.count.should == 0
   end
@@ -402,6 +406,7 @@ describe AutoForme do
     click_link 'Delete'
     all('option').map{|s| s.text}.should == %w'1'
     click_button 'Delete'
+    click_button 'Delete'
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
 
     click_link 'Search'
@@ -464,6 +469,7 @@ describe AutoForme do
     click_link 'Delete'
     all('option').map{|s| s.text}.should == %w'2 1'
     select '1'
+    click_button 'Delete'
     click_button 'Delete'
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
 

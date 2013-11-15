@@ -173,15 +173,22 @@ JS
       page do
         t = ''
         f = Forme::Form.new(obj, :formatter=>:readonly)
-        model.columns_for(:show).each do |column|
+        model.columns_for(type.to_sym).each do |column|
           t << f.input(column, model.column_options_for(:show, request, column)).to_s
         end
-        if model.supported_action?('edit')
-          t << Forme.form({:action=>url_for("edit/#{model.primary_key_value(obj)}")}) do |f|
+        if type == 'show' && model.supported_action?('edit')
+          t << Forme.form({:action=>url_for("edit/#{model.primary_key_value(obj)}")}, form_opts) do |f|
             f.button(:value=>'Edit', :class=>'btn btn-primary')
           end.to_s
         end
-        t << association_links(obj)
+        if type == 'delete'
+          t << Forme.form({:action=>url_for("destroy/#{model.primary_key_value(obj)}"), :method=>:post}, form_opts) do |f|
+            f.button(:value=>'Delete', :class=>'btn btn-danger')
+          end.to_s
+        else
+          t << association_links(obj)
+        end
+        t
       end
     end
     def handle_show
@@ -201,7 +208,7 @@ JS
           f.button(:value=>'Update', :class=>'btn btn-primary')
         end.to_s
         if model.supported_action?('delete')
-          t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}) do |f|
+          t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}, form_opts) do |f|
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
         end
@@ -230,7 +237,11 @@ JS
     end
 
     def handle_delete
-      list_page(:delete, :form=>{:action=>url_for('destroy'), :method=>:post})
+      if request.id
+        handle_show
+      else
+        list_page(:delete, :form=>{:action=>url_for('delete')})
+      end
     end
     def handle_destroy
       obj = model.with_pk(normalized_type, request, request.id)

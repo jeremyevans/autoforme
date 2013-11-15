@@ -310,6 +310,7 @@ describe AutoForme do
     all('select option').map{|s| s.text}.should == ['C', 'D', 'E']
     select 'C'
     click_button 'Delete'
+    click_button 'Delete'
 
     visit("/Album/new")
     Artist.where(:name=>'Y').update(:name=>'A')
