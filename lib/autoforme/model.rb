@@ -173,7 +173,7 @@ module AutoForme
     end
 
     def column_value(type, request, obj, column)
-      v = obj.send(column)
+      return unless v = obj.send(column)
       if association?(column) 
         opts = column_options_for(type, request, column) 
         case nm = opts[:name_method]
