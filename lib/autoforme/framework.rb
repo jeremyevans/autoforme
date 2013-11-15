@@ -77,6 +77,10 @@ module AutoForme
       nil
     end
 
+    def ajax_inline_mtm_associations?(model)
+      nil
+    end
+
     def default_table_class
       "table table-bordered table-striped"
     end

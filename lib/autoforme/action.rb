@@ -289,9 +289,16 @@ module AutoForme
     def handle_mtm_update
       obj = model.with_pk(:edit, request, request.id)
       assoc = request.params['association'].to_sym
-      model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
+      assoc_obj = model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
       request.set_flash_notice("Updated #{assoc} association for #{model.class_name}")
-      if request.params['redir'] == 'edit'
+      if request.xhr?
+        if add = request.params['add']
+          @type = 'edit'
+          mtm_edit_remove(assoc, model.associated_model_class(assoc), obj, assoc_obj, true)
+        else
+          "<option value=\"#{model.primary_key_value(assoc_obj)}\">#{model.associated_object_display_name(assoc, request, assoc_obj)}</option>"
+        end
+      elsif request.params['redir'] == 'edit'
         redirect("edit/#{model.primary_key_value(obj)}")
       else
         redirect("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")
@@ -399,11 +406,18 @@ JS
     def inline_mtm_edit_forms(obj)
       assocs = model.inline_mtm_assocs
       return if assocs.empty?
+      ajax = model.ajax_inline_mtm_associations?
+
       t = "<div class='inline_mtm_add_associations'>"
       assocs.each do |assoc|
-        t << Forme.form(obj, {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit")}, form_opts) do |f|
+        form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit")}
+        if ajax
+          form_attr[:class] = 'ajax_mtm_add_associations'
+          form_attr['data-remove'] = "##{assoc}_remove_list"
+        end
+        t << Forme.form(obj, form_attr, form_opts) do |f|
           opts = model.column_options_for(:mtm_edit, request, assoc)
-          add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
+          add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts.dup
           f.input(assoc, {:name=>'add[]', :id=>"add_#{assoc}", :dataset=>model.unassociated_mtm_objects(request, assoc, obj), :multiple=>false, :add_blank=>true}.merge(add_opts))
           f.button(:value=>'Add', :class=>'btn btn-primary')
         end.to_s
@@ -416,16 +430,50 @@ JS
         t << association_class_link(mc, assoc)
         t << "<ul id='#{assoc}_remove_list'>"
         obj.send(assoc).each do |assoc_obj|
-          t << "<li>"
-          t << association_link(mc, assoc_obj)
-          t << Forme.form({:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post'}, form_opts) do |f|
-            f.button(:value=>'Remove', :class=>'btn btn-danger')
-          end.to_s
-          t << "</li>"
+          t << mtm_edit_remove(assoc, mc, obj, assoc_obj, ajax)
         end
         t << "</ul></li>"
       end
       t << "</ul></div>"
+      if ajax
+        t << <<JS
+<script type="text/javascript">
+$('.ajax_mtm_add_associations').submit(function(e){
+  var form = $(this);
+  var select = form.find('select')[0];
+  $.post(this.action, form.serialize(), function(data, textStatus){
+    $(select).find('option:selected').remove();
+    select.selectedIndex = 0;
+    $(form.data('remove')).append(data);
+  });
+  e.preventDefault();
+});
+$('.inline_mtm_remove_associations').on("submit", "form", function(e){
+  var form = $(this);
+  var parent = form.parent();
+  $.post(this.action, form.serialize(), function(data, textStatus){
+    $(form.data('add')).append(data);
+    parent.remove()
+  });
+  e.preventDefault();
+});
+</script>
+JS
+      end
+      t
+    end
+    def mtm_edit_remove(assoc, mc, obj, assoc_obj, ajax)
+      t = "<li>"
+      t << association_link(mc, assoc_obj)
+      form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post'}
+      if ajax
+        form_attr[:class] = 'ajax_mtm_remove_associations'
+        form_attr['data-add'] = "#add_#{assoc}"
+      end
+      t << Forme.form(form_attr, form_opts) do |f|
+        f.button(:value=>'Remove', :class=>'btn btn-danger')
+      end.to_s
+      t << "</li>"
     end
   end
 end

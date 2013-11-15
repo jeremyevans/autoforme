@@ -185,15 +185,18 @@ module AutoForme
       def mtm_update(request, assoc, obj, add, remove)
         ref = model.association_reflection(assoc)
         assoc_class = associated_model_class(assoc)
+        ret = nil
         model.db.transaction do
           [[add, ref.add_method], [remove, ref.remove_method]].each do |ids, meth|
             if ids
               ids.each do |id|
-                obj.send(meth, assoc_class ? assoc_class.with_pk(:association, request, id) : ref.associated_dataset.with_pk!(id))
+                ret = assoc_class ? assoc_class.with_pk(:association, request, id) : ref.associated_dataset.with_pk!(id)
+                obj.send(meth, ret)
               end
             end
           end
         end
+        ret
       end
 
       def associated_mtm_objects(request, assoc, obj)

@@ -35,6 +35,13 @@ module AutoForme
       normalize_mtm_associations(inline_mtm_associations || framework.inline_mtm_associations_for(model))
     end
 
+    opts_attribute :ajax_inline_mtm_associations
+    def ajax_inline_mtm_associations?
+      v = ajax_inline_mtm_associations
+      v = framework.ajax_inline_mtm_associations?(model) if v.nil?
+      v || false
+    end
+
     opts_attribute :columns, %w'new edit show browse search_form search'
     def columns_for(type)
       send("#{type}_columns") || columns || framework.columns_for(type, model) || default_columns
@@ -211,16 +218,11 @@ module AutoForme
     end
 
     def object_display_name(type, request, obj)
-      case v = display_name_for(type)
-      when Symbol
-        obj.send(v)
-      when Proc, Method
-        v.call(obj)
-      when nil
-        default_object_display_name(obj)
-      else
-        raise Error, "invalid display_name setting: #{v.inspect}"
-      end
+      apply_name_method(display_name_for(type), obj)
+    end
+
+    def associated_object_display_name(assoc, request, obj)
+      apply_name_method(column_options_for(:mtm_edit, request, assoc)[:name_method], obj)
     end
 
     def default_object_display_name(obj)
@@ -234,6 +236,19 @@ module AutoForme
     end
 
     private
+
+    def apply_name_method(nm, obj)
+      case nm
+      when Symbol
+        obj.send(nm)
+      when Proc, Method
+        nm.call(obj)
+      when nil
+        default_object_display_name(obj)
+      else
+        raise Error, "invalid name method: #{nm.inspect}"
+      end
+    end
 
     def normalize_mtm_associations(assocs)
       if assocs == :all
