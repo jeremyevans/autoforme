@@ -1,6 +1,6 @@
 module AutoForme
   module OptsAttributes
-    def opts_attribute(base, prefixes=[])
+    def opts_attribute(base, prefixes=[], &default_block)
       meths = [base] + prefixes.map{|prefix| :"#{prefix}_#{base}"}
       meths.each do |meth|
         define_method(meth) do |*args, &block|
@@ -14,7 +14,13 @@ module AutoForme
 
           case args.length
           when 0
-            opts[meth] 
+            opts.fetch(meth) do
+              if meth == base
+                default_block.call if default_block
+              else
+                send(base)
+              end
+            end
           when 1
             opts[meth] = args.first
           else

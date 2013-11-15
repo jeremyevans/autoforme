@@ -4,7 +4,11 @@ require 'logger'
 
 RSpec.configure do |c|
   c.around(:each) do |example|
-    db.transaction(:rollback=>:always){example.run}
+    if db
+      db.transaction(:rollback=>:always){example.run}
+    else
+      example.run
+    end
   end
 end
 
