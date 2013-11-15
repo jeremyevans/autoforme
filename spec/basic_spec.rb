@@ -255,6 +255,27 @@ describe AutoForme do
     page.html.should =~ /Deleted FooArtist/
   end
 
+  it "should use text boxes on list page when autocompleting is enabled" do
+    app_setup(Artist) do
+      autocomplete_options({})
+    end
+    a = Artist.create(:name=>'TestArtistNew')
+
+    visit('/Artist/show')
+    fill_in 'Artist', :with=>"#{a.id} - foo"
+    click_button 'Show'
+    page.html.should =~ /Name.+TestArtistNew/m
+
+    click_link 'Edit'
+    fill_in 'Artist', :with=>"#{a.id} - foo"
+    click_button 'Edit'
+    click_button 'Update'
+
+    click_link 'Delete'
+    fill_in 'Artist', :with=>"#{a.id} - foo"
+    click_button 'Delete'
+    Artist.count.should == 0
+  end
 end
 
 describe AutoForme do

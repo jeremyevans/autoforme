@@ -14,7 +14,7 @@ module AutoForme
     attr_reader :opts
     
     opts_attribute :supported_actions
-    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit association_links'.freeze
+    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
     def supported_action?(type)
       (supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS).include?(type)
     end
@@ -131,6 +131,15 @@ module AutoForme
       v = ajax_association_links
       v = framework.ajax_association_links?(model) if v.nil?
       v || false
+    end
+
+    opts_attribute :autocomplete_options, %w'show edit delete'
+    def autocomplete_options_for(type)
+      return unless %w'show edit delete'.include?(type.to_s)
+      v = send("#{type}_autocomplete_options")
+      v = autocomplete_options if v.nil?
+      v = framework.autocomplete_options_for(type, model) if v.nil?
+      v
     end
 
     opts_attribute :before_create

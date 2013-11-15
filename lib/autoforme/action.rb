@@ -27,8 +27,13 @@ module AutoForme
         return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'])
       when 'association_links'
         return false unless model.supported_action?(request.params['type'] || 'edit')
+      when 'autocomplete'
+        return false unless model.autocomplete_options_for(request.params['type'])
       else
         return false unless model.supported_action?(normalized_type)
+        if request.id && %w'show edit delete destroy'.include?(type) && model.autocomplete_options_for(normalized_type)
+          request.id.replace(request.id.to_i.to_s)
+        end
       end
 
       true
@@ -98,6 +103,15 @@ module AutoForme
     def page
       html = tabs
       html << yield.to_s
+      if @auto_complete
+       html << <<JS
+<script type="text/javascript">
+$('.autoforme_autocomplete').each(function(){
+  $(this).autocomplete($(this).data('autocomplete_url'));
+});
+</script>
+JS
+      end
       html
     end
 
@@ -141,7 +155,15 @@ module AutoForme
       page do
         form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
         Forme.form(form_attributes, form_opts) do |f|
-          f.input(:select, :options=>model.select_options(type, request), :name=>'id', :id=>'id', :label=>model.class_name)
+          input_opts = {:name=>'id', :id=>'id', :label=>model.class_name}
+          if @auto_complete = model.autocomplete_options_for(type)
+            input_type = :text
+            input_opts.merge!(:class=>'autoforme_autocomplete', :attr=>{'data-autocomplete_url'=>url_for("autocomplete?type=#{type}")})
+          else
+            input_type = :select
+            input_opts.merge!(:options=>model.select_options(type, request))
+          end
+          f.input(input_type, input_opts)
           f.button(:value=>type.to_s.capitalize, :class=>"btn btn-#{type.to_s == 'delete' ? 'danger' : 'primary'}")
         end
       end
@@ -309,6 +331,12 @@ module AutoForme
       @type = request.params['type'] || 'edit'
       obj = model.with_pk(type, request, request.id)
       association_links(obj)
+    end
+
+    def handle_autocomplete
+      unless (query = request.params['q'].to_s).empty?
+        model.autocomplete(request.params['type'], request, query).join("\n")
+      end
     end
 
     def association_links(obj)

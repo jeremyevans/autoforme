@@ -182,6 +182,26 @@ module AutoForme
         ds
       end
 
+      AUTOCOMPLETE_DEFAULT_OPTS = {
+        :filter=>lambda{|ds, opts| ds.where(::Sequel.ilike(:name, "%#{ds.escape_like(opts[:query])}%"))},
+        :limit=>10,
+        :display=>:name,
+      }.freeze
+      def autocomplete(type, request, query)
+        opts = AUTOCOMPLETE_DEFAULT_OPTS.merge(framework.default_autocomplete_options(autocomplete_options_for(type)))
+        callback_opts = {:type=>type, :request=>request, :query=>query}
+        ds = all_dataset_for(type, request)
+        ds = opts[:filter].call(ds, callback_opts)
+        ds = opts[:callback].call(ds, callback_opts) if opts[:callback]
+        display = opts[:display]
+        display = display.call(callback_opts) if display.respond_to?(:call)
+        limit = opts[:limit]
+        limit = limit.call(callback_opts) if limit.respond_to?(:call)
+        ds = ds.select(::Sequel.join([model.primary_key, display], ' - ').as(:v)).
+          limit(limit)
+        ds.map(:v)
+      end
+
       def mtm_update(request, assoc, obj, add, remove)
         ref = model.association_reflection(assoc)
         assoc_class = associated_model_class(assoc)

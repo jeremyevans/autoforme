@@ -81,6 +81,12 @@ module AutoForme
       nil
     end
 
+    def autocomplete_options_for(type, model)
+      nil
+    end
+
+    opts_attribute(:default_autocomplete_options){{}}
+
     def default_table_class
       "table table-bordered table-striped"
     end

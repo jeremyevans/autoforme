@@ -35,6 +35,7 @@ END
       association_links [:artist, :tracks]
     end
     autoforme(Track) do
+      autocomplete_options({})
       columns [:album, :number, :name, :length]
       per_page 2
     end
