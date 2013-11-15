@@ -44,12 +44,12 @@ module AutoForme
 
     opts_attribute :columns, %w'new edit show delete browse search_form search'
     def columns_for(type)
-      send("#{type}_columns") || columns || framework.columns_for(type, model) || default_columns
+      send("#{type}_columns") || framework.columns_for(type, model) || default_columns
     end
 
     opts_attribute :column_options, %w'new edit show delete browse search_form search mtm_edit'
     def column_options_for(type, request, column)
-      opts = send("#{type}_column_options") || column_options || framework.column_options_for(type, model)
+      opts = send("#{type}_column_options") || framework.column_options_for(type, model)
       opts = opts[column] if opts
       opts ||= {}
       if association?(column) && associated_model = associated_model_class(column)
@@ -70,42 +70,42 @@ module AutoForme
 
     opts_attribute :order, %w'association edit show delete browse search'
     def order_for(type)
-      send("#{type}_order") || order || framework.order_for(type, model)
+      send("#{type}_order") || framework.order_for(type, model)
     end
 
     opts_attribute :eager, %w'association edit show delete browse search'
     def eager_for(type)
-      send("#{type}_eager") || eager
+      send("#{type}_eager")
     end
 
     opts_attribute :eager_graph, %w'association edit show delete browse search'
     def eager_graph_for(type)
-      send("#{type}_eager_graph") || eager_graph
+      send("#{type}_eager_graph")
     end
 
     opts_attribute :filter, %w'association edit show delete browse search'
     def filter_for(type)
-      send("#{type}_filter") || filter || framework.filter_for(type, model)
+      send("#{type}_filter") || framework.filter_for(type, model)
     end
 
     opts_attribute :table_class, %w'browse search'
     def table_class_for(type)
-      send("#{type}_table_class") || table_class || framework.table_class_for(type)
+      send("#{type}_table_class") || framework.table_class_for(type)
     end
 
     opts_attribute :per_page, %w'association edit show delete browse search'
     def limit_for(type)
-      send("#{type}_per_page") || per_page || framework.limit_for(type)
+      send("#{type}_per_page") || framework.limit_for(type)
     end
 
     opts_attribute :display_name, %w'association show edit delete'
     def display_name_for(type)
-      send("#{type}_display_name") || display_name || framework.display_name_for(type, model)
+      send("#{type}_display_name") || framework.display_name_for(type, model)
     end
 
     opts_attribute :association_links, %w'edit show'
     def association_links_for(type)
-      case v = send("#{type}_association_links") || association_links || framework.association_links_for(type, model)
+      case v = send("#{type}_association_links") || framework.association_links_for(type, model)
       when nil
         []
       when Array

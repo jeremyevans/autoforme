@@ -1,4 +1,8 @@
 module AutoForme
+  DEFAULT_LIMIT = 25
+  DEFAULT_TABLE_CLASS = "table table-bordered table-striped"
+  DEFAULT_AUTOCOMPLETE_OPTIONS = {}
+
   # Framework wraps a controller
   class Framework
     extend OptsAttributes
@@ -16,14 +20,14 @@ module AutoForme
 
     opts_attribute :supported_actions
 
-    opts_attribute :table_class, %w'browse search'
+    opts_attribute(:table_class, %w'browse search'){DEFAULT_TABLE_CLASS}
     def table_class_for(type)
-      send("#{type}_table_class") || table_class || default_table_class
+      send("#{type}_table_class") || default_table_class
     end
 
-    opts_attribute :per_page, %w'browse search'
+    opts_attribute(:per_page, %w'browse search'){DEFAULT_LIMIT}
     def limit_for(type)
-      send("#{type}_per_page") || per_page || default_limit
+      send("#{type}_per_page")
     end
 
     def initialize(controller)
@@ -65,10 +69,6 @@ module AutoForme
       nil
     end
 
-    def default_limit
-      25
-    end
-
     def lazy_load_association_links?(model)
       nil
     end
@@ -85,11 +85,7 @@ module AutoForme
       nil
     end
 
-    opts_attribute(:default_autocomplete_options){{}}
-
-    def default_table_class
-      "table table-bordered table-striped"
-    end
+    opts_attribute(:default_autocomplete_options){DEFAULT_AUTOCOMPLETE_OPTIONS}
 
     def association_links_for(type, model)
       nil
