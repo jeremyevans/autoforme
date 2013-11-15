@@ -310,9 +310,10 @@ module AutoForme
         if model.ajax_association_links?
           t << <<JS
 <script type="text/javascript">
-$('#lazy_load_association_links').click(function(){
+$('#lazy_load_association_links').click(function(e){
   $('#lazy_load_association_links').load("#{url_for("association_links/#{model.primary_key_value(obj)}?type=#{type}")}");
-  return false;
+  $('#lazy_load_association_links').unbind('click');
+  e.preventDefault();
 });
 </script>
 JS
