@@ -70,11 +70,11 @@ module AutoForme
     end
 
     def lazy_load_association_links?(model)
-      false
+      nil
     end
 
     def ajax_association_links?(model)
-      false
+      nil
     end
 
     def default_table_class

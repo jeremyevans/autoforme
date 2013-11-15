@@ -112,17 +112,18 @@ module AutoForme
 
     opts_attribute :lazy_load_association_links
     def lazy_load_association_links?
-      v = ajax_association_links?
+      v = ajax_association_links
+      v = framework.ajax_association_links?(model) if v.nil?
       v = lazy_load_association_links if v.nil?
       v = framework.lazy_load_association_links?(model) if v.nil?
-      v
+      v || false
     end
 
     opts_attribute :ajax_association_links
     def ajax_association_links?
       v = ajax_association_links
       v = framework.ajax_association_links?(model) if v.nil?
-      v
+      v || false
     end
 
     opts_attribute :before_create
