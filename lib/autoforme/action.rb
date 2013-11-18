@@ -113,11 +113,15 @@ module AutoForme
 $('.autoforme_autocomplete').each(function(){
   var e = $(this);
   var column = e.data('column');
+  var exclude = e.data('exclude');
   var url = '#{request.path}/#{model.link}/autocomplete';
   if (column) {
     url += '/' + column;
   }
   url += '?type=' + e.data('type');
+  if (exclude) {
+    url += '&exclude=' + exclude;
+  }
   e.autocomplete(url);
 });
 $('form').submit(function(e){
@@ -317,7 +321,12 @@ JS
               opts = model.column_options_for(:mtm_edit, request, assoc)
               add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
               remove_opts = opts[:remove] ? opts.merge(opts.delete(:remove)) : opts
-              f.input(assoc, {:name=>'add[]', :id=>'add', :label=>'Associate With', :dataset=>model.unassociated_mtm_objects(request, assoc, obj)}.merge(add_opts))
+              add_opts = {:name=>'add[]', :id=>'add', :label=>'Associate With'}.merge(add_opts)
+              if model.association_autocomplete?(assoc)
+                f.input(assoc, {:type=>'text', :class=>'autoforme_autocomplete', :attr=>{'data-type'=>'association', 'data-column'=>assoc, 'data-exclude'=>model.primary_key_value(obj)}, :value=>''}.merge(add_opts))
+              else
+                f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj)}.merge(add_opts))
+              end
               f.input(assoc, {:name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>[]}.merge(remove_opts))
               f.button(:value=>'Update', :class=>'btn btn-primary')
             end
@@ -361,7 +370,7 @@ JS
 
     def handle_autocomplete
       unless (query = request.params['q'].to_s).empty?
-        model.autocomplete(request.params['type'], request, request.id, query).join("\n")
+        model.autocomplete(:type=>request.params['type'], :request=>request, :association=>request.id, :query=>query, :exclude=>request.params['exclude']).join("\n")
       end
     end
 

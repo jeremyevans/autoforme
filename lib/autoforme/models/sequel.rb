@@ -195,14 +195,26 @@ module AutoForme
         ds
       end
 
+      def association_autocomplete?(assoc)
+        (c = associated_model_class(assoc.to_sym)) && c.autocomplete_options_for(:association)
+      end
+
       AUTOCOMPLETE_DEFAULT_OPTS = {
         :filter=>lambda{|ds, opts| ds.where(::Sequel.ilike(:name, "%#{ds.escape_like(opts[:query])}%"))},
         :limit=>10,
         :display=>:name,
       }.freeze
-      def autocomplete(type, request, assoc, query)
+      def autocomplete(opts={})
+        type, request, assoc, query, exclude = opts.values_at(:type, :request, :association, :query, :exclude)
         if assoc && association?(assoc)
-          return associated_model_class(assoc.to_sym).autocomplete('association', request, nil, query)
+          assoc = assoc.to_sym
+          if exclude && association_type(assoc) == :edit
+            ref = model.association_reflection(assoc)
+            block = lambda do |ds|
+              ds.exclude(ref.right_primary_key=>model.db.from(ref[:join_table]).where(ref[:left_key]=>exclude).select(ref[:right_key]))
+            end
+          end
+          return associated_model_class(assoc).autocomplete(opts.merge(:type=>'association', :association=>nil), &block)
         end
         opts = AUTOCOMPLETE_DEFAULT_OPTS.merge(framework.default_autocomplete_options(autocomplete_options_for(type)))
         callback_opts = {:type=>type, :request=>request, :query=>query}
@@ -215,6 +227,7 @@ module AutoForme
         limit = limit.call(callback_opts) if limit.respond_to?(:call)
         ds = ds.select(::Sequel.join([model.primary_key, display], ' - ').as(:v)).
           limit(limit)
+        ds = yield ds if block_given?
         ds.map(:v)
       end
 
@@ -226,6 +239,7 @@ module AutoForme
           [[add, ref.add_method], [remove, ref.remove_method]].each do |ids, meth|
             if ids
               ids.each do |id|
+                next if id.to_s.empty?
                 ret = assoc_class ? assoc_class.with_pk(:association, request, id) : ref.associated_dataset.with_pk!(id)
                 obj.send(meth, ret)
               end

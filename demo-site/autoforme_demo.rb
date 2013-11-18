@@ -43,6 +43,7 @@ END
       per_page 2
     end
     autoforme(Tag) do
+      autocomplete_options({})
       supported_actions %w'edit update'
     end
   end

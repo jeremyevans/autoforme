@@ -49,6 +49,47 @@ describe AutoForme do
     all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
   end
 
+  it "should have many to many association editing working with autocompletion" do
+    app_setup do
+      autoforme Artist do
+        mtm_associations :albums
+      end
+      autoforme Album do
+        autocomplete_options({})
+      end
+    end
+
+    Artist.create(:name=>'Artist1')
+    a1 = Album.create(:name=>'Album1')
+    a2 = Album.create(:name=>'Album2')
+    a3 = Album.create(:name=>'Album3')
+
+    visit("/Artist/mtm_edit")
+    select("Artist1")
+    click_button "Edit"
+
+    select("albums")
+    click_button "Edit"
+
+    all('select')[0].all('option').map{|s| s.text}.should == []
+    fill_in "Associate With", :with=>a1.id
+    click_button "Update"
+    page.html.should =~ /Updated albums association for Artist/
+    Artist.first.albums.map{|x| x.name}.should == %w'Album1'
+
+    all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
+    fill_in "Associate With", :with=>a2.id
+    select("Album1", :from=>"Disassociate From")
+    click_button "Update"
+    Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2'
+
+    all('select')[0].all('option').map{|s| s.text}.should == ["Album2"]
+    select("Album2", :from=>"Disassociate From")
+    click_button "Update"
+    Artist.first.refresh.albums.map{|x| x.name}.should == []
+    all('select')[0].all('option').map{|s| s.text}.should == []
+  end
+
   it "should have inline many to many association editing working" do
     app_setup do
       autoforme Artist do
