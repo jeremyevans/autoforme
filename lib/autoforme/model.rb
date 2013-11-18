@@ -213,7 +213,7 @@ module AutoForme
       if params
         columns_for(:new).each do |col|
           if association?(col)
-            col = model.association_reflection(col)[:key]
+            col = model.association_key(col)
           end
           if v = params[col]
             obj.send("#{col}=", v)
