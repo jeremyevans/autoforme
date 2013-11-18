@@ -4,7 +4,6 @@ require 'logger'
 $: << '../lib'
 
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite:/')
-DB.loggers << Logger.new($stdout)
 
 unless DB.table_exists?(:artists)
 DB.create_table(:artists) do
@@ -68,3 +67,4 @@ Sequel::Model.plugin :association_pks
 Sequel::Model.plugin :prepared_statements
 Sequel::Model.plugin :prepared_statements_associations
 Dir['models/*.rb'].each{|f| require f}
+DB.loggers << Logger.new($stdout)
