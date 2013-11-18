@@ -5,7 +5,7 @@ require 'models'
 require 'autoforme'
 require 'sinatra/flash'
 
-Forme.register_config(:mine, :base=>:default, :serializer=>:html_usa, :labeler=>:explicit, :wrapper=>:div)
+Forme.register_config(:mine, :base=>:default, :labeler=>:explicit, :wrapper=>:div)
 Forme.default_config = :mine
 
 class AutoFormeDemo < Sinatra::Base
