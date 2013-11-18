@@ -123,6 +123,41 @@ describe AutoForme do
     Artist.first.refresh.albums.map{|x| x.name}.sort.should == %w'Album2 Album3'
   end
 
+  it "should have inline many to many association editing working with autocompletion" do
+    app_setup do
+      autoforme Artist do
+        inline_mtm_associations :albums
+      end
+      autoforme Album do
+        autocomplete_options({})
+      end
+    end
+
+    Artist.create(:name=>'Artist1')
+    a1 = Album.create(:name=>'Album1')
+    a2 = Album.create(:name=>'Album2')
+    a3 = Album.create(:name=>'Album3')
+
+    visit("/Artist/edit")
+    select("Artist1")
+    click_button "Edit"
+    fill_in 'Albums', :with=>a1.id.to_s
+    click_button 'Add'
+    page.html.should =~ /Updated albums association for Artist/
+    Artist.first.albums.map{|x| x.name}.should == %w'Album1'
+
+    fill_in 'Albums', :with=>a2.id.to_s
+    click_button 'Add'
+    Artist.first.refresh.albums.map{|x| x.name}.sort.should == %w'Album1 Album2'
+
+    click_button 'Remove'
+    Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2'
+
+    fill_in 'Albums', :with=>a3.id.to_s
+    click_button 'Add'
+    Artist.first.refresh.albums.map{|x| x.name}.sort.should == %w'Album2 Album3'
+  end
+
   it "should have working many to many association links on show and edit pages" do
     app_setup do
       autoforme Artist do
