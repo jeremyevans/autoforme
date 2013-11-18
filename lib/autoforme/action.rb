@@ -31,9 +31,6 @@ module AutoForme
         return false unless model.autocomplete_options_for(request.params['type'])
       else
         return false unless model.supported_action?(normalized_type)
-        if request.id && %w'show edit delete destroy'.include?(type) && model.autocomplete_options_for(normalized_type)
-          request.id.replace(request.id.to_i.to_s)
-        end
       end
 
       true
@@ -122,6 +119,11 @@ $('.autoforme_autocomplete').each(function(){
   }
   url += '?type=' + e.data('type');
   e.autocomplete(url);
+});
+$('form').submit(function(e){
+  $(this).find('.autoforme_autocomplete').each(function(){
+    $(this).val($(this).val().split(' - ', 2)[0]);
+  });
 });
 </script>
 JS

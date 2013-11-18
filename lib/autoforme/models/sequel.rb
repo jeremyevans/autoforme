@@ -30,9 +30,6 @@ module AutoForme
             end
 
             if v = params[ref[:key]]
-              if model_class && model_class.autocomplete_options_for(:association)
-                v = v.to_i
-              end
               v = ds.first!(ref.primary_key=>v)
             end
           else

@@ -265,17 +265,17 @@ describe AutoForme do
     a = Artist.create(:name=>'TestArtistNew')
 
     visit('/Artist/show')
-    fill_in 'Artist', :with=>"#{a.id} - foo"
+    fill_in 'Artist', :with=>a.id.to_s
     click_button 'Show'
     page.html.should =~ /Name.+TestArtistNew/m
 
     click_link 'Edit'
-    fill_in 'Artist', :with=>"#{a.id} - foo"
+    fill_in 'Artist', :with=>a.id.to_s
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Delete'
-    fill_in 'Artist', :with=>"#{a.id} - foo"
+    fill_in 'Artist', :with=>a.id.to_s
     click_button 'Delete'
     click_button 'Delete'
     Artist.count.should == 0
