@@ -14,6 +14,10 @@ module AutoForme
         @model.call({})
       end
 
+      def form_param_name(assoc)
+        "#{model.send(:underscore, model.name)}[#{association_key(assoc)}]"
+      end
+
       def set_fields(obj, type, request, params)
         columns_for(type).each do |col|
           column = col
@@ -26,6 +30,9 @@ module AutoForme
             end
 
             if v = params[ref[:key]]
+              if model_class && model_class.autocomplete_options_for(:association)
+                v = v.to_i
+              end
               v = ds.first!(ref.primary_key=>v)
             end
           else
@@ -37,7 +44,12 @@ module AutoForme
       end
 
       def association?(column)
-        model.association_reflection(column)
+        case column
+        when String
+          model.associations.map{|x| x.to_s}.include?(column)
+        else
+          model.association_reflection(column)
+        end
       end
 
       def associated_class(assoc)
@@ -53,6 +65,10 @@ module AutoForme
         when :many_to_many
           :edit
         end
+      end
+
+      def association_key(assoc)
+        model.association_reflection(assoc)[:key]
       end
 
       def associated_new_column_values(obj, assoc)
@@ -187,7 +203,10 @@ module AutoForme
         :limit=>10,
         :display=>:name,
       }.freeze
-      def autocomplete(type, request, query)
+      def autocomplete(type, request, assoc, query)
+        if assoc && association?(assoc)
+          return associated_model_class(assoc.to_sym).autocomplete('association', request, nil, query)
+        end
         opts = AUTOCOMPLETE_DEFAULT_OPTS.merge(framework.default_autocomplete_options(autocomplete_options_for(type)))
         callback_opts = {:type=>type, :request=>request, :query=>query}
         ds = all_dataset_for(type, request)

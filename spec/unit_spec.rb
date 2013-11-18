@@ -113,27 +113,27 @@ describe AutoForme do
 
   it "should handle autocompletion options" do
     model.autocomplete_options({})
-    model.autocomplete('show', nil, 'foo').should == []
+    model.autocomplete('show', nil, nil, 'foo').should == []
     a = Artist.create(:name=>'FooBar')
-    model.autocomplete('show', nil, 'foo').should == ["#{a.id} - FooBar"]
-    model.autocomplete('show', nil, 'boo').should == []
+    model.autocomplete('show', nil, nil, 'foo').should == ["#{a.id} - FooBar"]
+    model.autocomplete('show', nil, nil, 'boo').should == []
     b = Artist.create(:name=>'BooFar')
-    model.autocomplete('show', nil, 'boo').should == ["#{b.id} - BooFar"]
-    model.autocomplete('show', nil, 'oo').sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
+    model.autocomplete('show', nil, nil, 'boo').should == ["#{b.id} - BooFar"]
+    model.autocomplete('show', nil, nil, 'oo').sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
     model.autocomplete_options :display=>:id
-    model.autocomplete('show', nil, 'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete('show', nil, nil, 'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     model.autocomplete_options :display=>proc{:id}
-    model.autocomplete('show', nil, 'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete('show', nil, nil, 'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     model.autocomplete_options :limit=>1
-    model.autocomplete('show', nil, 'oo').should == ["#{a.id} - FooBar"]
+    model.autocomplete('show', nil, nil, 'oo').should == ["#{a.id} - FooBar"]
     model.autocomplete_options :limit=>proc{1}
-    model.autocomplete('show', nil, 'oo').should == ["#{a.id} - FooBar"]
+    model.autocomplete('show', nil, nil, 'oo').should == ["#{a.id} - FooBar"]
     model.autocomplete_options :callback=>proc{|ds, opts| ds.reverse_order(:id)}
-    model.autocomplete('show', nil, 'oo').should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
+    model.autocomplete('show', nil, nil, 'oo').should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
 
     model.autocomplete_options :filter=>proc{|ds, opts| ds.where(:name=>opts[:query])}
-    model.autocomplete('show', nil, 'foo').should == []
-    model.autocomplete('show', nil, 'FooBar').should == ["#{a.id} - FooBar"]
+    model.autocomplete('show', nil, nil, 'foo').should == []
+    model.autocomplete('show', nil, nil, 'FooBar').should == ["#{a.id} - FooBar"]
   end
 end
 

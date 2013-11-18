@@ -52,6 +52,40 @@ describe AutoForme do
     all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 
+  it "should use text boxes for associated objects on new/edit/search forms if associated model uses autocompleting" do
+    app_setup do
+      autoforme Artist do
+        autocomplete_options({})
+      end
+      autoforme Album do
+        columns [:name, :artist]
+      end
+    end
+
+    a = Artist.create(:name=>'TestArtist')
+    b = Artist.create(:name=>'TestArtist2')
+
+    visit("/Album/new")
+    fill_in 'Name', :with=>'Album1'
+    fill_in 'Artist', :with=>"#{a.id} - foo"
+    click_button 'Create'
+    Album.first.artist_id.should == a.id
+
+    click_link 'Edit'
+    select 'Album1'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'Album1b'
+    fill_in 'Artist', :with=>"#{b.id} - foo"
+    click_button 'Update'
+    Album.first.artist_id.should == b.id
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'1b'
+    fill_in 'Artist', :with=>"#{b.id} - foo"
+    click_button 'Search'
+    all('td').map{|s| s.text}.should == ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
+  end
+
   it "should be able to used specified name formatting in other model" do
     app_setup do
       autoforme Artist do

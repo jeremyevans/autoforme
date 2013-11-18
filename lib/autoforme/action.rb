@@ -73,6 +73,14 @@ module AutoForme
       string.respond_to?(:humanize) ? string.humanize : string.gsub(/_/, " ").capitalize
     end
 
+    def column_options_for(type, request, obj, column)
+      opts = model.column_options_for(type, request, column)
+      if opts[:class] == 'autoforme_autocomplete'
+        opts[:value] = "#{obj.send(model.association_key(column))} - #{model.column_value(type, request, obj, column)}"
+      end
+      opts
+    end
+
     def column_label_for(type, request, model, column)
       unless label = model.column_options_for(type, request, column)[:label]
         label = humanize(column)
@@ -103,15 +111,20 @@ module AutoForme
     def page
       html = tabs
       html << yield.to_s
-      if @auto_complete
-       html << <<JS
+      html << <<JS
 <script type="text/javascript">
 $('.autoforme_autocomplete').each(function(){
-  $(this).autocomplete($(this).data('autocomplete_url'));
+  var e = $(this);
+  var column = e.data('column');
+  var url = '#{request.path}/#{model.link}/autocomplete';
+  if (column) {
+    url += '/' + column;
+  }
+  url += '?type=' + e.data('type');
+  e.autocomplete(url);
 });
 </script>
 JS
-      end
       html
     end
 
@@ -128,7 +141,7 @@ JS
       page do
         Forme.form(obj, {:action=>url_for("create")}, form_opts) do |f|
           model.columns_for(:new).each do |column|
-            f.input(column, model.column_options_for(:new, request, column))
+            f.input(column, column_options_for(:new, request, obj, column))
           end
           f.button(:value=>'Create', :class=>'btn btn-primary')
         end
@@ -156,9 +169,9 @@ JS
         form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
         Forme.form(form_attributes, form_opts) do |f|
           input_opts = {:name=>'id', :id=>'id', :label=>model.class_name}
-          if @auto_complete = model.autocomplete_options_for(type)
+          if model.autocomplete_options_for(type)
             input_type = :text
-            input_opts.merge!(:class=>'autoforme_autocomplete', :attr=>{'data-autocomplete_url'=>url_for("autocomplete?type=#{type}")})
+            input_opts.merge!(:class=>'autoforme_autocomplete', :attr=>{'data-type'=>type})
           else
             input_type = :select
             input_opts.merge!(:options=>model.select_options(type, request))
@@ -203,7 +216,7 @@ JS
       page do
         t = Forme.form(obj, {:action=>url_for("update/#{model.primary_key_value(obj)}")}, form_opts) do |f|
           model.columns_for(:edit).each do |column|
-            f.input(column, model.column_options_for(:edit, request, column))
+            f.input(column, column_options_for(:edit, request, obj, column))
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
         end.to_s
@@ -284,7 +297,7 @@ JS
         page do
           Forme.form(model.new, {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
             model.columns_for(:search_form).each do |column|
-              f.input(column, {:name=>column, :id=>column}.merge(model.column_options_for(:search_form, request, column)))
+              f.input(column, {:name=>column, :id=>column}.merge(column_options_for(:search_form, request, f.obj, column)))
             end
             f.button(:value=>'Search', :class=>'btn btn-primary')
           end
@@ -346,7 +359,7 @@ JS
 
     def handle_autocomplete
       unless (query = request.params['q'].to_s).empty?
-        model.autocomplete(request.params['type'], request, query).join("\n")
+        model.autocomplete(request.params['type'], request, request.id, query).join("\n")
       end
     end
 

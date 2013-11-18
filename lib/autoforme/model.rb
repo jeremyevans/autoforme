@@ -54,14 +54,21 @@ module AutoForme
       opts ||= {}
       if association?(column) && associated_model = associated_model_class(column)
         opts = opts.dup
-        unless opts[:name_method]
-          opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, request, obj)}
-        end
+        if associated_model.autocomplete_options_for(:association) && !opts[:as]
+          opts[:type] = 'text'
+          opts[:class] = 'autoforme_autocomplete'
+          opts[:attr] = {'data-column'=>column, 'data-type'=>type}
+          opts[:name] = form_param_name(column)
+        else
+          unless opts[:name_method]
+            opts[:name_method] = lambda{|obj| associated_model.object_display_name(:association, request, obj)}
+          end
 
-        case type
-        when :edit, :new, :search_form
-          unless opts[:options] || opts[:dataset]
-            opts[:dataset] = lambda{|ds| associated_model.apply_dataset_options(:association, request, ds)}
+          case type
+          when :edit, :new, :search_form
+            unless opts[:options] || opts[:dataset]
+              opts[:dataset] = lambda{|ds| associated_model.apply_dataset_options(:association, request, ds)}
+            end
           end
         end
       end
@@ -133,9 +140,10 @@ module AutoForme
       v || false
     end
 
-    opts_attribute :autocomplete_options, %w'show edit delete'
+    AUTOCOMPLETE_TYPES = %w'show edit delete association'.freeze
+    opts_attribute :autocomplete_options, AUTOCOMPLETE_TYPES
     def autocomplete_options_for(type)
-      return unless %w'show edit delete'.include?(type.to_s)
+      return unless AUTOCOMPLETE_TYPES.include?(type.to_s)
       v = send("#{type}_autocomplete_options")
       v = autocomplete_options if v.nil?
       v = framework.autocomplete_options_for(type, model) if v.nil?

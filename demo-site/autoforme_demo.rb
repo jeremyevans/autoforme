@@ -26,8 +26,11 @@ END
 
   AutoForme.for(:sinatra, self) do
     model_type :sequel
-    autoforme(Artist)
+    autoforme(Artist) do 
+      autocomplete_options({})
+    end
     autoforme(Album) do
+      autocomplete_options({})
       mtm_associations :tags
       inline_mtm_associations :tags
       ajax_inline_mtm_associations true
