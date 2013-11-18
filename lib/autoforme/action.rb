@@ -107,39 +107,9 @@ module AutoForme
 
     def page
       html = tabs
+      html << "<div id='autoforme_content' data-url='#{url_for('')}'>"
       html << yield.to_s
-      html << <<JS
-<script type="text/javascript">
-function autoforme_fix_autocomplete(e) {
-  e.find('.autoforme_autocomplete').each(function(){
-    $(this).val($(this).val().split(' - ', 2)[0]);
-  });
-}
-
-function autoforme_setup_autocomplete() {
-  $('.autoforme_autocomplete').each(function(){
-    var e = $(this);
-    var column = e.data('column');
-    var exclude = e.data('exclude');
-    var url = '#{request.path}/#{model.link}/autocomplete';
-    if (column) {
-      url += '/' + column;
-    }
-    url += '?type=' + e.data('type');
-    if (exclude) {
-      url += '&exclude=' + exclude;
-    }
-    e.autocomplete(url);
-  });
-
-  $('form').submit(function(e){
-    autoforme_fix_autocomplete($(this));
-  });
-}
-
-autoforme_setup_autocomplete();
-</script>
-JS
+      html << "</div>"
       html
     end
 
@@ -385,19 +355,7 @@ JS
 
     def association_links(obj)
       if model.lazy_load_association_links? && normalized_type != 'association_links' && request.params['associations'] != 'show'
-        t = "<div id='lazy_load_association_links'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
-        if model.ajax_association_links?
-          t << <<JS
-<script type="text/javascript">
-$('#lazy_load_association_links').click(function(e){
-  $('#lazy_load_association_links').load("#{url_for("association_links/#{model.primary_key_value(obj)}?type=#{type}")}", autoforme_setup_autocomplete);
-  $('#lazy_load_association_links').unbind('click');
-  e.preventDefault();
-});
-</script>
-JS
-        end
-        t
+        "<div id='lazy_load_association_links' data-object='#{model.primary_key_value(obj)}' data-type='#{type}'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
       elsif type == 'show'
         association_link_list(obj).to_s
       else
@@ -512,47 +470,6 @@ JS
         t << "</ul></li>"
       end
       t << "</ul></div>"
-      if ajax
-        t << <<JS
-<script type="text/javascript">
-$('.ajax_mtm_add_associations').submit(function(e){
-  var form = $(this);
-  if (find('.autoforme_autocomplete').length == 0) {
-    var select = form.find('select')[0];
-    $.post(this.action, form.serialize(), function(data, textStatus){
-      $(select).find('option:selected').remove();
-      select.selectedIndex = 0;
-      $(form.data('remove')).append(data);
-    });
-  } else {
-    autoforme_fix_autocomplete(form);
-    $.post(this.action, form.serialize(), function(data, textStatus){
-      var t = form.find('.autoforme_autocomplete');
-      t.val('');
-      t.data('autocompleter').cacheFlush();
-      $(form.data('remove')).append(data);
-    });
-  }
-  e.preventDefault();
-});
-$('.inline_mtm_remove_associations').on("submit", "form", function(e){
-  var form = $(this);
-  var parent = form.parent();
-  $.post(this.action, form.serialize(), function(data, textStatus){
-    var t = $(form.data('add'));
-    if (t[0].type == "text") {
-      t.data('autocompleter').cacheFlush();
-    } else {
-      t.append(data);
-    }
-    parent.remove();
-  });
-  e.preventDefault();
-});
-</script>
-JS
-      end
-      t
     end
     def mtm_edit_remove(assoc, mc, obj, assoc_obj, ajax)
       t = "<li>"

@@ -24,6 +24,11 @@ class AutoFormeDemo < Sinatra::Base
 END
   end
 
+  get '/autoforme.js' do
+    content_type 'text/javascript'
+    File.read('../autoforme.js')
+  end
+
   AutoForme.for(:sinatra, self) do
     model_type :sequel
     autoforme(Artist) do 
