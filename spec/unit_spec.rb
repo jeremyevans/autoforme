@@ -98,17 +98,20 @@ describe AutoForme do
   end
 
   it "should handle supported actions lookup" do
-    model.supported_action?('new').should be_true
-    model.supported_action?('edit').should be_true
-    model.supported_action?('search').should be_true
+    model.supported_action?('new', nil).should be_true
+    model.supported_action?('edit', nil).should be_true
+    model.supported_action?('search', nil).should be_true
     framework.supported_actions ['new', 'search']
-    model.supported_action?('new').should be_true
-    model.supported_action?('edit').should be_false
-    model.supported_action?('search').should be_true
+    model.supported_action?('new', nil).should be_true
+    model.supported_action?('edit', nil).should be_false
+    model.supported_action?('search', nil).should be_true
     model.supported_actions ['edit', 'search']
-    model.supported_action?('new').should be_false
-    model.supported_action?('edit').should be_true
-    model.supported_action?('search').should be_true
+    model.supported_action?('new', nil).should be_false
+    model.supported_action?('edit', nil).should be_true
+    model.supported_action?('search', nil).should be_true
+    model.supported_actions{|type, req| req ? [type] : []}
+    model.supported_action?('new', nil).should be_false
+    model.supported_action?('new', true).should be_true
   end
 
   it "should handle autocompletion options" do

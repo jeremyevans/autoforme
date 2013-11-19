@@ -19,18 +19,18 @@ module AutoForme
 
       case type
       when 'mtm_edit'
-        return false unless model.supported_action?(type)
+        return false unless model.supported_action?(type, request)
         if request.id && request.params['association']
           return false unless model.supported_mtm_edit?(request.params['association'])
         end
       when 'mtm_update'
         return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'])
       when 'association_links'
-        return false unless model.supported_action?(request.params['type'] || 'edit')
+        return false unless model.supported_action?(request.params['type'] || 'edit', request)
       when 'autocomplete'
         return false unless model.autocomplete_options_for(request.params['type'])
       else
-        return false unless model.supported_action?(normalized_type)
+        return false unless model.supported_action?(normalized_type, request)
       end
 
       true
@@ -88,7 +88,7 @@ module AutoForme
     def tabs
       content = '<ul class="nav nav-tabs">'
       %w'browse new show edit delete search mtm_edit'.each do |action_type|
-        if model.supported_action?(action_type)
+        if model.supported_action?(action_type, request)
           content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{tab_name(action_type)}</a></li>"
         end
       end
@@ -174,7 +174,7 @@ module AutoForme
         model.columns_for(type.to_sym).each do |column|
           t << f.input(column, model.column_options_for(:show, request, column)).to_s
         end
-        if type == 'show' && model.supported_action?('edit')
+        if type == 'show' && model.supported_action?('edit', request)
           t << Forme.form({:action=>url_for("edit/#{model.primary_key_value(obj)}")}, form_opts) do |f|
             f.button(:value=>'Edit', :class=>'btn btn-primary')
           end.to_s
@@ -205,7 +205,7 @@ module AutoForme
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
         end.to_s
-        if model.supported_action?('delete')
+        if model.supported_action?('delete', request)
           t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}, form_opts) do |f|
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
@@ -388,7 +388,7 @@ module AutoForme
           end
           assoc_objs = obj.send(assoc)
         when :new
-          if !read_only && mc && mc.supported_action?('new')
+          if !read_only && mc && mc.supported_action?('new', request)
             params = model.associated_new_column_values(obj, assoc).map do |col, value|
               "#{mc.link}%5b#{col}%5d=#{value}"
             end
@@ -415,7 +415,7 @@ module AutoForme
     end
     def association_class_link(mc, assoc)
       assoc_name = humanize(assoc)
-      if mc && mc.supported_action?('browse')
+      if mc && mc.supported_action?('browse', request)
         "<a href=\"#{base_url_for("#{mc.link}/browse")}\">#{assoc_name}</a>"
       else
         assoc_name
@@ -424,7 +424,7 @@ module AutoForme
     def association_link(mc, assoc_obj)
       if mc
         t = mc.object_display_name(:association, request, assoc_obj)
-        if mc.supported_action?(type)
+        if mc.supported_action?(type, request)
           t = "<a href=\"#{base_url_for("#{mc.link}/#{type}/#{mc.primary_key_value(assoc_obj)}")}\">#{t}</a>"
         end
         t
