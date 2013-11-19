@@ -25,8 +25,8 @@ module AutoForme
     end
 
     opts_attribute(:table_class, %w'browse search'){DEFAULT_TABLE_CLASS}
-    def table_class_for(type)
-      send("#{type}_table_class") || default_table_class
+    def table_class_for(model, type, request)
+      handle_proc(send("#{type}_table_class"), model, type, request)
     end
 
     opts_attribute(:per_page, %w'browse search'){DEFAULT_LIMIT}

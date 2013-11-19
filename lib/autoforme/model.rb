@@ -102,7 +102,7 @@ module AutoForme
 
     opts_attribute :table_class, %w'browse search'
     def table_class_for(type, request)
-      handle_proc(send("#{type}_table_class") || framework.table_class_for(type), type, request)
+      handle_proc(send("#{type}_table_class") || framework.table_class_for(model, type, request), type, request)
     end
 
     opts_attribute :per_page, %w'association edit show delete browse search'

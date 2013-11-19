@@ -19,6 +19,8 @@ describe AutoForme do
     model.table_class_for(:browse, nil).should == 'foo'
     framework.browse_table_class 'bar'
     model.table_class_for(:browse, nil).should == 'bar'
+    framework.browse_table_class{|model, type, req| "#{model.name} #{type} #{req}"}
+    model.table_class_for(:browse, 1).should == 'Artist browse 1'
     model.table_class 'baz'
     model.table_class_for(:browse, nil).should == 'baz'
     model.browse_table_class 'quux'
