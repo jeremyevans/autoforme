@@ -20,19 +20,19 @@ module AutoForme
     end
 
     opts_attribute :mtm_associations
-    def mtm_association_select_options
-      normalize_mtm_associations(mtm_associations || framework.mtm_associations_for(model))
+    def mtm_association_select_options(request)
+      normalize_mtm_associations(handle_proc(mtm_associations || framework.mtm_associations_for(model), request))
     end
-    def supported_mtm_edit?(assoc)
-      mtm_association_select_options.map{|x| x.to_s}.include?(assoc)
+    def supported_mtm_edit?(assoc, request)
+      mtm_association_select_options(request).map{|x| x.to_s}.include?(assoc)
     end
-    def supported_mtm_update?(assoc)
-      supported_mtm_edit?(assoc) || inline_mtm_assocs.map{|x| x.to_s}.include?(assoc) 
+    def supported_mtm_update?(assoc, request)
+      supported_mtm_edit?(assoc, request) || inline_mtm_assocs(request).map{|x| x.to_s}.include?(assoc) 
     end
 
     opts_attribute :inline_mtm_associations
-    def inline_mtm_assocs
-      normalize_mtm_associations(inline_mtm_associations || framework.inline_mtm_associations_for(model))
+    def inline_mtm_assocs(request)
+      normalize_mtm_associations(handle_proc(inline_mtm_associations || framework.inline_mtm_associations_for(model), request))
     end
 
     opts_attribute :ajax_inline_mtm_associations

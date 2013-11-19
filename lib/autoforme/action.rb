@@ -21,10 +21,10 @@ module AutoForme
       when 'mtm_edit'
         return false unless model.supported_action?(type, request)
         if request.id && request.params['association']
-          return false unless model.supported_mtm_edit?(request.params['association'])
+          return false unless model.supported_mtm_edit?(request.params['association'], request)
         end
       when 'mtm_update'
-        return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'])
+        return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'], request)
       when 'association_links'
         return false unless model.supported_action?(request.params['type'] || 'edit', request)
       when 'autocomplete'
@@ -313,7 +313,7 @@ module AutoForme
         else
           page do
             Forme.form({:action=>"mtm_edit/#{model.primary_key_value(obj)}"}, form_opts) do |f|
-              f.input(:select, :options=>model.mtm_association_select_options, :name=>'association', :id=>'association', :label=>'Association')
+              f.input(:select, :options=>model.mtm_association_select_options(request), :name=>'association', :id=>'association', :label=>'Association')
               f.button(:value=>'Edit', :class=>'btn btn-primary')
             end
           end
@@ -383,7 +383,7 @@ module AutoForme
           end
           assoc_objs = []
         when :edit
-          if !read_only && model.supported_mtm_edit?(assoc.to_s)
+          if !read_only && model.supported_mtm_edit?(assoc.to_s, request)
             t << "(<a href=\"#{url_for("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")}\">associate</a>)"
           end
           assoc_objs = obj.send(assoc)
@@ -434,7 +434,7 @@ module AutoForme
     end
 
     def inline_mtm_edit_forms(obj)
-      assocs = model.inline_mtm_assocs
+      assocs = model.inline_mtm_assocs(request)
       return if assocs.empty?
       ajax = model.ajax_inline_mtm_associations?
 

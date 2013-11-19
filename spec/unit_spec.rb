@@ -97,7 +97,7 @@ describe AutoForme do
     model.display_name_for(:edit).should == :bar
   end
 
-  it "should handle supported actions lookup" do
+  it "should handle supported_actions lookup" do
     model.supported_action?('new', nil).should be_true
     model.supported_action?('edit', nil).should be_true
     model.supported_action?('search', nil).should be_true
@@ -112,6 +112,42 @@ describe AutoForme do
     model.supported_actions{|type, req| req ? [type] : []}
     model.supported_action?('new', nil).should be_false
     model.supported_action?('new', true).should be_true
+  end
+
+  it "should handle mtm_associations lookup" do
+    model.supported_mtm_edit?('foos', nil).should be_false
+    model.supported_mtm_edit?('bars', nil).should be_false
+    def (framework).mtm_associations_for(model)
+      ['foos']
+    end
+    model.supported_mtm_edit?('foos', nil).should be_true
+    model.supported_mtm_edit?('bars', nil).should be_false
+    model.mtm_associations ['bars']
+    model.supported_mtm_edit?('foos', nil).should be_false
+    model.supported_mtm_edit?('bars', nil).should be_true
+    model.mtm_associations{|req| req ? ['foos'] : ['bars']}
+    model.supported_mtm_edit?('foos', nil).should be_false
+    model.supported_mtm_edit?('bars', nil).should be_true
+    model.supported_mtm_edit?('foos', true).should be_true
+    model.supported_mtm_edit?('bars', true).should be_false
+  end
+
+  it "should handle inline_mtm_associations lookup" do
+    model.supported_mtm_update?('foos', nil).should be_false
+    model.supported_mtm_update?('bars', nil).should be_false
+    def (framework).inline_mtm_associations_for(model)
+      ['foos']
+    end
+    model.supported_mtm_update?('foos', nil).should be_true
+    model.supported_mtm_update?('bars', nil).should be_false
+    model.inline_mtm_associations ['bars']
+    model.supported_mtm_update?('foos', nil).should be_false
+    model.supported_mtm_update?('bars', nil).should be_true
+    model.inline_mtm_associations{|req| req ? ['foos'] : ['bars']}
+    model.supported_mtm_update?('foos', nil).should be_false
+    model.supported_mtm_update?('bars', nil).should be_true
+    model.supported_mtm_update?('foos', true).should be_true
+    model.supported_mtm_update?('bars', true).should be_false
   end
 
   it "should handle autocompletion options" do
