@@ -79,10 +79,10 @@ describe AutoForme do
 
   it "should handle order lookup" do
     model.order_for(:browse, nil).should == nil
-    def (framework).order_for(type, model)
-      [type, model.name.to_sym]
-    end
-    model.order_for(:browse, nil).should == [:browse, :Artist]
+    framework.order :bar
+    model.order_for(:browse, nil).should == :bar
+    framework.order{|model, type, req| [model.name.to_sym, type, req]}
+    model.order_for(:browse, :foo).should == [:Artist, :browse, :foo]
     model.order [:foo]
     model.order_for(:browse, nil).should == [:foo]
     model.browse_order :bar

@@ -58,8 +58,9 @@ module AutoForme
       handle_proc(inline_mtm_associations, model, request)
     end
 
-    def order_for(type, model)
-      nil
+    opts_attribute :order
+    def order_for(model, type, request)
+      handle_proc(order, model, type, request)
     end
 
     def filter_for(type, model)
