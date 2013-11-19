@@ -60,7 +60,7 @@ module AutoForme
 
       if association?(column) && associated_model = associated_model_class(column)
         opts = opts.dup
-        if associated_model.autocomplete_options_for(:association) && !opts[:as] && association_type(column) == :one
+        if associated_model.autocomplete_options_for(:association, request) && !opts[:as] && association_type(column) == :one
           opts[:type] = 'text'
           opts[:class] = 'autoforme_autocomplete'
           opts[:attr] = {'data-column'=>column, 'data-type'=>type}
@@ -139,12 +139,9 @@ module AutoForme
 
     AUTOCOMPLETE_TYPES = %w'show edit delete association mtm_edit'.freeze
     opts_attribute :autocomplete_options, AUTOCOMPLETE_TYPES
-    def autocomplete_options_for(type)
+    def autocomplete_options_for(type, request)
       return unless AUTOCOMPLETE_TYPES.include?(type.to_s)
-      v = send("#{type}_autocomplete_options")
-      v = autocomplete_options if v.nil?
-      v = framework.autocomplete_options_for(type, model) if v.nil?
-      v
+      handle_proc(send("#{type}_autocomplete_options") || framework.autocomplete_options_for(type, model), type, request)
     end
 
     opts_attribute :before_create

@@ -240,6 +240,9 @@ describe AutoForme do
     model.autocomplete_options :filter=>proc{|ds, opts| ds.where(:name=>opts[:query])}
     model.autocomplete(:type=>'show', :query=>'foo').should == []
     model.autocomplete(:type=>'show', :query=>'FooBar').should == ["#{a.id} - FooBar"]
+
+    model.autocomplete_options{|type, req| {:limit=>req}}
+    model.autocomplete(:type=>'show', :query=>'oo', :request=>1).should == ["#{a.id} - FooBar"]
   end
 end
 

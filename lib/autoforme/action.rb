@@ -28,7 +28,7 @@ module AutoForme
       when 'association_links'
         return false unless model.supported_action?(request.params['type'] || 'edit', request)
       when 'autocomplete'
-        return false unless model.autocomplete_options_for(request.params['type'])
+        return false unless model.autocomplete_options_for(request.params['type'], request)
       else
         return false unless model.supported_action?(normalized_type, request)
       end
@@ -154,7 +154,7 @@ module AutoForme
         form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
         Forme.form(form_attributes, form_opts) do |f|
           input_opts = {:name=>'id', :id=>'id', :label=>model.class_name}
-          if model.autocomplete_options_for(type)
+          if model.autocomplete_options_for(type, request)
             input_type = :text
             input_opts.merge!(:class=>'autoforme_autocomplete', :attr=>{'data-type'=>type})
           else
@@ -301,7 +301,7 @@ module AutoForme
               add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
               remove_opts = opts[:remove] ? opts.merge(opts.delete(:remove)) : opts
               add_opts = {:name=>'add[]', :id=>'add', :label=>'Associate With'}.merge(add_opts)
-              if model.association_autocomplete?(assoc)
+              if model.association_autocomplete?(assoc, request)
                 f.input(assoc, {:type=>'text', :class=>'autoforme_autocomplete', :attr=>{'data-type'=>'association', 'data-column'=>assoc, 'data-exclude'=>model.primary_key_value(obj)}, :value=>''}.merge(add_opts))
               else
                 f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj)}.merge(add_opts))
@@ -444,7 +444,7 @@ module AutoForme
           opts = model.column_options_for(:mtm_edit, request, assoc)
           add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts.dup
           add_opts = {:name=>'add[]', :id=>"add_#{assoc}"}.merge(add_opts)
-          if model.association_autocomplete?(assoc)
+          if model.association_autocomplete?(assoc, request)
             f.input(assoc, {:type=>'text', :class=>'autoforme_autocomplete', :attr=>{'data-type'=>'association', 'data-column'=>assoc, 'data-exclude'=>model.primary_key_value(obj)}, :value=>''}.merge(add_opts))
           else
             f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj), :multiple=>false, :add_blank=>true}.merge(add_opts))
