@@ -39,7 +39,7 @@ $(function() {
     e.preventDefault();
   });
 
-  autoforme.on('submit', '.ajax_mtm_add_associations', function(e){
+  autoforme.on('submit', '.mtm_add_associations', function(e){
     var form = $(this);
     if (form.find('.autoforme_autocomplete').length == 0) {
       var select = form.find('select')[0];

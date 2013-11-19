@@ -38,7 +38,6 @@ END
       autocomplete_options({})
       mtm_associations :tags
       inline_mtm_associations :tags
-      ajax_inline_mtm_associations true
       lazy_load_association_links true
       association_links [:artist, :tracks]
     end

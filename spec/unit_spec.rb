@@ -190,19 +190,6 @@ describe AutoForme do
     model.supported_mtm_update?('bars', true).should be_false
   end
 
-  it "should handle ajax_inline_mtm_associations lookup" do
-    model.ajax_inline_mtm_associations?(nil).should be_false
-    def (framework).ajax_inline_mtm_associations?(model)
-      true
-    end
-    model.ajax_inline_mtm_associations?(nil).should be_true
-    model.ajax_inline_mtm_associations false
-    model.ajax_inline_mtm_associations?(nil).should be_false
-    model.ajax_inline_mtm_associations{|req| req > 2}
-    model.ajax_inline_mtm_associations?(1).should be_false
-    model.ajax_inline_mtm_associations?(3).should be_true
-  end
-
   it "should handle association_links lookup" do
     model.association_links_for(:show, nil).should == []
     def (framework).association_links_for(type, model)

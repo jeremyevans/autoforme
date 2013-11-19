@@ -330,7 +330,7 @@ module AutoForme
       if request.xhr?
         if add = request.params['add']
           @type = 'edit'
-          mtm_edit_remove(assoc, model.associated_model_class(assoc), obj, assoc_obj, true)
+          mtm_edit_remove(assoc, model.associated_model_class(assoc), obj, assoc_obj)
         else
           "<option value=\"#{model.primary_key_value(assoc_obj)}\">#{model.associated_object_display_name(assoc, request, assoc_obj)}</option>"
         end
@@ -436,15 +436,10 @@ module AutoForme
     def inline_mtm_edit_forms(obj)
       assocs = model.inline_mtm_assocs(request)
       return if assocs.empty?
-      ajax = model.ajax_inline_mtm_associations?(request)
 
       t = "<div class='inline_mtm_add_associations'>"
       assocs.each do |assoc|
-        form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit")}
-        if ajax
-          form_attr[:class] = 'ajax_mtm_add_associations'
-          form_attr['data-remove'] = "##{assoc}_remove_list"
-        end
+        form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit"), :class => 'mtm_add_associations', 'data-remove' => "##{assoc}_remove_list"}
         t << Forme.form(obj, form_attr, form_opts) do |f|
           opts = model.column_options_for(:mtm_edit, request, assoc)
           add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts.dup
@@ -465,20 +460,16 @@ module AutoForme
         t << association_class_link(mc, assoc)
         t << "<ul id='#{assoc}_remove_list'>"
         obj.send(assoc).each do |assoc_obj|
-          t << mtm_edit_remove(assoc, mc, obj, assoc_obj, ajax)
+          t << mtm_edit_remove(assoc, mc, obj, assoc_obj)
         end
         t << "</ul></li>"
       end
       t << "</ul></div>"
     end
-    def mtm_edit_remove(assoc, mc, obj, assoc_obj, ajax)
+    def mtm_edit_remove(assoc, mc, obj, assoc_obj)
       t = "<li>"
       t << association_link(mc, assoc_obj)
-      form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post'}
-      if ajax
-        form_attr[:class] = 'ajax_mtm_remove_associations'
-        form_attr['data-add'] = "#add_#{assoc}"
-      end
+      form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post', :class => 'mtm_remove_associations', 'data-add'=>"#add_#{assoc}"}
       t << Forme.form(form_attr, form_opts) do |f|
         f.button(:value=>'Remove', :class=>'btn btn-danger')
       end.to_s

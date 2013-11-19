@@ -73,10 +73,6 @@ module AutoForme
       nil
     end
 
-    def ajax_inline_mtm_associations?(model)
-      nil
-    end
-
     def autocomplete_options_for(type, model)
       nil
     end

@@ -35,13 +35,6 @@ module AutoForme
       normalize_mtm_associations(handle_proc(inline_mtm_associations || framework.inline_mtm_associations_for(model), request))
     end
 
-    opts_attribute :ajax_inline_mtm_associations
-    def ajax_inline_mtm_associations?(request)
-      v = handle_proc(ajax_inline_mtm_associations, request)
-      v = framework.ajax_inline_mtm_associations?(model) if v.nil?
-      v || false
-    end
-
     opts_attribute :columns, %w'new edit show delete browse search_form search'
     def columns_for(type, request)
       handle_proc(send("#{type}_columns") || framework.columns_for(type, model), type, request) || default_columns
