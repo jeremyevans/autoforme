@@ -23,7 +23,7 @@ module AutoForme
     end
 
     def to_s
-      html = "<table class=\"#{model.table_class_for(type)}\">"
+      html = "<table class=\"#{model.table_class_for(type, request)}\">"
       if caption = opts[:caption]
         html << "<caption>#{h caption}</caption>"
       end

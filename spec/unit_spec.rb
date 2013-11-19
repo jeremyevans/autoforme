@@ -14,15 +14,17 @@ describe AutoForme do
   end
 
   it "should handle table class lookup" do
-    model.table_class_for(:browse).should == 'table table-bordered table-striped'
+    model.table_class_for(:browse, nil).should == 'table table-bordered table-striped'
     framework.table_class 'foo'
-    model.table_class_for(:browse).should == 'foo'
+    model.table_class_for(:browse, nil).should == 'foo'
     framework.browse_table_class 'bar'
-    model.table_class_for(:browse).should == 'bar'
+    model.table_class_for(:browse, nil).should == 'bar'
     model.table_class 'baz'
-    model.table_class_for(:browse).should == 'baz'
+    model.table_class_for(:browse, nil).should == 'baz'
     model.browse_table_class 'quux'
-    model.table_class_for(:browse).should == 'quux'
+    model.table_class_for(:browse, nil).should == 'quux'
+    model.browse_table_class{|type, req| "#{type} #{req}"}
+    model.table_class_for(:browse, :foo).should == 'browse foo'
   end
 
   it "should handle per page lookup" do
