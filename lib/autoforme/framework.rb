@@ -41,8 +41,9 @@ module AutoForme
       @opts = {}
     end
 
-    def columns_for(type, model)
-      nil
+    opts_attribute :columns
+    def columns_for(model, type, request)
+      handle_proc(columns, model, type, request)
     end
 
     def column_options_for(type, model)

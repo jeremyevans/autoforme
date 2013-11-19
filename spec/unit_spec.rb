@@ -47,10 +47,8 @@ describe AutoForme do
 
   it "should handle columns lookup" do
     model.columns_for(:browse, nil).should == [:name]
-    def (framework).columns_for(type, model)
-      [type, model.name.to_sym]
-    end
-    model.columns_for(:browse, nil).should == [:browse, :Artist]
+    framework.columns{|model, type, req| [model.name.to_sym, type, req]}
+    model.columns_for(:browse, :foo).should == [:Artist, :browse, :foo]
     model.columns [:foo]
     model.columns_for(:browse, nil).should == [:foo]
     model.browse_columns [:bar]

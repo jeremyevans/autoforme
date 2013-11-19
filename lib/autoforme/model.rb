@@ -36,7 +36,7 @@ module AutoForme
 
     opts_attribute :columns, %w'new edit show delete browse search_form search'
     def columns_for(type, request)
-      handle_proc(send("#{type}_columns") || framework.columns_for(type, model), type, request) || default_columns
+      handle_proc(send("#{type}_columns") || framework.columns_for(model, type, request), type, request) || default_columns
     end
 
     opts_attribute :column_options, %w'new edit show delete browse search_form search mtm_edit'
