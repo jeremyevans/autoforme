@@ -63,8 +63,9 @@ module AutoForme
       handle_proc(order, model, type, request)
     end
 
-    def filter_for(type, model)
-      nil
+    opts_attribute :filter
+    def filter_for(model, type)
+      handle_proc(filter, model, type)
     end
 
     def display_name_for(type, model)

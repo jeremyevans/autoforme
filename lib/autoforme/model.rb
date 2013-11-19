@@ -97,7 +97,7 @@ module AutoForme
 
     opts_attribute :filter, %w'association edit show delete browse search'
     def filter_for(type)
-      send("#{type}_filter") || framework.filter_for(type, model)
+      send("#{type}_filter") || framework.filter_for(model, type)
     end
 
     opts_attribute :table_class, %w'browse search'
