@@ -17,9 +17,7 @@ describe AutoForme do
     model.table_class_for(:browse, nil).should == 'table table-bordered table-striped'
     framework.table_class 'foo'
     model.table_class_for(:browse, nil).should == 'foo'
-    framework.browse_table_class 'bar'
-    model.table_class_for(:browse, nil).should == 'bar'
-    framework.browse_table_class{|model, type, req| "#{model.name} #{type} #{req}"}
+    framework.table_class{|model, type, req| "#{model.name} #{type} #{req}"}
     model.table_class_for(:browse, 1).should == 'Artist browse 1'
     model.table_class 'baz'
     model.table_class_for(:browse, nil).should == 'baz'
@@ -33,9 +31,7 @@ describe AutoForme do
     model.limit_for(:browse, nil).should == 25
     framework.per_page 1
     model.limit_for(:browse, nil).should == 1
-    framework.browse_per_page 2
-    model.limit_for(:browse, nil).should == 2
-    framework.browse_per_page{|model, type, req| model.name.length + type.to_s.length + req}
+    framework.per_page{|model, type, req| model.name.length + type.to_s.length + req}
     model.limit_for(:browse, 3).should == 15
     model.per_page 3
     model.limit_for(:browse, nil).should == 3
