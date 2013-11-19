@@ -35,6 +35,8 @@ describe AutoForme do
     model.limit_for(:browse, nil).should == 1
     framework.browse_per_page 2
     model.limit_for(:browse, nil).should == 2
+    framework.browse_per_page{|model, type, req| model.name.length + type.to_s.length + req}
+    model.limit_for(:browse, 3).should == 15
     model.per_page 3
     model.limit_for(:browse, nil).should == 3
     model.browse_per_page 4

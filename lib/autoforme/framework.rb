@@ -30,8 +30,8 @@ module AutoForme
     end
 
     opts_attribute(:per_page, %w'browse search'){DEFAULT_LIMIT}
-    def limit_for(type)
-      send("#{type}_per_page")
+    def limit_for(model, type, request)
+      handle_proc(send("#{type}_per_page"), model, type, request)
     end
 
     def initialize(controller)

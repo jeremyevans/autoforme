@@ -107,7 +107,7 @@ module AutoForme
 
     opts_attribute :per_page, %w'association edit show delete browse search'
     def limit_for(type, request)
-      handle_proc(send("#{type}_per_page") || framework.limit_for(type), type, request)
+      handle_proc(send("#{type}_per_page") || framework.limit_for(model, type, request), type, request)
     end
 
     opts_attribute :display_name, %w'association show edit delete'
