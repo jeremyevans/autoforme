@@ -60,18 +60,21 @@ describe AutoForme do
 
   it "should handle column options lookup" do
     model.column_options_for(:browse, nil, :foo).should == {}
-    def (framework).column_options_for(type, model)
-      {:foo=>{type=>model.name.to_sym}}
-    end
-    model.column_options_for(:browse, nil, :foo).should == {:browse=>:Artist}
+    framework.column_options :foo=>{7=>8}
+    model.column_options_for(:browse, :bar, :foo).should == {7=>8}
+    framework.column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
+    model.column_options_for(:browse, :bar, :foo).should == {:type=>:browse, :req=>:bar}
+    framework.column_options{|model, column, type, req| {model.name.to_sym=>[type, req, column]}}
+    model.column_options_for(:browse, :bar, :foo).should == {:Artist=>[:browse, :bar, :foo]}
+    framework.column_options{|model, column, type, req| {5=>6}}
     model.column_options :foo=>{1=>2}
-    model.column_options_for(:browse, nil, :foo).should == {1=>2}
+    model.column_options_for(:browse, nil, :foo).should == {1=>2, 5=>6}
     model.browse_column_options :foo=>{3=>4}
-    model.column_options_for(:browse, nil, :foo).should == {3=>4}
+    model.column_options_for(:browse, nil, :foo).should == {3=>4, 5=>6}
     model.browse_column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
-    model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil}
-    model.browse_column_options{|type, req, col| {:type=>type, :req=>req, :col=>col}}
-    model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil, :col=>:foo}
+    model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil, 5=>6}
+    model.browse_column_options{|col, type, req| {:type=>type, :req=>req, :col=>col}}
+    model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil, :col=>:foo, 5=>6}
   end
 
   it "should handle order lookup" do

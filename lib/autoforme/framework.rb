@@ -46,9 +46,7 @@ module AutoForme
       handle_proc(columns, model, type, request)
     end
 
-    def column_options_for(type, model)
-      nil
-    end
+    opts_attribute :column_options
 
     def mtm_associations_for(model)
       nil

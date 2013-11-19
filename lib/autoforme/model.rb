@@ -41,21 +41,21 @@ module AutoForme
 
     opts_attribute :column_options, %w'new edit show delete browse search_form search mtm_edit'
     def column_options_for(type, request, column)
-      opts = case opts = send("#{type}_column_options") || framework.column_options_for(type, model)
+      framework_opts = case framework_opts = framework.column_options
       when Proc, Method
-        opts.call(type, request, column)
-      when nil
-        {}
+        framework_opts.call(model, column, type, request)
       else
-        case opts = opts[column]
-        when Proc, Method
-          opts.call(type, request)
-        when nil
-          {}
-        else
-          opts
-        end
+        extract_column_options(framework_opts, column, type, request)
       end
+
+      model_opts = case model_opts = send("#{type}_column_options")
+      when Proc, Method
+        model_opts.call(column, type, request)
+      else
+        extract_column_options(model_opts, column, type, request)
+      end
+
+      opts = framework_opts.merge(model_opts)
 
       if association?(column) && associated_model = associated_model_class(column)
         opts = opts.dup
@@ -264,6 +264,18 @@ module AutoForme
         default_object_display_name(obj)
       else
         raise Error, "invalid name method: #{nm.inspect}"
+      end
+    end
+
+    def extract_column_options(opts, column, type, request)
+      return {} unless opts
+      case opts = opts[column]
+      when Proc, Method
+        opts.call(type, request)
+      when nil
+        {}
+      else
+        opts
       end
     end
 
