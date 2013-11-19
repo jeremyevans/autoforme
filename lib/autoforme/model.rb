@@ -49,9 +49,22 @@ module AutoForme
 
     opts_attribute :column_options, %w'new edit show delete browse search_form search mtm_edit'
     def column_options_for(type, request, column)
-      opts = send("#{type}_column_options") || framework.column_options_for(type, model)
-      opts = opts[column] if opts
-      opts ||= {}
+      opts = case opts = send("#{type}_column_options") || framework.column_options_for(type, model)
+      when Proc, Method
+        opts.call(type, request, column)
+      when nil
+        {}
+      else
+        case opts = opts[column]
+        when Proc, Method
+          opts.call(type, request)
+        when nil
+          {}
+        else
+          opts
+        end
+      end
+
       if association?(column) && associated_model = associated_model_class(column)
         opts = opts.dup
         if associated_model.autocomplete_options_for(:association) && !opts[:as] && association_type(column) == :one

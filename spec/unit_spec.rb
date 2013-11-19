@@ -62,6 +62,10 @@ describe AutoForme do
     model.column_options_for(:browse, nil, :foo).should == {1=>2}
     model.browse_column_options :foo=>{3=>4}
     model.column_options_for(:browse, nil, :foo).should == {3=>4}
+    model.browse_column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
+    model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil}
+    model.browse_column_options{|type, req, col| {:type=>type, :req=>req, :col=>col}}
+    model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil, :col=>:foo}
   end
 
   it "should handle order lookup" do
