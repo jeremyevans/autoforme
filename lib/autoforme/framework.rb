@@ -2,7 +2,6 @@ module AutoForme
   DEFAULT_LIMIT = 25
   DEFAULT_TABLE_CLASS = "table table-bordered table-striped"
   DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
-  DEFAULT_AUTOCOMPLETE_OPTIONS = {}
 
   # Framework wraps a controller
   class Framework
@@ -85,11 +84,10 @@ module AutoForme
       handle_proc(lazy_load_association_links, model, type, request)
     end
 
-    def autocomplete_options_for(type, model)
-      nil
+    opts_attribute :autocomplete_options
+    def autocomplete_options_for(model, type, request)
+      handle_proc(autocomplete_options, model, type, request)
     end
-
-    opts_attribute(:default_autocomplete_options){DEFAULT_AUTOCOMPLETE_OPTIONS}
 
     def association_links_for(type, model)
       nil

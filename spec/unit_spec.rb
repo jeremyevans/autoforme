@@ -243,7 +243,15 @@ describe AutoForme do
     b = Artist.create(:name=>'BooFar')
     model.autocomplete(:type=>'show', :query=>'boo').should == ["#{b.id} - BooFar"]
     model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
+
+    framework.autocomplete_options :display=>:id
+    model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    framework.autocomplete_options{|model, type, req| {:limit=>req}}
+    model.autocomplete(:type=>'show', :query=>'oo', :request=>1).sort.should == ["#{a.id} - FooBar"]
     model.autocomplete_options :display=>:id
+    model.autocomplete(:type=>'show', :query=>'oo', :request=>1).sort.should == ["#{a.id} - #{a.id}"]
+
+    framework.autocomplete_options({})
     model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     model.autocomplete_options :display=>proc{:id}
     model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]

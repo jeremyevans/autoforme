@@ -140,7 +140,11 @@ module AutoForme
     opts_attribute :autocomplete_options, AUTOCOMPLETE_TYPES
     def autocomplete_options_for(type, request)
       return unless AUTOCOMPLETE_TYPES.include?(type.to_s)
-      handle_proc(send("#{type}_autocomplete_options") || framework.autocomplete_options_for(type, model), type, request)
+      framework_opts = framework.autocomplete_options_for(model, type, request)
+      model_opts = handle_proc(send("#{type}_autocomplete_options"), type, request)
+      if model_opts
+        (framework_opts || {}).merge(model_opts)
+      end
     end
 
     opts_attribute :before_create

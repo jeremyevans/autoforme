@@ -216,7 +216,7 @@ module AutoForme
           end
           return associated_model_class(assoc).autocomplete(opts.merge(:type=>'association', :association=>nil), &block)
         end
-        opts = AUTOCOMPLETE_DEFAULT_OPTS.merge(framework.default_autocomplete_options(autocomplete_options_for(type, request)))
+        opts = AUTOCOMPLETE_DEFAULT_OPTS.merge(autocomplete_options_for(type, request))
         callback_opts = {:type=>type, :request=>request, :query=>query}
         ds = all_dataset_for(type, request)
         ds = opts[:filter].call(ds, callback_opts)
