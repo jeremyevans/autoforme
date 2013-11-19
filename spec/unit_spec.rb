@@ -165,11 +165,14 @@ describe AutoForme do
   it "should handle mtm_associations lookup" do
     model.supported_mtm_edit?('foos', nil).should be_false
     model.supported_mtm_edit?('bars', nil).should be_false
-    def (framework).mtm_associations_for(model)
-      ['foos']
-    end
+    framework.mtm_associations [:foos]
     model.supported_mtm_edit?('foos', nil).should be_true
     model.supported_mtm_edit?('bars', nil).should be_false
+    framework.mtm_associations{|model, req| req ? [:foos] : [:bars]}
+    model.supported_mtm_edit?('foos', nil).should be_false
+    model.supported_mtm_edit?('bars', nil).should be_true
+    model.supported_mtm_edit?('foos', true).should be_true
+    model.supported_mtm_edit?('bars', true).should be_false
     model.mtm_associations ['bars']
     model.supported_mtm_edit?('foos', nil).should be_false
     model.supported_mtm_edit?('bars', nil).should be_true
@@ -183,11 +186,14 @@ describe AutoForme do
   it "should handle inline_mtm_associations lookup" do
     model.supported_mtm_update?('foos', nil).should be_false
     model.supported_mtm_update?('bars', nil).should be_false
-    def (framework).inline_mtm_associations_for(model)
-      ['foos']
-    end
+    framework.inline_mtm_associations [:foos]
     model.supported_mtm_update?('foos', nil).should be_true
     model.supported_mtm_update?('bars', nil).should be_false
+    framework.inline_mtm_associations{|model, req| req ? [:foos] : [:bars]}
+    model.supported_mtm_update?('foos', nil).should be_false
+    model.supported_mtm_update?('bars', nil).should be_true
+    model.supported_mtm_update?('foos', true).should be_true
+    model.supported_mtm_update?('bars', true).should be_false
     model.inline_mtm_associations ['bars']
     model.supported_mtm_update?('foos', nil).should be_false
     model.supported_mtm_update?('bars', nil).should be_true

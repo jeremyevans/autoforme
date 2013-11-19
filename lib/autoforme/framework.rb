@@ -48,12 +48,14 @@ module AutoForme
 
     opts_attribute :column_options
 
-    def mtm_associations_for(model)
-      nil
+    opts_attribute :mtm_associations
+    def mtm_associations_for(model, request)
+      handle_proc(mtm_associations, model, request)
     end
 
-    def inline_mtm_associations_for(model)
-      nil
+    opts_attribute :inline_mtm_associations
+    def inline_mtm_associations_for(model, request)
+      handle_proc(inline_mtm_associations, model, request)
     end
 
     def order_for(type, model)
