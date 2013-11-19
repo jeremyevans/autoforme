@@ -309,13 +309,9 @@ describe AutoForme do
 
   it "should support specifying columns per type" do
     cols = Artist.columns - [:id]
+    map = {:new=>:n5, :edit=>:n4, :show=>:n3, :browse=>:n2, :search_form=>:n1, :search=>:n0}
     app_setup(Artist) do
-      new_columns(cols - [:n5])
-      edit_columns(cols - [:n4])
-      show_columns(cols - [:n3])
-      browse_columns(cols - [:n2])
-      search_form_columns(cols - [:n1])
-      search_columns(cols - [:n0])
+      columns{|type, req| cols - [map[type.to_sym]]}
     end
 
     visit("/Artist/new")

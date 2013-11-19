@@ -47,9 +47,7 @@ describe AutoForme do
     model.columns_for(:browse, :foo).should == [:Artist, :browse, :foo]
     model.columns [:foo]
     model.columns_for(:browse, nil).should == [:foo]
-    model.browse_columns [:bar]
-    model.columns_for(:browse, nil).should == [:bar]
-    model.browse_columns{|type, req| req ? [type] : [:foo]}
+    model.columns{|type, req| req ? [type] : [:foo]}
     model.columns_for(:browse, true).should == [:browse]
     model.columns_for(:browse, nil).should == [:foo]
   end
