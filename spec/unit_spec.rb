@@ -191,7 +191,7 @@ describe AutoForme do
   end
 
   it "should handle ajax_inline_mtm_associations lookup" do
-    model.ajax_inline_mtm_associations?( nil).should be_false
+    model.ajax_inline_mtm_associations?(nil).should be_false
     def (framework).ajax_inline_mtm_associations?(model)
       true
     end
@@ -201,6 +201,20 @@ describe AutoForme do
     model.ajax_inline_mtm_associations{|req| req > 2}
     model.ajax_inline_mtm_associations?(1).should be_false
     model.ajax_inline_mtm_associations?(3).should be_true
+  end
+
+  it "should handle association_links lookup" do
+    model.association_links_for(:show, nil).should == []
+    def (framework).association_links_for(type, model)
+      :foo
+    end
+    model.association_links_for(:show, nil).should == [:foo]
+    model.association_links [:bar]
+    model.association_links_for(:show, nil).should == [:bar]
+    model.show_association_links []
+    model.association_links_for(:show, nil).should == []
+    model.show_association_links{|type, req| [type, req]}
+    model.association_links_for(:show, nil).should == [:show, nil]
   end
 
   it "should handle autocompletion options" do

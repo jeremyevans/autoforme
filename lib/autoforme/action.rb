@@ -364,7 +364,7 @@ module AutoForme
     end
 
     def association_link_list(obj)
-      assocs = model.association_links_for(type) 
+      assocs = model.association_links_for(type, request) 
       return if assocs.empty?
       read_only = type == 'show'
       t = '<h3 class="associated_records_header">Associated Records</h3>'
