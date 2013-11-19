@@ -129,36 +129,47 @@ describe AutoForme do
 
   it "should support create, update, delete hooks" do
     a = []
-    app_setup(Artist) do
-      before_create{|obj, req| obj.name = obj.name.reverse}
-      before_update{|obj, req| obj.name = obj.name.upcase}
-      before_destroy{|obj, req| raise if obj.name == obj.name.reverse}
-      after_create{|obj, req| a << req.action_type }
-      after_update{|obj, req| a << req.action_type }
-      after_destroy{|obj, req| a << req.action_type }
+    app_setup do
+      before_create{|obj, req| a << -1}
+      before_update{|obj, req| a << -2}
+      before_destroy{|obj, req| a << -3}
+      after_create{|obj, req| a << 1 }
+      after_update{|obj, req| a << 2 }
+      after_destroy{|obj, req| a << 3 }
+      autoforme Artist do
+        before_create{|obj, req| obj.name = obj.name.reverse}
+        before_update{|obj, req| obj.name = obj.name.upcase}
+        before_destroy{|obj, req| raise if obj.name == obj.name.reverse}
+        after_create{|obj, req| a << req.action_type }
+        after_update{|obj, req| a << req.action_type }
+        after_destroy{|obj, req| a << req.action_type }
+      end
     end
     visit("/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    a.should == ['create']
+    a.should == [-1, 'create', 1]
+    a.clear
 
     click_link 'Edit'
     select 'weNtsitrAtseT'
     click_button 'Edit'
     click_button 'Update'
-    a.should == ['create', 'update']
+    a.should == [-2, 'update', 2]
+    a.clear
 
     click_link 'Delete'
     Artist.create(:name=>'A')
     select 'WENTSITRATSET'
     click_button 'Delete'
     click_button 'Delete'
-    a.should == ['create', 'update', 'destroy']
+    a.should == [-3, 'destroy', 3]
+    a.clear
 
     select 'A'
     click_button 'Delete'
     proc{click_button 'Delete'}.should raise_error
-    a.should == ['create', 'update', 'destroy']
+    a.should == [-3]
   end
 
   it "should support specifying table class for data tables per type" do

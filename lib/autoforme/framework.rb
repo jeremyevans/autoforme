@@ -73,9 +73,12 @@ module AutoForme
       handle_proc(display_name, model, type)
     end
 
-    def hook_for(type, model)
-      nil
-    end
+    opts_attribute :before_create
+    opts_attribute :before_update
+    opts_attribute :before_destroy
+    opts_attribute :after_create
+    opts_attribute :after_update
+    opts_attribute :after_destroy
 
     def lazy_load_association_links?(model)
       nil

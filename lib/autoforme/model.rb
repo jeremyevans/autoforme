@@ -149,9 +149,6 @@ module AutoForme
     opts_attribute :after_create
     opts_attribute :after_update
     opts_attribute :after_destroy
-    def hook_for(type)
-      send(type) || framework.hook_for(type, model)
-    end
 
     opts_attribute :class_display_name
     def class_name
@@ -196,8 +193,20 @@ module AutoForme
     end
 
     def hook(type, request, obj)
-      if v = hook_for(type)
-        v.call(obj, request)
+      if type.to_s =~ /before/
+        if v = framework.send(type)
+          v.call(obj, request)
+        end
+        if v = send(type)
+          v.call(obj, request)
+        end
+      else
+        if v = send(type)
+          v.call(obj, request)
+        end
+        if v = framework.send(type)
+          v.call(obj, request)
+        end
       end
     end
 
