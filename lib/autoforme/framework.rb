@@ -80,8 +80,9 @@ module AutoForme
     opts_attribute :after_update
     opts_attribute :after_destroy
 
-    def lazy_load_association_links?(model)
-      nil
+    opts_attribute :lazy_load_association_links
+    def lazy_load_association_links?(model, type, request)
+      handle_proc(lazy_load_association_links, model, type, request)
     end
 
     def autocomplete_options_for(type, model)

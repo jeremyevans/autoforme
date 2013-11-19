@@ -222,10 +222,11 @@ describe AutoForme do
 
   it "should handle lazy_load_association_links lookup" do
     model.lazy_load_association_links?(:show, nil).should be_false
-    def (framework).lazy_load_association_links?(model)
-      true
-    end
+    framework.lazy_load_association_links true
     model.lazy_load_association_links?(:show, nil).should be_true
+    framework.lazy_load_association_links{|model, type, req| req > 2}
+    model.lazy_load_association_links?(:show, 1).should be_false
+    model.lazy_load_association_links?(:show, 3).should be_true
     model.lazy_load_association_links false
     model.lazy_load_association_links?(:show, nil).should be_false
     model.lazy_load_association_links{|type, req| req > 2}

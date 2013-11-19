@@ -132,7 +132,7 @@ module AutoForme
     opts_attribute :lazy_load_association_links
     def lazy_load_association_links?(type, request)
       v = handle_proc(lazy_load_association_links, type, request)
-      v = framework.lazy_load_association_links?(model) if v.nil?
+      v = framework.lazy_load_association_links?(model, type, request) if v.nil?
       v || false
     end
 
