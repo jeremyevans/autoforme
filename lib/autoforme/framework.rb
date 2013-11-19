@@ -1,6 +1,7 @@
 module AutoForme
   DEFAULT_LIMIT = 25
   DEFAULT_TABLE_CLASS = "table table-bordered table-striped"
+  DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
   DEFAULT_AUTOCOMPLETE_OPTIONS = {}
 
   # Framework wraps a controller
@@ -18,7 +19,10 @@ module AutoForme
 
     opts_attribute :model_type
 
-    opts_attribute :supported_actions
+    opts_attribute(:supported_actions){DEFAULT_SUPPORTED_ACTIONS}
+    def supported_actions_for(model, request)
+      handle_proc(supported_actions, model, request)
+    end
 
     opts_attribute(:table_class, %w'browse search'){DEFAULT_TABLE_CLASS}
     def table_class_for(type)
@@ -93,6 +97,17 @@ module AutoForme
       if model = @models[request.model]
         action = Action.new(model, request)
         action if action.supported?
+      end
+    end
+
+    private
+
+    def handle_proc(v, *a)
+      case v
+      when Proc, Method
+        v.call(*a)
+      else
+        v
       end
     end
   end

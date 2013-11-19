@@ -14,9 +14,8 @@ module AutoForme
     attr_reader :opts
 
     opts_attribute :supported_actions
-    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
     def supported_action?(type, request)
-      handle_proc(supported_actions || framework.supported_actions || DEFAULT_SUPPORTED_ACTIONS, type, request).include?(type)
+      handle_proc(supported_actions || framework.supported_actions_for(model, request), request).include?(type)
     end
 
     opts_attribute :mtm_associations

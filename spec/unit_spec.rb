@@ -145,11 +145,14 @@ describe AutoForme do
     model.supported_action?('new', nil).should be_true
     model.supported_action?('edit', nil).should be_false
     model.supported_action?('search', nil).should be_true
+    framework.supported_actions{|model, req| req ? ['new'] : []}
+    model.supported_action?('new', nil).should be_false
+    model.supported_action?('new', true).should be_true
     model.supported_actions ['edit', 'search']
     model.supported_action?('new', nil).should be_false
     model.supported_action?('edit', nil).should be_true
     model.supported_action?('search', nil).should be_true
-    model.supported_actions{|type, req| req ? [type] : []}
+    model.supported_actions{|req| req ? ['new'] : []}
     model.supported_action?('new', nil).should be_false
     model.supported_action?('new', true).should be_true
   end
