@@ -436,7 +436,7 @@ module AutoForme
     def inline_mtm_edit_forms(obj)
       assocs = model.inline_mtm_assocs(request)
       return if assocs.empty?
-      ajax = model.ajax_inline_mtm_associations?
+      ajax = model.ajax_inline_mtm_associations?(request)
 
       t = "<div class='inline_mtm_add_associations'>"
       assocs.each do |assoc|

@@ -36,8 +36,8 @@ module AutoForme
     end
 
     opts_attribute :ajax_inline_mtm_associations
-    def ajax_inline_mtm_associations?
-      v = ajax_inline_mtm_associations
+    def ajax_inline_mtm_associations?(request)
+      v = handle_proc(ajax_inline_mtm_associations, request)
       v = framework.ajax_inline_mtm_associations?(model) if v.nil?
       v || false
     end
