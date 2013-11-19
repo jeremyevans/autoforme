@@ -183,7 +183,7 @@ module AutoForme
         if filter = filter_for(type)
           ds = filter.call(ds, request)
         end
-        if order = order_for(type)
+        if order = order_for(type, request)
           ds = ds.order(*order)
         end
         if eager = eager_for(type)

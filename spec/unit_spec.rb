@@ -69,15 +69,17 @@ describe AutoForme do
   end
 
   it "should handle order lookup" do
-    model.order_for(:browse).should == nil
+    model.order_for(:browse, nil).should == nil
     def (framework).order_for(type, model)
       [type, model.name.to_sym]
     end
-    model.order_for(:browse).should == [:browse, :Artist]
+    model.order_for(:browse, nil).should == [:browse, :Artist]
     model.order [:foo]
-    model.order_for(:browse).should == [:foo]
+    model.order_for(:browse, nil).should == [:foo]
     model.browse_order :bar
-    model.order_for(:browse).should == :bar
+    model.order_for(:browse, nil).should == :bar
+    model.browse_order{|type, req| [type, req]}
+    model.order_for(:browse, nil).should == [:browse, nil]
   end
 
   it "should handle filter lookup" do
