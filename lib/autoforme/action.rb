@@ -326,7 +326,7 @@ module AutoForme
       obj = model.with_pk(:edit, request, request.id)
       assoc = request.params['association'].to_sym
       assoc_obj = model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
-      request.set_flash_notice("Updated #{assoc} association for #{model.class_name}")
+      request.set_flash_notice("Updated #{assoc} association for #{model.class_name}") unless request.xhr?
       if request.xhr?
         if add = request.params['add']
           @type = 'edit'
