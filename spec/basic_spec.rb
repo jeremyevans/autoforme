@@ -354,12 +354,9 @@ describe AutoForme do
   end
 
   it "should support specifying order per type" do
+    map = {:edit=>:n0, :show=>[:n1, :n2], :delete=>:n3, :browse=>[:n1, :n0], :search=>:n4}
     app_setup(Artist) do
-      edit_order :n0
-      show_order [:n1, :n2]
-      delete_order :n3
-      browse_order [:n1, :n0]
-      search_order :n4
+      order{|type, req| map[type.to_sym]}
     end
 
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')

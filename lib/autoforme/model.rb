@@ -80,9 +80,9 @@ module AutoForme
       opts
     end
 
-    opts_attribute :order, %w'association edit show delete browse search'
+    opts_attribute :order
     def order_for(type, request)
-      handle_proc(send("#{type}_order") || framework.order_for(model, type, request), type, request)
+      handle_proc(order || framework.order_for(model, type, request), type, request)
     end
 
     opts_attribute :eager, %w'association edit show delete browse search'

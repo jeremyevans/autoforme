@@ -77,10 +77,8 @@ describe AutoForme do
     model.order_for(:browse, :foo).should == [:Artist, :browse, :foo]
     model.order [:foo]
     model.order_for(:browse, nil).should == [:foo]
-    model.browse_order :bar
-    model.order_for(:browse, nil).should == :bar
-    model.browse_order{|type, req| [type, req]}
-    model.order_for(:browse, nil).should == [:browse, nil]
+    model.order{|type, req| [type, req]}
+    model.order_for(:browse, :foo).should == [:browse, :foo]
   end
 
   it "should handle eager lookup" do
