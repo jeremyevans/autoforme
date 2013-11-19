@@ -112,7 +112,7 @@ module AutoForme
 
     opts_attribute :display_name, %w'association show edit delete'
     def display_name_for(type)
-      send("#{type}_display_name") || framework.display_name_for(type, model)
+      send("#{type}_display_name") || framework.display_name_for(model, type)
     end
 
     opts_attribute :association_links, %w'edit show'

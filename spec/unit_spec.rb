@@ -123,10 +123,14 @@ describe AutoForme do
 
   it "should handle display_name lookup" do
     model.display_name_for(:edit).should == nil
-    def (framework).display_name_for(type, model)
-      :"#{type}_#{model.name}"
-    end
+    framework.display_name :foo
+    model.display_name_for(:edit).should == :foo
+    framework.display_name{|model, type| :"#{type}_#{model.name}"}
     model.display_name_for(:edit).should == :edit_Artist
+
+    framework.display_name{|model, type| proc{|obj, type, req| "#{obj} #{type} #{req}"}}
+    model.object_display_name(:show, 1, :foo).should == 'foo show 1'
+
     model.display_name :foo
     model.display_name_for(:edit).should == :foo
     model.edit_display_name :bar
