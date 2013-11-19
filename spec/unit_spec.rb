@@ -208,16 +208,16 @@ describe AutoForme do
 
   it "should handle association_links lookup" do
     model.association_links_for(:show, nil).should == []
-    def (framework).association_links_for(type, model)
-      :foo
-    end
+    framework.association_links :foo
     model.association_links_for(:show, nil).should == [:foo]
+    framework.association_links{|model, type, req| [model.name.to_sym, type, req]}
+    model.association_links_for(:show, :foo).should == [:Artist, :show, :foo]
     model.association_links [:bar]
     model.association_links_for(:show, nil).should == [:bar]
     model.show_association_links []
     model.association_links_for(:show, nil).should == []
     model.show_association_links{|type, req| [type, req]}
-    model.association_links_for(:show, nil).should == [:show, nil]
+    model.association_links_for(:show, :foo).should == [:show, :foo]
   end
 
   it "should handle lazy_load_association_links lookup" do

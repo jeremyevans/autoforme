@@ -89,8 +89,9 @@ module AutoForme
       handle_proc(autocomplete_options, model, type, request)
     end
 
-    def association_links_for(type, model)
-      nil
+    opts_attribute :association_links
+    def association_links_for(model, type, request)
+      handle_proc(association_links, model, type, request)
     end
 
     def autoforme(model_class, &block)

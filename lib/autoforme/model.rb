@@ -117,7 +117,7 @@ module AutoForme
 
     opts_attribute :association_links, %w'edit show'
     def association_links_for(type, request)
-      case v = handle_proc(send("#{type}_association_links") || framework.association_links_for(type, model), type, request)
+      case v = handle_proc(send("#{type}_association_links") || framework.association_links_for(model, type, request), type, request)
       when nil
         []
       when Array
