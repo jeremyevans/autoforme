@@ -82,6 +82,26 @@ describe AutoForme do
     model.order_for(:browse, nil).should == [:browse, nil]
   end
 
+  it "should handle eager lookup" do
+    model.eager_for(:browse, nil).should == nil
+    model.eager [:foo]
+    model.eager_for(:browse, nil).should == [:foo]
+    model.browse_eager :bar
+    model.eager_for(:browse, nil).should == :bar
+    model.browse_eager{|type, req| [type, req]}
+    model.eager_for(:browse, nil).should == [:browse, nil]
+  end
+
+  it "should handle eager_graph lookup" do
+    model.eager_graph_for(:browse, nil).should == nil
+    model.eager_graph [:foo]
+    model.eager_graph_for(:browse, nil).should == [:foo]
+    model.browse_eager_graph :bar
+    model.eager_graph_for(:browse, nil).should == :bar
+    model.browse_eager_graph{|type, req| [type, req]}
+    model.eager_graph_for(:browse, nil).should == [:browse, nil]
+  end
+
   it "should handle filter lookup" do
     model.filter_for(:browse).should == nil
     def (framework).filter_for(type, model)

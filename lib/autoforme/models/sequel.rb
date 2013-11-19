@@ -165,7 +165,7 @@ module AutoForme
         columns_for(type, request).each do |col|
           if association?(col)
             if model = associated_model_class(col)
-              eager = model.eager_for(:association)
+              eager = model.eager_for(:association, request)
               ds = ds.eager(col=>eager)
             else
               ds = ds.eager(col)
@@ -186,10 +186,10 @@ module AutoForme
         if order = order_for(type, request)
           ds = ds.order(*order)
         end
-        if eager = eager_for(type)
+        if eager = eager_for(type, request)
           ds = ds.eager(eager)
         end
-        if eager_graph = eager_graph_for(type)
+        if eager_graph = eager_graph_for(type, request)
           ds = ds.eager_graph(eager_graph)
         end
         ds

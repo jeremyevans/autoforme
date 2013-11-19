@@ -94,13 +94,13 @@ module AutoForme
     end
 
     opts_attribute :eager, %w'association edit show delete browse search'
-    def eager_for(type)
-      send("#{type}_eager")
+    def eager_for(type, request)
+      handle_proc(send("#{type}_eager"), type, request)
     end
 
     opts_attribute :eager_graph, %w'association edit show delete browse search'
-    def eager_graph_for(type)
-      send("#{type}_eager_graph")
+    def eager_graph_for(type, request)
+      handle_proc(send("#{type}_eager_graph"), type, request)
     end
 
     opts_attribute :filter, %w'association edit show delete browse search'
