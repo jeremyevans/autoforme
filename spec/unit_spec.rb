@@ -85,12 +85,12 @@ describe AutoForme do
   it "should handle filter lookup" do
     model.filter_for(:browse).should == nil
     def (framework).filter_for(type, model)
-      lambda{|ds, action| 1}
+      lambda{|ds, req| 1}
     end
     model.filter_for(:browse).call(nil, nil).should == 1
-    model.filter{|ds, action| 2}
+    model.filter{|ds, req| 2}
     model.filter_for(:browse).call(nil, nil).should == 2
-    model.browse_filter{|ds, action| 3}
+    model.browse_filter{|ds, req| 3}
     model.filter_for(:browse).call(nil, nil).should == 3
   end
 
