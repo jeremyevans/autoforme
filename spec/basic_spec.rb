@@ -71,12 +71,7 @@ describe AutoForme do
 
   it "should support specifying column options per type" do
     app_setup(Artist) do
-      new_column_options(:name=>{:label=>'New Artist Name'})
-      edit_column_options(:name=>{:label=>'Edit Artist Name'})
-      show_column_options(:name=>{:label=>'Show Artist Name'})
-      browse_column_options(:name=>{:label=>'Browse Artist Name'})
-      search_form_column_options(:name=>{:label=>'Search Form Artist Name'})
-      search_column_options(:name=>{:label=>'Search Artist Name'})
+      column_options{|column, type, req| {:label=>"#{type.to_s.capitalize} Artist #{column.to_s.capitalize}"}}
     end
 
     visit("/Artist/new")
@@ -95,7 +90,7 @@ describe AutoForme do
     page.current_path.should =~ %r{/Artist/edit/\d+}
 
     click_link 'Search'
-    fill_in 'Search Form Artist Name', :with=>'Upd'
+    fill_in 'Search_form Artist Name', :with=>'Upd'
     click_button 'Search'
     all('th').map{|s| s.text}.should == ["Search Artist Name", "Show", "Edit", "Delete"]
 

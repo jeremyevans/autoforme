@@ -63,11 +63,9 @@ describe AutoForme do
     framework.column_options{|model, column, type, req| {5=>6}}
     model.column_options :foo=>{1=>2}
     model.column_options_for(:browse, nil, :foo).should == {1=>2, 5=>6}
-    model.browse_column_options :foo=>{3=>4}
-    model.column_options_for(:browse, nil, :foo).should == {3=>4, 5=>6}
-    model.browse_column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
+    model.column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
     model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil, 5=>6}
-    model.browse_column_options{|col, type, req| {:type=>type, :req=>req, :col=>col}}
+    model.column_options{|col, type, req| {:type=>type, :req=>req, :col=>col}}
     model.column_options_for(:browse, nil, :foo).should == {:type=>:browse, :req=>nil, :col=>:foo, 5=>6}
   end
 

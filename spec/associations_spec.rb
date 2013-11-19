@@ -471,7 +471,7 @@ describe AutoForme do
       model Artist
       model Album do
         columns [:name, :artist]
-        edit_column_options(:artist=>{:dataset=>proc{|ds| ds.where(:name=>'B'..'O').reverse_order(:name)}})
+        column_options{|col, type, req| {:dataset=>proc{|ds| ds.where(:name=>'B'..'O').reverse_order(:name)}} if type.to_s == 'edit' && col == :artist}
       end
     end
 

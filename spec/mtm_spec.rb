@@ -297,7 +297,7 @@ describe AutoForme do
     app_setup do
       model Artist do
         mtm_associations :albums
-        mtm_edit_column_options :albums=>{:as=>:checkbox, :remove=>{:name_method=>proc{|obj| obj.name * 2}}}
+        column_options :albums=>{:as=>:checkbox, :remove=>{:name_method=>proc{|obj| obj.name * 2}}}
       end
       model Album do
         display_name{|obj, req| obj.name + "2"}

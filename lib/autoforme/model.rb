@@ -39,18 +39,18 @@ module AutoForme
       handle_proc(columns || framework.columns_for(model, type, request), type, request) || default_columns
     end
 
-    opts_attribute :column_options, %w'new edit show delete browse search_form search mtm_edit'
+    opts_attribute :column_options
     def column_options_for(type, request, column)
       framework_opts = case framework_opts = framework.column_options
       when Proc, Method
-        framework_opts.call(model, column, type, request)
+        framework_opts.call(model, column, type, request) || {}
       else
         extract_column_options(framework_opts, column, type, request)
       end
 
-      model_opts = case model_opts = send("#{type}_column_options")
+      model_opts = case model_opts = column_options
       when Proc, Method
-        model_opts.call(column, type, request)
+        model_opts.call(column, type, request) || {}
       else
         extract_column_options(model_opts, column, type, request)
       end
