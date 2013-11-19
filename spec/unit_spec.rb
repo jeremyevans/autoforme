@@ -128,6 +128,13 @@ describe AutoForme do
     model.display_name_for(:edit).should == :foo
     model.edit_display_name :bar
     model.display_name_for(:edit).should == :bar
+
+    model.display_name{|obj| obj.to_s}
+    model.object_display_name(:show, nil, :foo).should == 'foo'
+    model.display_name{|obj, type| "#{obj} #{type}"}
+    model.object_display_name(:show, nil, :foo).should == 'foo show'
+    model.display_name{|obj, type, req| "#{obj} #{type} #{req}"}
+    model.object_display_name(:show, 1, :foo).should == 'foo show 1'
   end
 
   it "should handle supported_actions lookup" do

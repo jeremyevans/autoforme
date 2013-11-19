@@ -248,11 +248,11 @@ module AutoForme
     end
 
     def object_display_name(type, request, obj)
-      apply_name_method(display_name_for(type), obj)
+      apply_name_method(display_name_for(type), obj, type, request)
     end
 
     def associated_object_display_name(assoc, request, obj)
-      apply_name_method(column_options_for(:mtm_edit, request, assoc)[:name_method], obj)
+      apply_name_method(column_options_for(:mtm_edit, request, assoc)[:name_method], obj, :mtm_edit, request)
     end
 
     def default_object_display_name(obj)
@@ -267,12 +267,19 @@ module AutoForme
 
     private
 
-    def apply_name_method(nm, obj)
+    def apply_name_method(nm, obj, type, request)
       case nm
       when Symbol
         obj.send(nm)
       when Proc, Method
-        nm.call(obj)
+        case nm.arity
+        when 3
+          nm.call(obj, type, request)
+        when 2
+          nm.call(obj, type)
+        else
+          nm.call(obj)
+        end
       when nil
         default_object_display_name(obj)
       else
