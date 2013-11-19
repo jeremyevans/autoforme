@@ -31,22 +31,22 @@ END
 
   AutoForme.for(:sinatra, self) do
     model_type :sequel
-    autoforme(Artist) do 
+    model Artist do 
       autocomplete_options({})
     end
-    autoforme(Album) do
+    model Album do
       autocomplete_options({})
       mtm_associations :tags
       inline_mtm_associations :tags
       lazy_load_association_links true
       association_links [:artist, :tracks]
     end
-    autoforme(Track) do
+    model Track do
       autocomplete_options({})
       columns [:album, :number, :name, :length]
       per_page 2
     end
-    autoforme(Tag) do
+    model Tag do
       autocomplete_options({})
       supported_actions %w'edit update'
     end

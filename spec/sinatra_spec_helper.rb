@@ -40,7 +40,7 @@ HTML
         framework = self
         model_type :sequel
         if klass
-          autoforme(klass, &block)
+          model(klass, &block)
         elsif block
           instance_eval(&block)
         end

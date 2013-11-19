@@ -136,7 +136,7 @@ describe AutoForme do
       after_create{|obj, req| a << 1 }
       after_update{|obj, req| a << 2 }
       after_destroy{|obj, req| a << 3 }
-      autoforme Artist do
+      model Artist do
         before_create{|obj, req| obj.name = obj.name.reverse}
         before_update{|obj, req| obj.name = obj.name.upcase}
         before_destroy{|obj, req| raise if obj.name == obj.name.reverse}

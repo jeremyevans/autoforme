@@ -94,7 +94,7 @@ module AutoForme
       handle_proc(association_links, model, type, request)
     end
 
-    def autoforme(model_class, &block)
+    def model(model_class, &block)
       model = Model.for(self, model_type, model_class, &block)
       @model_classes[model.model] = model
       @models[model.link] = model

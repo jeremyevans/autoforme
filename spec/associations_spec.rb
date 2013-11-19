@@ -12,8 +12,8 @@ describe AutoForme do
 
   it "should have basic many to one associations working" do
     app_setup do
-      autoforme Artist
-      autoforme Album do
+      model Artist
+      model Album do
         columns [:name, :artist]
       end
     end
@@ -54,10 +54,10 @@ describe AutoForme do
 
   it "should use text boxes for associated objects on new/edit/search forms if associated model uses autocompleting" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         autocomplete_options({})
       end
-      autoforme Album do
+      model Album do
         columns [:name, :artist]
       end
     end
@@ -88,10 +88,10 @@ describe AutoForme do
 
   it "should be able to used specified name formatting in other model" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         display_name{|obj| obj.name * 2}
       end
-      autoforme Album do
+      model Album do
         columns [:name, :artist]
       end
     end
@@ -132,8 +132,8 @@ describe AutoForme do
 
   it "should be able to used specified name formatting for current association" do
     app_setup do
-      autoforme Artist
-      autoforme Album do
+      model Artist
+      model Album do
         columns [:name, :artist]
         column_options :artist=>{:name_method=>lambda{|obj| obj.name * 2}}
       end
@@ -175,8 +175,8 @@ describe AutoForme do
 
   it "should be able to eager load associations when loading model" do
     app_setup do
-      autoforme Artist
-      autoforme Album do
+      model Artist
+      model Album do
         columns [:name, :artist]
         eager :artist
         display_name{|obj| "#{obj.associations[:artist].name}-#{obj.name}"}
@@ -223,8 +223,8 @@ describe AutoForme do
 
   it "should be able to order on eager_graphed associations when loading model" do
     app_setup do
-      autoforme Artist
-      autoforme Album do
+      model Artist
+      model Album do
         columns [:name, :artist]
         eager_graph :artist
         order [:artist__name, :albums__name]
@@ -282,13 +282,13 @@ describe AutoForme do
 
   it "should have many_to_one association lookup use order/eager/eager_graph/filter for associated model" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         order :name
         eager :albums
         filter{|ds, action| ds.where{name > 'M'}}
         display_name{|obj| "#{obj.name} #{obj.albums.length}"}
       end
-      autoforme Album do
+      model Album do
         columns [:name, :artist]
         order [:name]
       end
@@ -361,10 +361,10 @@ describe AutoForme do
 
   it "should have working one to many and many to one association links on show and edit pages" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         association_links :all
       end
-      autoforme Album do
+      model Album do
         association_links :all
         columns [:name, :artist]
       end
@@ -404,11 +404,11 @@ describe AutoForme do
 
   it "should support lazy loading association links on show and edit pages" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         lazy_load_association_links true
         association_links :all
       end
-      autoforme Album do
+      model Album do
         lazy_load_association_links true
         association_links :all
         columns [:name, :artist]
@@ -468,8 +468,8 @@ describe AutoForme do
 
   it "should have select options respect association options" do
     app_setup do
-      autoforme Artist
-      autoforme Album do
+      model Artist
+      model Album do
         columns [:name, :artist]
         edit_column_options(:artist=>{:dataset=>proc{|ds| ds.where(:name=>'B'..'O').reverse_order(:name)}})
       end

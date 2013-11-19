@@ -285,10 +285,10 @@ describe AutoForme do
     artist = nil
     model = nil
     app_setup do
-      autoforme Artist do
+      model Artist do
         artist = self
       end
-      autoforme Album do
+      model Album do
         model = self
         columns [:name, :artist]
       end
@@ -333,10 +333,10 @@ describe AutoForme do
     artist = nil
     model = nil
     app_setup do
-      autoforme Artist do
+      model Artist do
         artist = self
       end
-      autoforme Album do
+      model Album do
         model = self
       end
     end

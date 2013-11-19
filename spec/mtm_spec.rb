@@ -12,10 +12,10 @@ describe AutoForme do
 
   it "should have basic many to many association editing working" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         mtm_associations :albums
       end
-      autoforme Album
+      model Album
     end
 
     Artist.create(:name=>'Artist1')
@@ -51,10 +51,10 @@ describe AutoForme do
 
   it "should have many to many association editing working with autocompletion" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         mtm_associations :albums
       end
-      autoforme Album do
+      model Album do
         autocomplete_options({})
       end
     end
@@ -92,10 +92,10 @@ describe AutoForme do
 
   it "should have inline many to many association editing working" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         inline_mtm_associations :albums
       end
-      autoforme Album
+      model Album
     end
 
     Artist.create(:name=>'Artist1')
@@ -125,10 +125,10 @@ describe AutoForme do
 
   it "should have inline many to many association editing working with autocompletion" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         inline_mtm_associations :albums
       end
-      autoforme Album do
+      model Album do
         autocomplete_options({})
       end
     end
@@ -160,11 +160,11 @@ describe AutoForme do
 
   it "should have working many to many association links on show and edit pages" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         mtm_associations :albums
         association_links [:albums]
       end
-      autoforme Album do
+      model Album do
         mtm_associations [:artists]
         association_links :artists
       end
@@ -198,7 +198,7 @@ describe AutoForme do
 
   it "should have many to many association editing working when associated class is not using autoforme" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         mtm_associations [:albums]
       end
     end
@@ -235,10 +235,10 @@ describe AutoForme do
 
   it "should use filter/order from associated class" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         mtm_associations :all
       end
-      autoforme Album do
+      model Album do
         filter{|ds, req| ds.where(:name=>'A'..'M')}
         order :name
       end
@@ -295,11 +295,11 @@ describe AutoForme do
 
   it "should support column options on mtm_edit page" do
     app_setup do
-      autoforme Artist do
+      model Artist do
         mtm_associations :albums
         mtm_edit_column_options :albums=>{:as=>:checkbox, :remove=>{:name_method=>proc{|obj| obj.name * 2}}}
       end
-      autoforme Album do
+      model Album do
         display_name{|obj, req| obj.name + "2"}
       end
     end
