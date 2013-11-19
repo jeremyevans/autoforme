@@ -19,7 +19,7 @@ module AutoForme
       end
 
       def set_fields(obj, type, request, params)
-        columns_for(type).each do |col|
+        columns_for(type, request).each do |col|
           column = col
 
           if association?(col)
@@ -125,8 +125,8 @@ module AutoForme
 
       def search_results(type, request)
         params = request.params
-        ds = apply_associated_eager(:search, all_dataset_for(type, request))
-        columns_for(:search_form).each do |c|
+        ds = apply_associated_eager(:search, request, all_dataset_for(type, request))
+        columns_for(:search_form, request).each do |c|
           if (v = params[c]) && !v.empty?
             if association?(c)
               ref = model.association_reflection(c)
@@ -146,7 +146,7 @@ module AutoForme
       end
 
       def browse(type, request)
-        paginate(type, request, apply_associated_eager(:browse, all_dataset_for(type, request)))
+        paginate(type, request, apply_associated_eager(:browse, request, all_dataset_for(type, request)))
       end
 
       def paginate(type, request, ds)
@@ -161,8 +161,8 @@ module AutoForme
         [next_page, objs]
       end
 
-      def apply_associated_eager(type, ds)
-        columns_for(type).each do |col|
+      def apply_associated_eager(type, request, ds)
+        columns_for(type, request).each do |col|
           if association?(col)
             if model = associated_model_class(col)
               eager = model.eager_for(:association)

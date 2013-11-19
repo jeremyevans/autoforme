@@ -125,7 +125,7 @@ module AutoForme
     def new_page(obj, opts={})
       page do
         Forme.form(obj, {:action=>url_for("create")}, form_opts) do |f|
-          model.columns_for(:new).each do |column|
+          model.columns_for(:new, request).each do |column|
             f.input(column, column_options_for(:new, request, obj, column))
           end
           f.button(:value=>'Create', :class=>'btn btn-primary')
@@ -133,10 +133,10 @@ module AutoForme
       end
     end
     def handle_new
-      new_page(model.new(request.params[model.link]))
+      new_page(model.new(request.params[model.link], request))
     end
     def handle_create
-      obj = model.new
+      obj = model.new(nil, request)
       model.set_fields(obj, :new, request, model_params)
       model.hook(:before_create, request, obj)
       if model.save(obj)
@@ -171,7 +171,7 @@ module AutoForme
       page do
         t = ''
         f = Forme::Form.new(obj, :formatter=>:readonly)
-        model.columns_for(type.to_sym).each do |column|
+        model.columns_for(type.to_sym, request).each do |column|
           t << f.input(column, model.column_options_for(:show, request, column)).to_s
         end
         if type == 'show' && model.supported_action?('edit', request)
@@ -200,7 +200,7 @@ module AutoForme
     def edit_page(obj)
       page do
         t = Forme.form(obj, {:action=>url_for("update/#{model.primary_key_value(obj)}")}, form_opts) do |f|
-          model.columns_for(:edit).each do |column|
+          model.columns_for(:edit, request).each do |column|
             f.input(column, column_options_for(:edit, request, obj, column))
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
@@ -280,8 +280,8 @@ module AutoForme
         table_page(*model.search_results(normalized_type, request))
       else
         page do
-          Forme.form(model.new, {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
-            model.columns_for(:search_form).each do |column|
+          Forme.form(model.new(nil, request), {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
+            model.columns_for(:search_form, request).each do |column|
               f.input(column, {:name=>column, :id=>column}.merge(column_options_for(:search_form, request, f.obj, column)))
             end
             f.button(:value=>'Search', :class=>'btn btn-primary')

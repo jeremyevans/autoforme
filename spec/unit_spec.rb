@@ -38,15 +38,18 @@ describe AutoForme do
   end
 
   it "should handle columns lookup" do
-    model.columns_for(:browse).should == [:name]
+    model.columns_for(:browse, nil).should == [:name]
     def (framework).columns_for(type, model)
       [type, model.name.to_sym]
     end
-    model.columns_for(:browse).should == [:browse, :Artist]
+    model.columns_for(:browse, nil).should == [:browse, :Artist]
     model.columns [:foo]
-    model.columns_for(:browse).should == [:foo]
+    model.columns_for(:browse, nil).should == [:foo]
     model.browse_columns [:bar]
-    model.columns_for(:browse).should == [:bar]
+    model.columns_for(:browse, nil).should == [:bar]
+    model.browse_columns{|type, req| req ? [type] : [:foo]}
+    model.columns_for(:browse, true).should == [:browse]
+    model.columns_for(:browse, nil).should == [:foo]
   end
 
   it "should handle column options lookup" do

@@ -13,7 +13,7 @@ module AutoForme
       @request = action.request
       @model = action.model
       @type = action.normalized_type
-      @columns = model.columns_for(type)
+      @columns = model.columns_for(type, request)
       @objs = objs
       @opts = opts
     end

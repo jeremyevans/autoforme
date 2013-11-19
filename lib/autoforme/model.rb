@@ -43,8 +43,8 @@ module AutoForme
     end
 
     opts_attribute :columns, %w'new edit show delete browse search_form search'
-    def columns_for(type)
-      send("#{type}_columns") || framework.columns_for(type, model) || default_columns
+    def columns_for(type, request)
+      handle_proc(send("#{type}_columns") || framework.columns_for(type, model), type, request) || default_columns
     end
 
     opts_attribute :column_options, %w'new edit show delete browse search_form search mtm_edit'
@@ -208,10 +208,10 @@ module AutoForme
       end
     end
 
-    def new(params=nil)
+    def new(params, request)
       obj = @model.new
       if params
-        columns_for(:new).each do |col|
+        columns_for(:new, request).each do |col|
           if association?(col)
             col = association_key(col)
           end
