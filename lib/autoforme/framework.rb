@@ -73,10 +73,6 @@ module AutoForme
       nil
     end
 
-    def ajax_association_links?(model)
-      nil
-    end
-
     def ajax_inline_mtm_associations?(model)
       nil
     end

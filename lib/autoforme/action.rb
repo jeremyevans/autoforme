@@ -354,7 +354,7 @@ module AutoForme
     end
 
     def association_links(obj)
-      if model.lazy_load_association_links? && normalized_type != 'association_links' && request.params['associations'] != 'show'
+      if model.lazy_load_association_links?(type, request) && normalized_type != 'association_links' && request.params['associations'] != 'show'
         "<div id='lazy_load_association_links' data-object='#{model.primary_key_value(obj)}' data-type='#{type}'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
       elsif type == 'show'
         association_link_list(obj).to_s
