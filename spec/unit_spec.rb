@@ -28,15 +28,17 @@ describe AutoForme do
   end
 
   it "should handle per page lookup" do
-    model.limit_for(:browse).should == 25
+    model.limit_for(:browse, nil).should == 25
     framework.per_page 1
-    model.limit_for(:browse).should == 1
+    model.limit_for(:browse, nil).should == 1
     framework.browse_per_page 2
-    model.limit_for(:browse).should == 2
+    model.limit_for(:browse, nil).should == 2
     model.per_page 3
-    model.limit_for(:browse).should == 3
+    model.limit_for(:browse, nil).should == 3
     model.browse_per_page 4
-    model.limit_for(:browse).should == 4
+    model.limit_for(:browse, nil).should == 4
+    model.browse_per_page{|type, req| type.to_s.length + req}
+    model.limit_for(:browse, -1).should == 5
   end
 
   it "should handle columns lookup" do
