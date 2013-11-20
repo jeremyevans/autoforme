@@ -214,7 +214,7 @@ module AutoForme
               ds.exclude(ref.right_primary_key=>model.db.from(ref[:join_table]).where(ref[:left_key]=>exclude).select(ref[:right_key]))
             end
           end
-          return associated_model_class(assoc).autocomplete(opts.merge(:type=>'association', :association=>nil), &block)
+          return associated_model_class(assoc).autocomplete(opts.merge(:type=>:association, :association=>nil), &block)
         end
         opts = AUTOCOMPLETE_DEFAULT_OPTS.merge(autocomplete_options_for(type, request))
         callback_opts = {:type=>type, :request=>request, :query=>query}

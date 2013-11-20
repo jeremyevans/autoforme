@@ -3,7 +3,7 @@ module AutoForme
   class Model
     DEFAULT_LIMIT = 25
     DEFAULT_TABLE_CLASS = "table table-bordered table-striped"
-    DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
+    DEFAULT_SUPPORTED_ACTIONS = [:new, :show, :edit, :delete, :browse, :search, :mtm_edit]
 
     extend OptsAttributes
 
@@ -132,9 +132,9 @@ module AutoForme
       v || false
     end
 
-    AUTOCOMPLETE_TYPES = %w'show edit delete association mtm_edit'.freeze
+    AUTOCOMPLETE_TYPES = [:show, :edit, :delete, :association, :mtm_edit].freeze
     def autocomplete_options_for(type, request)
-      return unless AUTOCOMPLETE_TYPES.include?(type.to_s)
+      return unless AUTOCOMPLETE_TYPES.include?(type)
       framework_opts = framework.autocomplete_options_for(model, type, request)
       model_opts = handle_proc(autocomplete_options, type, request)
       if model_opts

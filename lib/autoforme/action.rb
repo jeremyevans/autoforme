@@ -5,30 +5,37 @@ module AutoForme
     attr_reader :request
     attr_reader :type
     attr_reader :normalized_type
+    attr_reader :params_type
 
-    NORMALIZED_ACTION_MAP = {'create'=>'new', 'update'=>'edit', 'destroy'=>'delete', 'mtm_update'=>'mtm_edit'}
+    NORMALIZED_ACTION_MAP = {:create=>:new, :update=>:edit, :destroy=>:delete, :mtm_update=>:mtm_edit}
     def initialize(model, request)
       @model = model
       @request = request
-      @type = request.action_type
-      @normalized_type = NORMALIZED_ACTION_MAP.fetch(@type, @type)
     end
 
+    ALL_SUPPORTED_ACTIONS = %w'new create show edit update delete destroy browse search mtm_edit mtm_update association_links autocomplete'.freeze
     def supported?
       return false unless idempotent? || request.post?
+      return false unless ALL_SUPPORTED_ACTIONS.include?(request.action_type)
+
+      @type = request.action_type.to_sym
+      @normalized_type = NORMALIZED_ACTION_MAP.fetch(@type, @type)
+      if t = request.params['type']
+        @params_type = ALL_SUPPORTED_ACTIONS.include?(t) ? t.to_sym : :edit
+      end
 
       case type
-      when 'mtm_edit'
+      when :mtm_edit
         return false unless model.supported_action?(type, request)
         if request.id && request.params['association']
           return false unless model.supported_mtm_edit?(request.params['association'], request)
         end
-      when 'mtm_update'
+      when :mtm_update
         return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'], request)
-      when 'association_links'
-        return false unless model.supported_action?(request.params['type'] || 'edit', request)
-      when 'autocomplete'
-        return false unless model.autocomplete_options_for(request.params['type'], request)
+      when :association_links
+        return false unless model.supported_action?(params_type, request)
+      when :autocomplete
+        return false unless model.autocomplete_options_for(params_type, request)
       else
         return false unless model.supported_action?(normalized_type, request)
       end
@@ -91,7 +98,7 @@ module AutoForme
 
     def tabs
       content = '<ul class="nav nav-tabs">'
-      %w'browse new show edit delete search mtm_edit'.each do |action_type|
+      Model::DEFAULT_SUPPORTED_ACTIONS.each do |action_type|
         if model.supported_action?(action_type, request)
           content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{tab_name(action_type)}</a></li>"
         end
@@ -100,12 +107,12 @@ module AutoForme
     end
     def tab_name(type)
       case type
-      when 'browse'
+      when :browse
         model.class_name
-      when 'mtm_edit'
+      when :mtm_edit
         'MTM'
       else
-        type.capitalize
+        type.to_s.capitalize
       end
     end
 
@@ -155,7 +162,7 @@ module AutoForme
 
     def list_page(type, opts={})
       page do
-        form_attributes = opts[:form] || {:action=>url_for(type.to_s)}
+        form_attributes = opts[:form] || {:action=>url_for(type)}
         Forme.form(form_attributes, form_opts) do |f|
           input_opts = {:name=>'id', :id=>'id', :label=>model.class_name}
           if model.autocomplete_options_for(type, request)
@@ -166,7 +173,7 @@ module AutoForme
             input_opts.merge!(:options=>model.select_options(type, request))
           end
           f.input(input_type, input_opts)
-          f.button(:value=>type.to_s.capitalize, :class=>"btn btn-#{type.to_s == 'delete' ? 'danger' : 'primary'}")
+          f.button(:value=>type.to_s.capitalize, :class=>"btn btn-#{type == :delete ? 'danger' : 'primary'}")
         end
       end
     end
@@ -176,16 +183,16 @@ module AutoForme
         t = ''
         f = Forme::Form.new(obj, :formatter=>:readonly, :wrapper=>:trtd)
         t << "<table class=\"#{model.table_class_for(:show, request)}\">"
-        model.columns_for(type.to_sym, request).each do |column|
+        model.columns_for(type, request).each do |column|
           t << f.input(column, column_options_for(:show, request, obj, column)).to_s
         end
         t << '</table>'
-        if type == 'show' && model.supported_action?('edit', request)
+        if type == :show && model.supported_action?(:edit, request)
           t << Forme.form({:action=>url_for("edit/#{model.primary_key_value(obj)}")}, form_opts) do |f|
             f.button(:value=>'Edit', :class=>'btn btn-primary')
           end.to_s
         end
-        if type == 'delete'
+        if type == :delete
           t << Forme.form({:action=>url_for("destroy/#{model.primary_key_value(obj)}"), :method=>:post}, form_opts) do |f|
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
@@ -211,7 +218,7 @@ module AutoForme
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
         end.to_s
-        if model.supported_action?('delete', request)
+        if model.supported_action?(:delete, request)
           t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}, form_opts) do |f|
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
@@ -335,7 +342,7 @@ module AutoForme
       request.set_flash_notice("Updated #{assoc} association for #{model.class_name}") unless request.xhr?
       if request.xhr?
         if add = request.params['add']
-          @type = 'edit'
+          @type = :edit
           mtm_edit_remove(assoc, model.associated_model_class(assoc), obj, assoc_obj)
         else
           "<option value=\"#{model.primary_key_value(assoc_obj)}\">#{model.associated_object_display_name(assoc, request, assoc_obj)}</option>"
@@ -348,21 +355,20 @@ module AutoForme
     end
 
     def handle_association_links
-      @type = request.params['type'] || 'edit'
-      obj = model.with_pk(type, request, request.id)
+      obj = model.with_pk(params_type, request, request.id)
       association_links(obj)
     end
 
     def handle_autocomplete
       unless (query = request.params['q'].to_s).empty?
-        model.autocomplete(:type=>request.params['type'], :request=>request, :association=>request.id, :query=>query, :exclude=>request.params['exclude']).join("\n")
+        model.autocomplete(:type=>params_type, :request=>request, :association=>request.id, :query=>query, :exclude=>request.params['exclude']).join("\n")
       end
     end
 
     def association_links(obj)
-      if model.lazy_load_association_links?(type, request) && normalized_type != 'association_links' && request.params['associations'] != 'show'
+      if model.lazy_load_association_links?(type, request) && normalized_type != :association_links && request.params['associations'] != 'show'
         "<div id='lazy_load_association_links' data-object='#{model.primary_key_value(obj)}' data-type='#{type}'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
-      elsif type == 'show'
+      elsif type == :show
         association_link_list(obj).to_s
       else
         "#{inline_mtm_edit_forms(obj)}#{association_link_list(obj)}"
@@ -372,7 +378,7 @@ module AutoForme
     def association_link_list(obj)
       assocs = model.association_links_for(type, request) 
       return if assocs.empty?
-      read_only = type == 'show'
+      read_only = type == :show
       t = '<h3 class="associated_records_header">Associated Records</h3>'
       t << "<ul class='association_links'>\n"
       assocs.each do |assoc|
@@ -394,7 +400,7 @@ module AutoForme
           end
           assoc_objs = obj.send(assoc)
         when :new
-          if !read_only && mc && mc.supported_action?('new', request)
+          if !read_only && mc && mc.supported_action?(:new, request)
             params = model.associated_new_column_values(obj, assoc).map do |col, value|
               "#{mc.link}%5b#{col}%5d=#{value}"
             end
@@ -421,7 +427,7 @@ module AutoForme
     end
     def association_class_link(mc, assoc)
       assoc_name = humanize(assoc)
-      if mc && mc.supported_action?('browse', request)
+      if mc && mc.supported_action?(:browse, request)
         "<a href=\"#{base_url_for("#{mc.link}/browse")}\">#{assoc_name}</a>"
       else
         assoc_name

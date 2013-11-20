@@ -217,7 +217,7 @@ describe AutoForme do
 
   it "should support specifying supported actions" do
     app_setup(Artist) do
-      supported_actions %w'new edit browse search'
+      supported_actions [:new, :edit, :browse, :search]
     end
     visit("/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'

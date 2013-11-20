@@ -122,23 +122,23 @@ describe AutoForme do
   end
 
   it "should handle supported_actions lookup" do
-    model.supported_action?('new', nil).should be_true
-    model.supported_action?('edit', nil).should be_true
-    model.supported_action?('search', nil).should be_true
-    framework.supported_actions ['new', 'search']
-    model.supported_action?('new', nil).should be_true
-    model.supported_action?('edit', nil).should be_false
-    model.supported_action?('search', nil).should be_true
-    framework.supported_actions{|model, req| req ? ['new'] : []}
-    model.supported_action?('new', nil).should be_false
-    model.supported_action?('new', true).should be_true
-    model.supported_actions ['edit', 'search']
-    model.supported_action?('new', nil).should be_false
-    model.supported_action?('edit', nil).should be_true
-    model.supported_action?('search', nil).should be_true
-    model.supported_actions{|req| req ? ['new'] : []}
-    model.supported_action?('new', nil).should be_false
-    model.supported_action?('new', true).should be_true
+    model.supported_action?(:new, nil).should be_true
+    model.supported_action?(:edit, nil).should be_true
+    model.supported_action?(:search, nil).should be_true
+    framework.supported_actions [:new, :search]
+    model.supported_action?(:new, nil).should be_true
+    model.supported_action?(:edit, nil).should be_false
+    model.supported_action?(:search, nil).should be_true
+    framework.supported_actions{|model, req| req ? [:new] : []}
+    model.supported_action?(:new, nil).should be_false
+    model.supported_action?(:new, true).should be_true
+    model.supported_actions [:edit, :search]
+    model.supported_action?(:new, nil).should be_false
+    model.supported_action?(:edit, nil).should be_true
+    model.supported_action?(:search, nil).should be_true
+    model.supported_actions{|req| req ? [:new] : []}
+    model.supported_action?(:new, nil).should be_false
+    model.supported_action?(:new, true).should be_true
   end
 
   it "should handle mtm_associations lookup" do
@@ -211,38 +211,38 @@ describe AutoForme do
 
   it "should handle autocompletion options" do
     model.autocomplete_options({})
-    model.autocomplete(:type=>'show', :query=>'foo').should == []
+    model.autocomplete(:type=>:show, :query=>'foo').should == []
     a = Artist.create(:name=>'FooBar')
-    model.autocomplete(:type=>'show', :query=>'foo').should == ["#{a.id} - FooBar"]
-    model.autocomplete(:type=>'show', :query=>'boo').should == []
+    model.autocomplete(:type=>:show, :query=>'foo').should == ["#{a.id} - FooBar"]
+    model.autocomplete(:type=>:show, :query=>'boo').should == []
     b = Artist.create(:name=>'BooFar')
-    model.autocomplete(:type=>'show', :query=>'boo').should == ["#{b.id} - BooFar"]
-    model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
+    model.autocomplete(:type=>:show, :query=>'boo').should == ["#{b.id} - BooFar"]
+    model.autocomplete(:type=>:show, :query=>'oo').sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
 
     framework.autocomplete_options :display=>:id
-    model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete(:type=>:show, :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     framework.autocomplete_options{|model, type, req| {:limit=>req}}
-    model.autocomplete(:type=>'show', :query=>'oo', :request=>1).sort.should == ["#{a.id} - FooBar"]
+    model.autocomplete(:type=>:show, :query=>'oo', :request=>1).sort.should == ["#{a.id} - FooBar"]
     model.autocomplete_options :display=>:id
-    model.autocomplete(:type=>'show', :query=>'oo', :request=>1).sort.should == ["#{a.id} - #{a.id}"]
+    model.autocomplete(:type=>:show, :query=>'oo', :request=>1).sort.should == ["#{a.id} - #{a.id}"]
 
     framework.autocomplete_options({})
-    model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete(:type=>:show, :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     model.autocomplete_options :display=>proc{:id}
-    model.autocomplete(:type=>'show', :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete(:type=>:show, :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     model.autocomplete_options :limit=>1
-    model.autocomplete(:type=>'show', :query=>'oo').should == ["#{a.id} - FooBar"]
+    model.autocomplete(:type=>:show, :query=>'oo').should == ["#{a.id} - FooBar"]
     model.autocomplete_options :limit=>proc{1}
-    model.autocomplete(:type=>'show', :query=>'oo').should == ["#{a.id} - FooBar"]
+    model.autocomplete(:type=>:show, :query=>'oo').should == ["#{a.id} - FooBar"]
     model.autocomplete_options :callback=>proc{|ds, opts| ds.reverse_order(:id)}
-    model.autocomplete(:type=>'show', :query=>'oo').should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
+    model.autocomplete(:type=>:show, :query=>'oo').should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
 
     model.autocomplete_options :filter=>proc{|ds, opts| ds.where(:name=>opts[:query])}
-    model.autocomplete(:type=>'show', :query=>'foo').should == []
-    model.autocomplete(:type=>'show', :query=>'FooBar').should == ["#{a.id} - FooBar"]
+    model.autocomplete(:type=>:show, :query=>'foo').should == []
+    model.autocomplete(:type=>:show, :query=>'FooBar').should == ["#{a.id} - FooBar"]
 
     model.autocomplete_options{|type, req| {:limit=>req}}
-    model.autocomplete(:type=>'show', :query=>'oo', :request=>1).should == ["#{a.id} - FooBar"]
+    model.autocomplete(:type=>:show, :query=>'oo', :request=>1).should == ["#{a.id} - FooBar"]
   end
 end
 

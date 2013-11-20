@@ -32,9 +32,9 @@ module AutoForme
       columns.each do |column|
         html << "<th>#{h action.column_label_for(type, request, model, column)}</th>"
       end
-      html << "<th>Show</th>" if show = model.supported_action?("show", request)
-      html << "<th>Edit</th>" if edit = model.supported_action?("edit", request)
-      html << "<th>Delete</th>" if delete = model.supported_action?("delete", request)
+      html << "<th>Show</th>" if show = model.supported_action?(:show, request)
+      html << "<th>Edit</th>" if edit = model.supported_action?(:edit, request)
+      html << "<th>Delete</th>" if delete = model.supported_action?(:delete, request)
       html << "</tr></thead>"
 
       html << "<tbody>"
