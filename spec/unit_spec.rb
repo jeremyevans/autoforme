@@ -21,9 +21,7 @@ describe AutoForme do
     model.table_class_for(:browse, 1).should == 'Artist browse 1'
     model.table_class 'baz'
     model.table_class_for(:browse, nil).should == 'baz'
-    model.browse_table_class 'quux'
-    model.table_class_for(:browse, nil).should == 'quux'
-    model.browse_table_class{|type, req| "#{type} #{req}"}
+    model.table_class{|type, req| "#{type} #{req}"}
     model.table_class_for(:browse, :foo).should == 'browse foo'
   end
 
@@ -35,9 +33,7 @@ describe AutoForme do
     model.limit_for(:browse, 3).should == 15
     model.per_page 3
     model.limit_for(:browse, nil).should == 3
-    model.browse_per_page 4
-    model.limit_for(:browse, nil).should == 4
-    model.browse_per_page{|type, req| type.to_s.length + req}
+    model.per_page{|type, req| type.to_s.length + req}
     model.limit_for(:browse, -1).should == 5
   end
 

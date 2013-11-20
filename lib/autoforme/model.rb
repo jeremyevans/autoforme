@@ -100,14 +100,14 @@ module AutoForme
       filter || framework.filter_for(model)
     end
 
-    opts_attribute :table_class, %w'browse search'
+    opts_attribute :table_class
     def table_class_for(type, request)
-      handle_proc(send("#{type}_table_class") || framework.table_class_for(model, type, request), type, request)
+      handle_proc(table_class || framework.table_class_for(model, type, request), type, request)
     end
 
-    opts_attribute :per_page, %w'association edit show delete browse search'
+    opts_attribute :per_page
     def limit_for(type, request)
-      handle_proc(send("#{type}_per_page") || framework.limit_for(model, type, request), type, request)
+      handle_proc(per_page || framework.limit_for(model, type, request), type, request)
     end
 
     opts_attribute :display_name, %w'association show edit delete'

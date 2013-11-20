@@ -169,8 +169,7 @@ describe AutoForme do
 
   it "should support specifying table class for data tables per type" do
     app_setup(Artist) do
-      browse_table_class 'foo'
-      search_table_class 'bar'
+      table_class{|type, req| type.to_s == 'browse' ? 'foo' : 'bar'}
     end
     visit("/Artist/browse")
     first('table')['class'].should == 'foo'
@@ -181,8 +180,7 @@ describe AutoForme do
 
   it "should support specifying numbers of rows per page per type" do
     app_setup(Artist) do
-      browse_per_page 2
-      search_per_page 3
+      per_page{|type, req| type.to_s == 'browse' ? 2 : 3}
     end
     5.times{|i| Artist.create(:name=>i.to_s)}
     visit("/Artist/browse")
