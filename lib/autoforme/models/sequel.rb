@@ -196,7 +196,7 @@ module AutoForme
       end
 
       def association_autocomplete?(assoc, request)
-        (c = associated_model_class(assoc.to_sym)) && c.autocomplete_options_for(:association, request)
+        (c = associated_model_class(assoc)) && c.autocomplete_options_for(:association, request)
       end
 
       AUTOCOMPLETE_DEFAULT_OPTS = {
