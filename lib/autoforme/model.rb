@@ -137,11 +137,11 @@ module AutoForme
     end
 
     AUTOCOMPLETE_TYPES = %w'show edit delete association mtm_edit'.freeze
-    opts_attribute :autocomplete_options, AUTOCOMPLETE_TYPES
+    opts_attribute :autocomplete_options
     def autocomplete_options_for(type, request)
       return unless AUTOCOMPLETE_TYPES.include?(type.to_s)
       framework_opts = framework.autocomplete_options_for(model, type, request)
-      model_opts = handle_proc(send("#{type}_autocomplete_options"), type, request)
+      model_opts = handle_proc(autocomplete_options, type, request)
       if model_opts
         (framework_opts || {}).merge(model_opts)
       end
