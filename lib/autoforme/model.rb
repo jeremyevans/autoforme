@@ -17,12 +17,16 @@ module AutoForme
     attr_reader :framework
     attr_reader :opts
 
-    opts_attribute :supported_actions
+    opts_attribute :after_create, :after_destroy, :after_update, :association_links,
+      :autocomplete_options, :before_create, :before_destroy, :before_update, :class_display_name,
+      :column_options, :columns, :display_name, :eager, :eager_graph,
+      :filter, :inline_mtm_associations, :lazy_load_association_links, :link_name, :mtm_associations,
+      :order, :per_page, :supported_actions, :table_class
+
     def supported_action?(type, request)
       (handle_proc(supported_actions || framework.supported_actions_for(model, request), request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
     end
 
-    opts_attribute :mtm_associations
     def mtm_association_select_options(request)
       normalize_mtm_associations(handle_proc(mtm_associations || framework.mtm_associations_for(model, request), request))
     end
@@ -33,17 +37,14 @@ module AutoForme
       supported_mtm_edit?(assoc, request) || inline_mtm_assocs(request).map{|x| x.to_s}.include?(assoc) 
     end
 
-    opts_attribute :inline_mtm_associations
     def inline_mtm_assocs(request)
       normalize_mtm_associations(handle_proc(inline_mtm_associations || framework.inline_mtm_associations_for(model, request), request))
     end
 
-    opts_attribute :columns
     def columns_for(type, request)
       handle_proc(columns || framework.columns_for(model, type, request), type, request) || default_columns
     end
 
-    opts_attribute :column_options
     def column_options_for(type, request, column)
       framework_opts = case framework_opts = framework.column_options
       when Proc, Method
@@ -84,42 +85,34 @@ module AutoForme
       opts
     end
 
-    opts_attribute :order
     def order_for(type, request)
       handle_proc(order || framework.order_for(model, type, request), type, request)
     end
 
-    opts_attribute :eager
     def eager_for(type, request)
       handle_proc(eager, type, request)
     end
 
-    opts_attribute :eager_graph
     def eager_graph_for(type, request)
       handle_proc(eager_graph, type, request)
     end
 
-    opts_attribute :filter
     def filter_for
       filter || framework.filter_for(model)
     end
 
-    opts_attribute :table_class
     def table_class_for(type, request)
       handle_proc(table_class || framework.table_class_for(model, type, request), type, request) || DEFAULT_TABLE_CLASS
     end
 
-    opts_attribute :per_page
     def limit_for(type, request)
       handle_proc(per_page || framework.limit_for(model, type, request), type, request) || DEFAULT_LIMIT
     end
 
-    opts_attribute :display_name
     def display_name_for
       display_name || framework.display_name_for(model)
     end
 
-    opts_attribute :association_links
     def association_links_for(type, request)
       case v = handle_proc(association_links || framework.association_links_for(model, type, request), type, request)
       when nil
@@ -133,7 +126,6 @@ module AutoForme
       end
     end
 
-    opts_attribute :lazy_load_association_links
     def lazy_load_association_links?(type, request)
       v = handle_proc(lazy_load_association_links, type, request)
       v = framework.lazy_load_association_links?(model, type, request) if v.nil?
@@ -141,7 +133,6 @@ module AutoForme
     end
 
     AUTOCOMPLETE_TYPES = %w'show edit delete association mtm_edit'.freeze
-    opts_attribute :autocomplete_options
     def autocomplete_options_for(type, request)
       return unless AUTOCOMPLETE_TYPES.include?(type.to_s)
       framework_opts = framework.autocomplete_options_for(model, type, request)
@@ -151,19 +142,10 @@ module AutoForme
       end
     end
 
-    opts_attribute :before_create
-    opts_attribute :before_update
-    opts_attribute :before_destroy
-    opts_attribute :after_create
-    opts_attribute :after_update
-    opts_attribute :after_destroy
-
-    opts_attribute :class_display_name
     def class_name
       class_display_name || model.name
     end
 
-    opts_attribute :link_name
     def link
       link_name || class_name
     end

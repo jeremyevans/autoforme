@@ -12,19 +12,20 @@ module AutoForme
     attr_reader :model_classes
     attr_reader :opts
 
-    opts_attribute :model_type
+    opts_attribute :after_create, :after_destroy, :after_update, :association_links,
+      :autocomplete_options, :before_create, :before_destroy, :before_update, :column_options,
+      :columns, :display_name, :filter, :inline_mtm_associations, :lazy_load_association_links,
+      :model_type, :mtm_associations, :order, :per_page, :supported_actions,
+      :table_class
 
-    opts_attribute :supported_actions
     def supported_actions_for(model, request)
       handle_proc(supported_actions, model, request)
     end
 
-    opts_attribute :table_class
     def table_class_for(model, type, request)
       handle_proc(table_class, model, type, request)
     end
 
-    opts_attribute :per_page
     def limit_for(model, type, request)
       handle_proc(per_page, model, type, request)
     end
@@ -36,56 +37,38 @@ module AutoForme
       @opts = {}
     end
 
-    opts_attribute :columns
     def columns_for(model, type, request)
       handle_proc(columns, model, type, request)
     end
 
-    opts_attribute :column_options
-
-    opts_attribute :mtm_associations
     def mtm_associations_for(model, request)
       handle_proc(mtm_associations, model, request)
     end
 
-    opts_attribute :inline_mtm_associations
     def inline_mtm_associations_for(model, request)
       handle_proc(inline_mtm_associations, model, request)
     end
 
-    opts_attribute :order
     def order_for(model, type, request)
       handle_proc(order, model, type, request)
     end
 
-    opts_attribute :filter
     def filter_for(model)
       handle_proc(filter, model)
     end
 
-    opts_attribute :display_name
     def display_name_for(model)
       handle_proc(display_name, model)
     end
 
-    opts_attribute :before_create
-    opts_attribute :before_update
-    opts_attribute :before_destroy
-    opts_attribute :after_create
-    opts_attribute :after_update
-    opts_attribute :after_destroy
-
-    opts_attribute :lazy_load_association_links
     def lazy_load_association_links?(model, type, request)
       handle_proc(lazy_load_association_links, model, type, request)
     end
 
-    opts_attribute :autocomplete_options
     def autocomplete_options_for(model, type, request)
       handle_proc(autocomplete_options, model, type, request)
     end
 
-    opts_attribute :association_links
     def association_links_for(model, type, request)
       handle_proc(association_links, model, type, request)
     end
