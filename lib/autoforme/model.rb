@@ -85,14 +85,14 @@ module AutoForme
       handle_proc(order || framework.order_for(model, type, request), type, request)
     end
 
-    opts_attribute :eager, %w'association edit show delete browse search'
+    opts_attribute :eager
     def eager_for(type, request)
-      handle_proc(send("#{type}_eager"), type, request)
+      handle_proc(eager, type, request)
     end
 
-    opts_attribute :eager_graph, %w'association edit show delete browse search'
+    opts_attribute :eager_graph
     def eager_graph_for(type, request)
-      handle_proc(send("#{type}_eager_graph"), type, request)
+      handle_proc(eager_graph, type, request)
     end
 
     opts_attribute :filter, %w'association edit show delete browse search'
