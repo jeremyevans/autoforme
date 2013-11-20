@@ -356,7 +356,6 @@ describe AutoForme::OptsAttributes do
     @c = Class.new do
       extend AutoForme::OptsAttributes 
       opts_attribute :foo
-      opts_attribute :bar, %w'baz'
       attr_accessor :opts
     end
     @o = @c.new
@@ -378,23 +377,5 @@ describe AutoForme::OptsAttributes do
 
   it "should should raise an error if given block and argument" do
     proc{@o.foo(1){}}.should raise_error(ArgumentError)
-  end
-
-  it "should create methods for the prefixes given" do
-    @o.baz_bar.should be_nil
-    @o.baz_bar(1).should == 1
-    @o.bar.should be_nil
-    @o.bar(1).should == 1
-  end
-
-  it "should have prefix methods default to calling base method" do
-    @o.bar(1)
-    @o.baz_bar.should == 1
-  end
-
-  it "should accept a block specifying a default for the base method" do
-    @c.opts_attribute(:q, %w'b'){1}
-    @o.q.should == 1
-    @o.b_q.should == 1
   end
 end

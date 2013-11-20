@@ -1,8 +1,4 @@
 module AutoForme
-  DEFAULT_LIMIT = 25
-  DEFAULT_TABLE_CLASS = "table table-bordered table-striped"
-  DEFAULT_SUPPORTED_ACTIONS = %w'new show edit delete browse search mtm_edit'.freeze
-
   # Framework wraps a controller
   class Framework
     extend OptsAttributes
@@ -18,17 +14,17 @@ module AutoForme
 
     opts_attribute :model_type
 
-    opts_attribute(:supported_actions){DEFAULT_SUPPORTED_ACTIONS}
+    opts_attribute :supported_actions
     def supported_actions_for(model, request)
       handle_proc(supported_actions, model, request)
     end
 
-    opts_attribute(:table_class){DEFAULT_TABLE_CLASS}
+    opts_attribute :table_class
     def table_class_for(model, type, request)
       handle_proc(table_class, model, type, request)
     end
 
-    opts_attribute(:per_page){DEFAULT_LIMIT}
+    opts_attribute :per_page
     def limit_for(model, type, request)
       handle_proc(per_page, model, type, request)
     end
