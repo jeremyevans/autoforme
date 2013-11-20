@@ -6,6 +6,7 @@ module AutoForme
     attr_reader :type
     attr_reader :normalized_type
     attr_reader :params_type
+    attr_reader :params_association
 
     NORMALIZED_ACTION_MAP = {:create=>:new, :update=>:edit, :destroy=>:delete, :mtm_update=>:mtm_edit}
     def initialize(model, request)
@@ -27,14 +28,20 @@ module AutoForme
       case type
       when :mtm_edit
         return false unless model.supported_action?(type, request)
-        if request.id && request.params['association']
-          return false unless model.supported_mtm_edit?(request.params['association'], request)
+        if request.id && (assoc = request.params['association'])
+          return false unless model.supported_mtm_edit?(assoc, request)
+          @params_association = assoc.to_sym
         end
       when :mtm_update
-        return false unless request.id && request.params['association'] && model.supported_mtm_update?(request.params['association'], request)
+        return false unless request.id && (assoc = request.params['association']) && model.supported_mtm_update?(assoc, request)
+        @params_association = assoc.to_sym
       when :association_links
         return false unless model.supported_action?(params_type, request)
       when :autocomplete
+        if assoc = request.id
+          return false unless model.association?(assoc)
+          @params_association = assoc.to_sym
+        end
         return false unless model.autocomplete_options_for(params_type, request)
       else
         return false unless model.supported_action?(normalized_type, request)
@@ -306,8 +313,7 @@ module AutoForme
     def handle_mtm_edit
       if id = request.id
         obj = model.with_pk(:edit, request, request.id)
-        if assoc = request.params['association']
-          assoc = assoc.to_sym
+        if assoc = params_association
           page do
             Forme.form(obj, {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")}, form_opts) do |f|
               opts = model.column_options_for(:mtm_edit, request, assoc)
@@ -337,7 +343,7 @@ module AutoForme
     end
     def handle_mtm_update
       obj = model.with_pk(:edit, request, request.id)
-      assoc = request.params['association'].to_sym
+      assoc = params_association
       assoc_obj = model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
       request.set_flash_notice("Updated #{assoc} association for #{model.class_name}") unless request.xhr?
       if request.xhr?
@@ -361,7 +367,7 @@ module AutoForme
 
     def handle_autocomplete
       unless (query = request.params['q'].to_s).empty?
-        model.autocomplete(:type=>params_type, :request=>request, :association=>request.id, :query=>query, :exclude=>request.params['exclude']).join("\n")
+        model.autocomplete(:type=>params_type, :request=>request, :association=>params_association, :query=>query, :exclude=>request.params['exclude']).join("\n")
       end
     end
 

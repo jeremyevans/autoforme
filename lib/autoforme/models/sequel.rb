@@ -206,8 +206,7 @@ module AutoForme
       }.freeze
       def autocomplete(opts={})
         type, request, assoc, query, exclude = opts.values_at(:type, :request, :association, :query, :exclude)
-        if assoc && association?(assoc)
-          assoc = assoc.to_sym
+        if assoc
           if exclude && association_type(assoc) == :edit
             ref = model.association_reflection(assoc)
             block = lambda do |ds|
