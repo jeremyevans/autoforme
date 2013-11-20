@@ -270,27 +270,27 @@ describe AutoForme do
     end
 
     artist.autocomplete_options({})
-    model.autocomplete(:type=>'show', :query=>'foo', :association=>'artist').should == []
+    model.autocomplete(:query=>'foo', :association=>:artist).should == []
     a = Artist.create(:name=>'FooBar')
-    model.autocomplete(:type=>'show', :query=>'foo', :association=>'artist').should == ["#{a.id} - FooBar"]
-    model.autocomplete(:type=>'show', :query=>'boo', :association=>'artist').should == []
+    model.autocomplete(:query=>'foo', :association=>:artist).should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'boo', :association=>:artist).should == []
     b = Artist.create(:name=>'BooFar')
-    model.autocomplete(:type=>'show', :query=>'boo', :association=>'artist').should == ["#{b.id} - BooFar"]
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artist').sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
+    model.autocomplete(:query=>'boo', :association=>:artist).should == ["#{b.id} - BooFar"]
+    model.autocomplete(:query=>'oo', :association=>:artist).sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
     artist.autocomplete_options :display=>:id
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artist').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete(:query=>'oo', :association=>:artist).sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     artist.autocomplete_options :display=>proc{:id}
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artist').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete(:query=>'oo', :association=>:artist).sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
     artist.autocomplete_options :limit=>1
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artist').should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'oo', :association=>:artist).should == ["#{a.id} - FooBar"]
     artist.autocomplete_options :limit=>proc{1}
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artist').should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'oo', :association=>:artist).should == ["#{a.id} - FooBar"]
     artist.autocomplete_options :callback=>proc{|ds, opts| ds.reverse_order(:id)}
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artist').should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
+    model.autocomplete(:query=>'oo', :association=>:artist).should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
 
     artist.autocomplete_options :filter=>proc{|ds, opts| ds.where(:name=>opts[:query])}
-    model.autocomplete(:type=>'show', :query=>'foo', :association=>'artist').should == []
-    model.autocomplete(:type=>'show', :query=>'FooBar', :association=>'artist').should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'foo', :association=>:artist).should == []
+    model.autocomplete(:query=>'FooBar', :association=>:artist).should == ["#{a.id} - FooBar"]
   end
 end
 
@@ -317,36 +317,36 @@ describe AutoForme do
     end
 
     artist.autocomplete_options({})
-    model.autocomplete(:type=>'show', :query=>'foo', :association=>'artists').should == []
+    model.autocomplete(:query=>'foo', :association=>:artists).should == []
     a = Artist.create(:name=>'FooBar')
-    model.autocomplete(:type=>'show', :query=>'foo', :association=>'artists').should == ["#{a.id} - FooBar"]
-    model.autocomplete(:type=>'show', :query=>'boo', :association=>'artists').should == []
+    model.autocomplete(:query=>'foo', :association=>:artists).should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'boo', :association=>:artists).should == []
     b = Artist.create(:name=>'BooFar')
-    model.autocomplete(:type=>'show', :query=>'boo', :association=>'artists').should == ["#{b.id} - BooFar"]
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists').sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
+    model.autocomplete(:query=>'boo', :association=>:artists).should == ["#{b.id} - BooFar"]
+    model.autocomplete(:query=>'oo', :association=>:artists).sort.should == ["#{a.id} - FooBar", "#{b.id} - BooFar"]
     c = Album.create(:name=>'Quux')
     c.add_artist(a)
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists', :exclude=>c.id).sort.should == ["#{b.id} - BooFar"]
+    model.autocomplete(:query=>'oo', :association=>:artists, :exclude=>c.id).sort.should == ["#{b.id} - BooFar"]
     artist.autocomplete_options :display=>:id
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists', :exclude=>c.id).sort.should == ["#{b.id} - #{b.id}"]
+    model.autocomplete(:query=>'oo', :association=>:artists).sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete(:query=>'oo', :association=>:artists, :exclude=>c.id).sort.should == ["#{b.id} - #{b.id}"]
     artist.autocomplete_options :display=>proc{:id}
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists', :exclude=>c.id).sort.should == ["#{b.id} - #{b.id}"]
+    model.autocomplete(:query=>'oo', :association=>:artists).sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
+    model.autocomplete(:query=>'oo', :association=>:artists, :exclude=>c.id).sort.should == ["#{b.id} - #{b.id}"]
     artist.autocomplete_options :limit=>1
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists').should == ["#{a.id} - FooBar"]
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists', :exclude=>c.id).should == ["#{b.id} - BooFar"]
+    model.autocomplete(:query=>'oo', :association=>:artists).should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'oo', :association=>:artists, :exclude=>c.id).should == ["#{b.id} - BooFar"]
     artist.autocomplete_options :limit=>proc{1}
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists').should == ["#{a.id} - FooBar"]
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists', :exclude=>c.id).should == ["#{b.id} - BooFar"]
+    model.autocomplete(:query=>'oo', :association=>:artists).should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'oo', :association=>:artists, :exclude=>c.id).should == ["#{b.id} - BooFar"]
     artist.autocomplete_options :callback=>proc{|ds, opts| ds.reverse_order(:id)}
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists').should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
-    model.autocomplete(:type=>'show', :query=>'oo', :association=>'artists', :exclude=>c.id).should == ["#{b.id} - BooFar"]
+    model.autocomplete(:query=>'oo', :association=>:artists).should == ["#{b.id} - BooFar", "#{a.id} - FooBar"]
+    model.autocomplete(:query=>'oo', :association=>:artists, :exclude=>c.id).should == ["#{b.id} - BooFar"]
 
     artist.autocomplete_options :filter=>proc{|ds, opts| ds.where(:name=>opts[:query])}
-    model.autocomplete(:type=>'show', :query=>'foo', :association=>'artists').should == []
-    model.autocomplete(:type=>'show', :query=>'FooBar', :association=>'artists').should == ["#{a.id} - FooBar"]
-    model.autocomplete(:type=>'show', :query=>'FooBar', :association=>'artists', :exclude=>c.id).should == []
+    model.autocomplete(:query=>'foo', :association=>:artists).should == []
+    model.autocomplete(:query=>'FooBar', :association=>:artists).should == ["#{a.id} - FooBar"]
+    model.autocomplete(:query=>'FooBar', :association=>:artists, :exclude=>c.id).should == []
   end
 end
 

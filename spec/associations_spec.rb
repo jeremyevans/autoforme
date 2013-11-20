@@ -227,8 +227,8 @@ describe AutoForme do
       model Album do
         columns [:name, :artist]
         eager_graph :artist
-        order{|type, req| type.to_s == 'edit' ? [:albums__name, :artist__name] : [:artist__name, :albums__name]}
-        display_name{|obj, type| type.to_s == 'edit' ? "#{obj.name} (#{obj.artist.name})" : "#{obj.artist.name}-#{obj.name}"}
+        order{|type, req| type == :edit ? [:albums__name, :artist__name] : [:artist__name, :albums__name]}
+        display_name{|obj, type| type == :edit ? "#{obj.name} (#{obj.artist.name})" : "#{obj.artist.name}-#{obj.name}"}
       end
     end
 
@@ -469,7 +469,7 @@ describe AutoForme do
       model Artist
       model Album do
         columns [:name, :artist]
-        column_options{|col, type, req| {:dataset=>proc{|ds| ds.where(:name=>'B'..'O').reverse_order(:name)}} if type.to_s == 'edit' && col == :artist}
+        column_options{|col, type, req| {:dataset=>proc{|ds| ds.where(:name=>'B'..'O').reverse_order(:name)}} if type == :edit && col == :artist}
       end
     end
 

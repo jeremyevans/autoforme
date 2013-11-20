@@ -101,12 +101,12 @@ describe AutoForme do
   it "should support specifying display names per type" do
     app_setup(Artist) do
       display_name do |obj, type|
-        case type.to_s
-        when 'edit'
+        case type
+        when :edit
           obj.name[1..-1]
-        when 'show'
+        when :show
           obj.name[2..-2]
-        when 'delete'
+        when :delete
           obj.send(:class)
         end
       end
@@ -176,7 +176,7 @@ describe AutoForme do
 
   it "should support specifying table class for data tables per type" do
     app_setup(Artist) do
-      table_class{|type, req| type.to_s == 'browse' ? 'foo' : 'bar'}
+      table_class{|type, req| type == :browse ? 'foo' : 'bar'}
     end
     visit("/Artist/browse")
     first('table')['class'].should == 'foo'
@@ -187,7 +187,7 @@ describe AutoForme do
 
   it "should support specifying numbers of rows per page per type" do
     app_setup(Artist) do
-      per_page{|type, req| type.to_s == 'browse' ? 2 : 3}
+      per_page{|type, req| type == :browse ? 2 : 3}
     end
     5.times{|i| Artist.create(:name=>i.to_s)}
     visit("/Artist/browse")
@@ -311,7 +311,7 @@ describe AutoForme do
     cols = Artist.columns - [:id]
     map = {:new=>:n5, :edit=>:n4, :show=>:n3, :browse=>:n2, :search_form=>:n1, :search=>:n0}
     app_setup(Artist) do
-      columns{|type, req| cols - [map[type.to_sym]]}
+      columns{|type, req| cols - [map[type]]}
     end
 
     visit("/Artist/new")
@@ -361,7 +361,7 @@ describe AutoForme do
   it "should support specifying order per type" do
     map = {:edit=>:n0, :show=>[:n1, :n2], :delete=>:n3, :browse=>[:n1, :n0], :search=>:n4}
     app_setup(Artist) do
-      order{|type, req| map[type.to_sym]}
+      order{|type, req| map[type]}
     end
 
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
@@ -388,16 +388,16 @@ describe AutoForme do
   it "should support specifying filter per type" do
     app_setup(Artist) do
       filter do |ds, type, req|
-        case type.to_s
-        when 'edit'
+        case type
+        when :edit
           ds.where{n0 > 1}
-        when 'show'
+        when :show
           ds.where{n1 > 3}
-        when 'delete'
+        when :delete
           ds.where{n2 > 2}
-        when 'browse'
+        when :browse
           ds.where{n3 > 6}
-        when 'search'
+        when :search
           ds.where{n4 > 4}
         end
       end
@@ -434,16 +434,16 @@ describe AutoForme do
     app_setup(Artist) do
       filter do |ds, type, req|
         v = req.params[:f]
-        case type.to_s
-        when 'edit'
+        case type
+        when :edit
           ds.where{n0 > v}
-        when 'show'
+        when :show
           ds.where{n1 > v}
-        when 'delete'
+        when :delete
           ds.where{n2 > v}
-        when 'browse'
+        when :browse
           ds.where{n3 > v}
-        when 'search'
+        when :search
           ds.where{n4 > v}
         end
       end
