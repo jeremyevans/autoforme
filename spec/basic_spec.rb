@@ -100,9 +100,16 @@ describe AutoForme do
 
   it "should support specifying display names per type" do
     app_setup(Artist) do
-      edit_display_name{|obj| obj.name[1..-1]}
-      show_display_name{|obj| obj.name[2..-2]}
-      delete_display_name :class
+      display_name do |obj, type|
+        case type.to_s
+        when 'edit'
+          obj.name[1..-1]
+        when 'show'
+          obj.name[2..-2]
+        when 'delete'
+          obj.send(:class)
+        end
+      end
     end
     Artist.create(:name=>'TestArtistNew')
     visit("/Artist/show")

@@ -110,9 +110,9 @@ module AutoForme
       handle_proc(per_page || framework.limit_for(model, type, request), type, request)
     end
 
-    opts_attribute :display_name, %w'association show edit delete'
-    def display_name_for(type)
-      send("#{type}_display_name") || framework.display_name_for(model, type)
+    opts_attribute :display_name
+    def display_name_for
+      display_name || framework.display_name_for(model)
     end
 
     opts_attribute :association_links, %w'edit show'
@@ -241,7 +241,7 @@ module AutoForme
     end
 
     def object_display_name(type, request, obj)
-      apply_name_method(display_name_for(type), obj, type, request)
+      apply_name_method(display_name_for, obj, type, request)
     end
 
     def associated_object_display_name(assoc, request, obj)

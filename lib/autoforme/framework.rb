@@ -68,8 +68,8 @@ module AutoForme
     end
 
     opts_attribute :display_name
-    def display_name_for(model, type)
-      handle_proc(display_name, model, type)
+    def display_name_for(model)
+      handle_proc(display_name, model)
     end
 
     opts_attribute :before_create

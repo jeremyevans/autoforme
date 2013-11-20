@@ -228,8 +228,7 @@ describe AutoForme do
         columns [:name, :artist]
         eager_graph :artist
         order{|type, req| type.to_s == 'edit' ? [:albums__name, :artist__name] : [:artist__name, :albums__name]}
-        display_name{|obj| "#{obj.artist.name}-#{obj.name}"}
-        edit_display_name{|obj| "#{obj.name} (#{obj.artist.name})"}
+        display_name{|obj, type| type.to_s == 'edit' ? "#{obj.name} (#{obj.artist.name})" : "#{obj.artist.name}-#{obj.name}"}
       end
     end
 
