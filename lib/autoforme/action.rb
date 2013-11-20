@@ -73,7 +73,11 @@ module AutoForme
     def column_options_for(type, request, obj, column)
       opts = model.column_options_for(type, request, column)
       if opts[:class] == 'autoforme_autocomplete'
-        opts[:value] = "#{obj.send(model.association_key(column))} - #{model.column_value(type, request, obj, column)}"
+        if type == :show
+          opts[:value] = model.column_value(type, request, obj, column)
+        elsif key = obj.send(model.association_key(column))
+          opts[:value] = "#{key} - #{model.column_value(type, request, obj, column)}"
+        end
       end
       opts
     end
@@ -170,10 +174,12 @@ module AutoForme
     def show_page(obj)
       page do
         t = ''
-        f = Forme::Form.new(obj, :formatter=>:readonly)
+        f = Forme::Form.new(obj, :formatter=>:readonly, :wrapper=>:trtd)
+        t << "<table class=\"#{model.table_class_for(:show, request)}\">"
         model.columns_for(type.to_sym, request).each do |column|
-          t << f.input(column, model.column_options_for(:show, request, column)).to_s
+          t << f.input(column, column_options_for(:show, request, obj, column)).to_s
         end
+        t << '</table>'
         if type == 'show' && model.supported_action?('edit', request)
           t << Forme.form({:action=>url_for("edit/#{model.primary_key_value(obj)}")}, form_opts) do |f|
             f.button(:value=>'Edit', :class=>'btn btn-primary')
