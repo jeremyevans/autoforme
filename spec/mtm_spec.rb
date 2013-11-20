@@ -162,23 +162,23 @@ describe AutoForme do
     app_setup do
       model Artist do
         mtm_associations :albums
-        association_links [:albums]
+        association_links :all_except_mtm
       end
       model Album do
         mtm_associations [:artists]
-        association_links :artists
+        association_links :all
       end
     end
 
     visit("/Artist/new")
     fill_in 'Name', :with=>'Artist1'
     click_button 'Create'
-
     click_link 'Edit'
     select 'Artist1'
     click_button 'Edit'
-    click_link 'Albums'
-    click_link 'New'
+    page.html.should_not =~ /Albums/
+
+    visit("/Album/new")
     fill_in 'Name', :with=>'Album1'
     click_button 'Create'
     click_link 'Edit'
@@ -192,8 +192,7 @@ describe AutoForme do
     click_button 'Show'
     click_link 'Artist1'
     page.current_path.should =~ %r{Artist/show/\d+}
-    click_link 'Album1'
-    page.current_path.should =~ %r{Album/show/\d+}
+    page.html.should_not =~ /Albums/
   end
 
   it "should have many to many association editing working when associated class is not using autoforme" do

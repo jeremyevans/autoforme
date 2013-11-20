@@ -121,6 +121,8 @@ module AutoForme
         v
       when :all
         association_names
+      when :all_except_mtm
+        association_names - mtm_association_names
       else
         [v]
       end
