@@ -95,9 +95,9 @@ module AutoForme
       handle_proc(eager_graph, type, request)
     end
 
-    opts_attribute :filter, %w'association edit show delete browse search'
-    def filter_for(type)
-      send("#{type}_filter") || framework.filter_for(model, type)
+    opts_attribute :filter
+    def filter_for
+      filter || framework.filter_for(model)
     end
 
     opts_attribute :table_class, %w'browse search'

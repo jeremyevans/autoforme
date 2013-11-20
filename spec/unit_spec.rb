@@ -98,13 +98,11 @@ describe AutoForme do
   end
 
   it "should handle filter lookup" do
-    model.filter_for(:browse).should == nil
-    framework.filter{|model, type| lambda{|ds, req| [1, model.name.to_sym, type]}}
-    model.filter_for(:browse).call(nil, nil).should == [1, :Artist, :browse]
-    model.filter{|ds, req| 2}
-    model.filter_for(:browse).call(nil, nil).should == 2
-    model.browse_filter{|ds, req| 3}
-    model.filter_for(:browse).call(nil, nil).should == 3
+    model.filter_for.should == nil
+    framework.filter{|model| lambda{|ds, type, req| [ds, model.name.to_sym, type, req]}}
+    model.filter_for.call(1, :browse, 2).should == [1, :Artist, :browse, 2]
+    model.filter{|ds, type, req| [ds, type, req]}
+    model.filter_for.call(1, :browse, 2).should == [1, :browse, 2]
   end
 
   it "should handle display_name lookup" do

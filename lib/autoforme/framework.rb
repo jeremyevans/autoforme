@@ -63,8 +63,8 @@ module AutoForme
     end
 
     opts_attribute :filter
-    def filter_for(model, type)
-      handle_proc(filter, model, type)
+    def filter_for(model)
+      handle_proc(filter, model)
     end
 
     opts_attribute :display_name

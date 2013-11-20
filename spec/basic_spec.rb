@@ -382,11 +382,20 @@ describe AutoForme do
 
   it "should support specifying filter per type" do
     app_setup(Artist) do
-      edit_filter{|ds, action| ds.where{n0 > 1}}
-      show_filter{|ds, action| ds.where{n1 > 3}}
-      delete_filter{|ds, action| ds.where{n2 > 2}}
-      browse_filter{|ds, action| ds.where{n3 > 6}}
-      search_filter{|ds, action| ds.where{n4 > 4}}
+      filter do |ds, type, req|
+        case type.to_s
+        when 'edit'
+          ds.where{n0 > 1}
+        when 'show'
+          ds.where{n1 > 3}
+        when 'delete'
+          ds.where{n2 > 2}
+        when 'browse'
+          ds.where{n3 > 6}
+        when 'search'
+          ds.where{n4 > 4}
+        end
+      end
     end
 
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
@@ -418,11 +427,21 @@ describe AutoForme do
 
   it "should support specifying filter per type using request params" do
     app_setup(Artist) do
-      edit_filter{|ds, req| ds.where{n0 > req.params[:f]}}
-      show_filter{|ds, req| ds.where{n1 > req.params[:f]}}
-      delete_filter{|ds, req| ds.where{n2 > req.params[:f]}}
-      browse_filter{|ds, req| ds.where{n3 > req.params[:f]}}
-      search_filter{|ds, req| ds.where{n4 > req.params[:f]}}
+      filter do |ds, type, req|
+        v = req.params[:f]
+        case type.to_s
+        when 'edit'
+          ds.where{n0 > v}
+        when 'show'
+          ds.where{n1 > v}
+        when 'delete'
+          ds.where{n2 > v}
+        when 'browse'
+          ds.where{n3 > v}
+        when 'search'
+          ds.where{n4 > v}
+        end
+      end
     end
 
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
@@ -447,7 +466,7 @@ describe AutoForme do
 
   it "should support specifying filter per type using request session" do
     app_setup(Artist) do
-      filter{|ds, req| ds.where(:n1=>req.session['n1'])}
+      filter{|ds, type, req| ds.where(:n1=>req.session['n1'])}
       order :n2
     end
 

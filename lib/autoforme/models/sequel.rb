@@ -115,7 +115,7 @@ module AutoForme
       end
 
       def session_value(column)
-        filter do |ds, req|
+        filter do |ds, type, req|
           ds.where(column=>req.session[column])
         end
         before_create do |obj, req|
@@ -180,8 +180,8 @@ module AutoForme
       end
 
       def apply_dataset_options(type, request, ds)
-        if filter = filter_for(type)
-          ds = filter.call(ds, request)
+        if filter = filter_for
+          ds = filter.call(ds, type, request)
         end
         if order = order_for(type, request)
           ds = ds.order(*order)
@@ -274,8 +274,8 @@ module AutoForme
 
       def dataset_for(type, request)
         ds = @model.dataset
-        if filter = filter_for(type)
-          ds = filter.call(ds, request)
+        if filter = filter_for
+          ds = filter.call(ds, type, request)
         end
         ds
       end
