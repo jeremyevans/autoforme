@@ -1,7 +1,6 @@
 require 'forme'
 require 'thread'
 require 'rack/utils'
-require 'autoforme/utils'
 
 module AutoForme
   FRAMEWORKS = {}
@@ -35,8 +34,9 @@ module AutoForme
   end
 end
 
+require 'autoforme/opts_attributes'
 require 'autoforme/model'
 require 'autoforme/framework'
 require 'autoforme/request'
 require 'autoforme/action'
-require 'autoforme/model_table'
+require 'autoforme/table'

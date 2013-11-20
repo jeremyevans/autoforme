@@ -268,7 +268,7 @@ module AutoForme
     end
     def table_page(next_page, objs)
       page do
-        ModelTable.new(self, objs).to_s << table_pager(normalized_type, next_page)
+        Table.new(self, objs).to_s << table_pager(normalized_type, next_page)
       end
     end
     def handle_browse

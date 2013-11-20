@@ -1,5 +1,5 @@
 module AutoForme
-  class ModelTable
+  class Table
     attr_reader :action
     attr_reader :model
     attr_reader :request
