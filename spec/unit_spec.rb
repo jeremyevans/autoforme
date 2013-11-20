@@ -191,9 +191,7 @@ describe AutoForme do
     model.association_links_for(:show, :foo).should == [:Artist, :show, :foo]
     model.association_links [:bar]
     model.association_links_for(:show, nil).should == [:bar]
-    model.show_association_links []
-    model.association_links_for(:show, nil).should == []
-    model.show_association_links{|type, req| [type, req]}
+    model.association_links{|type, req| [type, req]}
     model.association_links_for(:show, :foo).should == [:show, :foo]
   end
 
