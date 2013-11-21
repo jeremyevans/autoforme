@@ -8,9 +8,15 @@ module AutoFormeSpec
 end
 
 require './spec/sequel_spec_helper'
-require './spec/sinatra_spec_helper'
 
-(defined?(RSpec) ? RSpec::Core::ExampleGroup : Spec::Example::ExampleGroup).class_eval do
+case ENV['FRAMEWORK']
+when 'rails'
+  require './spec/rails_spec_helper'
+else
+  require './spec/sinatra_spec_helper'
+end
+
+RSpec::Core::ExampleGroup.class_eval do
   include Rack::Test::Methods
   include Capybara::DSL
   include Capybara::RSpecMatchers

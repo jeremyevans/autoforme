@@ -24,7 +24,18 @@ begin
   end
   
   task :default => [:spec]
-  spec_with_cov.call("spec", Dir["spec/*_spec.rb"], "Run specs")
+  spec_with_cov.call("spec", Dir["spec/*_spec.rb"], "Run specs with sinatra/sequel")
+
+  desc "Run specs with rails/sequel"
+  task :rails_spec do
+    begin
+      ENV['FRAMEWORK'] = 'rails'
+      Rake::Task[:spec].invoke
+    ensure
+      ENV.delete('FRAMEWORK')
+    end
+  end
+
 rescue LoadError
   task :default do
     puts "Must install rspec >=2.0 to run the default task (which runs specs)"
