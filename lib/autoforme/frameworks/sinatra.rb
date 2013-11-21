@@ -46,9 +46,10 @@ module AutoForme
         framework = self
         block = lambda do
           if @autoforme_action = framework.action_for(Request.new(self))
+            @autoforme_text = @autoforme_action.handle
             opts = {}
             opts[:layout] = false if @autoforme_action.request.xhr?
-            erb "<%= @autoforme_action.handle %>", opts
+            erb "<%= @autoforme_text %>", opts
           else
             pass
           end
