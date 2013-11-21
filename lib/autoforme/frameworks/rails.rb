@@ -57,6 +57,24 @@ module AutoForme
           end
         end
       end
+
+      def model(*)
+        m = super
+        route(@controller, m.link)
+        m
+      end
+
+      private
+
+      ALL_SUPPORTED_ACTIONS_REGEXP = Regexp.union(AutoForme::Action::ALL_SUPPORTED_ACTIONS.map{|x| /#{Regexp.escape(x)}/})
+      def route(controller, link)
+        ::Rails.application.routes.prepend do
+          match ':autoforme_model/:autoforme_action(/:id)' , :controller=>controller.name.sub(/Controller\z/, '').underscore, :action=>'autoforme', :via=>[:get, :post],
+            :constraints=>{:autoforme_model=>/#{Regexp.escape(link)}/, :autoforme_action=>ALL_SUPPORTED_ACTIONS_REGEXP}
+        end
+        ::Rails.application.reload_routes!
+      end
+
     end
   end
 

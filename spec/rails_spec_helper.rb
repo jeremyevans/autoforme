@@ -19,20 +19,6 @@ class AutoFormeSpec::App
       controller = Class.new(ActionController::Base)
       Object.send(:const_set, :AutoformeController, controller)
 
-      config.secret_token = routes.append do
-        get 'session/set', :controller=>'autoforme', :action=>'session_set'
-        get ':autoforme_model/:autoforme_action' , :controller=>'autoforme', :action=>'autoforme'
-        post ':autoforme_model/:autoforme_action' , :controller=>'autoforme', :action=>'autoforme'
-        get ':autoforme_model/:autoforme_action/:id' , :controller=>'autoforme', :action=>'autoforme'
-        post ':autoforme_model/:autoforme_action/:id' , :controller=>'autoforme', :action=>'autoforme'
-      end.inspect
-      config.active_support.deprecation = :stderr
-      config.middleware.delete(ActionDispatch::ShowExceptions)
-      config.middleware.delete("Rack::Lock")
-      config.secret_key_base = 'foo'
-      config.eager_load = true
-      initialize!
-
       resolver = Class.new(ActionView::Resolver)
       resolver.class_eval do
         template = ActionView::Template
@@ -71,6 +57,16 @@ HTML
           end
         end
       end
+
+      config.secret_token = routes.append do
+        get 'session/set', :controller=>'autoforme', :action=>'session_set'
+      end.inspect
+      config.active_support.deprecation = :stderr
+      config.middleware.delete(ActionDispatch::ShowExceptions)
+      config.middleware.delete("Rack::Lock")
+      config.secret_key_base = 'foo'
+      config.eager_load = true
+      initialize!
     end
     [sc, framework]
   end
