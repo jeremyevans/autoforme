@@ -17,7 +17,7 @@ describe AutoForme do
     model.table_class_for(:browse, nil).should == 'table table-bordered table-striped'
     framework.table_class 'foo'
     model.table_class_for(:browse, nil).should == 'foo'
-    framework.table_class{|model, type, req| "#{model.name} #{type} #{req}"}
+    framework.table_class{|mod, type, req| "#{mod.name} #{type} #{req}"}
     model.table_class_for(:browse, 1).should == 'Artist browse 1'
     model.table_class 'baz'
     model.table_class_for(:browse, nil).should == 'baz'
@@ -29,7 +29,7 @@ describe AutoForme do
     model.limit_for(:browse, nil).should == 25
     framework.per_page 1
     model.limit_for(:browse, nil).should == 1
-    framework.per_page{|model, type, req| model.name.length + type.to_s.length + req}
+    framework.per_page{|mod, type, req| mod.name.length + type.to_s.length + req}
     model.limit_for(:browse, 3).should == 15
     model.per_page 3
     model.limit_for(:browse, nil).should == 3
@@ -39,7 +39,7 @@ describe AutoForme do
 
   it "should handle columns lookup" do
     model.columns_for(:browse, nil).should == [:name]
-    framework.columns{|model, type, req| [model.name.to_sym, type, req]}
+    framework.columns{|mod, type, req| [mod.name.to_sym, type, req]}
     model.columns_for(:browse, :foo).should == [:Artist, :browse, :foo]
     model.columns [:foo]
     model.columns_for(:browse, nil).should == [:foo]
@@ -54,9 +54,9 @@ describe AutoForme do
     model.column_options_for(:browse, :bar, :foo).should == {7=>8}
     framework.column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
     model.column_options_for(:browse, :bar, :foo).should == {:type=>:browse, :req=>:bar}
-    framework.column_options{|model, column, type, req| {model.name.to_sym=>[type, req, column]}}
+    framework.column_options{|mod, column, type, req| {mod.name.to_sym=>[type, req, column]}}
     model.column_options_for(:browse, :bar, :foo).should == {:Artist=>[:browse, :bar, :foo]}
-    framework.column_options{|model, column, type, req| {5=>6}}
+    framework.column_options{|mod, column, type, req| {5=>6}}
     model.column_options :foo=>{1=>2}
     model.column_options_for(:browse, nil, :foo).should == {1=>2, 5=>6}
     model.column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
@@ -69,7 +69,7 @@ describe AutoForme do
     model.order_for(:browse, nil).should == nil
     framework.order :bar
     model.order_for(:browse, nil).should == :bar
-    framework.order{|model, type, req| [model.name.to_sym, type, req]}
+    framework.order{|mod, type, req| [mod.name.to_sym, type, req]}
     model.order_for(:browse, :foo).should == [:Artist, :browse, :foo]
     model.order [:foo]
     model.order_for(:browse, nil).should == [:foo]
@@ -95,7 +95,7 @@ describe AutoForme do
 
   it "should handle filter lookup" do
     model.filter_for.should == nil
-    framework.filter{|model| lambda{|ds, type, req| [ds, model.name.to_sym, type, req]}}
+    framework.filter{|mod| lambda{|ds, type, req| [ds, mod.name.to_sym, type, req]}}
     model.filter_for.call(1, :browse, 2).should == [1, :Artist, :browse, 2]
     model.filter{|ds, type, req| [ds, type, req]}
     model.filter_for.call(1, :browse, 2).should == [1, :browse, 2]
@@ -105,10 +105,10 @@ describe AutoForme do
     model.display_name_for.should == nil
     framework.display_name :foo
     model.display_name_for.should == :foo
-    framework.display_name{|model| model.name.to_sym}
+    framework.display_name{|mod| mod.name.to_sym}
     model.display_name_for.should == :Artist
 
-    framework.display_name{|model| proc{|obj, type, req| "#{obj} #{type} #{req}"}}
+    framework.display_name{|mod| proc{|obj, type, req| "#{obj} #{type} #{req}"}}
     model.object_display_name(:show, 1, :foo).should == 'foo show 1'
 
     model.display_name :foo
@@ -129,7 +129,7 @@ describe AutoForme do
     model.supported_action?(:new, nil).should be_true
     model.supported_action?(:edit, nil).should be_false
     model.supported_action?(:search, nil).should be_true
-    framework.supported_actions{|model, req| req ? [:new] : []}
+    framework.supported_actions{|mod, req| req ? [:new] : []}
     model.supported_action?(:new, nil).should be_false
     model.supported_action?(:new, true).should be_true
     model.supported_actions [:edit, :search]
@@ -147,7 +147,7 @@ describe AutoForme do
     framework.mtm_associations [:foos]
     model.supported_mtm_edit?('foos', nil).should be_true
     model.supported_mtm_edit?('bars', nil).should be_false
-    framework.mtm_associations{|model, req| req ? [:foos] : [:bars]}
+    framework.mtm_associations{|mod, req| req ? [:foos] : [:bars]}
     model.supported_mtm_edit?('foos', nil).should be_false
     model.supported_mtm_edit?('bars', nil).should be_true
     model.supported_mtm_edit?('foos', true).should be_true
@@ -168,7 +168,7 @@ describe AutoForme do
     framework.inline_mtm_associations [:foos]
     model.supported_mtm_update?('foos', nil).should be_true
     model.supported_mtm_update?('bars', nil).should be_false
-    framework.inline_mtm_associations{|model, req| req ? [:foos] : [:bars]}
+    framework.inline_mtm_associations{|mod, req| req ? [:foos] : [:bars]}
     model.supported_mtm_update?('foos', nil).should be_false
     model.supported_mtm_update?('bars', nil).should be_true
     model.supported_mtm_update?('foos', true).should be_true
@@ -187,7 +187,7 @@ describe AutoForme do
     model.association_links_for(:show, nil).should == []
     framework.association_links :foo
     model.association_links_for(:show, nil).should == [:foo]
-    framework.association_links{|model, type, req| [model.name.to_sym, type, req]}
+    framework.association_links{|mod, type, req| [mod.name.to_sym, type, req]}
     model.association_links_for(:show, :foo).should == [:Artist, :show, :foo]
     model.association_links [:bar]
     model.association_links_for(:show, nil).should == [:bar]
@@ -199,7 +199,7 @@ describe AutoForme do
     model.lazy_load_association_links?(:show, nil).should be_false
     framework.lazy_load_association_links true
     model.lazy_load_association_links?(:show, nil).should be_true
-    framework.lazy_load_association_links{|model, type, req| req > 2}
+    framework.lazy_load_association_links{|mod, type, req| req > 2}
     model.lazy_load_association_links?(:show, 1).should be_false
     model.lazy_load_association_links?(:show, 3).should be_true
     model.lazy_load_association_links false
@@ -245,7 +245,7 @@ describe AutoForme do
 
     framework.autocomplete_options :display=>:id
     model.autocomplete(:type=>:show, :query=>'oo').sort.should == ["#{a.id} - #{a.id}", "#{b.id} - #{b.id}"]
-    framework.autocomplete_options{|model, type, req| {:limit=>req}}
+    framework.autocomplete_options{|mod, type, req| {:limit=>req}}
     model.autocomplete(:type=>:show, :query=>'oo', :request=>1).sort.should == ["#{a.id} - FooBar"]
     model.autocomplete_options :display=>:id
     model.autocomplete(:type=>:show, :query=>'oo', :request=>1).sort.should == ["#{a.id} - #{a.id}"]
