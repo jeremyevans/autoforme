@@ -21,7 +21,7 @@ module AutoForme
       :autocomplete_options, :before_create, :before_destroy, :before_update, :class_display_name,
       :column_options, :columns, :display_name, :eager, :eager_graph,
       :filter, :inline_mtm_associations, :lazy_load_association_links, :link_name, :mtm_associations,
-      :order, :per_page, :supported_actions, :table_class
+      :order, :page_footer, :page_header, :per_page, :supported_actions, :table_class
 
     def supported_action?(type, request)
       (handle_proc(supported_actions || framework.supported_actions_for(model, request), request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
@@ -99,6 +99,14 @@ module AutoForme
 
     def filter_for
       filter || framework.filter_for(model)
+    end
+
+    def page_footer_for(type, request)
+      handle_proc(page_footer || framework.page_footer_for(model, type, request), type, request)
+    end
+
+    def page_header_for(type, request)
+      handle_proc(page_header || framework.page_header_for(model, type, request), type, request)
     end
 
     def table_class_for(type, request)

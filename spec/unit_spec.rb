@@ -209,6 +209,30 @@ describe AutoForme do
     model.lazy_load_association_links?(:show, 3).should be_true
   end
 
+  it "should handle page_header lookup" do
+    model.page_header_for(:show, nil).should be_nil
+    framework.page_header "foo"
+    model.page_header_for(:show, nil).should == 'foo'
+    framework.page_header{|mod, type, req| "#{mod} #{type} #{req}"}
+    model.page_header_for(:show, 1).should == 'Artist show 1'
+    model.page_header "bar"
+    model.page_header_for(:show, nil).should == 'bar'
+    model.page_header{|type, req| "#{type} #{req}"}
+    model.page_header_for(:show, 1).should == 'show 1'
+  end
+
+  it "should handle page_footer lookup" do
+    model.page_footer_for(:show, nil).should be_nil
+    framework.page_footer "foo"
+    model.page_footer_for(:show, nil).should == 'foo'
+    framework.page_footer{|mod, type, req| "#{mod} #{type} #{req}"}
+    model.page_footer_for(:show, 1).should == 'Artist show 1'
+    model.page_footer "bar"
+    model.page_footer_for(:show, nil).should == 'bar'
+    model.page_footer{|type, req| "#{type} #{req}"}
+    model.page_footer_for(:show, 1).should == 'show 1'
+  end
+
   it "should handle autocompletion options" do
     model.autocomplete_options({})
     model.autocomplete(:type=>:show, :query=>'foo').should == []

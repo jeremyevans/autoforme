@@ -124,10 +124,12 @@ module AutoForme
     end
 
     def page
-      html = tabs
+      html = ''
+      html << (model.page_header_for(type, request) || tabs)
       html << "<div id='autoforme_content' data-url='#{url_for('')}'>"
       html << yield.to_s
       html << "</div>"
+      html << model.page_footer_for(type, request).to_s
       html
     end
 

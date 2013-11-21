@@ -69,6 +69,21 @@ describe AutoForme do
     Artist.count.should == 0
   end
 
+  it "should custom headers and footers" do
+    app_setup(Artist) do
+      page_header "<a href='/Artist/new'>N</a>"
+      page_footer "<a href='/Artist/edit'>E</a>"
+    end
+    visit("/Artist/browse")
+    page.html.should_not =~ /search/
+    click_link 'N'
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    click_link 'E'
+    select 'TestArtistNew'
+    click_button 'Edit'
+  end
+
   it "should support specifying column options per type" do
     app_setup(Artist) do
       column_options{|column, type, req| {:label=>"#{type.to_s.capitalize} Artist #{column.to_s.capitalize}"}}
