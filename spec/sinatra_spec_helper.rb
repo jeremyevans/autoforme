@@ -32,11 +32,11 @@ class AutoFormeSpec::App < Sinatra::Base
 HTML
   end
 
-  def self.autoforme(klass=nil, &block)
+  def self.autoforme(klass=nil, opts={}, &block)
     sc = Class.new(self)
     framework = nil
     sc.class_eval do
-      AutoForme.for(:sinatra, self) do
+      AutoForme.for(:sinatra, self, opts) do
         framework = self
         model_type :sequel
         if klass

@@ -54,6 +54,51 @@ describe AutoForme do
     all('td').map{|s| s.text}.should == []
   end
 
+  it "should have basic functionality working in a subdirectory" do
+    app_setup(Artist, :prefix=>"/prefix")
+    visit("/prefix/Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.html.should =~ /Created Artist/
+    page.current_path.should == '/prefix/Artist/new'
+
+    click_link 'Show'
+    select 'TestArtistNew'
+    click_button 'Show'
+    page.html.should =~ /Name.+TestArtistNew/m
+
+    click_link 'Edit'
+    select 'TestArtistNew'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'TestArtistUpdate'
+    click_button 'Update'
+    page.html.should =~ /Updated Artist/
+    page.html.should =~ /Name.+TestArtistUpdate/m
+    page.current_path.should =~ %r{/prefix/Artist/edit/\d+}
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'Upd'
+    click_button 'Search'
+    all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
+    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'Foo'
+    click_button 'Search'
+    all('td').map{|s| s.text}.should == []
+
+    click_link 'Artist'
+    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+
+    all('td').last.find('a').click
+    click_button 'Delete'
+    page.html.should =~ /Deleted Artist/
+    page.current_path.should == '/prefix/Artist/delete'
+
+    click_link 'Artist'
+    all('td').map{|s| s.text}.should == []
+  end
+
   it "should have delete button on edit page" do
     app_setup(Artist)
     visit("/Artist/new")

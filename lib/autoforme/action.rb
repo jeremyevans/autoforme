@@ -63,7 +63,7 @@ module AutoForme
     end
 
     def base_url_for(page)
-      "#{request.path}/#{page}"
+      "#{request.path}#{model.framework.prefix}/#{page}"
     end
 
     def url_for(page)

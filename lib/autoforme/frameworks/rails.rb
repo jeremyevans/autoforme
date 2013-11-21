@@ -68,8 +68,11 @@ module AutoForme
 
       ALL_SUPPORTED_ACTIONS_REGEXP = Regexp.union(AutoForme::Action::ALL_SUPPORTED_ACTIONS.map{|x| /#{Regexp.escape(x)}/})
       def route(controller, link)
+        if prefix
+          pre = prefix.to_s[1..-1] + '/'
+        end
         ::Rails.application.routes.prepend do
-          match ':autoforme_model/:autoforme_action(/:id)' , :controller=>controller.name.sub(/Controller\z/, '').underscore, :action=>'autoforme', :via=>[:get, :post],
+          match "#{pre}:autoforme_model/:autoforme_action(/:id)" , :controller=>controller.name.sub(/Controller\z/, '').underscore, :action=>'autoforme', :via=>[:get, :post],
             :constraints=>{:autoforme_model=>/#{Regexp.escape(link)}/, :autoforme_action=>ALL_SUPPORTED_ACTIONS_REGEXP}
         end
         ::Rails.application.reload_routes!

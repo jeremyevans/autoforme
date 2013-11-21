@@ -28,9 +28,8 @@ module AutoForme
     end
   end
 
-  def self.for(type, controller, &block)
-    Framework.for(type, controller, &block)
-    nil
+  def self.for(type, controller, opts={}, &block)
+    Framework.for(type, controller, opts, &block)
   end
 end
 

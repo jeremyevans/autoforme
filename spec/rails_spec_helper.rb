@@ -12,7 +12,7 @@ RSpec.configure do |c|
 end
 
 class AutoFormeSpec::App
-  def self.autoforme(klass=nil, &block)
+  def self.autoforme(klass=nil, opts={}, &block)
     sc = Class.new(Rails::Application)
     framework = nil
     sc.class_eval do
@@ -47,7 +47,7 @@ HTML
           render :text=>''
         end
 
-        AutoForme.for(:rails, self) do
+        AutoForme.for(:rails, self, opts) do
           framework = self
           model_type :sequel
           if klass

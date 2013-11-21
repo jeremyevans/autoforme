@@ -3,14 +3,15 @@ module AutoForme
   class Framework
     extend OptsAttributes
 
-    def self.for(type, controller, &block)
-      AutoForme.framework_class_for(type).new(controller).instance_exec(&block)
+    def self.for(type, controller, opts={}, &block)
+      AutoForme.framework_class_for(type).new(controller, opts).instance_exec(&block)
     end
 
     attr_reader :controller
     attr_reader :models
     attr_reader :model_classes
     attr_reader :opts
+    attr_reader :prefix
 
     opts_attribute :after_create, :after_destroy, :after_update, :association_links,
       :autocomplete_options, :before_create, :before_destroy, :before_update, :column_options,
@@ -30,11 +31,12 @@ module AutoForme
       handle_proc(per_page, model, type, request)
     end
 
-    def initialize(controller)
+    def initialize(controller, opts={})
       @controller = controller
+      @opts = opts.dup
+      @prefix = @opts[:prefix]
       @models = {}
       @model_classes = {}
-      @opts = {}
     end
 
     def columns_for(model, type, request)

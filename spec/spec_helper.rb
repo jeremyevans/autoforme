@@ -38,8 +38,8 @@ RSpec::Core::ExampleGroup.class_eval do
     AutoFormeSpec.model_setup(db, models)
   end
 
-  def app_setup(klass=nil, &block)
-    app, @framework = AutoFormeSpec::App.autoforme(klass, &block)
+  def app_setup(klass=nil, opts={}, &block)
+    app, @framework = AutoFormeSpec::App.autoforme(klass, opts, &block)
     self.app = app
     @model = @framework.models[klass.name] if klass
   end
