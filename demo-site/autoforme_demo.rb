@@ -32,7 +32,7 @@ END
   AutoForme.for(:sinatra, self) do
     model_type :sequel
     model Artist do 
-      autocomplete_options({})
+      #autocomplete_options({})
     end
     model Album do
       autocomplete_options({})
@@ -42,13 +42,13 @@ END
       association_links [:artist, :tracks]
     end
     model Track do
-      autocomplete_options({})
+      #autocomplete_options({})
       columns [:album, :number, :name, :length]
       per_page 2
     end
     model Tag do
       autocomplete_options({})
-      supported_actions %w'edit update'
+      supported_actions [:edit]
     end
   end
 end
