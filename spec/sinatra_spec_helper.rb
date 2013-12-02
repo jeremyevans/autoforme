@@ -20,7 +20,9 @@ class AutoFormeSpec::App < Sinatra::Base
   template :layout do
     <<HTML
 <!DOCTYPE html>
-<html><body>
+<html>
+<head><title><%= @autoforme_action.title if @autoforme_action %></title></head>
+<body>
 <% if flash[:notice] %>
   <div class="alert alert-success"><p><%= flash[:notice] %></p></div>
 <% end %>

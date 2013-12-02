@@ -7,6 +7,7 @@ module AutoForme
     attr_reader :normalized_type
     attr_reader :params_type
     attr_reader :params_association
+    attr_reader :title
 
     NORMALIZED_ACTION_MAP = {:create=>:new, :update=>:edit, :destroy=>:delete, :mtm_update=>:mtm_edit}
     def initialize(model, request)
@@ -14,6 +15,7 @@ module AutoForme
       @request = request
     end
 
+    TITLE_MAP = {:new=>'New', :show=>'Show', :edit=>'Edit', :delete=>'Delete', :browse=>'Browse', :search=>'Search', :mtm_edit=>'Many To Many Edit'}
     ALL_SUPPORTED_ACTIONS = %w'new create show edit update delete destroy browse search mtm_edit mtm_update association_links autocomplete'.freeze
     def supported?
       return false unless idempotent? || request.post?
@@ -32,6 +34,8 @@ module AutoForme
           return false unless model.supported_mtm_edit?(assoc, request)
           @params_association = assoc.to_sym
         end
+
+        @title = "#{model.class_name} - #{TITLE_MAP[type]}"
       when :mtm_update
         return false unless request.id && (assoc = request.params['association']) && model.supported_mtm_update?(assoc, request)
         @params_association = assoc.to_sym
@@ -45,6 +49,10 @@ module AutoForme
         return false unless model.autocomplete_options_for(params_type, request)
       else
         return false unless model.supported_action?(normalized_type, request)
+
+        if title = TITLE_MAP[type]
+          @title = "#{model.class_name} - #{title}"
+        end
       end
 
       true

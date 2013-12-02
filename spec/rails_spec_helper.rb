@@ -24,7 +24,9 @@ class AutoFormeSpec::App
         template = ActionView::Template
         t = [template.new(<<HTML, "layout", template.handler_for_extension(:erb), {:virtual_path=>'layout', :format=>'erb', :updated_at=>Time.now})]
 <!DOCTYPE html>
-<html><body>
+<html>
+<head><title><%= @autoforme_action.title if @autoforme_action %></title></head>
+<body>
 <% if flash[:notice] %>
   <div class="alert alert-success"><p><%= flash[:notice] %></p></div>
 <% end %>

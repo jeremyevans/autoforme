@@ -24,6 +24,7 @@ describe AutoForme do
     Album.create(:name=>'Album3')
 
     visit("/Artist/mtm_edit")
+    page.find('title').text.should == 'Artist - Many To Many Edit'
     select("Artist1")
     click_button "Edit"
 

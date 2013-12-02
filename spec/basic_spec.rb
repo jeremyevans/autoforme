@@ -12,17 +12,20 @@ describe AutoForme do
   it "should have basic functionality working" do
     app_setup(Artist)
     visit("/Artist/new")
+    page.find('title').text.should == 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
     page.html.should =~ /Created Artist/
     page.current_path.should == '/Artist/new'
 
     click_link 'Show'
+    page.find('title').text.should == 'Artist - Show'
     select 'TestArtistNew'
     click_button 'Show'
     page.html.should =~ /Name.+TestArtistNew/m
 
     click_link 'Edit'
+    page.find('title').text.should == 'Artist - Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
@@ -32,6 +35,7 @@ describe AutoForme do
     page.current_path.should =~ %r{/Artist/edit/\d+}
 
     click_link 'Search'
+    page.find('title').text.should == 'Artist - Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
     all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
@@ -43,10 +47,12 @@ describe AutoForme do
     all('td').map{|s| s.text}.should == []
 
     click_link 'Artist'
+    page.find('title').text.should == 'Artist - Browse'
     all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     all('td').last.find('a').click
     click_button 'Delete'
+    page.find('title').text.should == 'Artist - Delete'
     page.html.should =~ /Deleted Artist/
     page.current_path.should == '/Artist/delete'
 
