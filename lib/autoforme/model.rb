@@ -3,7 +3,7 @@ module AutoForme
   class Model
     DEFAULT_LIMIT = 25
     DEFAULT_TABLE_CLASS = "table table-bordered table-striped"
-    DEFAULT_SUPPORTED_ACTIONS = [:new, :show, :edit, :delete, :browse, :search, :mtm_edit]
+    DEFAULT_SUPPORTED_ACTIONS = [:browse, :new, :show, :edit, :delete, :search, :mtm_edit]
 
     extend OptsAttributes
 
