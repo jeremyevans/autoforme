@@ -49,6 +49,7 @@ describe AutoForme do
   end
 
   it "should handle column options lookup" do
+    model.column_options_for(:show, nil, :foo).should == {:required=>false}
     model.column_options_for(:browse, nil, :foo).should == {}
     framework.column_options :foo=>{7=>8}
     model.column_options_for(:browse, :bar, :foo).should == {7=>8}

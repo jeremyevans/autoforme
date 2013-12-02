@@ -82,6 +82,12 @@ module AutoForme
           end
         end
       end
+
+      case type
+      when :show, :search_form
+        opts[:required] = false unless opts.has_key?(:required)
+      end
+
       opts
     end
 
