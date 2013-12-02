@@ -363,6 +363,7 @@ module AutoForme
     end
 
     def handle_association_links
+      @type = @normalized_type = params_type
       obj = model.with_pk(params_type, request, request.id)
       association_links(obj)
     end
