@@ -1,13 +1,15 @@
 module AutoForme
   module Models
     class Sequel < Model
+      S = ::Sequel
+
       def initialize(*)
         super
         @model.plugin :forme
       end
 
       def base_class
-        ::Sequel::Model
+        S::Model
       end
 
       def new_search
@@ -116,7 +118,7 @@ module AutoForme
 
       def session_value(column)
         filter do |ds, type, req|
-          ds.where(::Sequel.qualify(model.table_name, column)=>req.session[column])
+          ds.where(S.qualify(model.table_name, column)=>req.session[column])
         end
         before_create do |obj, req|
           obj.send("#{column}=", req.session[column])
@@ -136,7 +138,7 @@ module AutoForme
               end
               ds = ds.where(ref[:key]=>ads.where(ref.primary_key=>v).select(ref.primary_key))
             elsif column_type(c) == :string
-              ds = ds.where(::Sequel.ilike(c, "%#{ds.escape_like(v.to_s)}%"))
+              ds = ds.where(S.ilike(c, "%#{ds.escape_like(v.to_s)}%"))
             else
               ds = ds.where(c=>v.to_s)
             end
@@ -214,13 +216,13 @@ module AutoForme
         callback_opts = {:type=>type, :request=>request, :query=>query}
         ds = all_dataset_for(type, request)
         ds = opts[:callback].call(ds, callback_opts) if opts[:callback]
-        display = opts[:display] || ::Sequel.qualify(model.table_name, :name)
+        display = opts[:display] || S.qualify(model.table_name, :name)
         display = display.call(callback_opts) if display.respond_to?(:call)
         limit = opts[:limit] || 10
         limit = limit.call(callback_opts) if limit.respond_to?(:call)
-        opts[:filter] ||= lambda{|ds, opts| ds.where(::Sequel.ilike(display, "%#{ds.escape_like(query)}%"))}
+        opts[:filter] ||= lambda{|ds, opts| ds.where(S.ilike(display, "%#{ds.escape_like(query)}%"))}
         ds = opts[:filter].call(ds, callback_opts)
-        ds = ds.select(::Sequel.join([::Sequel.qualify(model.table_name, model.primary_key), display], ' - ').as(:v)).
+        ds = ds.select(S.join([S.qualify(model.table_name, model.primary_key), display], ' - ').as(:v)).
           limit(limit)
         ds = yield ds if block_given?
         ds.map(:v)
@@ -259,7 +261,7 @@ module AutoForme
           subquery = model.db.from(ref[:join_table]).
             select(ref.qualified_right_key).
             where(ref.qualified_left_key=>obj.pk)
-          ds = ds.exclude(::Sequel.qualify(ref.associated_class.table_name, model.primary_key)=>subquery)
+          ds = ds.exclude(S.qualify(ref.associated_class.table_name, model.primary_key)=>subquery)
           ds = assoc_class.apply_dataset_options(:association, request, ds) if assoc_class
           ds
         end
