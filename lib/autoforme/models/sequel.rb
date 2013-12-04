@@ -116,7 +116,7 @@ module AutoForme
 
       def session_value(column)
         filter do |ds, type, req|
-          ds.where(column=>req.session[column])
+          ds.where(::Sequel.qualify(model.table_name, column)=>req.session[column])
         end
         before_create do |obj, req|
           obj.send("#{column}=", req.session[column])
@@ -199,11 +199,6 @@ module AutoForme
         (c = associated_model_class(assoc)) && c.autocomplete_options_for(:association, request)
       end
 
-      AUTOCOMPLETE_DEFAULT_OPTS = {
-        :filter=>lambda{|ds, opts| ds.where(::Sequel.ilike(:name, "%#{ds.escape_like(opts[:query])}%"))},
-        :limit=>10,
-        :display=>:name,
-      }.freeze
       def autocomplete(opts={})
         type, request, assoc, query, exclude = opts.values_at(:type, :request, :association, :query, :exclude)
         if assoc
@@ -215,16 +210,17 @@ module AutoForme
           end
           return associated_model_class(assoc).autocomplete(opts.merge(:type=>:association, :association=>nil), &block)
         end
-        opts = AUTOCOMPLETE_DEFAULT_OPTS.merge(autocomplete_options_for(type, request))
+        opts = autocomplete_options_for(type, request)
         callback_opts = {:type=>type, :request=>request, :query=>query}
         ds = all_dataset_for(type, request)
-        ds = opts[:filter].call(ds, callback_opts)
         ds = opts[:callback].call(ds, callback_opts) if opts[:callback]
-        display = opts[:display]
+        display = opts[:display] || ::Sequel.qualify(model.table_name, :name)
         display = display.call(callback_opts) if display.respond_to?(:call)
-        limit = opts[:limit]
+        limit = opts[:limit] || 10
         limit = limit.call(callback_opts) if limit.respond_to?(:call)
-        ds = ds.select(::Sequel.join([model.primary_key, display], ' - ').as(:v)).
+        opts[:filter] ||= lambda{|ds, opts| ds.where(::Sequel.ilike(display, "%#{ds.escape_like(query)}%"))}
+        ds = opts[:filter].call(ds, callback_opts)
+        ds = ds.select(::Sequel.join([::Sequel.qualify(model.table_name, model.primary_key), display], ' - ').as(:v)).
           limit(limit)
         ds = yield ds if block_given?
         ds.map(:v)
