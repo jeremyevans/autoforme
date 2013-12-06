@@ -60,10 +60,9 @@ module AutoForme
         extract_column_options(model_opts, column, type, request)
       end
 
-      opts = framework_opts.merge(model_opts)
+      opts = framework_opts.merge(model_opts).dup
 
       if association?(column) && associated_model = associated_model_class(column)
-        opts = opts.dup
         if associated_model.autocomplete_options_for(:association, request) && !opts[:as] && association_type(column) == :one
           opts[:type] = 'text'
           opts[:class] = 'autoforme_autocomplete'
@@ -86,6 +85,9 @@ module AutoForme
       case type
       when :show, :search_form
         opts[:required] = false unless opts.has_key?(:required)
+        if type == :search_form && opts[:as] == :textarea
+          opts.delete(:as)
+        end
       end
 
       opts

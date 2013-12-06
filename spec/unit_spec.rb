@@ -51,8 +51,9 @@ describe AutoForme do
   it "should handle column options lookup" do
     model.column_options_for(:show, nil, :foo).should == {:required=>false}
     model.column_options_for(:browse, nil, :foo).should == {}
-    framework.column_options :foo=>{7=>8}
+    framework.column_options :foo=>{:as=>:textarea}
     model.column_options_for(:browse, :bar, :foo).should == {7=>8}
+    model.column_options_for(:search_form, nil, :foo).should == {:required=>false}
     framework.column_options :foo=>proc{|type, req| {:type=>type, :req=>req}}
     model.column_options_for(:browse, :bar, :foo).should == {:type=>:browse, :req=>:bar}
     framework.column_options{|mod, column, type, req| {mod.name.to_sym=>[type, req, column]}}
