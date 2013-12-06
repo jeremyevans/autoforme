@@ -187,7 +187,7 @@ module AutoForme
             input_opts.merge!(:class=>'autoforme_autocomplete', :attr=>{'data-type'=>type})
           else
             input_type = :select
-            input_opts.merge!(:options=>model.select_options(type, request))
+            input_opts.merge!(:options=>model.select_options(type, request), :add_blank=>true)
           end
           f.input(input_type, input_opts)
           f.button(:value=>type.to_s.capitalize, :class=>"btn btn-#{type == :delete ? 'danger' : 'primary'}")
