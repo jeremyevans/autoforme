@@ -135,6 +135,16 @@ describe AutoForme do
     click_button 'Edit'
   end
 
+  it "should custom form options and attributes" do
+    app_setup(Artist) do
+      form_attributes :class=>'foobar'
+      form_options :input_defaults=>{'text'=>{:class=>'barfoo'}}
+    end
+    visit("/Artist/new")
+    find('form')[:class].should == 'foobar forme artist'
+    find('form input#artist_name')[:class].should == 'barfoo'
+  end
+
   it "should support specifying column options per type" do
     app_setup(Artist) do
       column_options{|column, type, req| {:label=>"#{type.to_s.capitalize} Artist #{column.to_s.capitalize}"}}

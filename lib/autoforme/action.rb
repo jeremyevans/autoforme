@@ -142,7 +142,7 @@ module AutoForme
     end
 
     def form_opts
-      opts = {}
+      opts = model.form_options_for(type, request).dup
       hidden_tags = opts[:hidden_tags] = []
       if csrf = request.csrf_token_hash
         hidden_tags << lambda{|tag| csrf if tag.attr[:method].to_s.upcase == 'POST'}
@@ -150,9 +150,13 @@ module AutoForme
       opts
     end
 
+    def form_attributes(attrs)
+      model.form_attributes_for(type, request).merge(attrs)
+    end
+
     def new_page(obj, opts={})
       page do
-        Forme.form(obj, {:action=>url_for("create")}, form_opts) do |f|
+        Forme.form(obj, form_attributes(:action=>url_for("create")), form_opts) do |f|
           model.columns_for(:new, request).each do |column|
             f.input(column, column_options_for(:new, request, obj, column))
           end
@@ -179,8 +183,8 @@ module AutoForme
 
     def list_page(type, opts={})
       page do
-        form_attributes = opts[:form] || {:action=>url_for(type)}
-        Forme.form(form_attributes, form_opts) do |f|
+        form_attr = form_attributes(opts[:form] || {:action=>url_for(type)})
+        Forme.form(form_attr, form_opts) do |f|
           input_opts = {:name=>'id', :id=>'id', :label=>model.class_name}
           if model.autocomplete_options_for(type, request)
             input_type = :text
@@ -205,12 +209,12 @@ module AutoForme
         end
         t << '</table>'
         if type == :show && model.supported_action?(:edit, request)
-          t << Forme.form({:action=>url_for("edit/#{model.primary_key_value(obj)}")}, form_opts) do |f|
+          t << Forme.form(form_attributes(:action=>url_for("edit/#{model.primary_key_value(obj)}")), form_opts) do |f|
             f.button(:value=>'Edit', :class=>'btn btn-primary')
           end.to_s
         end
         if type == :delete
-          t << Forme.form({:action=>url_for("destroy/#{model.primary_key_value(obj)}"), :method=>:post}, form_opts) do |f|
+          t << Forme.form(form_attributes(:action=>url_for("destroy/#{model.primary_key_value(obj)}"), :method=>:post), form_opts) do |f|
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
         else
@@ -229,14 +233,14 @@ module AutoForme
 
     def edit_page(obj)
       page do
-        t = Forme.form(obj, {:action=>url_for("update/#{model.primary_key_value(obj)}")}, form_opts) do |f|
+        t = Forme.form(obj, form_attributes(:action=>url_for("update/#{model.primary_key_value(obj)}")), form_opts) do |f|
           model.columns_for(:edit, request).each do |column|
             f.input(column, column_options_for(:edit, request, obj, column))
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
         end.to_s
         if model.supported_action?(:delete, request)
-          t << Forme.form({:action=>url_for("delete/#{model.primary_key_value(obj)}")}, form_opts) do |f|
+          t << Forme.form(form_attributes(:action=>url_for("delete/#{model.primary_key_value(obj)}")), form_opts) do |f|
             f.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
         end
@@ -310,7 +314,7 @@ module AutoForme
         table_page(*model.search_results(normalized_type, request))
       else
         page do
-          Forme.form(model.new(nil, request), {:action=>url_for("search/1"), :method=>:get}, form_opts) do |f|
+          Forme.form(model.new(nil, request), form_attributes(:action=>url_for("search/1"), :method=>:get), form_opts) do |f|
             model.columns_for(:search_form, request).each do |column|
               f.input(column, {:name=>column, :id=>column}.merge(column_options_for(:search_form, request, f.obj, column)))
             end
@@ -325,7 +329,7 @@ module AutoForme
         obj = model.with_pk(:edit, request, request.id)
         if assoc = params_association
           page do
-            Forme.form(obj, {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")}, form_opts) do |f|
+            Forme.form(obj, form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")), form_opts) do |f|
               opts = model.column_options_for(:mtm_edit, request, assoc)
               add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
               remove_opts = opts[:remove] ? opts.merge(opts.delete(:remove)) : opts
@@ -341,7 +345,7 @@ module AutoForme
           end
         else
           page do
-            Forme.form({:action=>"mtm_edit/#{model.primary_key_value(obj)}"}, form_opts) do |f|
+            Forme.form(form_attributes(:action=>"mtm_edit/#{model.primary_key_value(obj)}"), form_opts) do |f|
               f.input(:select, :options=>model.mtm_association_select_options(request), :name=>'association', :id=>'association', :label=>'Association')
               f.button(:value=>'Edit', :class=>'btn btn-primary')
             end
@@ -468,7 +472,7 @@ module AutoForme
 
       t = "<div class='inline_mtm_add_associations'>"
       assocs.each do |assoc|
-        form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit"), :class => 'mtm_add_associations', 'data-remove' => "##{assoc}_remove_list"}
+        form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit"), :class => 'mtm_add_associations', 'data-remove' => "##{assoc}_remove_list")
         t << Forme.form(obj, form_attr, form_opts) do |f|
           opts = model.column_options_for(:mtm_edit, request, assoc)
           add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts.dup
@@ -498,7 +502,7 @@ module AutoForme
     def mtm_edit_remove(assoc, mc, obj, assoc_obj)
       t = "<li>"
       t << association_link(mc, assoc_obj)
-      form_attr = {:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post', :class => 'mtm_remove_associations', 'data-add'=>"#add_#{assoc}"}
+      form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post', :class => 'mtm_remove_associations', 'data-add'=>"#add_#{assoc}")
       t << Forme.form(form_attr, form_opts) do |f|
         f.button(:value=>'Remove', :class=>'btn btn-danger')
       end.to_s

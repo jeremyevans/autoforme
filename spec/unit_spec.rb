@@ -211,6 +211,34 @@ describe AutoForme do
     model.lazy_load_association_links?(:show, 3).should be_true
   end
 
+  it "should handle form_attributes lookup" do
+    model.form_attributes_for(:show, nil).should == {}
+    framework.form_attributes :class=>'foo'
+    model.form_attributes_for(:show, nil).should == {:class=>'foo'}
+    framework.form_attributes{|mod, type, req| {:class=>"#{mod} #{type} #{req}"}}
+    model.form_attributes_for(:show, 1).should == {:class=>'Artist show 1'}
+
+    framework.form_attributes :class=>'foo'
+    model.form_attributes :data=>"bar"
+    model.form_attributes_for(:show, nil).should == {:class=>'foo', :data=>'bar'}
+    model.form_attributes{|type, req| {:data=>"#{type} #{req}"}}
+    model.form_attributes_for(:show, 1).should == {:class=>'foo', :data=>'show 1'}
+  end
+
+  it "should handle form_options lookup" do
+    model.form_options_for(:show, nil).should == {}
+    framework.form_options :class=>'foo'
+    model.form_options_for(:show, nil).should == {:class=>'foo'}
+    framework.form_options{|mod, type, req| {:class=>"#{mod} #{type} #{req}"}}
+    model.form_options_for(:show, 1).should == {:class=>'Artist show 1'}
+
+    framework.form_options :class=>'foo'
+    model.form_options :data=>"bar"
+    model.form_options_for(:show, nil).should == {:class=>'foo', :data=>'bar'}
+    model.form_options{|type, req| {:data=>"#{type} #{req}"}}
+    model.form_options_for(:show, 1).should == {:class=>'foo', :data=>'show 1'}
+  end
+
   it "should handle page_header lookup" do
     model.page_header_for(:show, nil).should be_nil
     framework.page_header "foo"

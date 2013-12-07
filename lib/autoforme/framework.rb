@@ -15,7 +15,8 @@ module AutoForme
 
     opts_attribute :after_create, :after_destroy, :after_update, :association_links,
       :autocomplete_options, :before_create, :before_destroy, :before_update, :column_options,
-      :columns, :display_name, :filter, :inline_mtm_associations, :lazy_load_association_links,
+      :columns, :display_name, :filter, :form_attributes, :form_options,
+      :inline_mtm_associations, :lazy_load_association_links,
       :model_type, :mtm_associations, :order, :page_footer, :page_header, :per_page, :supported_actions,
       :table_class
 
@@ -61,6 +62,14 @@ module AutoForme
 
     def display_name_for(model)
       handle_proc(display_name, model)
+    end
+
+    def form_attributes_for(model, type, request)
+      handle_proc(form_attributes, model, type, request) || {}
+    end
+
+    def form_options_for(model, type, request)
+      handle_proc(form_options, model, type, request) || {}
     end
 
     def page_footer_for(model, type, request)
