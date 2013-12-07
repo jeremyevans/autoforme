@@ -250,14 +250,14 @@ describe AutoForme do
     click_button 'Create'
 
     click_link 'Show'
-    all('select option').map{|s| s.text}.should == ['A-Y', 'B-X', 'B-Z']
+    all('select option').map{|s| s.text}.should == ['', 'A-Y', 'B-X', 'B-Z']
     select 'B-X'
     click_button 'Show'
     page.html.should =~ /Name.+X/m
     page.html.should =~ /Artist.+B/m
 
     click_link 'Edit'
-    all('select option').map{|s| s.text}.should == ['X (B)', 'Y (A)', 'Z (B)']
+    all('select option').map{|s| s.text}.should == ['', 'X (B)', 'Y (A)', 'Z (B)']
     select 'Z (B)'
     click_button 'Edit'
     fill_in 'Name', :with=>'ZZ'
@@ -273,7 +273,7 @@ describe AutoForme do
     all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ X'
 
     click_link 'Delete'
-    all('select option').map{|s| s.text}.should == ['A-Y', 'A-ZZ', 'B-X']
+    all('select option').map{|s| s.text}.should == ['', 'A-Y', 'A-ZZ', 'B-X']
     select 'B-X'
     click_button 'Delete'
   end
@@ -339,7 +339,7 @@ describe AutoForme do
     all('tr td:first-child').map{|s| s.text}.should == %w'C D E'
 
     click_link 'Delete'
-    all('select option').map{|s| s.text}.should == ['C', 'D', 'E']
+    all('select option').map{|s| s.text}.should == ['', 'C', 'D', 'E']
     select 'C'
     click_button 'Delete'
     click_button 'Delete'

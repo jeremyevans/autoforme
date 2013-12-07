@@ -435,20 +435,20 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show")
-    all('option').map{|s| s.text}.should == %w'2 1 0'
+    all('option').map{|s| s.text}.should == ['', '2', '1', '0']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == %w'0 1 2'
+    all('option').map{|s| s.text}.should == ['', '0', '1', '2']
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == %w'2 0 1'
+    all('option').map{|s| s.text}.should == ['', '2', '0', '1']
 
     click_link 'Search'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'0 2 1'
+    all('tr td:first-child').map{|s| s.text}.should == ['0', '2', '1']
 
     click_link 'Artist'
-    all('tr td:first-child').map{|s| s.text}.should == %w'1 2 0'
+    all('tr td:first-child').map{|s| s.text}.should == ['1', '2', '0']
   end
 
   it "should support specifying filter per type" do
@@ -474,16 +474,17 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show")
-    all('option').map{|s| s.text}.should == %w'0'
+    all('option').map{|s| s.text}.should == ['', '0']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == %w'2'
+    all('option').map{|s| s.text}.should == ['', '2']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == %w'1'
+    all('option').map{|s| s.text}.should == ['', '1']
+    select '1'
     click_button 'Delete'
     click_button 'Delete'
     Artist.create(:n0=>'1', :n1=>'2', :n2=>'3', :n3=>'7', :n4=>'5')
@@ -520,13 +521,13 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show?f=3")
-    all('option').map{|s| s.text}.should == %w'0'
+    all('option').map{|s| s.text}.should == ['', '0']
 
     visit("/Artist/edit?f=1")
-    all('option').map{|s| s.text}.should == %w'2'
+    all('option').map{|s| s.text}.should == ['', '2']
 
     visit("/Artist/delete?f=2")
-    all('option').map{|s| s.text}.should == %w'1'
+    all('option').map{|s| s.text}.should == ['', '1']
 
     visit("/Artist/search/1?f=4")
     all('tr td:first-child').map{|s| s.text}.should == %w'1'
@@ -547,16 +548,16 @@ describe AutoForme do
     visit '/session/set?n1=2'
 
     visit("/Artist/show")
-    all('option').map{|s| s.text}.should == %w'2 1'
+    all('option').map{|s| s.text}.should == ['', '2', '1']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == %w'2 1'
+    all('option').map{|s| s.text}.should == ['', '2', '1']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == %w'2 1'
+    all('option').map{|s| s.text}.should == ['', '2', '1']
     select '1'
     click_button 'Delete'
     click_button 'Delete'
@@ -589,10 +590,10 @@ describe AutoForme do
     click_button 'Create'
 
     click_link 'Show'
-    all('option').map{|s| s.text}.should == %w'2 1'
+    all('option').map{|s| s.text}.should == ['', '2', '1']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == %w'2 1'
+    all('option').map{|s| s.text}.should == ['', '2', '1']
     select '2'
     click_button 'Edit'
     click_button 'Update'
@@ -605,7 +606,7 @@ describe AutoForme do
     all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == %w'2 1'
+    all('option').map{|s| s.text}.should == ['', '2', '1']
     select '1'
     click_button 'Delete'
   end
