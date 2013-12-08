@@ -1,0 +1,195 @@
+= AutoForme
+
+AutoForme is an administrative web front end to an ORM that uses
+Forme [1] for building the HTML forms.  It is designed to
+integrate easily into web frameworks, and currently supports
+both Sinatra and Rails.
+
+AutoForme's UI and capabilities are modeled on
+scaffolding_extensions [2], though AutoForme is considerably more
+flexible in terms of configuration.
+
+[1] https://github.com/jeremyevans/forme
+[2] https://github.com/jeremyevans/scaffolding_extensions
+
+= Demo Site
+
+A demo site is available at http://autoforme-demo.jeremyevans.net
+
+= Source Code
+
+Source code is available on GitHub at https://github.com/jeremyevans/autoforme
+
+= Features
+
+* Create, update, edit, and view model objects
+* Browse and search model objects
+* Edit many-to-many relationships for model objects
+* Easily access associated objects
+* Support autocompletion for all objects
+* Allow customization for all likely configuration points, using
+  any parameters available in the request
+
+= Basic Configuration
+
+AutoForme is configured using a fairly simple DSL.  Here is an example:
+
+  class App < Sinatra::Base
+    AutoForme.for(:sinatra, self) do
+      model_type :sequel
+      order [:name]
+
+      model Artist do
+        columns [:name]
+      end
+      model Album do
+        columns [:artist, :name]
+      end
+    end
+  end
+
+Let's break down how this works.  You setup AutoForme using <tt>AutoForme.for</tt>,
+which takes 2 arguments, the controller type symbol (currently either :sinatra or :rails),
+and the controller class (either a Sinatra::Base or ActionController::Base subclass).  You
+pass <tt>AutoForme.for</tt> a block, which is instance evaled at the framework level.  This
+level sets the defaults.
+
+Inside the framework block, you first call model_type with a symbol representing the ORM you are
+using.  Currently, only Sequel is supported, so this should be :sequel.
+
+The order call in the framework block sets the default order for all models.
+
+The model calls in the framework block take a ORM model class.  As only Sequel is currently
+supported, this should be a Sequel::Model subclass.  The block passed to the model method is
+instance evaled at the model level, and sets the configuration for that model.  In this example,
+the Artist model will only show the name column, and the Album model will only show the artist
+association and the name column.
+
+In your application, you can then to go '/Artist/browse' or '/Album/browse' to get to the web
+UI exposed to AutoForme.
+
+= Design
+
+== Principles
+
+* Use Forme to generate the forms
+* Do not modify/extend model or controller classes
+* Assume that the web framework provides the layout
+* Do not use templates, render form objects to strings
+* Use a block-based DSL in the controller for configuration
+* Allow customization on a per-request basis for everything
+
+== Basic Implementation
+
+The web framework controllers call <tt>AutoForme.for</tt> to create
+AutoForme::Framework instances, which contain and set default values
+for AutoForme::Model instances.
+
+When a request comes in from the web framework, the AutoForme::Framework
+instance wraps request-level data in a AutoForme::Request.  Then it
+creates an AutoForme::Action to handle this request.  The
+AutoForme::Action either returns a string that the web framework then
+renders, or it redirects to another page.
+
+= Advanced Configuration
+
+AutoForme doesn't have all that many features compared to other admin
+frameworks, but the features it does have are extremely flexible.
+
+Most of the configuration you'll do in AutoForme is at the model
+level (in the context of an AutoForme::Model instance), so we'll start
+looking at the customization options there.  The most common options
+are probably:
+
+columns :: This is an array of column/association name symbols to use
+           for the model.
+column_options :: This is a hash of column options for the model,
+                  keyed by column symbol, with values that are hashes
+                  of column options.
+order :: This is an expression or an array of expressions by which
+         to order returned rows.
+
+Note that for each of the customization options, you can do per-request
+customization by using a proc which is called with the type symbol and
+request (AutoForme::Request instance), which should return an appropriate
+object.
+
+columns :: Proc called with type symbol and request, should return array
+           of column/association symbols
+column_options :: Proc called with column/association symbol, type symbol
+                  and request, should return hash of column options.
+order :: Proc called with type symbol and request, should return expression 
+         or array of expressions by which to order returned rows.
+
+Below is brief description of other available options.  Note that just like the above
+options you can use Procs with most of these options to do customization on a
+per-request basis.
+
+association_links :: Array of association symbols for associations to display on the show/edit pages
+autocomplete_options :: Enable autocompletion for this model, with the given
+                        options.  The following keys are respected:
+                        :callback :: Proc called with dataset and options hash containing :type, :request, and :query
+                        :display :: A SQL expression to search on and display in the result
+                        :limit :: The number of results to return
+                        :filter :: Similar to callback, but overriding the default filter (a case insensitive substring search)
+eager :: Array of associations to eagerly load in a separate query
+eager_graph :: Array of associations to eager load in the same query
+               (necessary if order or filter refers to them)
+filter :: A Proc called with a dataset, type symbol, and request that
+          can be used to filter the available rows.  Can be used to
+          implement access control.
+inline_mtm_associations :: Array of many to many association symbols to allow editing on the edit page
+lazy_load_association_links :: Whether to show the association links directly on the show/edit pages,
+                               or to load them via ajax on request
+mtm_associations :: Array of many to many association symbols to support editing on a separate page 
+per_page :: Number of records to show per page on the browse and search pages
+session_value :: Sets up a filter and before_create hook that makes it so access is limited
+                 to objects where the object's column value is the same as some session value
+supported_actions :: Array of action symbols to support for the model, should be a subset of
+                     [:browse, :new, :show, :edit, :delete, :search, :mtm_edit]
+
+These options are related to displayed output:
+
+form_attributes :: Hash of attributes to use for any form tags
+form_options :: Hash of Forme::Form options to pass for any forms created
+class_display_name :: The string to use when referring to the model class
+display_name :: The string to use when referring to a model instance.  Can either be a symbol
+                representing an instance method call, or a Proc called with the model object,
+                the model object and type symbol, or the model object, type symbol, and request,
+                depending on the arity of the Proc.
+link_name :: The string to use in links for the class
+page_footer :: Override the default footer used for pages
+page_header :: Override the default header used for pages
+table_class :: The html class string to use for the browse and search tables
+
+These hook options should be callable objects that are called with the model object and the request.
+
+after_create :: Called after creating the object
+after_destroy :: Called after destroy the object
+after_update :: Called after updating the object
+before_create :: Called before creating the object 
+before_destroy :: Called before destroy the object
+before_update :: Called before updating the object
+
+In addition to being specified at the model level, almost all of these options can be specified at the
+framework level, where they operate as default values for models that don't specify the options. Just
+like the model level, the framework level also allows customization on a per request basis, though
+framework-level Procs generally take the model class as an initial argument (in addition to the type
+symbol and request).
+
+= TODO
+
+* capybara-webkit tests for ajax behavior
+* read_only fields for edit page
+* hidden_tags for all forms
+* one_to_many/many_to_many associations in columns
+* configurable searching
+* nested form objects
+
+= License
+
+MIT
+
+= Author
+
+Jeremy Evans <code@jeremyevans.net>
