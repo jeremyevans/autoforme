@@ -433,3 +433,9 @@ describe AutoForme::OptsAttributes do
     proc{@o.foo(1){}}.should raise_error(ArgumentError)
   end
 end
+
+describe AutoForme do
+  it ".version should return a typical version string" do
+    AutoForme.version.should =~ /\A\d+\.\d+\.\d+\z/
+  end
+end
