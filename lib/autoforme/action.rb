@@ -183,7 +183,9 @@ module AutoForme
       end
     end
     def handle_new
-      new_page(model.new(request.params[model.link], request))
+      obj = model.new(request.params[model.link], request)
+      model.hook(:before_new, request, obj)
+      new_page(obj)
     end
     def handle_create
       obj = model.new(nil, request)
@@ -267,7 +269,9 @@ module AutoForme
     end
     def handle_edit
       if request.id
-        edit_page(model.with_pk(normalized_type, request, request.id))
+        obj = model.with_pk(normalized_type, request, request.id)
+        model.hook(:before_edit, request, obj)
+        edit_page(obj)
       else
         list_page(:edit)
       end

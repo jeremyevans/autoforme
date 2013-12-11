@@ -171,6 +171,8 @@ after_destroy :: Called after destroy the object
 after_update :: Called after updating the object
 before_create :: Called before creating the object 
 before_destroy :: Called before destroy the object
+before_edit :: Called before displaying object on edit page
+before_new :: Called before displaying object on new page
 before_update :: Called before updating the object
 
 In addition to being specified at the model level, almost all of these options can be specified at the

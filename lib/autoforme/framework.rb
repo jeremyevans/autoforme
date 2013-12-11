@@ -20,7 +20,8 @@ module AutoForme
     attr_reader :prefix
 
     opts_attribute :after_create, :after_destroy, :after_update, :association_links,
-      :autocomplete_options, :before_create, :before_destroy, :before_update, :column_options,
+      :autocomplete_options, :before_create, :before_destroy,
+      :before_edit, :before_new, :before_update, :column_options,
       :columns, :display_name, :filter, :form_attributes, :form_options,
       :inline_mtm_associations, :lazy_load_association_links,
       :model_type, :mtm_associations, :order, :page_footer, :page_header, :per_page,

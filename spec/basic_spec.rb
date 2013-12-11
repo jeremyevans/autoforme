@@ -237,6 +237,8 @@ describe AutoForme do
       before_create{|obj, req| a << -1}
       before_update{|obj, req| a << -2}
       before_destroy{|obj, req| a << -3}
+      before_new{|obj, req| obj.name = 'weNtsitrAtseT'}
+      before_edit{|obj, req| obj.name << '2'}
       after_create{|obj, req| a << 1 }
       after_update{|obj, req| a << 2 }
       after_destroy{|obj, req| a << 3 }
@@ -244,13 +246,14 @@ describe AutoForme do
         before_create{|obj, req| obj.name = obj.name.reverse}
         before_update{|obj, req| obj.name = obj.name.upcase}
         before_destroy{|obj, req| raise if obj.name == obj.name.reverse}
+        before_new{|obj, req| obj.name.reverse!}
+        before_edit{|obj, req| obj.name << '1'}
         after_create{|obj, req| a << req.action_type }
         after_update{|obj, req| a << req.action_type }
         after_destroy{|obj, req| a << req.action_type }
       end
     end
     visit("/Artist/new")
-    fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
     a.should == [-1, 'create', 1]
     a.clear
@@ -258,13 +261,14 @@ describe AutoForme do
     click_link 'Edit'
     select 'weNtsitrAtseT'
     click_button 'Edit'
+    page.html.should =~ /weNtsitrAtseT21/
     click_button 'Update'
     a.should == [-2, 'update', 2]
     a.clear
 
     click_link 'Delete'
     Artist.create(:name=>'A')
-    select 'WENTSITRATSET'
+    select 'WENTSITRATSET21'
     click_button 'Delete'
     click_button 'Delete'
     a.should == [-3, 'destroy', 3]
