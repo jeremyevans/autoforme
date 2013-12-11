@@ -22,7 +22,8 @@ module AutoForme
       :column_options, :columns, :display_name, :eager, :eager_graph,
       :filter, :form_attributes, :form_options,
       :inline_mtm_associations, :lazy_load_association_links, :link_name, :mtm_associations,
-      :order, :page_footer, :page_header, :per_page, :supported_actions, :table_class
+      :order, :page_footer, :page_header, :per_page,
+      :redirect, :supported_actions, :table_class
 
     def supported_action?(type, request)
       (handle_proc(supported_actions || framework.supported_actions_for(model, request), request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
@@ -108,6 +109,10 @@ module AutoForme
 
     def filter_for
       filter || framework.filter_for(model)
+    end
+
+    def redirect_for
+      redirect || framework.redirect_for(model)
     end
 
     def form_attributes_for(type, request)

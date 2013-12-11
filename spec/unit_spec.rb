@@ -103,6 +103,14 @@ describe AutoForme do
     model.filter_for.call(1, :browse, 2).should == [1, :browse, 2]
   end
 
+  it "should handle redirect lookup" do
+    model.redirect_for.should == nil
+    framework.redirect{|mod| lambda{|obj, type, req| [obj, mod.name.to_sym, type, req]}}
+    model.redirect_for.call(1, :new, 2).should == [1, :Artist, :new, 2]
+    model.redirect{|obj, type, req| [obj, type, req]}
+    model.redirect_for.call(1, :new, 2).should == [1, :new, 2]
+  end
+
   it "should handle display_name lookup" do
     model.display_name_for.should == nil
     framework.display_name :foo

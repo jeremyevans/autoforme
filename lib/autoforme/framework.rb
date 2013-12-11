@@ -23,8 +23,8 @@ module AutoForme
       :autocomplete_options, :before_create, :before_destroy, :before_update, :column_options,
       :columns, :display_name, :filter, :form_attributes, :form_options,
       :inline_mtm_associations, :lazy_load_association_links,
-      :model_type, :mtm_associations, :order, :page_footer, :page_header, :per_page, :supported_actions,
-      :table_class
+      :model_type, :mtm_associations, :order, :page_footer, :page_header, :per_page,
+      :redirect, :supported_actions, :table_class
 
     def supported_actions_for(model, request)
       handle_proc(supported_actions, model, request)
@@ -64,6 +64,10 @@ module AutoForme
 
     def filter_for(model)
       handle_proc(filter, model)
+    end
+
+    def redirect_for(model)
+      handle_proc(redirect, model)
     end
 
     def display_name_for(model)

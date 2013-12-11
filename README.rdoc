@@ -138,6 +138,8 @@ eager_graph :: Array of associations to eager load in the same query
 filter :: A Proc called with a dataset, type symbol, and request that
           can be used to filter the available rows.  Can be used to
           implement access control.
+redirect :: A Proc called with an object, type symbol, and request that can be used to override
+            the default redirecting after form submittal.
 inline_mtm_associations :: Array of many to many association symbols to allow editing on the edit page
 lazy_load_association_links :: Whether to show the association links directly on the show/edit pages,
                                or to load them via ajax on request

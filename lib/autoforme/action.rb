@@ -78,8 +78,26 @@ module AutoForme
       base_url_for("#{model.link}/#{page}")
     end
 
-    def redirect(page)
-      request.redirect(url_for(page))
+    def redirect(type, obj)
+      if redir = model.redirect_for
+        path = redir.call(obj, type, request)
+      end
+
+      unless path
+        path = case type
+        when :new, :delete
+          type.to_s
+        when :edit
+          "edit/#{model.primary_key_value(obj)}"
+        when :mtm_edit
+          "mtm_edit/#{model.primary_key_value(obj)}?association=#{params_association}"
+        else
+          raise Error, "Unhandled redirect type: #{type.inspect}"
+        end
+        path = url_for(path)
+      end
+
+      request.redirect(path)
       nil
     end
 
@@ -174,7 +192,7 @@ module AutoForme
       if model.save(obj)
         model.hook(:after_create, request, obj)
         request.set_flash_notice("Created #{model.class_name}")
-        redirect("new")
+        redirect(:new, obj)
       else
         request.set_flash_now_error("Error Creating #{model.class_name}")
         new_page(obj)
@@ -261,7 +279,7 @@ module AutoForme
       if model.save(obj)
         model.hook(:after_update, request, obj)
         request.set_flash_notice("Updated #{model.class_name}")
-        redirect("edit/#{model.primary_key_value(obj)}")
+        redirect(:edit, obj)
       else
         request.set_flash_now_error("Error Updating #{model.class_name}")
         edit_page(obj)
@@ -281,7 +299,7 @@ module AutoForme
       model.destroy(obj)
       model.hook(:after_destroy, request, obj)
       request.set_flash_notice("Deleted #{model.class_name}")
-      redirect("delete")
+      redirect(:delete, obj)
     end
 
     def table_pager(type, next_page)
@@ -368,9 +386,9 @@ module AutoForme
           "<option value=\"#{model.primary_key_value(assoc_obj)}\">#{model.associated_object_display_name(assoc, request, assoc_obj)}</option>"
         end
       elsif request.params['redir'] == 'edit'
-        redirect("edit/#{model.primary_key_value(obj)}")
+        redirect(:edit, obj)
       else
-        redirect("mtm_edit/#{model.primary_key_value(obj)}?association=#{assoc}")
+        redirect(:mtm_edit, obj)
       end
     end
 

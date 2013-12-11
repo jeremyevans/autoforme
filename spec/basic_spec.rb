@@ -135,6 +135,32 @@ describe AutoForme do
     click_button 'Edit'
   end
 
+  it "should custom redirects" do
+    app_setup(Artist) do
+      redirect do |obj, type, req|
+        case type
+        when :new
+          "/Artist/edit/#{obj.id}"
+        when :edit
+          "/Artist/show/#{obj.id}"
+        when :delete
+          "/Artist/new"
+        end
+      end
+    end
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.current_path.should =~ %r{/Artist/edit/\d}
+    click_button 'Update'
+    page.current_path.should =~ %r{/Artist/show/\d}
+    click_link 'Delete'
+    select 'TestArtistNew'
+    click_button 'Delete'
+    click_button 'Delete'
+    page.current_path.should == "/Artist/new"
+  end
+
   it "should custom form options and attributes" do
     app_setup(Artist) do
       form_attributes :class=>'foobar'
