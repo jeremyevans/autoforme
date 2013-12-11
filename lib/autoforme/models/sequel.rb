@@ -27,8 +27,8 @@ module AutoForme
           if association?(col)
             ref = model.association_reflection(col)
             ds = ref.associated_dataset
-            if model_class = associated_model_class(col)
-              ds = model_class.apply_dataset_options(:association, request, ds)
+            if (model_class = associated_model_class(col)) && (filter = model_class.filter_for)
+              ds = filter.call(ds, :association, request)
             end
 
             if v = params[ref[:key]]

@@ -221,6 +221,28 @@ describe AutoForme do
     click_button 'Delete'
   end
 
+  it "should handle case when setting many_to_one association for associated class that eagerly graphs" do
+    app_setup do
+      model Artist do
+        eager_graph :albums
+      end
+      model Album do
+        columns [:name, :artist]
+        eager_graph :artist
+        order{|type, req| type == :edit ? [:albums__name, :artist__name] : [:artist__name, :albums__name]}
+        display_name{|obj, type| type == :edit ? "#{obj.name} (#{obj.artist.name})" : "#{obj.artist.name}-#{obj.name}"}
+      end
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'B'
+    click_button 'Create'
+    visit("/Album/new")
+    fill_in 'Name', :with=>'A'
+    select 'B'
+    click_button 'Create'
+  end
+
   it "should be able to order on eager_graphed associations when loading model" do
     app_setup do
       model Artist
