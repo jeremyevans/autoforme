@@ -167,7 +167,7 @@ module AutoForme
         columns_for(type, request).each do |col|
           if association?(col)
             if model = associated_model_class(col)
-              eager = model.eager_for(:association, request)
+              eager = model.eager_for(:association, request) || model.eager_graph_for(:association, request)
               ds = ds.eager(col=>eager)
             else
               ds = ds.eager(col)
