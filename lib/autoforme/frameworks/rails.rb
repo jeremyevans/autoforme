@@ -41,10 +41,17 @@ module AutoForme
         end
       end
 
+      def self.setup(controller, opts, &block)
+        f = super
+        f.setup_routes
+        f
+      end
+
       def initialize(*)
         super
         framework = self
         controller = @controller
+        @route_models = []
         controller.send(:define_method, :autoforme) do
           if @autoforme_action = framework.action_for(Request.new(controller, self))
             if redirect = catch(:redirect){@autoforme_text = @autoforme_action.handle; nil}
@@ -60,20 +67,20 @@ module AutoForme
 
       def model(*)
         m = super
-        route(@controller, m.link)
+        @route_models << m
         m
       end
 
-      private
-
       ALL_SUPPORTED_ACTIONS_REGEXP = Regexp.union(AutoForme::Action::ALL_SUPPORTED_ACTIONS.map{|x| /#{Regexp.escape(x)}/})
-      def route(controller, link)
+      def setup_routes
         if prefix
           pre = prefix.to_s[1..-1] + '/'
         end
+        model_regexp = Regexp.union(@route_models.map{|m| Regexp.escape(m.link)})
+        controller = @controller.name.sub(/Controller\z/, '').underscore
         ::Rails.application.routes.prepend do
-          match "#{pre}:autoforme_model/:autoforme_action(/:id)" , :controller=>controller.name.sub(/Controller\z/, '').underscore, :action=>'autoforme', :via=>[:get, :post],
-            :constraints=>{:autoforme_model=>/#{Regexp.escape(link)}/, :autoforme_action=>ALL_SUPPORTED_ACTIONS_REGEXP}
+          match "#{pre}:autoforme_model/:autoforme_action(/:id)" , :controller=>controller, :action=>'autoforme', :via=>[:get, :post],
+            :constraints=>{:autoforme_model=>model_regexp, :autoforme_action=>ALL_SUPPORTED_ACTIONS_REGEXP}
         end
         ::Rails.application.reload_routes!
       end

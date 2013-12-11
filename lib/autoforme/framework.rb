@@ -4,7 +4,13 @@ module AutoForme
     extend OptsAttributes
 
     def self.for(type, controller, opts={}, &block)
-      AutoForme.framework_class_for(type).new(controller, opts).instance_exec(&block)
+      AutoForme.framework_class_for(type).setup(controller, opts, &block)
+    end
+
+    def self.setup(controller, opts, &block)
+      f = new(controller, opts)
+      f.instance_exec(&block)
+      f
     end
 
     attr_reader :controller
