@@ -27,8 +27,8 @@ module AutoForme
           if association?(col)
             ref = model.association_reflection(col)
             ds = ref.associated_dataset
-            if (model_class = associated_model_class(col)) && (filter = model_class.filter_for)
-              ds = filter.call(ds, :association, request)
+            if model_class = associated_model_class(col)
+              ds = model_class.apply_filter(:association, request, ds)
             end
 
             if v = params[ref[:key]]
@@ -134,9 +134,10 @@ module AutoForme
               ref = model.association_reflection(c)
               ads = ref.associated_dataset
               if model_class = associated_model_class(c)
-                ads = model_class.apply_dataset_options(:association, request, ads)
+                ads = model_class.apply_filter(:association, request, ads)
               end
-              ds = ds.where(ref[:key]=>ads.where(ref.primary_key=>v).select(ref.primary_key))
+              primary_key = S.qualify(ref.associated_class.table_name, ref.primary_key)
+              ds = ds.where(ref[:key]=>ads.where(primary_key=>v).select(primary_key))
             elsif column_type(c) == :string
               ds = ds.where(S.ilike(c, "%#{ds.escape_like(v.to_s)}%"))
             else
@@ -181,10 +182,15 @@ module AutoForme
         (sch = model.db_schema[column]) && sch[:type]
       end
 
-      def apply_dataset_options(type, request, ds)
+      def apply_filter(type, request, ds)
         if filter = filter_for
           ds = filter.call(ds, type, request)
         end
+        ds
+      end
+
+      def apply_dataset_options(type, request, ds)
+        ds = apply_filter(type, request, ds)
         if order = order_for(type, request)
           ds = ds.order(*order)
         end
