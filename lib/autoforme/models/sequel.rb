@@ -32,7 +32,7 @@ module AutoForme
             end
 
             if v = params[ref[:key]]
-              v = ds.first!(ref.primary_key=>v)
+              v = ds.first!(S.qualify(ds.model.table_name, ref.primary_key)=>v)
             end
           else
             v = params[col]
