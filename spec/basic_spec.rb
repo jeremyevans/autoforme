@@ -234,6 +234,7 @@ describe AutoForme do
   it "should support create, update, delete hooks" do
     a = []
     app_setup do
+      before_action{|type, req| a << type}
       before_create{|obj, req| a << -1}
       before_update{|obj, req| a << -2}
       before_destroy{|obj, req| a << -3}
@@ -243,6 +244,7 @@ describe AutoForme do
       after_update{|obj, req| a << 2 }
       after_destroy{|obj, req| a << 3 }
       model Artist do
+        before_action{|type, req| req.redirect('/Artist/browse') if type == :show}
         before_create{|obj, req| obj.name = obj.name.reverse}
         before_update{|obj, req| obj.name = obj.name.upcase}
         before_destroy{|obj, req| raise if obj.name == obj.name.reverse}
@@ -255,7 +257,7 @@ describe AutoForme do
     end
     visit("/Artist/new")
     click_button 'Create'
-    a.should == [-1, 'create', 1]
+    a.should == [:new, :create, -1, 'create', 1, :new]
     a.clear
 
     click_link 'Edit'
@@ -263,7 +265,12 @@ describe AutoForme do
     click_button 'Edit'
     page.html.should =~ /weNtsitrAtseT21/
     click_button 'Update'
-    a.should == [-2, 'update', 2]
+    a.should == [:edit, :edit, :update, -2, 'update', 2, :edit]
+    a.clear
+
+    click_link 'Show'
+    page.current_path.should == '/Artist/browse'
+    a.should == [:show, :browse]
     a.clear
 
     click_link 'Delete'
@@ -271,13 +278,13 @@ describe AutoForme do
     select 'WENTSITRATSET21'
     click_button 'Delete'
     click_button 'Delete'
-    a.should == [-3, 'destroy', 3]
+    a.should == [:delete, :delete, :destroy, -3, 'destroy', 3, :delete]
     a.clear
 
     select 'A'
     click_button 'Delete'
     proc{click_button 'Delete'}.should raise_error
-    a.should == [-3]
+    a.should == [:delete, :destroy, -3]
   end
 
   it "should support specifying table class for data tables per type" do

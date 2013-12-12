@@ -175,6 +175,9 @@ before_edit :: Called before displaying object on edit page
 before_new :: Called before displaying object on new page
 before_update :: Called before updating the object
 
+There's also an addition before_action hook that is called with the type symbol of the request, and
+the request before every page.
+
 In addition to being specified at the model level, almost all of these options can be specified at the
 framework level, where they operate as default values for models that don't specify the options. Just
 like the model level, the framework level also allows customization on a per request basis, though

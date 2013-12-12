@@ -18,7 +18,7 @@ module AutoForme
     attr_reader :opts
 
     opts_attribute :after_create, :after_destroy, :after_update, :association_links,
-      :autocomplete_options, :before_create, :before_destroy,
+      :autocomplete_options, :before_action, :before_create, :before_destroy,
       :before_edit, :before_new, :before_update, :class_display_name,
       :column_options, :columns, :display_name, :eager, :eager_graph,
       :filter, :form_attributes, :form_options,
@@ -213,6 +213,15 @@ module AutoForme
 
     def destroy(obj)
       obj.destroy
+    end
+
+    def before_action_hook(type, request)
+      if v = framework.before_action
+        v.call(type, request)
+      end
+      if v = before_action
+        v.call(type, request)
+      end
     end
 
     def hook(type, request, obj)

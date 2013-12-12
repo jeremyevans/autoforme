@@ -102,6 +102,7 @@ module AutoForme
     end
 
     def handle
+      model.before_action_hook(type, request)
       send("handle_#{type}")
     end
 
