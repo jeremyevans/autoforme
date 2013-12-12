@@ -5,7 +5,6 @@ module AutoForme
     attr_reader :request
     attr_reader :type
     attr_reader :normalized_type
-    attr_reader :params_type
     attr_reader :params_association
     attr_reader :title
 
@@ -23,9 +22,6 @@ module AutoForme
 
       @type = request.action_type.to_sym
       @normalized_type = NORMALIZED_ACTION_MAP.fetch(@type, @type)
-      if t = request.params['type']
-        @params_type = ALL_SUPPORTED_ACTIONS.include?(t) ? t.to_sym : :edit
-      end
 
       case type
       when :mtm_edit
@@ -76,6 +72,10 @@ module AutoForme
 
     def url_for(page)
       base_url_for("#{model.link}/#{page}")
+    end
+
+    def subtype
+      ((t = request.params['type']) && ALL_SUPPORTED_ACTIONS.include?(t) && t.to_sym) || :edit
     end
 
     def redirect(type, obj)
@@ -398,14 +398,14 @@ module AutoForme
     end
 
     def handle_association_links
-      @type = @normalized_type = params_type
-      obj = model.with_pk(params_type, request, request.id)
+      @type = @normalized_type = subtype
+      obj = model.with_pk(@type, request, request.id)
       association_links(obj)
     end
 
     def handle_autocomplete
       unless (query = request.params['q'].to_s).empty?
-        model.autocomplete(:type=>params_type, :request=>request, :association=>params_association, :query=>query, :exclude=>request.params['exclude']).join("\n")
+        model.autocomplete(:type=>subtype, :request=>request, :association=>params_association, :query=>query, :exclude=>request.params['exclude']).join("\n")
       end
     end
 
