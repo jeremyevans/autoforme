@@ -170,7 +170,7 @@ module AutoForme
     end
 
     def form_attributes(attrs)
-      model.form_attributes_for(type, request).merge(attrs)
+      attrs.merge(model.form_attributes_for(type, request))
     end
 
     def new_page(obj, opts={})

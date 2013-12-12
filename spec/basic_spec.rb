@@ -163,11 +163,12 @@ describe AutoForme do
 
   it "should custom form options and attributes" do
     app_setup(Artist) do
-      form_attributes :class=>'foobar'
+      form_attributes :class=>'foobar', :action=>'/create_artist'
       form_options :input_defaults=>{'text'=>{:class=>'barfoo'}}
     end
     visit("/Artist/new")
     find('form')[:class].should == 'foobar forme artist'
+    find('form')[:action].should == '/create_artist'
     find('form input#artist_name')[:class].should == 'barfoo'
   end
 
