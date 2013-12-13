@@ -12,9 +12,17 @@ flexible in terms of configuration.
 1. https://github.com/jeremyevans/forme
 2. https://github.com/jeremyevans/scaffolding_extensions
 
+= Installation
+
+  sudo gem install autoforme
+
 = Demo Site
 
 A demo site is available at http://autoforme-demo.jeremyevans.net
+
+= Documentation Site
+
+RDoc Documentation is available at http://autoforme.jeremyevans.net
 
 = Source Code
 
