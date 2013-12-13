@@ -1,4 +1,12 @@
 require "rake"
+require "rake/clean"
+
+CLEAN.include ["autoforme-*.gem", "rdoc", "coverage"]
+
+desc "Build autoforme gem"
+task :package=>[:clean] do |p|
+  sh %{#{FileUtils::RUBY} -S gem build autoforme.gemspec}
+end
 
 ### Specs
 
