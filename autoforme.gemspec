@@ -6,6 +6,7 @@ spec = Gem::Specification.new do |s|
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc", "CHANGELOG", "MIT-LICENSE"]
   s.rdoc_options += ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Adminstrative Console for Sinatra/Rails and Sequel', '--main', 'README.rdoc']
+  s.license = "MIT"
   s.summary = "Web Adminstrative Console for Sinatra/Rails and Sequel"
   s.author = "Jeremy Evans"
   s.email = "code@jeremyevans.net"
