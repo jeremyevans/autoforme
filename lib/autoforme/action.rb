@@ -62,13 +62,15 @@ module AutoForme
         return false unless request.id && (assoc = request.params['association']) && model.supported_mtm_update?(assoc, request)
         @params_association = assoc.to_sym
       when :association_links
-        return false unless model.supported_action?(params_type, request)
+        @subtype = subtype
+        return false unless model.supported_action?(@subtype, request)
       when :autocomplete
         if assoc = request.id
           return false unless model.association?(assoc)
           @params_association = assoc.to_sym
         end
-        return false unless model.autocomplete_options_for(params_type, request)
+        @subtype = subtype
+        return false unless model.autocomplete_options_for(@subtype, request)
       else
         return false unless model.supported_action?(normalized_type, request)
 
@@ -476,7 +478,7 @@ module AutoForme
 
     # Handle association_links action by returning an HTML fragment of association links.
     def handle_association_links
-      @type = @normalized_type = subtype
+      @type = @normalized_type = @subtype
       obj = model.with_pk(@type, request, request.id)
       association_links(obj)
     end
@@ -484,7 +486,7 @@ module AutoForme
     # Handle autocomplete action by returning a string with one line per model object.
     def handle_autocomplete
       unless (query = request.params['q'].to_s).empty?
-        model.autocomplete(:type=>subtype, :request=>request, :association=>params_association, :query=>query, :exclude=>request.params['exclude']).join("\n")
+        model.autocomplete(:type=>@subtype, :request=>request, :association=>params_association, :query=>query, :exclude=>request.params['exclude']).join("\n")
       end
     end
 
