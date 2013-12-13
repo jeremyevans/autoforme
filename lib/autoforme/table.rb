@@ -1,11 +1,25 @@
 module AutoForme
+  # Helper class for formating HTML tables used for the browse/search results pages.
   class Table
+    # The AutoForme::Action for the current table
     attr_reader :action
+
+    # The AutoForme::Model for the current table
     attr_reader :model
+
+    # The AutoForme::Request for the current table
     attr_reader :request
+
+    # The action type for the current table
     attr_reader :type
+
+    # The data columns for the current table
     attr_reader :columns
+
+    # An array of objects to show in the table
     attr_reader :objs
+
+    # Any options for the table
     attr_reader :opts
 
     def initialize(action, objs, opts={})
@@ -19,9 +33,10 @@ module AutoForme
     end
     
     def h(s)
-      Rack::Utils.escape_html(s.to_s)
+      action.h(s)
     end
 
+    # Return an HTML string for the table.
     def to_s
       html = "<table class=\"#{model.table_class_for(type, request)}\">"
       if caption = opts[:caption]

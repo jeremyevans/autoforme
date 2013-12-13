@@ -1,22 +1,34 @@
 module AutoForme
-  # Framework wraps a controller
+  # The Framework class contains forms for a set of models, tied to web
+  # framework controller.
   class Framework
     extend OptsAttributes
 
+    # See Autoforme.for.
     def self.for(type, controller, opts={}, &block)
       AutoForme.framework_class_for(type).setup(controller, opts, &block)
     end
 
+    # Setup a new framework class.
     def self.setup(controller, opts, &block)
       f = new(controller, opts)
       f.instance_exec(&block)
       f
     end
 
+    # The web framework controller tied to this framework.
     attr_reader :controller
+
+    # A map of link names to AutoForme::Model classes for this Framework.
     attr_reader :models
+
+    # A map of underlying model classes to AutoForme::Model classes for this Framework.
     attr_reader :model_classes
+    
+    # The configuration options related to this framework.
     attr_reader :opts
+
+    # The path prefix that this framework is mounted at
     attr_reader :prefix
 
     opts_attribute :after_create, :after_destroy, :after_update, :association_links,
@@ -26,6 +38,14 @@ module AutoForme
       :inline_mtm_associations, :lazy_load_association_links,
       :model_type, :mtm_associations, :order, :page_footer, :page_header, :per_page,
       :redirect, :supported_actions, :table_class
+
+    def initialize(controller, opts={})
+      @controller = controller
+      @opts = opts.dup
+      @prefix = @opts[:prefix]
+      @models = {}
+      @model_classes = {}
+    end
 
     def supported_actions_for(model, request)
       handle_proc(supported_actions, model, request)
@@ -37,14 +57,6 @@ module AutoForme
 
     def limit_for(model, type, request)
       handle_proc(per_page, model, type, request)
-    end
-
-    def initialize(controller, opts={})
-      @controller = controller
-      @opts = opts.dup
-      @prefix = @opts[:prefix]
-      @models = {}
-      @model_classes = {}
     end
 
     def columns_for(model, type, request)
@@ -103,12 +115,15 @@ module AutoForme
       handle_proc(association_links, model, type, request)
     end
 
+    # Add a new model to the existing framework.  
     def model(model_class, &block)
       model = Model.for(self, model_type, model_class, &block)
       @model_classes[model.model] = model
       @models[model.link] = model
     end
 
+    # Return the action related to the given request, if such an
+    # action is supported.
     def action_for(request)
       if model = @models[request.model]
         action = Action.new(model, request)

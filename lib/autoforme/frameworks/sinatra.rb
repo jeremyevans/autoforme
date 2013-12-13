@@ -16,31 +16,24 @@ module AutoForme
           @id = @params[:id] || captures[2]
         end
 
+        # Redirect to the given path
         def redirect(path)
           controller.redirect(path)
         end
 
-        def set_flash_notice(message)
-          controller.flash[:notice] = message
-        end
-
-        def set_flash_now_error(message)
-          controller.flash.now[:error] = message
-        end
-
-        def query_string
-          @env['QUERY_STRING']
-        end
-
+        # Whether the request is an asynchronous request
         def xhr?
           @env['HTTP_X_REQUESTED_WITH'] =~ /XMLHttpRequest/i
         end
         
+        # Use Rack::Csrf for csrf protection if it is defined.
         def csrf_token_hash
           {::Rack::Csrf.field=>::Rack::Csrf.token(@env)} if defined?(::Rack::Csrf)
         end
       end
 
+      # Add get and post routes when creating the framework.  These routes can potentially
+      # match other routes, but in that case use pass to try the next route.
       def initialize(*)
         super
         framework = self

@@ -1,21 +1,47 @@
 module AutoForme
   # Represents an action on a model in response to a web request.
   class Action
+    # The AutoForme::Model instance related to the current action
     attr_reader :model
-    attr_reader :request
-    attr_reader :type
+
+    # The normalized type symbol related to the current action, so that paired actions
+    # such as new and create both use :new.
     attr_reader :normalized_type
+
+    # An association symbol for the current related association.
     attr_reader :params_association
+
+    # The AutoForme::Request instance related to the current action
+    attr_reader :request
+
+    # An string suitable for use as the HTML title on the displayed page
     attr_reader :title
 
+    # The type symbols related to the current action (e.g. :new, :create).
+    attr_reader :type
+
+    # Array of strings for all action types currently supported
+    ALL_SUPPORTED_ACTIONS = %w'new create show edit update delete destroy browse search mtm_edit mtm_update association_links autocomplete'.freeze
+
+    # Map of regular type symbols to normalized type symbols
     NORMALIZED_ACTION_MAP = {:create=>:new, :update=>:edit, :destroy=>:delete, :mtm_update=>:mtm_edit}
+
+    # Map of type symbols to HTML titles
+    TITLE_MAP = {:new=>'New', :show=>'Show', :edit=>'Edit', :delete=>'Delete', :browse=>'Browse', :search=>'Search', :mtm_edit=>'Many To Many Edit'}
+
+    # Creates a new action for the model and request.  This action is not
+    # usable unless supported? is called first and it returns true.
     def initialize(model, request)
       @model = model
       @request = request
     end
 
-    TITLE_MAP = {:new=>'New', :show=>'Show', :edit=>'Edit', :delete=>'Delete', :browse=>'Browse', :search=>'Search', :mtm_edit=>'Many To Many Edit'}
-    ALL_SUPPORTED_ACTIONS = %w'new create show edit update delete destroy browse search mtm_edit mtm_update association_links autocomplete'.freeze
+    # Return true if the action is supported, and false otherwise.  An action
+    # may not be supported if the type is not one of the supported types, or
+    # if an non-idemponent request is issued with get instead of post, or
+    # potentionally other reasons.
+    #
+    # As a side-effect, this sets up additional state related to the request.
     def supported?
       return false unless idempotent? || request.post?
       return false unless ALL_SUPPORTED_ACTIONS.include?(request.action_type)
@@ -54,30 +80,39 @@ module AutoForme
       true
     end
 
+    # Convert input to a string adn HTML escape it.
     def h(s)
       Rack::Utils.escape_html(s.to_s)
     end
 
+    # Return whether the current action is an idempotent action.
     def idempotent?
       type == normalized_type
     end
 
+    # Get request parameters for the model.  Used when retrieving form
+    # values that use namespacing.
     def model_params
       request.params[model.params_name]
     end
 
+    # A path for the given page tied to the framework, but not the current model.
+    # Used for linking to other models in the same framework.
     def base_url_for(page)
       "#{request.path}#{model.framework.prefix}/#{page}"
     end
 
+    # A path for the given page for the same model. 
     def url_for(page)
       base_url_for("#{model.link}/#{page}")
     end
 
+    # The subtype of request, used for association_links and autocomplete actions.
     def subtype
       ((t = request.params['type']) && ALL_SUPPORTED_ACTIONS.include?(t) && t.to_sym) || :edit
     end
 
+    # Redirect to a page based on the type of action and the given object.
     def redirect(type, obj)
       if redir = model.redirect_for
         path = redir.call(obj, type, request)
@@ -101,16 +136,20 @@ module AutoForme
       nil
     end
 
+    # Handle the current action, returning an HTML string containing the page content,
+    # or redirecting.
     def handle
       model.before_action_hook(type, request)
       send("handle_#{type}")
     end
 
+    # Convert the given object into a suitable human readable string.
     def humanize(string)
       string = string.to_s
       string.respond_to?(:humanize) ? string.humanize : string.gsub(/_/, " ").capitalize
     end
 
+    # The options to use for the given column, which will be passed to Forme::Form#input.
     def column_options_for(type, request, obj, column)
       opts = model.column_options_for(type, request, column)
       if opts[:class] == 'autoforme_autocomplete'
@@ -123,6 +162,7 @@ module AutoForme
       opts
     end
 
+    # The label to use for the given column.
     def column_label_for(type, request, model, column)
       unless label = model.column_options_for(type, request, column)[:label]
         label = humanize(column)
@@ -130,6 +170,7 @@ module AutoForme
       label
     end
 
+    # HTML fragment for the default page header, which uses tabs for each supported action.
     def tabs
       content = '<ul class="nav nav-tabs">'
       Model::DEFAULT_SUPPORTED_ACTIONS.each do |action_type|
@@ -139,6 +180,8 @@ module AutoForme
       end
       content << '</ul>'
     end
+
+    # The name to give the tab for the given type.
     def tab_name(type)
       case type
       when :browse
@@ -150,6 +193,7 @@ module AutoForme
       end
     end
 
+    # Yields and wraps the returned data in a header and footer for the page.
     def page
       html = ''
       html << (model.page_header_for(type, request) || tabs)
@@ -160,6 +204,7 @@ module AutoForme
       html
     end
 
+    # Options to use for the form.  If the form uses POST, automatically adds the CSRF token.
     def form_opts
       opts = model.form_options_for(type, request).dup
       hidden_tags = opts[:hidden_tags] = []
@@ -169,10 +214,13 @@ module AutoForme
       opts
     end
 
+    # Merge the model's form attributes into the given form attributes, yielding the
+    # attributes to use for the form.
     def form_attributes(attrs)
       attrs.merge(model.form_attributes_for(type, request))
     end
 
+    # HTML content used for the new action
     def new_page(obj, opts={})
       page do
         Forme.form(obj, form_attributes(:action=>url_for("create")), form_opts) do |f|
@@ -183,11 +231,15 @@ module AutoForme
         end
       end
     end
+    
+    # Handle the new action by always showing the new form.
     def handle_new
       obj = model.new(request.params[model.link], request)
       model.hook(:before_new, request, obj)
       new_page(obj)
     end
+
+    # Handle the create action by creating a new model object.
     def handle_create
       obj = model.new(nil, request)
       model.set_fields(obj, :new, request, model_params)
@@ -202,6 +254,8 @@ module AutoForme
       end
     end
 
+    # Shared page used by show, edit, and delete actions that shows a list of available
+    # model objects (or an autocompleting box), and allows the user to choose one to act on.
     def list_page(type, opts={})
       page do
         form_attr = form_attributes(opts[:form] || {:action=>url_for(type)})
@@ -220,6 +274,7 @@ module AutoForme
       end
     end
 
+    # The page to use when displaying an object, always used as a confirmation screen when deleting an object.
     def show_page(obj)
       page do
         t = ''
@@ -244,6 +299,8 @@ module AutoForme
         t
       end
     end
+
+    # Handle the show action by showing a list page if there is no model object selected, or the show page if there is one.
     def handle_show
       if request.id
         show_page(model.with_pk(normalized_type, request, request.id))
@@ -252,6 +309,7 @@ module AutoForme
       end
     end
 
+    # The page to use when editing the object.
     def edit_page(obj)
       page do
         t = Forme.form(obj, form_attributes(:action=>url_for("update/#{model.primary_key_value(obj)}")), form_opts) do |f|
@@ -268,6 +326,8 @@ module AutoForme
         t << association_links(obj)
       end
     end
+
+    # Handle the edit action by showing a list page if there is no model object selected, or the edit page if there is one.
     def handle_edit
       if request.id
         obj = model.with_pk(normalized_type, request, request.id)
@@ -277,6 +337,8 @@ module AutoForme
         list_page(:edit)
       end
     end
+
+    # Handle the update action by updating the current model object.
     def handle_update
       obj = model.with_pk(normalized_type, request, request.id)
       model.set_fields(obj, :edit, request, model_params)
@@ -291,6 +353,7 @@ module AutoForme
       end
     end
 
+    # Handle the edit action by showing a list page if there is no model object selected, or a confirmation screen if there is one.
     def handle_delete
       if request.id
         handle_show
@@ -298,6 +361,8 @@ module AutoForme
         list_page(:delete, :form=>{:action=>url_for('delete')})
       end
     end
+
+    # Handle the destroy action by destroying the model object.
     def handle_destroy
       obj = model.with_pk(normalized_type, request, request.id)
       model.hook(:before_destroy, request, obj)
@@ -307,6 +372,7 @@ module AutoForme
       redirect(:delete, obj)
     end
 
+    # HTML fragment for the table pager, showing links to next page or previous page for browse/search forms.
     def table_pager(type, next_page)
       html = '<ul class="pager">'
       page = request.id.to_i
@@ -323,15 +389,21 @@ module AutoForme
       end
       html << "</ul>"
     end
+
+    # Show page used for browse/search pages.
     def table_page(next_page, objs)
       page do
         Table.new(self, objs).to_s << table_pager(normalized_type, next_page)
       end
     end
+
+    # Handle browse action by showing a table containing model objects.
     def handle_browse
       table_page(*model.browse(type, request))
     end
 
+    # Handle browse action by showing a search form if no page is selected, or the correct page of search results
+    # if there is a page selected.
     def handle_search
       if request.id
         table_page(*model.search_results(normalized_type, request))
@@ -347,6 +419,8 @@ module AutoForme
       end
     end
 
+    # Handle the mtm_edit action by showing a list page if there is no model object selected, a list of associations for that model
+    # if there is a model object but no association selected, or a mtm_edit form if there is a model object and association selected.
     def handle_mtm_edit
       if id = request.id
         obj = model.with_pk(:edit, request, request.id)
@@ -378,6 +452,9 @@ module AutoForme
         list_page(:edit, :form=>{})
       end
     end
+
+    # Handle mtm_update action by updating the related many to many association.  For ajax requests,
+    # return an HTML fragment to update the page, otherwise redirect to the appropriate form.
     def handle_mtm_update
       obj = model.with_pk(:edit, request, request.id)
       assoc = params_association
@@ -397,18 +474,22 @@ module AutoForme
       end
     end
 
+    # Handle association_links action by returning an HTML fragment of association links.
     def handle_association_links
       @type = @normalized_type = subtype
       obj = model.with_pk(@type, request, request.id)
       association_links(obj)
     end
 
+    # Handle autocomplete action by returning a string with one line per model object.
     def handle_autocomplete
       unless (query = request.params['q'].to_s).empty?
         model.autocomplete(:type=>subtype, :request=>request, :association=>params_association, :query=>query, :exclude=>request.params['exclude']).join("\n")
       end
     end
 
+    # HTML fragment containing the association links for the given object, or a link to lazily load them
+    # if configured.  Also contains the inline mtm_edit forms when editing.
     def association_links(obj)
       if model.lazy_load_association_links?(type, request) && normalized_type != :association_links && request.params['associations'] != 'show'
         "<div id='lazy_load_association_links' data-object='#{model.primary_key_value(obj)}' data-type='#{type}'><a href=\"#{url_for("#{type}/#{model.primary_key_value(obj)}?associations=show")}\">Show Associations</a></div>"
@@ -419,6 +500,7 @@ module AutoForme
       end
     end
 
+    # HTML fragment for the list of association links, allowing quick access to associated models and objects.
     def association_link_list(obj)
       assocs = model.association_links_for(type, request) 
       return if assocs.empty?
@@ -469,6 +551,9 @@ module AutoForme
       end
       t << "</ul>"
     end
+
+    # If the framework contains the associated model class and that supports browsing,
+    # return a link to the associated browse page, otherwise, just return the name.
     def association_class_link(mc, assoc)
       assoc_name = humanize(assoc)
       if mc && mc.supported_action?(:browse, request)
@@ -477,6 +562,10 @@ module AutoForme
         assoc_name
       end
     end
+
+    # For the given associated object, if the framework contains the associated model class,
+    # and that supports the type of action we are doing, return a link to the associated action
+    # page.
     def association_link(mc, assoc_obj)
       if mc
         t = mc.object_display_name(:association, request, assoc_obj)
@@ -489,6 +578,7 @@ module AutoForme
       end
     end
 
+    # HTML fragment used for the inline mtm_edit forms on the edit page.
     def inline_mtm_edit_forms(obj)
       assocs = model.inline_mtm_assocs(request)
       return if assocs.empty?
@@ -522,6 +612,8 @@ module AutoForme
       end
       t << "</ul></div>"
     end
+
+    # Line item containing form to remove the currently associated object.
     def mtm_edit_remove(assoc, mc, obj, assoc_obj)
       t = "<li>"
       t << association_link(mc, assoc_obj)

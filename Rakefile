@@ -41,3 +41,25 @@ rescue LoadError
     puts "Must install rspec >=2.0 to run the default task (which runs specs)"
   end
 end
+
+### RDoc
+
+RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Adminstrative Console for Sinatra/Rails and Sequel']
+
+rdoc_task_class = begin
+  require "rdoc/task"
+  RDOC_DEFAULT_OPTS.concat(['-f', 'hanna'])
+  RDoc::Task
+rescue LoadError
+  require "rake/rdoctask"
+  Rake::RDocTask
+end
+
+RDOC_OPTS = RDOC_DEFAULT_OPTS + ['--main', 'README.rdoc']
+
+rdoc_task_class.new do |rdoc|
+  rdoc.rdoc_dir = "rdoc"
+  rdoc.options += RDOC_OPTS
+  rdoc.rdoc_files.add %w"README.rdoc CHANGELOG MIT-LICENSE lib/**/*.rb"
+end
+

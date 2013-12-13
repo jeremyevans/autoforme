@@ -3,10 +3,14 @@ require 'thread'
 require 'rack/utils'
 
 module AutoForme
+  # Map of framework type symbols to framework classes
   FRAMEWORKS = {}
+
+  # Map of model type symbols to model classes 
   MODELS = {}
   @mutex = Mutex.new
 
+  # AutoForme specific error class
   class Error < StandardError
   end
 
@@ -28,6 +32,17 @@ module AutoForme
     end
   end
 
+  # Create a new set of model forms.  Arguments:
+  # type :: A type symbol for the type of framework in use (:sinatra or :rails)
+  # controller :: The controller class in which to load the forms
+  # opts :: Options hash.  Current supports a :prefix option if you want to mount
+  #         the forms in a different prefix.
+  #
+  # Example:
+  #
+  #   AutoForme.for(:sinatra, Sinatra::Application, :prefix=>'/path') do
+  #     model Artist
+  #   end
   def self.for(type, controller, opts={}, &block)
     Framework.for(type, controller, opts, &block)
   end

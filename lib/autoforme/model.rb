@@ -1,20 +1,35 @@
 module AutoForme
   # Wraps a specific model class
   class Model
+    # Array of supported autocomplete types 
+    AUTOCOMPLETE_TYPES = [:show, :edit, :delete, :association, :mtm_edit].freeze
+
+    # The default number of records to show on each browse/search results pages
     DEFAULT_LIMIT = 25
+
+    # The default table class to use for browse/search results pages
     DEFAULT_TABLE_CLASS = "table table-bordered table-striped"
+
+    # The default supported actions for models.
     DEFAULT_SUPPORTED_ACTIONS = [:browse, :new, :show, :edit, :delete, :search, :mtm_edit]
 
     extend OptsAttributes
 
+    # Create a new instance for the given model type and underlying model class
+    # tied to the given framework.
     def self.for(framework, type, model_class, &block)
       model = AutoForme.model_class_for(type).new(model_class, framework)
       model.instance_exec(&block) if block
       model
     end
 
-    attr_reader :model
+    # The AutoForme::Framework class tied to the current model
     attr_reader :framework
+    
+    # The underlying model class for the current model
+    attr_reader :model
+    
+    # The options for the given model.
     attr_reader :opts
 
     opts_attribute :after_create, :after_destroy, :after_update, :association_links,
@@ -26,20 +41,33 @@ module AutoForme
       :order, :page_footer, :page_header, :per_page,
       :redirect, :supported_actions, :table_class
 
+    def initialize(model, framework)
+      @model = model
+      @framework = framework
+      @opts = {}
+    end
+
+    # Whether the given type of action is supported for this model.
     def supported_action?(type, request)
       (handle_proc(supported_actions || framework.supported_actions_for(model, request), request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
     end
 
+    # An array of many to many association symbols to handle via a separate mtm_edit page.
     def mtm_association_select_options(request)
       normalize_mtm_associations(handle_proc(mtm_associations || framework.mtm_associations_for(model, request), request))
     end
+    
+    # Whether an mtm_edit can be displayed for the given association
     def supported_mtm_edit?(assoc, request)
       mtm_association_select_options(request).map{|x| x.to_s}.include?(assoc)
     end
+
+    # Whether an mtm_update can occur for the given association
     def supported_mtm_update?(assoc, request)
       supported_mtm_edit?(assoc, request) || inline_mtm_assocs(request).map{|x| x.to_s}.include?(assoc) 
     end
 
+    # An array of many to many association symbols to handle inline on the edit forms.
     def inline_mtm_assocs(request)
       normalize_mtm_associations(handle_proc(inline_mtm_associations || framework.inline_mtm_associations_for(model, request), request))
     end
@@ -48,6 +76,8 @@ module AutoForme
       handle_proc(columns || framework.columns_for(model, type, request), type, request) || default_columns
     end
 
+    # The options to use for the given column and request.  Instead of the model options overriding the framework
+    # options, they are merged together.
     def column_options_for(type, request, column)
       framework_opts = case framework_opts = framework.column_options
       when Proc, Method
@@ -159,13 +189,13 @@ module AutoForme
       end
     end
 
+    # Whether to lazy load association links for this model.
     def lazy_load_association_links?(type, request)
       v = handle_proc(lazy_load_association_links, type, request)
       v = framework.lazy_load_association_links?(model, type, request) if v.nil?
       v || false
     end
 
-    AUTOCOMPLETE_TYPES = [:show, :edit, :delete, :association, :mtm_edit].freeze
     def autocomplete_options_for(type, request)
       return unless AUTOCOMPLETE_TYPES.include?(type)
       framework_opts = framework.autocomplete_options_for(model, type, request)
@@ -175,24 +205,22 @@ module AutoForme
       end
     end
 
+    # The name to display to the user for this model.
     def class_name
       class_display_name || model.name
     end
 
+    # The name to use in links for this model.  Also affects where this model is mounted at.
     def link
       link_name || class_name
     end
 
-    def initialize(model, framework)
-      @model = model
-      @framework = framework
-      @opts = {}
-    end
-
+    # The AutoForme::Model instance associated to the given association.
     def associated_model_class(assoc)
       framework.model_classes[associated_class(assoc)]
     end
 
+    # The column value to display for the given object and column.
     def column_value(type, request, obj, column)
       return unless v = obj.send(column)
       if association?(column) 
@@ -211,10 +239,12 @@ module AutoForme
       v
     end
 
+    # Destroy the given object, deleting it from the database.
     def destroy(obj)
       obj.destroy
     end
 
+    # Run framework and model before_action hooks with type symbol and request.
     def before_action_hook(type, request)
       if v = framework.before_action
         v.call(type, request)
@@ -224,6 +254,7 @@ module AutoForme
       end
     end
 
+    # Run given hooks with the related object and request.
     def hook(type, request, obj)
       if type.to_s =~ /before/
         if v = framework.send(type)
@@ -242,6 +273,8 @@ module AutoForme
       end
     end
 
+    # Create a new instance of the underlying model, setting
+    # defaults based on the params given.
     def new(params, request)
       obj = @model.new
       if params
@@ -257,6 +290,7 @@ module AutoForme
       obj
     end
 
+    # An array of pairs for the select options to return for the given type.
     def select_options(type, request, opts={})
       case nm = opts[:name_method]
       when Symbol, String
@@ -268,14 +302,17 @@ module AutoForme
       end
     end
 
+    # A human readable string representing the object.
     def object_display_name(type, request, obj)
       apply_name_method(display_name_for, obj, type, request)
     end
 
+    # A human reable string for the associated object.
     def associated_object_display_name(assoc, request, obj)
       apply_name_method(column_options_for(:mtm_edit, request, assoc)[:name_method], obj, :mtm_edit, request)
     end
 
+    # A fallback for the display name for the object if none is configured.
     def default_object_display_name(obj)
       if obj.respond_to?(:forme_name)
         obj.forme_name

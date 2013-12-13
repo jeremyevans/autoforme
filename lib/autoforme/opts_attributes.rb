@@ -1,5 +1,8 @@
 module AutoForme
   module OptsAttributes
+    # Setup methods for each given argument such that if the method is called with an argument or
+    # block, it sets the value of the related option to that argument or block.  If called without
+    # an argument or block, it returns the stored option value.
     def opts_attribute(*meths)
       meths.each do |meth|
         define_method(meth) do |*args, &block|

@@ -2,8 +2,6 @@ module AutoForme
   module Frameworks
     class Rails < AutoForme::Framework
       class Request < AutoForme::Request
-        attr_reader :request
-
         def initialize(request)
           @controller = request
           @params = request.params
@@ -16,42 +14,36 @@ module AutoForme
           @id = @params['id']
         end
 
+        # Implement redirects in the Rails support using throw/catch, similar to
+        # how they are natively implemented in Sinatra.
         def redirect(path)
           throw :redirect, path
         end
 
-        def set_flash_notice(message)
-          @controller.flash[:notice] = message
-        end
-
-        def set_flash_now_error(message)
-          @controller.flash.now[:error] = message
-        end
-
-        def query_string
-          @env['QUERY_STRING']
-        end
-
+        # Whether the request is an asynchronous request
         def xhr?
           @controller.request.xhr?
         end
         
+        # Use Rails's form_authenticity_token for CSRF protection.
         def csrf_token_hash
           vc = @controller.view_context
           {vc.request_forgery_protection_token.to_s=>vc.form_authenticity_token} if vc.protect_against_forgery?
         end
       end
 
+      # After setting up the framework, add a route for the framework to Rails, so that
+      # requests are correctly routed.
       def self.setup(controller, opts, &block)
         f = super
         f.setup_routes
         f
       end
 
+      # Define an autoforme method in the controller which handles the actions.
       def initialize(*)
         super
         framework = self
-        @route_models = []
         @controller.send(:define_method, :autoforme) do
           if @autoforme_action = framework.action_for(Request.new(self))
             if redirect = catch(:redirect){@autoforme_text = @autoforme_action.handle; nil}
@@ -65,18 +57,14 @@ module AutoForme
         end
       end
 
-      def model(*)
-        m = super
-        @route_models << m
-        m
-      end
-
       ALL_SUPPORTED_ACTIONS_REGEXP = Regexp.union(AutoForme::Action::ALL_SUPPORTED_ACTIONS.map{|x| /#{Regexp.escape(x)}/})
+
+      # Add a route for the framework to Rails routing.
       def setup_routes
         if prefix
           pre = prefix.to_s[1..-1] + '/'
         end
-        model_regexp = Regexp.union(@route_models.map{|m| Regexp.escape(m.link)})
+        model_regexp = Regexp.union(models.keys.map{|m| Regexp.escape(m)})
         controller = @controller.name.sub(/Controller\z/, '').underscore
         ::Rails.application.routes.prepend do
           match "#{pre}:autoforme_model/:autoforme_action(/:id)" , :controller=>controller, :action=>'autoforme', :via=>[:get, :post],

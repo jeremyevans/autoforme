@@ -1,25 +1,35 @@
 module AutoForme
   module Models
+    # Sequel specific model class for AutoForme
     class Sequel < Model
+      # Short reference to top level Sequel module, for easily calling methods
       S = ::Sequel
 
+      # What association types to recognize.  Other association types are ignored.
+      SUPPORTED_ASSOCIATION_TYPES = [:many_to_one, :one_to_one, :one_to_many, :many_to_many]
+
+      # Make sure the forme plugin is loaded into the model.
       def initialize(*)
         super
         @model.plugin :forme
       end
 
+      # The base class for the underlying model, ::Sequel::Model.
       def base_class
         S::Model
       end
 
+      # A completely empty search object, with no defaults.
       def new_search
         @model.call({})
       end
 
+      # The name of the form param for the given association.
       def form_param_name(assoc)
         "#{model.send(:underscore, model.name)}[#{association_key(assoc)}]"
       end
 
+      # Set the fields for the given action type to the object based on the request params.
       def set_fields(obj, type, request, params)
         columns_for(type, request).each do |col|
           column = col
@@ -42,6 +52,7 @@ module AutoForme
         end
       end
 
+      # Whether the column represents an association.
       def association?(column)
         case column
         when String
@@ -51,10 +62,15 @@ module AutoForme
         end
       end
 
+      # The associated class for the given association
       def associated_class(assoc)
         model.association_reflection(assoc).associated_class
       end
 
+      # A short type for the association, either :one for a
+      # singular association, :new for an association where
+      # you can create new objects, or :edit for association
+      # where you can add/remove members from the association.
       def association_type(assoc)
         case model.association_reflection(assoc)[:type]
         when :many_to_one, :one_to_one
@@ -66,45 +82,56 @@ module AutoForme
         end
       end
 
+      # The foreign key column for the given many to one association.
       def association_key(assoc)
         model.association_reflection(assoc)[:key]
       end
 
+      # An array of pairs mapping foreign keys in associated class
+      # to primary key value of current object
       def associated_new_column_values(obj, assoc)
         ref = model.association_reflection(assoc)
         ref[:keys].zip(ref[:primary_keys].map{|k| obj.send(k)})
       end
 
+      # Array of many to many association name strings.
       def mtm_association_names
         association_names([:many_to_many])
       end
 
-      SUPPORTED_ASSOCIATION_TYPES = [:many_to_one, :one_to_one, :one_to_many, :many_to_many]
+      # Array of association name strings for given association types
       def association_names(types=SUPPORTED_ASSOCIATION_TYPES)
         model.all_association_reflections.select{|r| types.include?(r[:type])}.map{|r| r[:name]}.sort_by{|n| n.to_s}
       end
 
+      # Save the object, returning the object if successful, or nil if not.
       def save(obj)
         obj.raise_on_save_failure = false
         obj.save
       end
 
+      # The primary key value for the given object.
       def primary_key_value(obj)
         obj.pk
       end
 
+      # The namespace for form parameter names for this model, needs to match
+      # the ones automatically used by Forme.
       def params_name
         @model.send(:underscore, @model.name)
       end
 
+      # Retrieve underlying model instance with matching primary key
       def with_pk(type, request, pk)
         dataset_for(type, request).with_pk!(pk)
       end
 
+      # Retrieve all matching rows for this model.
       def all_rows_for(type, request)
         all_dataset_for(type, request).all
       end
 
+      # Return the default columns for this model
       def default_columns
         columns = model.columns - Array(model.primary_key)
         model.all_association_reflections.each do |reflection|
@@ -116,6 +143,9 @@ module AutoForme
         columns.sort_by{|s| s.to_s}
       end
 
+      # Add a filter restricting access to only rows where the column name
+      # matching the session value.  Also add a before_create hook that sets
+      # the column value to the session value.
       def session_value(column)
         filter do |ds, type, req|
           ds.where(S.qualify(model.table_name, column)=>req.session[column])
@@ -125,6 +155,7 @@ module AutoForme
         end
       end
 
+      # Returning array of matching objects for the current search page using the given parameters.
       def search_results(type, request)
         params = request.params
         ds = apply_associated_eager(:search, request, all_dataset_for(type, request))
@@ -148,10 +179,13 @@ module AutoForme
         paginate(type, request, ds)
       end
 
+      # Return array of matching objects for the current page.
       def browse(type, request)
         paginate(type, request, apply_associated_eager(:browse, request, all_dataset_for(type, request)))
       end
 
+      # Do very simple pagination, by selecting one more object than necessary,
+      # and noting if there is a next page by seeing if more objects are returned than the limit.
       def paginate(type, request, ds)
         limit = limit_for(type, request)
         offset = ((request.id.to_i||1)-1) * limit
@@ -164,6 +198,8 @@ module AutoForme
         [next_page, objs]
       end
 
+      # On the browse/search results pages, in addition to eager loading based on the current model's eager
+      # loading config, also eager load based on the associated models config.
       def apply_associated_eager(type, request, ds)
         columns_for(type, request).each do |col|
           if association?(col)
@@ -178,10 +214,12 @@ module AutoForme
         ds
       end
 
+      # The schema type for the column
       def column_type(column)
         (sch = model.db_schema[column]) && sch[:type]
       end
 
+      # Apply the model's filter to the given dataset
       def apply_filter(type, request, ds)
         if filter = filter_for
           ds = filter.call(ds, type, request)
@@ -189,6 +227,7 @@ module AutoForme
         ds
       end
 
+      # Apply the model's filter, eager, and order to the given dataset
       def apply_dataset_options(type, request, ds)
         ds = apply_filter(type, request, ds)
         if order = order_for(type, request)
@@ -203,17 +242,25 @@ module AutoForme
         ds
       end
 
+      # Whether to autocomplete for the given association.
       def association_autocomplete?(assoc, request)
         (c = associated_model_class(assoc)) && c.autocomplete_options_for(:association, request)
       end
 
+      # Return array of autocompletion strings for the request.  Options:
+      # :type :: Action type symbol
+      # :request :: AutoForme::Request instance
+      # :association :: Association symbol 
+      # :query :: Query string submitted by the user
+      # :exclude :: Primary key value of current model, excluding already associated values (used when
+      #             editing many to many associations)
       def autocomplete(opts={})
         type, request, assoc, query, exclude = opts.values_at(:type, :request, :association, :query, :exclude)
         if assoc
           if exclude && association_type(assoc) == :edit
             ref = model.association_reflection(assoc)
             block = lambda do |ds|
-              ds.exclude(ref.right_primary_key=>model.db.from(ref[:join_table]).where(ref[:left_key]=>exclude).select(ref[:right_key]))
+              ds.exclude(S.qualify(ref.associated_class.table_name, ref.right_primary_key)=>model.db.from(ref[:join_table]).where(ref[:left_key]=>exclude).select(ref[:right_key]))
             end
           end
           return associated_model_class(assoc).autocomplete(opts.merge(:type=>:association, :association=>nil), &block)
@@ -234,6 +281,8 @@ module AutoForme
         ds.map(:v)
       end
 
+      # Update the many to many association.  add and remove should be arrays of primary key values
+      # of associated objects to add to the association.
       def mtm_update(request, assoc, obj, add, remove)
         ref = model.association_reflection(assoc)
         assoc_class = associated_model_class(assoc)
@@ -252,6 +301,7 @@ module AutoForme
         ret
       end
 
+      # The currently associated many to many objects for the association
       def associated_mtm_objects(request, assoc, obj)
         ds = obj.send("#{assoc}_dataset")
         if assoc_class = associated_model_class(assoc)
@@ -260,6 +310,7 @@ module AutoForme
         ds
       end
 
+      # All objects in the associated table that are not currently associated to the given object.
       def unassociated_mtm_objects(request, assoc, obj)
         ref = model.association_reflection(assoc)
         assoc_class = associated_model_class(assoc)
