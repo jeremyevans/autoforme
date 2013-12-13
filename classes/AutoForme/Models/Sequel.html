@@ -1,0 +1,691 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>AutoForme::Models::Sequel</title>
+    <meta content='text/html; charset=US-ASCII' http-equiv='Content-Type'>
+    <link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>class</span>
+          AutoForme::Models::Sequel
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a target="docwin" href="../../../files/lib/autoforme/models/sequel_rb.html">lib/autoforme/models/sequel.rb</a>
+          </li>
+        </ol>
+        <div class='parent'>
+          Parent:
+          <strong><a target="docwin" href="../Models.html">Models</a></strong>
+        </div>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            
+            <p><a href="Sequel.html">Sequel</a> specific model class for <a
+            href="../../AutoForme.html">AutoForme</a></p>
+          </div>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>Public Class</h3>
+            <ol>
+              <li><a target="docwin" href="#method-c-new">new</a></li>
+            </ol>
+            <h3>Public Instance</h3>
+            <ol>
+              <li><a target="docwin" href="#method-i-all_rows_for">all_rows_for</a></li>
+              <li><a target="docwin" href="#method-i-apply_associated_eager">apply_associated_eager</a></li>
+              <li><a target="docwin" href="#method-i-apply_dataset_options">apply_dataset_options</a></li>
+              <li><a target="docwin" href="#method-i-apply_filter">apply_filter</a></li>
+              <li><a target="docwin" href="#method-i-associated_class">associated_class</a></li>
+              <li><a target="docwin" href="#method-i-associated_mtm_objects">associated_mtm_objects</a></li>
+              <li><a target="docwin" href="#method-i-associated_new_column_values">associated_new_column_values</a></li>
+              <li><a target="docwin" href="#method-i-association-3F">association?</a></li>
+              <li><a target="docwin" href="#method-i-association_autocomplete-3F">association_autocomplete?</a></li>
+              <li><a target="docwin" href="#method-i-association_key">association_key</a></li>
+              <li><a target="docwin" href="#method-i-association_names">association_names</a></li>
+              <li><a target="docwin" href="#method-i-association_type">association_type</a></li>
+              <li><a target="docwin" href="#method-i-autocomplete">autocomplete</a></li>
+              <li><a target="docwin" href="#method-i-base_class">base_class</a></li>
+              <li><a target="docwin" href="#method-i-browse">browse</a></li>
+              <li><a target="docwin" href="#method-i-column_type">column_type</a></li>
+              <li><a target="docwin" href="#method-i-default_columns">default_columns</a></li>
+              <li><a target="docwin" href="#method-i-form_param_name">form_param_name</a></li>
+              <li><a target="docwin" href="#method-i-mtm_association_names">mtm_association_names</a></li>
+              <li><a target="docwin" href="#method-i-mtm_update">mtm_update</a></li>
+              <li><a target="docwin" href="#method-i-new_search">new_search</a></li>
+              <li><a target="docwin" href="#method-i-paginate">paginate</a></li>
+              <li><a target="docwin" href="#method-i-params_name">params_name</a></li>
+              <li><a target="docwin" href="#method-i-primary_key_value">primary_key_value</a></li>
+              <li><a target="docwin" href="#method-i-save">save</a></li>
+              <li><a target="docwin" href="#method-i-search_results">search_results</a></li>
+              <li><a target="docwin" href="#method-i-session_value">session_value</a></li>
+              <li><a target="docwin" href="#method-i-set_fields">set_fields</a></li>
+              <li><a target="docwin" href="#method-i-unassociated_mtm_objects">unassociated_mtm_objects</a></li>
+              <li><a target="docwin" href="#method-i-with_pk">with_pk</a></li>
+            </ol>
+          </div>
+          <div id='context'>
+          </div>
+          <div id='section'>
+            <div id='constants-list'>
+              <h2>Constants</h2>
+              <div class='name-list'>
+                <table summary='Constants'>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>S</td>
+                    <td>=</td>
+                    <td class='context-item-value'>::Sequel</td>
+                    <td>&nbsp;</td>
+                    <td class='context-item-desc'>
+                      
+                      <p>Short reference to top level <a href="Sequel.html">Sequel</a> module, for
+                      easily calling methods</p>
+                    </td>
+                  </tr>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>SUPPORTED_ASSOCIATION_TYPES</td>
+                    <td>=</td>
+                    <td class='context-item-value'>[:many_to_one, :one_to_one, :one_to_many, :many_to_many]</td>
+                    <td>&nbsp;</td>
+                    <td class='context-item-desc'>
+                      
+                      <p>What association types to recognize.  Other association types are ignored.</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id='methods'>
+              <h2>Public Class methods</h2>
+              <div class='method public-class' id='method-method-c-new'>
+                <a name='method-c-new'></a>
+                <div class='synopsis'>
+                  <span class='name'>new</span>
+                  <span class='arguments'>(*)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Make sure the forme plugin is loaded into the model.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-c-new-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-c-new-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 12</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(*)&#x000A;  <span class="ruby-keyword">super</span>&#x000A;  <span class="ruby-ivar">@model</span>.<span class="ruby-identifier">plugin</span> <span class="ruby-value">:forme</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <h2>Public Instance methods</h2>
+              <div class='method public-instance' id='method-method-i-all_rows_for'>
+                <a name='method-i-all_rows_for'></a>
+                <div class='synopsis'>
+                  <span class='name'>all_rows_for</span>
+                  <span class='arguments'>(type, request)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Retrieve all matching rows for this model.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-all_rows_for-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-all_rows_for-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 130</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">all_rows_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">all</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-apply_associated_eager'>
+                <a name='method-i-apply_associated_eager'></a>
+                <div class='synopsis'>
+                  <span class='name'>apply_associated_eager</span>
+                  <span class='arguments'>(type, request, ds)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>On the browse/search results pages, in addition to eager loading based on
+                  the current model&#39;s eager loading config, also eager load based on the
+                  associated models config.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-apply_associated_eager-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-apply_associated_eager-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 203</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">apply_associated_eager</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;  <span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">col</span>)&#x000A;      <span class="ruby-keyword">if</span> <span class="ruby-identifier">model</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">col</span>)&#x000A;        <span class="ruby-identifier">eager</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">eager_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">model</span>.<span class="ruby-identifier">eager_graph_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>)&#x000A;        <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">col</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">eager</span>)&#x000A;      <span class="ruby-keyword">else</span>&#x000A;        <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">col</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">ds</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-apply_dataset_options'>
+                <a name='method-i-apply_dataset_options'></a>
+                <div class='synopsis'>
+                  <span class='name'>apply_dataset_options</span>
+                  <span class='arguments'>(type, request, ds)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Apply the model&#39;s filter, eager, and order to the given dataset</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-apply_dataset_options-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-apply_dataset_options-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 231</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">apply_dataset_options</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">apply_filter</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">order</span> = <span class="ruby-identifier">order_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;    <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">order</span>(*<span class="ruby-identifier">order</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">eager</span> = <span class="ruby-identifier">eager_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;    <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">eager</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">eager_graph</span> = <span class="ruby-identifier">eager_graph_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;    <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager_graph</span>(<span class="ruby-identifier">eager_graph</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">ds</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-apply_filter'>
+                <a name='method-i-apply_filter'></a>
+                <div class='synopsis'>
+                  <span class='name'>apply_filter</span>
+                  <span class='arguments'>(type, request, ds)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Apply the model&#39;s filter to the given dataset</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-apply_filter-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-apply_filter-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 223</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">apply_filter</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter</span> = <span class="ruby-identifier">filter_for</span>&#x000A;    <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">ds</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-associated_class'>
+                <a name='method-i-associated_class'></a>
+                <div class='synopsis'>
+                  <span class='name'>associated_class</span>
+                  <span class='arguments'>(assoc)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The associated class for the given association</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-associated_class-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-associated_class-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 66</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">associated_class</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>).<span class="ruby-identifier">associated_class</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-associated_mtm_objects'>
+                <a name='method-i-associated_mtm_objects'></a>
+                <div class='synopsis'>
+                  <span class='name'>associated_mtm_objects</span>
+                  <span class='arguments'>(request, assoc, obj)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The currently associated many to many objects for the association</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-associated_mtm_objects-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-associated_mtm_objects-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 305</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">associated_mtm_objects</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>)&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{assoc}_dataset&quot;</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)&#x000A;    <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">apply_dataset_options</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">ds</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-associated_new_column_values'>
+                <a name='method-i-associated_new_column_values'></a>
+                <div class='synopsis'>
+                  <span class='name'>associated_new_column_values</span>
+                  <span class='arguments'>(obj, assoc)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>An array of pairs mapping foreign keys in associated class to primary key
+                  value of current object</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-associated_new_column_values-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-associated_new_column_values-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 92</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">associated_new_column_values</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">ref</span>[<span class="ruby-value">:keys</span>].<span class="ruby-identifier">zip</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:primary_keys</span>].<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">k</span>)})&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-association-3F'>
+                <a name='method-i-association-3F'></a>
+                <div class='synopsis'>
+                  <span class='name'>association?</span>
+                  <span class='arguments'>(column)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Whether the column represents an association.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-association-3F-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-association-3F-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 56</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">column</span>)&#x000A;  <span class="ruby-keyword">case</span> <span class="ruby-identifier">column</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-constant">String</span>&#x000A;    <span class="ruby-identifier">model</span>.<span class="ruby-identifier">associations</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>}.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">column</span>)&#x000A;  <span class="ruby-keyword">else</span>&#x000A;    <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">column</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-association_autocomplete-3F'>
+                <a name='method-i-association_autocomplete-3F'></a>
+                <div class='synopsis'>
+                  <span class='name'>association_autocomplete?</span>
+                  <span class='arguments'>(assoc, request)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Whether to autocomplete for the given association.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-association_autocomplete-3F-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-association_autocomplete-3F-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 246</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">association_autocomplete?</span>(<span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">request</span>)&#x000A;  (<span class="ruby-identifier">c</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-association_key'>
+                <a name='method-i-association_key'></a>
+                <div class='synopsis'>
+                  <span class='name'>association_key</span>
+                  <span class='arguments'>(assoc)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The foreign key column for the given many to one association.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-association_key-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-association_key-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 86</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">association_key</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)[<span class="ruby-value">:key</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-association_names'>
+                <a name='method-i-association_names'></a>
+                <div class='synopsis'>
+                  <span class='name'>association_names</span>
+                  <span class='arguments'>(types=SUPPORTED_ASSOCIATION_TYPES)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Array of association name strings for given association types</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-association_names-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-association_names-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 103</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">association_names</span>(<span class="ruby-identifier">types</span>=<span class="ruby-constant">SUPPORTED_ASSOCIATION_TYPES</span>)&#x000A;  <span class="ruby-identifier">model</span>.<span class="ruby-identifier">all_association_reflections</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">types</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">r</span>[<span class="ruby-value">:type</span>])}.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>[<span class="ruby-value">:name</span>]}.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">to_s</span>}&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-association_type'>
+                <a name='method-i-association_type'></a>
+                <div class='synopsis'>
+                  <span class='name'>association_type</span>
+                  <span class='arguments'>(assoc)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>A short type for the association, either :one for a singular association,
+                  :new for an association where you can create new objects, or :edit for
+                  association where you can add/remove members from the association.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-association_type-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-association_type-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 74</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">association_type</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-keyword">case</span> <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)[<span class="ruby-value">:type</span>]&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-value">:many_to_one</span>, <span class="ruby-value">:one_to_one</span>&#x000A;    <span class="ruby-value">:one</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-value">:one_to_many</span>&#x000A;    <span class="ruby-value">:new</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-value">:many_to_many</span>&#x000A;    <span class="ruby-value">:edit</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-autocomplete'>
+                <a name='method-i-autocomplete'></a>
+                <div class='synopsis'>
+                  <span class='name'>autocomplete</span>
+                  <span class='arguments'>(opts={})</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Return array of autocompletion strings for the request.  Options:</p>
+                  <dl class="rdoc-list note-list"><dt>:type 
+                  <dd>
+                  <p><a href="../Action.html">Action</a> type symbol</p>
+                  </dd><dt>:request 
+                  <dd>
+                  <p><a href="../Request.html">AutoForme::Request</a> instance</p>
+                  </dd><dt>:association 
+                  <dd>
+                  <p>Association symbol</p>
+                  </dd><dt>:query 
+                  <dd>
+                  <p>Query string submitted by the user</p>
+                  </dd><dt>:exclude 
+                  <dd>
+                  <p>Primary key value of current model, excluding already associated values
+                  (used when editing many to many associations)</p>
+                  </dd></dl>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-autocomplete-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-autocomplete-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 257</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">autocomplete</span>(<span class="ruby-identifier">opts</span>={})&#x000A;  <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">query</span>, <span class="ruby-identifier">exclude</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">values_at</span>(<span class="ruby-value">:type</span>, <span class="ruby-value">:request</span>, <span class="ruby-value">:association</span>, <span class="ruby-value">:query</span>, <span class="ruby-value">:exclude</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc</span>&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">exclude</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">association_type</span>(<span class="ruby-identifier">assoc</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:edit</span>&#x000A;      <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)&#x000A;      <span class="ruby-identifier">block</span> = <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">exclude</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">right_primary_key</span>)=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">from</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:join_table</span>]).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:left_key</span>]=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">exclude</span>).<span class="ruby-identifier">select</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:right_key</span>]))&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>).<span class="ruby-identifier">autocomplete</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-value">:association</span>, <span class="ruby-value">:association=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword">nil</span>), &amp;<span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">callback_opts</span> = {<span class="ruby-value">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">type</span>, <span class="ruby-value">:request=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">request</span>, <span class="ruby-value">:query=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">query</span>}&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:callback</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:callback</span>]&#x000A;  <span class="ruby-identifier">display</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:display</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-value">:name</span>)&#x000A;  <span class="ruby-identifier">display</span> = <span class="ruby-identifier">display</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">display</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:call</span>)&#x000A;  <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:limit</span>] <span class="ruby-operator">||</span> <span class="ruby-value">10</span>&#x000A;  <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:call</span>)&#x000A;  <span class="ruby-identifier">opts</span>[<span class="ruby-value">:filter</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">lambda</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">ds</span>, <span class="ruby-identifier">opts</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">ilike</span>(<span class="ruby-identifier">display</span>, <span class="ruby-node">&quot;%#{ds.escape_like(query)}%&quot;</span>))}&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:filter</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">callback_opts</span>)&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">select</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">join</span>([<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">model</span>.<span class="ruby-identifier">primary_key</span>), <span class="ruby-identifier">display</span>], <span class="ruby-string">&#39; - &#39;</span>).<span class="ruby-identifier">as</span>(<span class="ruby-value">:v</span>)).&#x000A;    <span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-keyword">yield</span> <span class="ruby-identifier">ds</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>&#x000A;  <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">map</span>(<span class="ruby-value">:v</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-base_class'>
+                <a name='method-i-base_class'></a>
+                <div class='synopsis'>
+                  <span class='name'>base_class</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The base class for the underlying model, ::Sequel::Model.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-base_class-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-base_class-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 18</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">base_class</span>&#x000A;  <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">Model</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-browse'>
+                <a name='method-i-browse'></a>
+                <div class='synopsis'>
+                  <span class='name'>browse</span>
+                  <span class='arguments'>(type, request)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Return array of matching objects for the current page.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-browse-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-browse-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 183</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">browse</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">apply_associated_eager</span>(<span class="ruby-value">:browse</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)))&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-column_type'>
+                <a name='method-i-column_type'></a>
+                <div class='synopsis'>
+                  <span class='name'>column_type</span>
+                  <span class='arguments'>(column)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The schema type for the column</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-column_type-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-column_type-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 218</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">column_type</span>(<span class="ruby-identifier">column</span>)&#x000A;  (<span class="ruby-identifier">sch</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db_schema</span>[<span class="ruby-identifier">column</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">sch</span>[<span class="ruby-value">:type</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-default_columns'>
+                <a name='method-i-default_columns'></a>
+                <div class='synopsis'>
+                  <span class='name'>default_columns</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Return the default columns for this model</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-default_columns-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-default_columns-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 135</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">default_columns</span>&#x000A;  <span class="ruby-identifier">columns</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">-</span> <span class="ruby-constant">Array</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">primary_key</span>)&#x000A;  <span class="ruby-identifier">model</span>.<span class="ruby-identifier">all_association_reflections</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">reflection</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">reflection</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:many_to_one</span>&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> = <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">reflection</span>[<span class="ruby-value">:key</span>])&#x000A;      <span class="ruby-identifier">columns</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">reflection</span>[<span class="ruby-value">:name</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_s</span>}&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-form_param_name'>
+                <a name='method-i-form_param_name'></a>
+                <div class='synopsis'>
+                  <span class='name'>form_param_name</span>
+                  <span class='arguments'>(assoc)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The name of the form param for the given association.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-form_param_name-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-form_param_name-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 28</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">form_param_name</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-node">&quot;#{model.send(:underscore, model.name)}[#{association_key(assoc)}]&quot;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-mtm_association_names'>
+                <a name='method-i-mtm_association_names'></a>
+                <div class='synopsis'>
+                  <span class='name'>mtm_association_names</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Array of many to many association name strings.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-mtm_association_names-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-mtm_association_names-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 98</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">mtm_association_names</span>&#x000A;  <span class="ruby-identifier">association_names</span>([<span class="ruby-value">:many_to_many</span>])&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-mtm_update'>
+                <a name='method-i-mtm_update'></a>
+                <div class='synopsis'>
+                  <span class='name'>mtm_update</span>
+                  <span class='arguments'>(request, assoc, obj, add, remove)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Update the many to many association.  add and remove should be arrays of
+                  primary key values of associated objects to add to the association.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-mtm_update-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-mtm_update-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 286</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">mtm_update</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">add</span>, <span class="ruby-identifier">remove</span>)&#x000A;  <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">ret</span> = <span class="ruby-keyword">nil</span>&#x000A;  <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>&#x000A;    [[<span class="ruby-identifier">add</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">add_method</span>], [<span class="ruby-identifier">remove</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">remove_method</span>]].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ids</span>, <span class="ruby-identifier">meth</span><span class="ruby-operator">|</span>&#x000A;      <span class="ruby-keyword">if</span> <span class="ruby-identifier">ids</span>&#x000A;        <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>&#x000A;          <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>&#x000A;          <span class="ruby-identifier">ret</span> = <span class="ruby-identifier">assoc_class</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">with_pk</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">id</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_dataset</span>.<span class="ruby-identifier">with_pk!</span>(<span class="ruby-identifier">id</span>)&#x000A;          <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-identifier">ret</span>)&#x000A;        <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">ret</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-new_search'>
+                <a name='method-i-new_search'></a>
+                <div class='synopsis'>
+                  <span class='name'>new_search</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>A completely empty search object, with no defaults.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-new_search-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-new_search-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 23</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_search</span>&#x000A;  <span class="ruby-ivar">@model</span>.<span class="ruby-identifier">call</span>({})&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-paginate'>
+                <a name='method-i-paginate'></a>
+                <div class='synopsis'>
+                  <span class='name'>paginate</span>
+                  <span class='arguments'>(type, request, ds)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Do very simple pagination, by selecting one more object than necessary, and
+                  noting if there is a next page by seeing if more objects are returned than
+                  the limit.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-paginate-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-paginate-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 189</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;  <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">limit_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">offset</span> = ((<span class="ruby-identifier">request</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">||</span><span class="ruby-value">1</span>)<span class="ruby-operator">-</span><span class="ruby-value">1</span>) * <span class="ruby-identifier">limit</span>&#x000A;  <span class="ruby-identifier">objs</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>, (<span class="ruby-identifier">offset</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)).<span class="ruby-identifier">all</span>&#x000A;  <span class="ruby-identifier">next_page</span> = <span class="ruby-keyword">false</span>&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">limit</span>&#x000A;    <span class="ruby-identifier">next_page</span> = <span class="ruby-keyword">true</span>&#x000A;    <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">pop</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  [<span class="ruby-identifier">next_page</span>, <span class="ruby-identifier">objs</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-params_name'>
+                <a name='method-i-params_name'></a>
+                <div class='synopsis'>
+                  <span class='name'>params_name</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The namespace for form parameter names for this model, needs to match the
+                  ones automatically used by Forme.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-params_name-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-params_name-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 120</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">params_name</span>&#x000A;  <span class="ruby-ivar">@model</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:underscore</span>, <span class="ruby-ivar">@model</span>.<span class="ruby-identifier">name</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-primary_key_value'>
+                <a name='method-i-primary_key_value'></a>
+                <div class='synopsis'>
+                  <span class='name'>primary_key_value</span>
+                  <span class='arguments'>(obj)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>The primary key value for the given object.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-primary_key_value-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-primary_key_value-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 114</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">primary_key_value</span>(<span class="ruby-identifier">obj</span>)&#x000A;  <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">pk</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-save'>
+                <a name='method-i-save'></a>
+                <div class='synopsis'>
+                  <span class='name'>save</span>
+                  <span class='arguments'>(obj)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Save the object, returning the object if successful, or nil if not.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-save-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-save-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 108</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>(<span class="ruby-identifier">obj</span>)&#x000A;  <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">raise_on_save_failure</span> = <span class="ruby-keyword">false</span>&#x000A;  <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">save</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-search_results'>
+                <a name='method-i-search_results'></a>
+                <div class='synopsis'>
+                  <span class='name'>search_results</span>
+                  <span class='arguments'>(type, request)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Returning array of matching objects for the current search page using the
+                  given parameters.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-search_results-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-search_results-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 159</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_results</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">params</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">params</span>&#x000A;  <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">apply_associated_eager</span>(<span class="ruby-value">:search</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>))&#x000A;  <span class="ruby-identifier">columns_for</span>(<span class="ruby-value">:search_form</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">v</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">c</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">v</span>.<span class="ruby-identifier">empty?</span>&#x000A;      <span class="ruby-keyword">if</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">c</span>)&#x000A;        <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">c</span>)&#x000A;        <span class="ruby-identifier">ads</span> = <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_dataset</span>&#x000A;        <span class="ruby-keyword">if</span> <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">c</span>)&#x000A;          <span class="ruby-identifier">ads</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">apply_filter</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ads</span>)&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-identifier">primary_key</span> = <span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">primary_key</span>)&#x000A;        <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:key</span>]=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">ads</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">primary_key</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">v</span>).<span class="ruby-identifier">select</span>(<span class="ruby-identifier">primary_key</span>))&#x000A;      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">column_type</span>(<span class="ruby-identifier">c</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:string</span>&#x000A;        <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">ilike</span>(<span class="ruby-identifier">c</span>, <span class="ruby-node">&quot;%#{ds.escape_like(v.to_s)}%&quot;</span>))&#x000A;      <span class="ruby-keyword">else</span>&#x000A;        <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">c</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_s</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-session_value'>
+                <a name='method-i-session_value'></a>
+                <div class='synopsis'>
+                  <span class='name'>session_value</span>
+                  <span class='arguments'>(column)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Add a filter restricting access to only rows where the column name matching
+                  the session value.  Also add a before_create hook that sets the column
+                  value to the session value.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-session_value-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-session_value-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 149</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">session_value</span>(<span class="ruby-identifier">column</span>)&#x000A;  <span class="ruby-identifier">filter</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">req</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">column</span>)=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">req</span>.<span class="ruby-identifier">session</span>[<span class="ruby-identifier">column</span>])&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">before_create</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">obj</span>, <span class="ruby-identifier">req</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{column}=&quot;</span>, <span class="ruby-identifier">req</span>.<span class="ruby-identifier">session</span>[<span class="ruby-identifier">column</span>])&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-set_fields'>
+                <a name='method-i-set_fields'></a>
+                <div class='synopsis'>
+                  <span class='name'>set_fields</span>
+                  <span class='arguments'>(obj, type, request, params)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Set the fields for the given action type to the object based on the request
+                  params.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-set_fields-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-set_fields-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 33</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_fields</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">params</span>)&#x000A;  <span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">column</span> = <span class="ruby-identifier">col</span>&#x000A;&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">col</span>)&#x000A;      <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">col</span>)&#x000A;      <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_dataset</span>&#x000A;      <span class="ruby-keyword">if</span> <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">col</span>)&#x000A;        <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">apply_filter</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;&#x000A;      <span class="ruby-keyword">if</span> <span class="ruby-identifier">v</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">ref</span>[<span class="ruby-value">:key</span>]]&#x000A;        <span class="ruby-identifier">v</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">first!</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ds</span>.<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">primary_key</span>)=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">v</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-identifier">v</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">col</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;&#x000A;    <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{column}=&quot;</span>, <span class="ruby-identifier">v</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-unassociated_mtm_objects'>
+                <a name='method-i-unassociated_mtm_objects'></a>
+                <div class='synopsis'>
+                  <span class='name'>unassociated_mtm_objects</span>
+                  <span class='arguments'>(request, assoc, obj)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>All objects in the associated table that are not currently associated to
+                  the given object.</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-unassociated_mtm_objects-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-unassociated_mtm_objects-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 314</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">unassociated_mtm_objects</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>)&#x000A;  <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)&#x000A;  <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">subquery</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">from</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:join_table</span>]).&#x000A;      <span class="ruby-identifier">select</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">qualified_right_key</span>).&#x000A;      <span class="ruby-identifier">where</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">qualified_left_key</span>=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">obj</span>.<span class="ruby-identifier">pk</span>)&#x000A;    <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">exclude</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">model</span>.<span class="ruby-identifier">primary_key</span>)=<span class="ruby-operator">&gt;</span><span class="ruby-identifier">subquery</span>)&#x000A;    <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">apply_dataset_options</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc_class</span>&#x000A;    <span class="ruby-identifier">ds</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-with_pk'>
+                <a name='method-i-with_pk'></a>
+                <div class='synopsis'>
+                  <span class='name'>with_pk</span>
+                  <span class='arguments'>(type, request, pk)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Retrieve underlying model instance with matching primary key</p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-with_pk-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-with_pk-source'><span class="ruby-comment"># File lib/autoforme/models/sequel.rb, line 125</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">with_pk</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">pk</span>)&#x000A;  <span class="ruby-identifier">dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">with_pk!</span>(<span class="ruby-identifier">pk</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a target="docwin" href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>
