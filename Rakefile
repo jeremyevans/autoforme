@@ -52,7 +52,7 @@ end
 
 ### RDoc
 
-RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Adminstrative Console for Sinatra/Rails and Sequel']
+RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Sinatra/Rails and Sequel']
 
 begin
   gem 'rdoc', '= 3.12.2'
