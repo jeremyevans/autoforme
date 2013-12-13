@@ -46,9 +46,15 @@ end
 
 RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Adminstrative Console for Sinatra/Rails and Sequel']
 
+begin
+  gem 'rdoc', '= 3.12.2'
+  gem 'hanna-nouveau'
+  RDOC_DEFAULT_OPTS.concat(['-f', 'hanna'])
+rescue Gem::LoadError
+end
+
 rdoc_task_class = begin
   require "rdoc/task"
-  RDOC_DEFAULT_OPTS.concat(['-f', 'hanna'])
   RDoc::Task
 rescue LoadError
   require "rake/rdoctask"
