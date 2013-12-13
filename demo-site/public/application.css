@@ -3,10 +3,12 @@ table caption {
   font-size: 24px;
   padding: 5px;
 }
-label { display: inline; margin-right: 5px; }
 input, textarea, select { width: auto; }
 .inline_mtm_add_associations form,
 .inline_mtm_add_associations div,
 .inline_mtm_remove_associations form,
 .inline_mtm_remove_associations div,
 .inline_mtm_remove_associations input.btn {display: inline; margin: 5px;}
+
+#autoforme_content label, #autoforme_content span.label {display: inline-block; min-width: 150px; text-align:right; margin-right: 20px;}
+#autoforme_content label.option {display: inline; min-width: 0px; text-align:left; margin-right: 0px;}

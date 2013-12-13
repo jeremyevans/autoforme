@@ -6,6 +6,7 @@
 <title>AutoForme Demo</title>
 <script type="text/javascript" src="/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="/jquery.autocomplete.min.js"></script>
+<script type="text/javascript" src="/bootstrap-dropdown.js"></script>
 <script type="text/javascript" src="/autoforme.js"></script>
 <link rel="stylesheet" type="text/css" href="/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="/jquery.autocomplete.css" />
@@ -18,12 +19,19 @@
     <div class="container">
       <a href="/" class="brand">AutoForme Demo</a>
 
-      <ul class="nav">
-        <li><a href="/Artist/browse">Artist</a></li>
-        <li><a href="/Album/browse">Album</a></li>
-        <li><a href="/Track/browse">Track</a></li>
-        <li><a href="/Tag/edit">Tag</a></li>
-      </ul>
+      <% %w'basic inline autocomplete'.each do |type| %>
+        <ul class="nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= type.capitalize %><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/<%= type %>/Artist/browse">Artist</a></li>
+              <li><a href="/<%= type %>/Album/browse">Album</a></li>
+              <li><a href="/<%= type %>/Track/browse">Track</a></li>
+              <li><a href="/<%= type %>/Tag/edit">Tag</a></li>
+            </ul>
+          </li>
+        </ul>
+      <% end %>
     </div>
   </div>
 </div>
