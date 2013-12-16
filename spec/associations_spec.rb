@@ -26,14 +26,7 @@ describe AutoForme do
 
     visit("/Album/new")
     fill_in 'Name', :with=>'Album1'
-    select 'Artist1'
     click_button 'Create'
-
-    click_link 'Show'
-    select 'Album1'
-    click_button 'Show'
-    page.html.should =~ /Name.+Album1/m
-    page.html.should =~ /Artist.+Artist1/m
 
     click_link 'Edit'
     select 'Album1'
@@ -41,6 +34,12 @@ describe AutoForme do
     fill_in 'Name', :with=>'Album1b'
     select 'Artist2'
     click_button 'Update'
+
+    click_link 'Show'
+    select 'Album1'
+    click_button 'Show'
+    page.html.should =~ /Name.+Album1b/m
+    page.html.should =~ /Artist.+Artist2/m
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'

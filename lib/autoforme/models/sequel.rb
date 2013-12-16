@@ -41,7 +41,9 @@ module AutoForme
               ds = model_class.apply_filter(:association, request, ds)
             end
 
-            if v = params[ref[:key]]
+            v = params[ref[:key]]
+            v = nil if v.to_s.strip == ''
+            if v
               v = ds.first!(S.qualify(ds.model.table_name, ref.primary_key)=>v)
             end
           else

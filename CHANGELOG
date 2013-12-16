@@ -1,3 +1,7 @@
+=== HEAD
+
+* Handle empty values for many_to_one associations on new/edit forms (jeremyevans)
+
 === 0.5.0 (2013-12-13)
 
 * Initial Public Release
