@@ -1,4 +1,6 @@
-=== HEAD
+=== 0.5.1 (2013-12-17)
+
+* Show header with display name for current object on mtm edit page (jeremyevans)
 
 * Handle empty values for many_to_one associations on new/edit forms (jeremyevans)
 
