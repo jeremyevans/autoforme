@@ -1,15 +1,15 @@
-Fri, 13 Dec 2013 13:28:07 -0800
+Tue, 17 Dec 2013 12:32:08 -0800
 README.rdoc	Fri, 13 Dec 2013 13:02:56 -0800
-CHANGELOG	Fri, 13 Dec 2013 12:47:35 -0800
+CHANGELOG	Tue, 17 Dec 2013 12:28:26 -0800
 MIT-LICENSE	Sat, 07 Dec 2013 19:32:48 -0800
 lib/autoforme.rb	Fri, 13 Dec 2013 09:27:08 -0800
-lib/autoforme/action.rb	Fri, 13 Dec 2013 12:18:08 -0800
+lib/autoforme/action.rb	Tue, 17 Dec 2013 12:28:26 -0800
 lib/autoforme/framework.rb	Fri, 13 Dec 2013 09:27:08 -0800
 lib/autoforme/frameworks/rails.rb	Fri, 13 Dec 2013 09:27:08 -0800
 lib/autoforme/frameworks/sinatra.rb	Fri, 13 Dec 2013 09:27:08 -0800
 lib/autoforme/model.rb	Fri, 13 Dec 2013 09:27:08 -0800
-lib/autoforme/models/sequel.rb	Fri, 13 Dec 2013 09:27:08 -0800
+lib/autoforme/models/sequel.rb	Mon, 16 Dec 2013 10:16:17 -0800
 lib/autoforme/opts_attributes.rb	Fri, 13 Dec 2013 09:27:08 -0800
 lib/autoforme/request.rb	Fri, 13 Dec 2013 09:27:08 -0800
 lib/autoforme/table.rb	Fri, 13 Dec 2013 09:27:08 -0800
-lib/autoforme/version.rb	Fri, 13 Dec 2013 12:47:09 -0800
+lib/autoforme/version.rb	Tue, 17 Dec 2013 12:28:26 -0800
