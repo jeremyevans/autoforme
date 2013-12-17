@@ -428,7 +428,8 @@ module AutoForme
         obj = model.with_pk(:edit, request, request.id)
         if assoc = params_association
           page do
-            Forme.form(obj, form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")), form_opts) do |f|
+            t = "<h2>Edit #{humanize(assoc)} for #{h model.object_display_name(type, request, obj)}</h2>"
+            t << Forme.form(obj, form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")), form_opts) do |f|
               opts = model.column_options_for(:mtm_edit, request, assoc)
               add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
               remove_opts = opts[:remove] ? opts.merge(opts.delete(:remove)) : opts
@@ -440,7 +441,7 @@ module AutoForme
               end
               f.input(assoc, {:name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>[]}.merge(remove_opts))
               f.button(:value=>'Update', :class=>'btn btn-primary')
-            end
+            end.to_s
           end
         else
           page do

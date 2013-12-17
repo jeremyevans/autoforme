@@ -31,6 +31,7 @@ describe AutoForme do
     select("albums")
     click_button "Edit"
 
+    find('h2').text.should == 'Edit Albums for Artist1'
     all('select')[0].all('option').map{|s| s.text}.should == ["Album1", "Album2", "Album3"]
     all('select')[1].all('option').map{|s| s.text}.should == []
     select("Album1", :from=>"Associate With")
