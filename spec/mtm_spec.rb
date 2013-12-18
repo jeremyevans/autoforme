@@ -330,7 +330,7 @@ end
 describe AutoForme do
   before(:all) do
     db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string]], :albums_artists=>[[:album_id, :integer, {:table=>:albums}], [:artist_id, :integer, {:table=>:artists}]])
-    model_setup(:Artist=>[:artists, [[:many_to_many, :albums]], [[:many_to_many, :other_albums, :clone=>:albums]]], :Album=>[:albums, [[:many_to_many, :artists]]])
+    model_setup(:Artist=>[:artists, [[:many_to_many, :albums]], [[:many_to_many, :other_albums, {:clone=>:albums}]]], :Album=>[:albums, [[:many_to_many, :artists]]])
   end
   after(:all) do
     Object.send(:remove_const, :Album)
