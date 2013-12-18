@@ -1,4 +1,4 @@
-=== HEAD
+=== 0.5.2 (2013-12-18)
 
 * Use default empty option when picking a many to many association to edit (jeremyevans)
 
