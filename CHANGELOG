@@ -1,5 +1,7 @@
 === HEAD
 
+* Use default empty option when picking a many to many association to edit (jeremyevans)
+
 * Don't force user to pick many to many association to edit if only one choice is available (jeremyevans)
 
 * Don't show many to many edit link for models without many to many associations (jeremyevans)

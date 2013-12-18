@@ -452,7 +452,7 @@ module AutoForme
         else
           page do
             Forme.form(form_attributes(:action=>"mtm_edit/#{model.primary_key_value(obj)}"), form_opts) do |f|
-              f.input(:select, :options=>options, :name=>'association', :id=>'association', :label=>'Association')
+              f.input(:select, :options=>options, :name=>'association', :id=>'association', :label=>'Association', :add_blank=>true)
               f.button(:value=>'Edit', :class=>'btn btn-primary')
             end
           end
