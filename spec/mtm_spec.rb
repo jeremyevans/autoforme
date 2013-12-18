@@ -10,6 +10,18 @@ describe AutoForme do
     Object.send(:remove_const, :Artist)
   end
 
+  it "should not show MTM link if there are no many to many associations" do
+    app_setup do
+      model Artist
+      model Album
+    end
+
+    visit("/Artist/browse")
+    page.html.should_not =~ /MTM/
+    visit("/Artist/mtm_edit")
+    page.html.should =~ /Unhandled Request/
+  end
+
   it "should have basic many to many association editing working" do
     app_setup do
       model Artist do

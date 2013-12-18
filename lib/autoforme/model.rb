@@ -49,7 +49,13 @@ module AutoForme
 
     # Whether the given type of action is supported for this model.
     def supported_action?(type, request)
-      (handle_proc(supported_actions || framework.supported_actions_for(model, request), request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
+      v = (handle_proc(supported_actions || framework.supported_actions_for(model, request), request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
+      if v && type == :mtm_edit
+        assocs = mtm_association_select_options(request)
+        assocs && !assocs.empty?
+      else
+        v
+      end
     end
 
     # An array of many to many association symbols to handle via a separate mtm_edit page.

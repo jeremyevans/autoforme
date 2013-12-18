@@ -1,5 +1,7 @@
 === HEAD
 
+* Don't show many to many edit link for models without many to many associations (jeremyevans)
+
 * Quailfy columns when searching, fixing issues when eager_graph is used on the model (jeremyevans)
 
 === 0.5.1 (2013-12-17)

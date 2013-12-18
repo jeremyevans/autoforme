@@ -12,6 +12,9 @@ class AutoFormeSpec::App < Sinatra::Base
   register Sinatra::Flash
   use Rack::Csrf
 
+  not_found do
+    'Unhandled Request'
+  end
   get '/session/set' do
     session.merge!(params)
     ''
