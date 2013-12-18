@@ -1,3 +1,7 @@
+=== HEAD
+
+* Quailfy columns when searching, fixing issues when eager_graph is used on the model (jeremyevans)
+
 === 0.5.1 (2013-12-17)
 
 * Show header with display name for current object on mtm edit page (jeremyevans)
