@@ -426,7 +426,13 @@ module AutoForme
     def handle_mtm_edit
       if id = request.id
         obj = model.with_pk(:edit, request, request.id)
-        if assoc = params_association
+        unless assoc = params_association
+          options = model.mtm_association_select_options(request)
+          if options.length == 1
+            assoc = options.first
+          end
+        end
+        if assoc
           page do
             t = "<h2>Edit #{humanize(assoc)} for #{h model.object_display_name(type, request, obj)}</h2>"
             t << Forme.form(obj, form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")), form_opts) do |f|
@@ -446,7 +452,7 @@ module AutoForme
         else
           page do
             Forme.form(form_attributes(:action=>"mtm_edit/#{model.primary_key_value(obj)}"), form_opts) do |f|
-              f.input(:select, :options=>model.mtm_association_select_options(request), :name=>'association', :id=>'association', :label=>'Association')
+              f.input(:select, :options=>options, :name=>'association', :id=>'association', :label=>'Association')
               f.button(:value=>'Edit', :class=>'btn btn-primary')
             end
           end
