@@ -13,7 +13,7 @@ $(function() {
       var e = $(this);
       var column = e.data('column');
       var exclude = e.data('exclude');
-      var url = base_url + '/autocomplete';
+      var url = base_url + 'autocomplete';
       if (column) {
         url += '/' + column;
       }
