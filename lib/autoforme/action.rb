@@ -68,8 +68,10 @@ module AutoForme
         if assoc = request.id
           return false unless model.association?(assoc)
           @params_association = assoc.to_sym
+          @subtype = :association
+        else
+          @subtype = subtype
         end
-        @subtype = subtype
         return false unless model.autocomplete_options_for(@subtype, request)
       else
         return false unless model.supported_action?(normalized_type, request)
