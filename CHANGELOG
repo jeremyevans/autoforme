@@ -1,3 +1,11 @@
+=== 0.5.3 (2014-01-02)
+
+* Fix searching by associated object that uses autocompleting (jeremyevans)
+
+* Fix autocompletion of associated objecs on new form (jeremyevans)
+
+* Remove extra slash in URL when autocompleting (jeremyevans)
+
 === 0.5.2 (2013-12-18)
 
 * Use default empty option when picking a many to many association to edit (jeremyevans)
