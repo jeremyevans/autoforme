@@ -1,8 +1,14 @@
 require 'rubygems'
 require 'sequel'
 require 'logger'
+require 'rspec/version'
 
 RSpec.configure do |c|
+  if RSpec::Version::STRING >= '2.11.0'
+    c.expect_with :rspec do |c1|
+      c1.syntax = :should
+    end
+  end
   c.around(:each) do |example|
     if db
       db.transaction(:rollback=>:always){example.run}

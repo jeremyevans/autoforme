@@ -132,65 +132,65 @@ describe AutoForme do
   end
 
   it "should handle supported_actions lookup" do
-    model.supported_action?(:new, nil).should be_true
-    model.supported_action?(:edit, nil).should be_true
-    model.supported_action?(:search, nil).should be_true
+    model.supported_action?(:new, nil).should == true
+    model.supported_action?(:edit, nil).should == true
+    model.supported_action?(:search, nil).should == true
     framework.supported_actions [:new, :search]
-    model.supported_action?(:new, nil).should be_true
-    model.supported_action?(:edit, nil).should be_false
-    model.supported_action?(:search, nil).should be_true
+    model.supported_action?(:new, nil).should == true
+    model.supported_action?(:edit, nil).should == false
+    model.supported_action?(:search, nil).should == true
     framework.supported_actions{|mod, req| req ? [:new] : []}
-    model.supported_action?(:new, nil).should be_false
-    model.supported_action?(:new, true).should be_true
+    model.supported_action?(:new, nil).should == false
+    model.supported_action?(:new, true).should == true
     model.supported_actions [:edit, :search]
-    model.supported_action?(:new, nil).should be_false
-    model.supported_action?(:edit, nil).should be_true
-    model.supported_action?(:search, nil).should be_true
+    model.supported_action?(:new, nil).should == false
+    model.supported_action?(:edit, nil).should == true
+    model.supported_action?(:search, nil).should == true
     model.supported_actions{|req| req ? [:new] : []}
-    model.supported_action?(:new, nil).should be_false
-    model.supported_action?(:new, true).should be_true
+    model.supported_action?(:new, nil).should == false
+    model.supported_action?(:new, true).should == true
   end
 
   it "should handle mtm_associations lookup" do
-    model.supported_mtm_edit?('foos', nil).should be_false
-    model.supported_mtm_edit?('bars', nil).should be_false
+    model.supported_mtm_edit?('foos', nil).should == false
+    model.supported_mtm_edit?('bars', nil).should == false
     framework.mtm_associations [:foos]
-    model.supported_mtm_edit?('foos', nil).should be_true
-    model.supported_mtm_edit?('bars', nil).should be_false
+    model.supported_mtm_edit?('foos', nil).should == true
+    model.supported_mtm_edit?('bars', nil).should == false
     framework.mtm_associations{|mod, req| req ? [:foos] : [:bars]}
-    model.supported_mtm_edit?('foos', nil).should be_false
-    model.supported_mtm_edit?('bars', nil).should be_true
-    model.supported_mtm_edit?('foos', true).should be_true
-    model.supported_mtm_edit?('bars', true).should be_false
+    model.supported_mtm_edit?('foos', nil).should == false
+    model.supported_mtm_edit?('bars', nil).should == true
+    model.supported_mtm_edit?('foos', true).should == true
+    model.supported_mtm_edit?('bars', true).should == false
     model.mtm_associations ['bars']
-    model.supported_mtm_edit?('foos', nil).should be_false
-    model.supported_mtm_edit?('bars', nil).should be_true
+    model.supported_mtm_edit?('foos', nil).should == false
+    model.supported_mtm_edit?('bars', nil).should == true
     model.mtm_associations{|req| req ? ['foos'] : ['bars']}
-    model.supported_mtm_edit?('foos', nil).should be_false
-    model.supported_mtm_edit?('bars', nil).should be_true
-    model.supported_mtm_edit?('foos', true).should be_true
-    model.supported_mtm_edit?('bars', true).should be_false
+    model.supported_mtm_edit?('foos', nil).should == false
+    model.supported_mtm_edit?('bars', nil).should == true
+    model.supported_mtm_edit?('foos', true).should == true
+    model.supported_mtm_edit?('bars', true).should == false
   end
 
   it "should handle inline_mtm_associations lookup" do
-    model.supported_mtm_update?('foos', nil).should be_false
-    model.supported_mtm_update?('bars', nil).should be_false
+    model.supported_mtm_update?('foos', nil).should == false
+    model.supported_mtm_update?('bars', nil).should == false
     framework.inline_mtm_associations [:foos]
-    model.supported_mtm_update?('foos', nil).should be_true
-    model.supported_mtm_update?('bars', nil).should be_false
+    model.supported_mtm_update?('foos', nil).should == true
+    model.supported_mtm_update?('bars', nil).should == false
     framework.inline_mtm_associations{|mod, req| req ? [:foos] : [:bars]}
-    model.supported_mtm_update?('foos', nil).should be_false
-    model.supported_mtm_update?('bars', nil).should be_true
-    model.supported_mtm_update?('foos', true).should be_true
-    model.supported_mtm_update?('bars', true).should be_false
+    model.supported_mtm_update?('foos', nil).should == false
+    model.supported_mtm_update?('bars', nil).should == true
+    model.supported_mtm_update?('foos', true).should == true
+    model.supported_mtm_update?('bars', true).should == false
     model.inline_mtm_associations ['bars']
-    model.supported_mtm_update?('foos', nil).should be_false
-    model.supported_mtm_update?('bars', nil).should be_true
+    model.supported_mtm_update?('foos', nil).should == false
+    model.supported_mtm_update?('bars', nil).should == true
     model.inline_mtm_associations{|req| req ? ['foos'] : ['bars']}
-    model.supported_mtm_update?('foos', nil).should be_false
-    model.supported_mtm_update?('bars', nil).should be_true
-    model.supported_mtm_update?('foos', true).should be_true
-    model.supported_mtm_update?('bars', true).should be_false
+    model.supported_mtm_update?('foos', nil).should == false
+    model.supported_mtm_update?('bars', nil).should == true
+    model.supported_mtm_update?('foos', true).should == true
+    model.supported_mtm_update?('bars', true).should == false
   end
 
   it "should handle association_links lookup" do
@@ -206,17 +206,17 @@ describe AutoForme do
   end
 
   it "should handle lazy_load_association_links lookup" do
-    model.lazy_load_association_links?(:show, nil).should be_false
+    model.lazy_load_association_links?(:show, nil).should == false
     framework.lazy_load_association_links true
-    model.lazy_load_association_links?(:show, nil).should be_true
+    model.lazy_load_association_links?(:show, nil).should == true
     framework.lazy_load_association_links{|mod, type, req| req > 2}
-    model.lazy_load_association_links?(:show, 1).should be_false
-    model.lazy_load_association_links?(:show, 3).should be_true
+    model.lazy_load_association_links?(:show, 1).should == false
+    model.lazy_load_association_links?(:show, 3).should == true
     model.lazy_load_association_links false
-    model.lazy_load_association_links?(:show, nil).should be_false
+    model.lazy_load_association_links?(:show, nil).should == false
     model.lazy_load_association_links{|type, req| req > 2}
-    model.lazy_load_association_links?(:show, 1).should be_false
-    model.lazy_load_association_links?(:show, 3).should be_true
+    model.lazy_load_association_links?(:show, 1).should == false
+    model.lazy_load_association_links?(:show, 3).should == true
   end
 
   it "should handle form_attributes lookup" do
