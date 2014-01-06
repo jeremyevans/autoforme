@@ -170,7 +170,7 @@ module AutoForme
                 ads = model_class.apply_filter(:association, request, ads)
               end
               primary_key = S.qualify(ref.associated_class.table_name, ref.primary_key)
-              ds = ds.where(ref[:key]=>ads.where(primary_key=>v).select(primary_key))
+              ds = ds.where(S.qualify(model.table_name, ref[:key])=>ads.where(primary_key=>v).select(primary_key))
             elsif column_type(c) == :string
               ds = ds.where(S.ilike(S.qualify(model.table_name, c), "%#{ds.escape_like(v.to_s)}%"))
             else
