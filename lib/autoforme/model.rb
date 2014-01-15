@@ -228,7 +228,8 @@ module AutoForme
 
     # The column value to display for the given object and column.
     def column_value(type, request, obj, column)
-      return unless v = obj.send(column)
+      v = obj.send(column)
+      return if v.nil?
       if association?(column) 
         opts = column_options_for(type, request, column) 
         case nm = opts[:name_method]

@@ -1,3 +1,7 @@
+=== HEAD
+
+* Display boolean column false values in the search/browse tables (jeremyevans)
+
 === 0.5.4 (2014-01-06)
 
 * Qualify associated foreign key columns when searching, fixing issues when eager_graph is used on the model (jeremyevans)
