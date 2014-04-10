@@ -1,4 +1,6 @@
-=== HEAD
+=== 0.5.5 (2014-04-10)
+
+* Make Models::Sequel#mtm_update compatible with Sequel 4.10+ (jeremyevans)
 
 * Display boolean column false values in the search/browse tables (jeremyevans)
 

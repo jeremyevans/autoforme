@@ -294,7 +294,7 @@ module AutoForme
             if ids
               ids.each do |id|
                 next if id.to_s.empty?
-                ret = assoc_class ? assoc_class.with_pk(:association, request, id) : ref.associated_dataset.with_pk!(id)
+                ret = assoc_class ? assoc_class.with_pk(:association, request, id) : obj.send(:_apply_association_options, ref, ref.associated_class.dataset.clone).with_pk!(id)
                 obj.send(meth, ret)
               end
             end
