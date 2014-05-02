@@ -46,4 +46,5 @@ def DB.reset
   album.add_tag(pop)
 end
 
+DB.reset if DB.database_type == :sqlite
 DB.loggers << Logger.new($stdout)

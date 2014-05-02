@@ -37,12 +37,20 @@ class AutoFormeDemo < Sinatra::Base
 <p>This demo site is part of the AutoForme repository, so if you want to know how it works, you can <a href="https://github.com/jeremyevans/autoforme/tree/master/demo-site">review the source</a>.</p>
 
 <p>In addition to the configuration options that are demonstrated in these three examples, because AutoForme is built on Forme, most of the Forme configuration options are available for configuring individual inputs, so you may be interested in the <a href="http://forme-demo.jeremyevans.net">Forme demo site</a>.</p>
+
+<p>The demo site is editable by anyone that views it.  So you can make changes to the data to see how things work.  You can reset the data to the initial demo state if you want:</p>
+<form action="/reset" method="post"><input type="submit" value="Reset"/></form>
 END
   end
 
   get '/autoforme.js' do
     content_type 'text/javascript'
     File.read('../autoforme.js')
+  end
+
+  post '/reset' do
+    DB.reset
+    redirect '/'
   end
 
   def self.setup_autoforme(prefix, &block)
