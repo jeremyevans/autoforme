@@ -20,7 +20,7 @@ class AutoFormeDemo < Sinatra::Base
     erb <<END
 <p>This is the demo site for <a href="http://autoforme.jeremyevans.net">AutoForme</a>, an admin interface for ruby web applications which uses <a href="http://forme.jeremyevans.net">Forme</a> to create the related forms.</p>
 
-<p>This demo uses <a href="http://sinatrarb.com">Sinatra</a> as the web framework and <a href="http://sequel.jeremyevans.net">Sequel</a> as the database library.</p>
+<p>This demo uses <a href="http://sinatrarb.com">Sinatra</a> as the web framework and <a href="http://sequel.jeremyevans.net">Sequel</a> as the database library.  AutoForme also supports Rails as a web framework, but the only currently supported database library is Sequel.</p>
 
 <p>This demo contains three examples of the same types of forms, each with slightly different options:</p>
 
@@ -30,7 +30,13 @@ class AutoFormeDemo < Sinatra::Base
 <li>Autocomplete: similar to the Inline view, but it uses autocompletion instead of select boxes.</li>.
 </ul>
 
-<p>In addition to the configuration options shown here, because AutoForme is built on Forme, most of the Forme configuration options are available for configuring individual inputs, so you may be interested in the <a href="http://forme-demo.jeremyevans.net">Forme demo site</a>.</p>
+<p>All three examples use the same database schema, created by this Sequel::Model code:</p>
+
+<pre><code>#{File.read(CREATE_TABLES_FILE)}</code></pre>
+
+<p>This demo site is part of the AutoForme repository, so if you want to know how it works, you can <a href="https://github.com/jeremyevans/autoforme/tree/master/demo-site">review the source</a>.</p>
+
+<p>In addition to the configuration options that are demonstrated in these three examples, because AutoForme is built on Forme, most of the Forme configuration options are available for configuring individual inputs, so you may be interested in the <a href="http://forme-demo.jeremyevans.net">Forme demo site</a>.</p>
 END
   end
 
