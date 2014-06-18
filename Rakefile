@@ -55,7 +55,6 @@ end
 RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Sinatra/Rails and Sequel']
 
 begin
-  gem 'rdoc', '= 3.12.2'
   gem 'hanna-nouveau'
   RDOC_DEFAULT_OPTS.concat(['-f', 'hanna'])
 rescue Gem::LoadError
