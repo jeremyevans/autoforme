@@ -2,7 +2,7 @@
 <html lang='en'>
   <head>
     <title>README.rdoc</title>
-    <meta content='text/html; charset=US-ASCII' http-equiv='Content-Type'>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
     <link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
     <script type='text/javascript'>
       //<![CDATA[
@@ -31,19 +31,19 @@
         </div>
         <div class='last-update'>
           Last Update:
-          <span class='datetime'>2013-12-13 13:02:56 -0800</span>
+          <span class='datetime'>2014-05-02 12:06:06 -0700</span>
         </div>
       </div>
       <div id='content'>
         <div id='text'>
           <div id='description'>
             
-            <h1 id="label-AutoForme"><a href="../classes/AutoForme.html">AutoForme</a></h1>
+            <h1 id="label-AutoForme"><a href="../classes/AutoForme.html">AutoForme</a><span><a href="#label-AutoForme">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
             <p><a href="../classes/AutoForme.html">AutoForme</a> is an administrative web
             front end to an ORM that uses Forme [1] for building the HTML forms.  It is
             designed to integrate easily into web frameworks, and currently supports
-            both Sinatra and Rails.</p>
+            both Sinatra and Rails.  The only currently supported ORM is Sequel::Model.</p>
             
             <p>AutoForme&#39;s UI and capabilities are modeled on scaffolding_extensions
             [2], though <a href="../classes/AutoForme.html">AutoForme</a> is
@@ -56,26 +56,36 @@
             href="https://github.com/jeremyevans/scaffolding_extensions">github.com/jeremyevans/scaffolding_extensions</a></p>
             </li></ol>
             
-            <h1 id="label-Installation">Installation</h1>
+            <h1 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
-            <pre>sudo gem install autoforme</pre>
+            <pre>gem install autoforme</pre>
             
-            <h1 id="label-Demo+Site">Demo Site</h1>
-            
-            <p>A demo site is available at <a
+            <h1 id="label-Links">Links<span><a href="#label-Links">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <dl class="rdoc-list note-list"><dt>Demo Site 
+            <dd>
+            <p><a
             href="http://autoforme-demo.jeremyevans.net">autoforme-demo.jeremyevans.net</a></p>
-            
-            <h1 id="label-Documentation+Site">Documentation Site</h1>
-            
-            <p>RDoc Documentation is available at <a
-            href="http://autoforme.jeremyevans.net">autoforme.jeremyevans.net</a></p>
-            
-            <h1 id="label-Source+Code">Source Code</h1>
-            
-            <p>Source code is available on GitHub at <a
+            </dd><dt>RDoc 
+            <dd>
+            <p><a target="_top" href="http://autoforme.jeremyevans.net">autoforme.jeremyevans.net</a></p>
+            </dd><dt>Source 
+            <dd>
+            <p><a
             href="https://github.com/jeremyevans/autoforme">github.com/jeremyevans/autoforme</a></p>
+            </dd><dt>IRC 
+            <dd>
+            <p><a href="irc://irc.freenode.net/forme">irc.freenode.net/forme</a></p>
+            </dd><dt>Google Group 
+            <dd>
+            <p><a
+            href="https://groups.google.com/forum/#!forum/ruby-forme">groups.google.com/forum/#!forum/ruby-forme</a></p>
+            </dd><dt>Bug Tracker 
+            <dd>
+            <p><a
+            href="https://github.com/jeremyevans/autoforme/issues">github.com/jeremyevans/autoforme/issues</a></p>
+            </dd></dl>
             
-            <h1 id="label-Features">Features</h1>
+            <h1 id="label-Features">Features<span><a href="#label-Features">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             <ul><li>
             <p>Create, update, edit, and view model objects</p>
             </li><li>
@@ -91,7 +101,7 @@
             parameters available in the request</p>
             </li></ul>
             
-            <h1 id="label-Basic+Configuration">Basic Configuration</h1>
+            <h1 id="label-Basic+Configuration">Basic Configuration<span><a href="#label-Basic+Configuration">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
             <p><a href="../classes/AutoForme.html">AutoForme</a> is configured using a
             fairly simple DSL.  Here is an example:</p>
@@ -124,9 +134,9 @@
             &#39;/Album/browse&#39; to get to the web UI exposed to <a
             href="../classes/AutoForme.html">AutoForme</a>.</p>
             
-            <h1 id="label-Design">Design</h1>
+            <h1 id="label-Design">Design<span><a href="#label-Design">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
-            <h2 id="label-Principles">Principles</h2>
+            <h2 id="label-Principles">Principles<span><a href="#label-Principles">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
             <ul><li>
             <p>Use Forme to generate the forms</p>
             </li><li>
@@ -141,7 +151,7 @@
             <p>Allow customization on a per-request basis for everything</p>
             </li></ul>
             
-            <h2 id="label-Basic+Implementation">Basic Implementation</h2>
+            <h2 id="label-Basic+Implementation">Basic Implementation<span><a href="#label-Basic+Implementation">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
             
             <p>The web framework controllers call <code>AutoForme.for</code> to create <a
             href="../classes/AutoForme/Framework.html">AutoForme::Framework</a>
@@ -158,7 +168,7 @@
             returns a string that the web framework then renders, or it redirects to
             another page.</p>
             
-            <h1 id="label-Advanced+Configuration">Advanced Configuration</h1>
+            <h1 id="label-Advanced+Configuration">Advanced Configuration<span><a href="#label-Advanced+Configuration">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
             <p><a href="../classes/AutoForme.html">AutoForme</a> doesn&#39;t have all that
             many features compared to other admin frameworks, but the features it does
@@ -185,8 +195,8 @@
             
             <p>Note that for each of the customization options, you can do per-request
             customization by using a proc which is called with the type symbol and
-            request (<a href="../classes/AutoForme/Request.html">AutoForme::Request</a>
-            instance), which should return an appropriate object.</p>
+            request (AutoForme::Request instance), which should return an appropriate
+            object.</p>
             <dl class="rdoc-list note-list"><dt>columns 
             <dd>
             <p>Proc called with type symbol and request, should return array of
@@ -346,7 +356,7 @@
             <p>Means you can go to <code>/path/to/Artist/browse</code> to browse the
             artists.</p>
             
-            <h1 id="label-Javascript">Javascript</h1>
+            <h1 id="label-Javascript">Javascript<span><a href="#label-Javascript">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
             <p>By default, <a href="../classes/AutoForme.html">AutoForme</a> requires no
             javascript.  The only optional part of <a
@@ -365,7 +375,7 @@
             requires <a
             href="https://github.com/dyve/jquery-autocomplete">github.com/dyve/jquery-autocomplete</a></p>
             
-            <h1 id="label-TODO">TODO</h1>
+            <h1 id="label-TODO">TODO<span><a href="#label-TODO">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             <ul><li>
             <p>capybara-webkit tests for ajax behavior</p>
             </li><li>
@@ -378,11 +388,11 @@
             <p>nested form objects</p>
             </li></ul>
             
-            <h1 id="label-License">License</h1>
+            <h1 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
             <p>MIT</p>
             
-            <h1 id="label-Author">Author</h1>
+            <h1 id="label-Author">Author<span><a href="#label-Author">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
             <p>Jeremy Evans &lt;code@jeremyevans.net&gt;</p>
           </div>
