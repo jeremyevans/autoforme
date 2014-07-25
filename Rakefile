@@ -34,6 +34,16 @@ begin
   task :default => [:spec]
   spec_with_cov.call("spec", Dir["spec/*_spec.rb"], "Run specs with sinatra/sequel")
 
+  desc "Run specs with roda/sequel"
+  task :roda_spec do
+    begin
+      ENV['FRAMEWORK'] = 'roda'
+      Rake::Task[:spec].invoke
+    ensure
+      ENV.delete('FRAMEWORK')
+    end
+  end
+
   desc "Run specs with rails/sequel"
   task :rails_spec do
     begin

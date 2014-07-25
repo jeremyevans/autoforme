@@ -8,13 +8,7 @@ module AutoFormeSpec
 end
 
 require './spec/sequel_spec_helper'
-
-case ENV['FRAMEWORK']
-when 'rails'
-  require './spec/rails_spec_helper'
-else
-  require './spec/sinatra_spec_helper'
-end
+require "./spec/#{ENV['FRAMEWORK'] || 'sinatra'}_spec_helper"
 
 RSpec::Core::ExampleGroup.class_eval do
   include Rack::Test::Methods

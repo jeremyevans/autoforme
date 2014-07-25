@@ -3,7 +3,7 @@
 AutoForme is an administrative web front end to an ORM that uses
 Forme [1] for building the HTML forms.  It is designed to
 integrate easily into web frameworks, and currently supports
-both Sinatra and Rails.  The only currently supported ORM is
+Sinatra, Roda, and Rails.  The only currently supported ORM is
 Sequel::Model.
 
 AutoForme's UI and capabilities are modeled on
@@ -38,7 +38,8 @@ Bug Tracker :: https://github.com/jeremyevans/autoforme/issues
 
 = Basic Configuration
 
-AutoForme is configured using a fairly simple DSL.  Here is an example:
+AutoForme is configured using a fairly simple DSL.  Here is an example
+for Sinatra:
 
   class App < Sinatra::Base
     AutoForme.for(:sinatra, self) do

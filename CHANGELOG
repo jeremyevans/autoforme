@@ -1,3 +1,7 @@
+=== HEAD
+
+* Add support for roda web framework (jeremyevans)
+
 === 0.5.5 (2014-04-10)
 
 * Make Models::Sequel#mtm_update compatible with Sequel 4.10+ (jeremyevans)
