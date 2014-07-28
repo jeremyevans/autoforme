@@ -548,7 +548,7 @@ describe AutoForme do
   it "should support specifying filter per type using request params" do
     app_setup(Artist) do
       filter do |ds, type, req|
-        v = req.params[:f]
+        v = req.params['f']
         case type
         when :edit
           ds.where{n0 > v}

@@ -1,5 +1,7 @@
 === HEAD
 
+* Work without indifferent params (jeremyevans)
+
 * Add support for roda web framework (jeremyevans)
 
 === 0.5.5 (2014-04-10)

@@ -41,13 +41,13 @@ module AutoForme
               ds = model_class.apply_filter(:association, request, ds)
             end
 
-            v = params[ref[:key]]
+            v = params[ref[:key].to_s]
             v = nil if v.to_s.strip == ''
             if v
               v = ds.first!(S.qualify(ds.model.table_name, ref.primary_key)=>v)
             end
           else
-            v = params[col]
+            v = params[col.to_s]
           end
 
           obj.send("#{column}=", v)
@@ -162,7 +162,7 @@ module AutoForme
         params = request.params
         ds = apply_associated_eager(:search, request, all_dataset_for(type, request))
         columns_for(:search_form, request).each do |c|
-          if (v = params[c]) && !v.empty?
+          if (v = params[c.to_s]) && !v.empty?
             if association?(c)
               ref = model.association_reflection(c)
               ads = ref.associated_dataset

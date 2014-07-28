@@ -289,7 +289,7 @@ module AutoForme
           if association?(col)
             col = association_key(col)
           end
-          if v = params[col]
+          if v = params[col.to_s]
             obj.send("#{col}=", v)
           end
         end

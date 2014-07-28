@@ -27,7 +27,6 @@ HTML
     'Unhandled Request'
   end
   plugin :flash
-  plugin :indifferent_params
 
   def self.autoforme(klass=nil, opts={}, &block)
     sc = Class.new(self)
@@ -45,7 +44,7 @@ HTML
 
       route do |r|
         r.get 'session/set' do
-          session.merge!(params)
+          session.merge!(r.params)
           ''
         end
 

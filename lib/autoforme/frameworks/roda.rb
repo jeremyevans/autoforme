@@ -5,7 +5,7 @@ module AutoForme
         def initialize(roda, path)
           @controller = roda 
           @request = roda.request
-          @params = roda.params
+          @params = @request.params
           @session = roda.session
           captures = @request.captures
           @env = @request.env
@@ -13,7 +13,7 @@ module AutoForme
           @model = captures[-2]
           @action_type = captures[-1]
           @path = path
-          @id = @params['id'] || ($1 if @env['PATH_INFO'] =~ %r{\A\/?(\w+)\z})
+          @id = @params['id'] || ($1 if @env['PATH_INFO'] =~ %r{\A\/(\w+)\z})
         end
 
         # Redirect to the given path
