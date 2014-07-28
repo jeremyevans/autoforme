@@ -51,7 +51,6 @@ HTML
 
         AutoForme.for(:rails, self, opts) do
           framework = self
-          model_type :sequel
           if klass
             model(klass, &block)
           elsif block

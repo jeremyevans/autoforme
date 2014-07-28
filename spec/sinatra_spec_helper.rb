@@ -43,7 +43,6 @@ HTML
     sc.class_eval do
       AutoForme.for(:sinatra, self, opts) do
         framework = self
-        model_type :sequel
         if klass
           model(klass, &block)
         elsif block

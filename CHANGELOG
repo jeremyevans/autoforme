@@ -1,5 +1,7 @@
 === HEAD
 
+* Assume :sequel model type (jeremyevans)
+
 * Work without indifferent params (jeremyevans)
 
 * Add support for roda web framework (jeremyevans)

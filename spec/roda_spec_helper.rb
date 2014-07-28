@@ -34,7 +34,6 @@ HTML
     sc.class_eval do
       plugin :autoforme, opts do
         framework = self
-        model_type :sequel
         if klass
           model(klass, &block)
         elsif block

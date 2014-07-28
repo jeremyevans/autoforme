@@ -12,6 +12,7 @@ module AutoForme
     # Setup a new framework class.
     def self.setup(controller, opts, &block)
       f = new(controller, opts)
+      f.model_type :sequel
       f.instance_exec(&block)
       f
     end

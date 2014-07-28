@@ -43,7 +43,6 @@ for Sinatra:
 
   class App < Sinatra::Base
     AutoForme.for(:sinatra, self) do
-      model_type :sequel
       order [:name]
 
       model Artist do
@@ -60,9 +59,6 @@ which takes 2 arguments, the controller type symbol (currently either :sinatra o
 and the controller class (either a Sinatra::Base or ActionController::Base subclass).  You
 pass <tt>AutoForme.for</tt> a block, which is instance evaled at the framework level.  This
 level sets the defaults.
-
-Inside the framework block, you first call model_type with a symbol representing the ORM you are
-using.  Currently, only Sequel is supported, so this should be :sequel.
 
 The order call in the framework block sets the default order for all models.
 
