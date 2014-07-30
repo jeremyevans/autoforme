@@ -177,7 +177,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-c-new-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-c-new-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 42</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>={})&#x000A;  <span class="ruby-ivar">@controller</span> = <span class="ruby-identifier">controller</span>&#x000A;  <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">dup</span>&#x000A;  <span class="ruby-ivar">@prefix</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:prefix</span>]&#x000A;  <span class="ruby-ivar">@models</span> = {}&#x000A;  <span class="ruby-ivar">@model_classes</span> = {}&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-c-new-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 43</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>={})&#x000A;  <span class="ruby-ivar">@controller</span> = <span class="ruby-identifier">controller</span>&#x000A;  <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">dup</span>&#x000A;  <span class="ruby-ivar">@prefix</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:prefix</span>]&#x000A;  <span class="ruby-ivar">@models</span> = {}&#x000A;  <span class="ruby-ivar">@model_classes</span> = {}&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-class' id='method-method-c-setup'>
@@ -194,7 +194,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-c-setup-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-c-setup-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 13</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">setup</span>(<span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-identifier">f</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>)&#x000A;  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">instance_exec</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-identifier">f</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-c-setup-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 13</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">setup</span>(<span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-identifier">f</span> = <span class="ruby-identifier">new</span>(<span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>)&#x000A;  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">model_type</span> <span class="ruby-value">:sequel</span>&#x000A;  <span class="ruby-identifier">f</span>.<span class="ruby-identifier">instance_exec</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-identifier">f</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <h2>Public Instance methods</h2>
@@ -213,7 +213,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-action_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-action_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 127</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">action_for</span>(<span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">model</span> = <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">request</span>.<span class="ruby-identifier">model</span>]&#x000A;    <span class="ruby-identifier">action</span> = <span class="ruby-constant">Action</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;    <span class="ruby-identifier">action</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">action</span>.<span class="ruby-identifier">supported?</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-action_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 128</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">action_for</span>(<span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">model</span> = <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">request</span>.<span class="ruby-identifier">model</span>]&#x000A;    <span class="ruby-identifier">action</span> = <span class="ruby-constant">Action</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;    <span class="ruby-identifier">action</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">action</span>.<span class="ruby-identifier">supported?</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-association_links_for'>
@@ -229,7 +229,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-association_links_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-association_links_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 114</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">association_links_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">association_links</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-association_links_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 115</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">association_links_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">association_links</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-autocomplete_options_for'>
@@ -245,7 +245,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-autocomplete_options_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-autocomplete_options_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 110</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">autocomplete_options</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-autocomplete_options_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 111</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">autocomplete_options</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-columns_for'>
@@ -261,7 +261,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-columns_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-columns_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 62</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-columns_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 63</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-display_name_for'>
@@ -277,7 +277,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-display_name_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-display_name_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 86</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">display_name_for</span>(<span class="ruby-identifier">model</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">display_name</span>, <span class="ruby-identifier">model</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-display_name_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 87</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">display_name_for</span>(<span class="ruby-identifier">model</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">display_name</span>, <span class="ruby-identifier">model</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-filter_for'>
@@ -293,7 +293,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-filter_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-filter_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 78</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_for</span>(<span class="ruby-identifier">model</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">filter</span>, <span class="ruby-identifier">model</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-filter_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 79</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_for</span>(<span class="ruby-identifier">model</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">filter</span>, <span class="ruby-identifier">model</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-form_attributes_for'>
@@ -309,7 +309,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-form_attributes_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-form_attributes_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 90</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">form_attributes_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">form_attributes</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">||</span> {}&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-form_attributes_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 91</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">form_attributes_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">form_attributes</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">||</span> {}&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-form_options_for'>
@@ -325,7 +325,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-form_options_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-form_options_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 94</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">form_options_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">form_options</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">||</span> {}&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-form_options_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 95</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">form_options_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">form_options</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">||</span> {}&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-inline_mtm_associations_for'>
@@ -341,7 +341,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-inline_mtm_associations_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-inline_mtm_associations_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 70</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">inline_mtm_associations_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">inline_mtm_associations</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-inline_mtm_associations_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 71</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">inline_mtm_associations_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">inline_mtm_associations</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-lazy_load_association_links-3F'>
@@ -357,7 +357,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-lazy_load_association_links-3F-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-lazy_load_association_links-3F-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 106</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">lazy_load_association_links?</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">lazy_load_association_links</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-lazy_load_association_links-3F-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 107</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">lazy_load_association_links?</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">lazy_load_association_links</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-limit_for'>
@@ -373,7 +373,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-limit_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-limit_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 58</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">limit_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">per_page</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-limit_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 59</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">limit_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">per_page</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-model'>
@@ -390,7 +390,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-model-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-model-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 119</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">model</span>(<span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-identifier">model</span> = <span class="ruby-constant">Model</span>.<span class="ruby-identifier">for</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">model_type</span>, <span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-ivar">@model_classes</span>[<span class="ruby-identifier">model</span>.<span class="ruby-identifier">model</span>] = <span class="ruby-identifier">model</span>&#x000A;  <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">model</span>.<span class="ruby-identifier">link</span>] = <span class="ruby-identifier">model</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-model-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 120</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">model</span>(<span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-identifier">model</span> = <span class="ruby-constant">Model</span>.<span class="ruby-identifier">for</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">model_type</span>, <span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-ivar">@model_classes</span>[<span class="ruby-identifier">model</span>.<span class="ruby-identifier">model</span>] = <span class="ruby-identifier">model</span>&#x000A;  <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">model</span>.<span class="ruby-identifier">link</span>] = <span class="ruby-identifier">model</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-mtm_associations_for'>
@@ -406,7 +406,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-mtm_associations_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-mtm_associations_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 66</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">mtm_associations_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">mtm_associations</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-mtm_associations_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 67</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">mtm_associations_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">mtm_associations</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-order_for'>
@@ -422,7 +422,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-order_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-order_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 74</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">order_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">order</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-order_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 75</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">order_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">order</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-page_footer_for'>
@@ -438,7 +438,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-page_footer_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-page_footer_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 98</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">page_footer_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">page_footer</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-page_footer_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 99</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">page_footer_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">page_footer</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-page_header_for'>
@@ -454,7 +454,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-page_header_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-page_header_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 102</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">page_header_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">page_header</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-page_header_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 103</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">page_header_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">page_header</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-redirect_for'>
@@ -470,7 +470,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-redirect_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-redirect_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 82</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">redirect_for</span>(<span class="ruby-identifier">model</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">redirect</span>, <span class="ruby-identifier">model</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-redirect_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 83</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">redirect_for</span>(<span class="ruby-identifier">model</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">redirect</span>, <span class="ruby-identifier">model</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-supported_actions_for'>
@@ -486,7 +486,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-supported_actions_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-supported_actions_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 50</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">supported_actions_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">supported_actions</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-supported_actions_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 51</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">supported_actions_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">supported_actions</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-table_class_for'>
@@ -502,7 +502,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-table_class_for-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-table_class_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 54</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">table_class_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">table_class</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-table_class_for-source'><span class="ruby-comment"># File lib/autoforme/framework.rb, line 55</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">table_class_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">table_class</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
             </div>

@@ -31,7 +31,7 @@
         </div>
         <div class='last-update'>
           Last Update:
-          <span class='datetime'>2014-05-02 12:06:06 -0700</span>
+          <span class='datetime'>2014-07-29 18:59:41 -0700</span>
         </div>
       </div>
       <div id='content'>
@@ -43,7 +43,8 @@
             <p><a href="../classes/AutoForme.html">AutoForme</a> is an administrative web
             front end to an ORM that uses Forme [1] for building the HTML forms.  It is
             designed to integrate easily into web frameworks, and currently supports
-            both Sinatra and Rails.  The only currently supported ORM is Sequel::Model.</p>
+            Sinatra, <a href="../classes/Roda.html">Roda</a>, and Rails.  The only
+            currently supported ORM is Sequel::Model.</p>
             
             <p>AutoForme&#39;s UI and capabilities are modeled on scaffolding_extensions
             [2], though <a href="../classes/AutoForme.html">AutoForme</a> is
@@ -104,9 +105,9 @@
             <h1 id="label-Basic+Configuration">Basic Configuration<span><a href="#label-Basic+Configuration">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
             <p><a href="../classes/AutoForme.html">AutoForme</a> is configured using a
-            fairly simple DSL.  Here is an example:</p>
+            fairly simple DSL.  Here is an example for Sinatra:</p>
             
-            <pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>&#x000A;  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(:<span class="ruby-identifier">sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">model_type</span> :<span class="ruby-identifier">sequel</span>&#x000A;    <span class="ruby-identifier">order</span> [:<span class="ruby-identifier">name</span>]&#x000A;&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">columns</span> [:<span class="ruby-identifier">name</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Album</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">columns</span> [:<span class="ruby-identifier">artist</span>, :<span class="ruby-identifier">name</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+            <pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>&#x000A;  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(:<span class="ruby-identifier">sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">order</span> [:<span class="ruby-identifier">name</span>]&#x000A;&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">columns</span> [:<span class="ruby-identifier">name</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Album</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">columns</span> [:<span class="ruby-identifier">artist</span>, :<span class="ruby-identifier">name</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
             
             <p>Let&#39;s break down how this works.  You setup <a
             href="../classes/AutoForme.html">AutoForme</a> using
@@ -115,10 +116,6 @@
             (either a Sinatra::Base or ActionController::Base subclass).  You pass
             <code>AutoForme.for</code> a block, which is instance evaled at the
             framework level.  This level sets the defaults.</p>
-            
-            <p>Inside the framework block, you first call model_type with a symbol
-            representing the ORM you are using.  Currently, only Sequel is supported,
-            so this should be :sequel.</p>
             
             <p>The order call in the framework block sets the default order for all
             models.</p>
