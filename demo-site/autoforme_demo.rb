@@ -1,26 +1,64 @@
 #!/usr/bin/env/ruby
 require 'rubygems'
-require 'sinatra/base'
+require 'roda'
 require 'models'
-require 'autoforme'
-require 'sinatra/flash'
+require 'securerandom'
+require 'rack/protection'
 
-Forme.register_config(:mine, :base=>:default, :labeler=>:explicit, :wrapper=>:div)
-Forme.default_config = :mine
+class AutoFormeDemo < Roda
+  use Rack::Static, :urls=>%w'/static', :root=>'public'
+  use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
+  use Rack::Protection
 
-class AutoFormeDemo < Sinatra::Base
-  disable :run
-  enable :sessions
-  enable :static
+  plugin :flash
+  plugin :autoforme
+  plugin :render
 
-  register Sinatra::Flash
+  Forme.register_config(:mine, :base=>:default, :labeler=>:explicit, :wrapper=>:div)
+  Forme.default_config = :mine
 
-  get '/' do
-    @page_title = 'AutoForme Demo Site'
-    erb <<END
+  def self.setup_autoforme(name, &block)
+    autoforme(:name=>name) do
+      form_options :input_defaults=>{'text'=>{:size=>50}, 'checkbox'=>{:label_position=>:before}}
+      instance_exec(&block)
+    end
+  end
+
+  setup_autoforme(:basic) do
+    mtm_associations :all
+    model Artist
+    model Album
+    model Track
+    model Tag
+  end
+
+  setup_autoforme(:inline) do
+    inline_mtm_associations :all
+    association_links :all_except_mtm
+    model Artist
+    model Album
+    model Track
+    model Tag
+  end
+
+  setup_autoforme(:autocomplete) do
+    mtm_associations :all
+    inline_mtm_associations :all
+    association_links :all_except_mtm
+    ac = proc{autocomplete_options({})}
+    model Artist, &ac
+    model Album, &ac
+    model Track, &ac
+    model Tag, &ac
+  end
+
+  route do |r|
+    r.get '' do
+      @page_title = 'AutoForme Demo Site'
+      view :inline => <<END
 <p>This is the demo site for <a href="http://autoforme.jeremyevans.net">AutoForme</a>, an admin interface for ruby web applications which uses <a href="http://forme.jeremyevans.net">Forme</a> to create the related forms.</p>
 
-<p>This demo uses <a href="http://sinatrarb.com">Sinatra</a> as the web framework and <a href="http://sequel.jeremyevans.net">Sequel</a> as the database library.  AutoForme also supports Rails as a web framework, but the only currently supported database library is Sequel.</p>
+<p>This demo uses <a href="http://roda.jeremyevans.net">Roda</a> as the web framework and <a href="http://sequel.jeremyevans.net">Sequel</a> as the database library.  AutoForme also supports Sinatra and Rails, but the only currently supported database library is Sequel.</p>
 
 <p>This demo contains three examples of the same types of forms, each with slightly different options:</p>
 
@@ -41,51 +79,26 @@ class AutoFormeDemo < Sinatra::Base
 <p>The demo site is editable by anyone that views it.  So you can make changes to the data to see how things work.  You can reset the data to the initial demo state if you want:</p>
 <form action="/reset" method="post"><input type="submit" value="Reset"/></form>
 END
-  end
-
-  get '/autoforme.js' do
-    content_type 'text/javascript'
-    File.read('../autoforme.js')
-  end
-
-  post '/reset' do
-    DB.reset
-    redirect '/'
-  end
-
-  def self.setup_autoforme(prefix, &block)
-    AutoForme.for(:sinatra, self, :prefix=>prefix) do
-      model_type :sequel
-    form_options :input_defaults=>{'text'=>{:size=>50}, 'checkbox'=>{:label_position=>:before}}
-      instance_exec(&block)
     end
-  end
 
-  setup_autoforme('/basic') do
-    mtm_associations :all
-    model Artist
-    model Album
-    model Track
-    model Tag
-  end
+    r.get 'autoforme.js' do
+      response['Content-Type'] = 'text/javascript'
+      File.read('../autoforme.js')
+    end
 
-  setup_autoforme('/inline') do
-    inline_mtm_associations :all
-    association_links :all_except_mtm
-    model Artist
-    model Album
-    model Track
-    model Tag
-  end
+    r.post 'reset' do
+      DB.reset
+      r.redirect '/'
+    end
 
-  setup_autoforme('/autocomplete') do
-    mtm_associations :all
-    inline_mtm_associations :all
-    association_links :all_except_mtm
-    ac = proc{autocomplete_options({})}
-    model Artist, &ac
-    model Album, &ac
-    model Track, &ac
-    model Tag, &ac
+    r.on 'basic' do
+      autoforme(:basic)
+    end
+    r.on 'inline' do
+      autoforme(:inline)
+    end
+    r.on 'autocomplete' do
+      autoforme(:autocomplete)
+    end
   end
 end
