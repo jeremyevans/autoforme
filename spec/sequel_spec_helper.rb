@@ -19,7 +19,7 @@ RSpec.configure do |c|
 end
 
 module AutoFormeSpec
-  TYPE_MAP = {:string=>String, :integer=>Integer}
+  TYPE_MAP = {:string=>String, :integer=>Integer, :decimal=>Numeric}
   def self.db_setup(tables)
     db = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite:/')
     #db.loggers << Logger.new($stdout)

@@ -659,3 +659,26 @@ describe AutoForme do
     click_button 'Delete'
   end
 end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:num, :decimal]])
+    model_setup(:Artist=>[:artists])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should display decimals in float format in tables" do
+    app_setup(Artist)
+    visit("/Artist/new")
+    page.find('title').text.should == 'Artist - New'
+    fill_in 'Num', :with=>'1.01'
+    click_button 'Create'
+    click_link 'Artist'
+    all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
+    click_link 'Search'
+    click_button 'Search'
+    all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
+  end
+end

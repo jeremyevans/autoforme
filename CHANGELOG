@@ -1,5 +1,7 @@
 === HEAD
 
+* Display BigDecimal values in float format on browse/search pages (jeremyevans)
+
 * Work on roda with all template frameworks, not just erb (jeremyevans)
 
 === 1.0.0 (2014-07-30)
