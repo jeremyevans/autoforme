@@ -120,7 +120,7 @@ describe AutoForme do
     Artist.count.should == 0
   end
 
-  it "should custom headers and footers" do
+  it "should support custom headers and footers" do
     app_setup(Artist) do
       page_header "<a href='/Artist/new'>N</a>"
       page_footer "<a href='/Artist/edit'>E</a>"
@@ -135,7 +135,7 @@ describe AutoForme do
     click_button 'Edit'
   end
 
-  it "should custom redirects" do
+  it "should support custom redirects" do
     app_setup(Artist) do
       redirect do |obj, type, req|
         case type
@@ -161,7 +161,7 @@ describe AutoForme do
     page.current_path.should == "/Artist/new"
   end
 
-  it "should custom form options and attributes" do
+  it "should support custom form options and attributes" do
     app_setup(Artist) do
       form_attributes :class=>'foobar', :action=>'/create_artist'
       form_options :input_defaults=>{'text'=>{:class=>'barfoo'}}
@@ -172,7 +172,7 @@ describe AutoForme do
     find('form input#artist_name')[:class].should == 'barfoo'
   end
 
-  it "should support specifying column options per type" do
+  it "should support support specifying column options per type" do
     app_setup(Artist) do
       column_options{|column, type, req| {:label=>"#{type.to_s.capitalize} Artist #{column.to_s.capitalize}"}}
     end
