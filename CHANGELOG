@@ -1,3 +1,7 @@
+=== HEAD
+
+* Work on roda with all template frameworks, not just erb (jeremyevans)
+
 === 1.0.0 (2014-07-30)
 
 * Assume :sequel model type (jeremyevans)

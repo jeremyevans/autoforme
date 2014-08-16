@@ -55,7 +55,7 @@ module AutoForme
 
           r.on *current_matchers do
             @autoforme_text = @autoforme_action.handle
-            opts = {:inline=>"<%= @autoforme_text %>"}
+            opts = {:content=>@autoforme_text}
             opts[:layout] = false if @autoforme_action.request.xhr?
             view opts
           end
