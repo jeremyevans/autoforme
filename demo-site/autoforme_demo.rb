@@ -53,7 +53,7 @@ class AutoFormeDemo < Roda
   end
 
   route do |r|
-    r.get '' do
+    r.root do
       @page_title = 'AutoForme Demo Site'
       view :inline => <<END
 <p>This is the demo site for <a href="http://autoforme.jeremyevans.net">AutoForme</a>, an admin interface for ruby web applications which uses <a href="http://forme.jeremyevans.net">Forme</a> to create the related forms.</p>

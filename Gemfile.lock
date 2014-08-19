@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    forme (0.10.0)
+    forme (1.0.0)
     kgio (2.8.1)
     pg (0.17.1)
     rack (1.5.2)
@@ -10,15 +10,9 @@ GEM
     rack_csrf (2.4.0)
       rack (>= 0.9)
     raindrops (0.10.0)
-    roda (0.9.0)
+    roda (1.0.0)
       rack
-    sequel (4.12.0)
-    sinatra (1.4.4)
-      rack (~> 1.4)
-      rack-protection (~> 1.4)
-      tilt (~> 1.3, >= 1.3.4)
-    sinatra-flash (0.3.0)
-      sinatra (>= 1.0.0)
+    sequel (4.13.0)
     tilt (1.4.1)
     unicorn (4.8.0)
       kgio (~> 2.6)
@@ -33,8 +27,7 @@ DEPENDENCIES
   pg
   rack-protection
   rack_csrf
-  roda
+  roda (>= 1.0.0)
   sequel
-  sinatra-flash
   tilt
   unicorn
