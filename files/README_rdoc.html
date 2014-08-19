@@ -59,32 +59,26 @@
             
             <h1 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             
-            <pre>gem install autoforme</pre>
+            <pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-identifier">install</span> <span class="ruby-identifier">autoforme</span></pre>
             
             <h1 id="label-Links">Links<span><a href="#label-Links">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
-            <dl class="rdoc-list note-list"><dt>Demo Site 
-            <dd>
+            <table class="rdoc-list note-list"><tbody><tr><td class='label'>Demo Site </td><td>
             <p><a
             href="http://autoforme-demo.jeremyevans.net">autoforme-demo.jeremyevans.net</a></p>
-            </dd><dt>RDoc 
-            <dd>
+            </td></tr><tr><td class='label'>RDoc </td><td>
             <p><a target="_top" href="http://autoforme.jeremyevans.net">autoforme.jeremyevans.net</a></p>
-            </dd><dt>Source 
-            <dd>
+            </td></tr><tr><td class='label'>Source </td><td>
             <p><a
             href="https://github.com/jeremyevans/autoforme">github.com/jeremyevans/autoforme</a></p>
-            </dd><dt>IRC 
-            <dd>
+            </td></tr><tr><td class='label'>IRC </td><td>
             <p><a href="irc://irc.freenode.net/forme">irc.freenode.net/forme</a></p>
-            </dd><dt>Google Group 
-            <dd>
+            </td></tr><tr><td class='label'>Google Group </td><td>
             <p><a
             href="https://groups.google.com/forum/#!forum/ruby-forme">groups.google.com/forum/#!forum/ruby-forme</a></p>
-            </dd><dt>Bug Tracker 
-            <dd>
+            </td></tr><tr><td class='label'>Bug Tracker </td><td>
             <p><a
             href="https://github.com/jeremyevans/autoforme/issues">github.com/jeremyevans/autoforme/issues</a></p>
-            </dd></dl>
+            </td></tr></tbody></table>
             
             <h1 id="label-Features">Features<span><a href="#label-Features">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
             <ul><li>
@@ -177,162 +171,123 @@
             href="../classes/AutoForme/Model.html">AutoForme::Model</a> instance), so
             we&#39;ll start looking at the customization options there.  The most
             common options are probably:</p>
-            <dl class="rdoc-list note-list"><dt>columns 
-            <dd>
+            <table class="rdoc-list note-list"><tbody><tr><td class='label'>columns </td><td>
             <p>This is an array of column/association name symbols to use for the model.</p>
-            </dd><dt>column_options 
-            <dd>
+            </td></tr><tr><td class='label'>column_options </td><td>
             <p>This is a hash of column options for the model, keyed by column symbol,
             with values that are hashes of column options.</p>
-            </dd><dt>order 
-            <dd>
+            </td></tr><tr><td class='label'>order </td><td>
             <p>This is an expression or an array of expressions by which to order returned
             rows.</p>
-            </dd></dl>
+            </td></tr></tbody></table>
             
             <p>Note that for each of the customization options, you can do per-request
             customization by using a proc which is called with the type symbol and
             request (AutoForme::Request instance), which should return an appropriate
             object.</p>
-            <dl class="rdoc-list note-list"><dt>columns 
-            <dd>
+            <table class="rdoc-list note-list"><tbody><tr><td class='label'>columns </td><td>
             <p>Proc called with type symbol and request, should return array of
             column/association symbols</p>
-            </dd><dt>column_options 
-            <dd>
+            </td></tr><tr><td class='label'>column_options </td><td>
             <p>Proc called with column/association symbol, type symbol and request, should
             return hash of column options.</p>
-            </dd><dt>order 
-            <dd>
+            </td></tr><tr><td class='label'>order </td><td>
             <p>Proc called with type symbol and request, should return expression  or
             array of expressions by which to order returned rows.</p>
-            </dd></dl>
+            </td></tr></tbody></table>
             
             <p>Below is brief description of other available options.  Note that just like
             the above options you can use Procs with most of these options to do
             customization on a per-request basis.</p>
-            <dl class="rdoc-list note-list"><dt>association_links 
-            <dd>
+            <table class="rdoc-list note-list"><tbody><tr><td class='label'>association_links </td><td>
             <p>Array of association symbols for associations to display on the show/edit
             pages, can also be set to :all for all associations or :all_except_mtm for
             all associations except many to many associations.</p>
-            </dd><dt>autocomplete_options 
-            <dd>
+            </td></tr><tr><td class='label'>autocomplete_options </td><td>
             <p>Enable autocompletion for this model, with the given options.  The
             following keys are respected:</p>
-            <dl class="rdoc-list note-list"><dt>:callback 
-            <dd>
+            <table class="rdoc-list note-list"><tbody><tr><td class='label'>:callback </td><td>
             <p>Proc called with dataset and options hash containing :type, :request, and
             :query</p>
-            </dd><dt>:display 
-            <dd>
+            </td></tr><tr><td class='label'>:display </td><td>
             <p>A SQL expression to search on and display in the result</p>
-            </dd><dt>:limit 
-            <dd>
+            </td></tr><tr><td class='label'>:limit </td><td>
             <p>The number of results to return</p>
-            </dd><dt>:filter 
-            <dd>
+            </td></tr><tr><td class='label'>:filter </td><td>
             <p>Similar to callback, but overriding the default filter (a case insensitive
             substring search on display)</p>
-            </dd></dl>
-            </dd><dt>eager 
-            <dd>
+            </td></tr></tbody></table>
+            </td></tr><tr><td class='label'>eager </td><td>
             <p>Array of associations to eagerly load in separate queries</p>
-            </dd><dt>eager_graph 
-            <dd>
+            </td></tr><tr><td class='label'>eager_graph </td><td>
             <p>Array of associations to eager load in the same query (necessary if order
             or filter refers to them)</p>
-            </dd><dt>filter 
-            <dd>
+            </td></tr><tr><td class='label'>filter </td><td>
             <p>A Proc called with a dataset, type symbol, and request that can be used to
             filter the available rows.  Can be used to implement access control.</p>
-            </dd><dt>redirect 
-            <dd>
+            </td></tr><tr><td class='label'>redirect </td><td>
             <p>A Proc called with an object, type symbol, and request that can be used to
             override the default redirecting after form submittal.</p>
-            </dd><dt>inline_mtm_associations 
-            <dd>
+            </td></tr><tr><td class='label'>inline_mtm_associations </td><td>
             <p>Array of many to many association symbols to allow editing on the edit page</p>
-            </dd><dt>lazy_load_association_links 
-            <dd>
+            </td></tr><tr><td class='label'>lazy_load_association_links </td><td>
             <p>Whether to show the association links directly on the show/edit pages, or
             to load them via ajax on request</p>
-            </dd><dt>mtm_associations 
-            <dd>
+            </td></tr><tr><td class='label'>mtm_associations </td><td>
             <p>Array of many to many association symbols to support editing on a separate
             page</p>
-            </dd><dt>per_page 
-            <dd>
+            </td></tr><tr><td class='label'>per_page </td><td>
             <p>Number of records to show per page on the browse and search pages</p>
-            </dd><dt>session_value 
-            <dd>
+            </td></tr><tr><td class='label'>session_value </td><td>
             <p>Sets up a filter and before_create hook that makes it so access is limited
             to objects where the object&#39;s column value is the same as the session
             value with the same name.</p>
-            </dd><dt>supported_actions 
-            <dd>
+            </td></tr><tr><td class='label'>supported_actions </td><td>
             <p>Array of action symbols to support for the model, should be a subset of</p>
-            <dl class="rdoc-list label-list"><dt>:browse, :new, :show, :edit, :delete, :search, :mtm_edit
-            <dd></dd></dl>
-            </dd></dl>
+            <table class="rdoc-list label-list"><tbody><tr><td class='label'>:browse, :new, :show, :edit, :delete, :search, :mtm_edit</td><td></td></tr></tbody></table>
+            </td></tr></tbody></table>
             
             <p>These options are related to displayed output:</p>
-            <dl class="rdoc-list note-list"><dt>form_attributes 
-            <dd>
+            <table class="rdoc-list note-list"><tbody><tr><td class='label'>form_attributes </td><td>
             <p>Hash of attributes to use for any form tags</p>
-            </dd><dt>form_options 
-            <dd>
+            </td></tr><tr><td class='label'>form_options </td><td>
             <p>Hash of Forme::Form options to pass for any forms created</p>
-            </dd><dt>class_display_name 
-            <dd>
+            </td></tr><tr><td class='label'>class_display_name </td><td>
             <p>The string to use when referring to the model class</p>
-            </dd><dt>display_name 
-            <dd>
+            </td></tr><tr><td class='label'>display_name </td><td>
             <p>The string to use when referring to a model instance.  Can either be a
             symbol representing an instance method call, or a Proc called with the
             model object, the model object and type symbol, or the model object, type
             symbol, and request, depending on the arity of the Proc.</p>
-            </dd><dt>link_name 
-            <dd>
+            </td></tr><tr><td class='label'>link_name </td><td>
             <p>The string to use in links for the class</p>
-            </dd><dt>page_footer 
-            <dd>
+            </td></tr><tr><td class='label'>page_footer </td><td>
             <p>Override the default footer used for pages</p>
-            </dd><dt>page_header 
-            <dd>
+            </td></tr><tr><td class='label'>page_header </td><td>
             <p>Override the default header used for pages</p>
-            </dd><dt>table_class 
-            <dd>
+            </td></tr><tr><td class='label'>table_class </td><td>
             <p>The html class string to use for the browse and search tables</p>
-            </dd></dl>
+            </td></tr></tbody></table>
             
             <p>These hook options should be callable objects that are called with the
             model object and the request.</p>
-            <dl class="rdoc-list note-list"><dt>after_create 
-            <dd>
+            <table class="rdoc-list note-list"><tbody><tr><td class='label'>after_create </td><td>
             <p>Called after creating the object</p>
-            </dd><dt>after_destroy 
-            <dd>
+            </td></tr><tr><td class='label'>after_destroy </td><td>
             <p>Called after destroy the object</p>
-            </dd><dt>after_update 
-            <dd>
+            </td></tr><tr><td class='label'>after_update </td><td>
             <p>Called after updating the object</p>
-            </dd><dt>before_create 
-            <dd>
+            </td></tr><tr><td class='label'>before_create </td><td>
             <p>Called before creating the object</p>
-            </dd><dt>before_destroy 
-            <dd>
+            </td></tr><tr><td class='label'>before_destroy </td><td>
             <p>Called before destroy the object</p>
-            </dd><dt>before_edit 
-            <dd>
+            </td></tr><tr><td class='label'>before_edit </td><td>
             <p>Called before displaying object on edit page</p>
-            </dd><dt>before_new 
-            <dd>
+            </td></tr><tr><td class='label'>before_new </td><td>
             <p>Called before displaying object on new page</p>
-            </dd><dt>before_update 
-            <dd>
+            </td></tr><tr><td class='label'>before_update </td><td>
             <p>Called before updating the object</p>
-            </dd></dl>
+            </td></tr></tbody></table>
             
             <p>There&#39;s also an addition before_action hook that is called with the
             type symbol of the request, and the request before every page.</p>
