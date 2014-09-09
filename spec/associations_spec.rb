@@ -421,6 +421,36 @@ describe AutoForme do
     page.current_path.should == '/Album/browse'
   end
 
+  it "should display but not link if the action is not supported " do
+    app_setup do
+      model Artist do
+        association_links :all
+      end
+      model Album do
+        association_links :all
+        supported_actions [:new]
+        display_name{|o| o.name.to_sym}
+      end
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'Artist1'
+    click_button 'Create'
+
+    click_link 'Edit'
+    select 'Artist1'
+    click_button 'Edit'
+    click_link 'create'
+    fill_in 'Name', :with=>'Album1'
+    click_button 'Create'
+
+    visit("/Artist/edit")
+    select 'Artist1'
+    click_button 'Edit'
+    page.html.should =~ /Album1/
+    page.html.should_not =~ />edit</
+  end
+
   it "should support lazy loading association links on show and edit pages" do
     app_setup do
       model Artist do

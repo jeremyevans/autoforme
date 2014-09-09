@@ -311,7 +311,7 @@ module AutoForme
 
     # A human readable string representing the object.
     def object_display_name(type, request, obj)
-      apply_name_method(display_name_for, obj, type, request)
+      apply_name_method(display_name_for, obj, type, request).to_s
     end
 
     # A human reable string for the associated object.
@@ -327,7 +327,7 @@ module AutoForme
         obj.name
       else
         primary_key_value(obj)
-      end
+      end.to_s
     end
 
     private
