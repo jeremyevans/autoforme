@@ -41,23 +41,23 @@ describe AutoForme do
     click_button "Edit"
 
     find('h2').text.should == 'Edit Albums for Artist1'
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album1", "Album2", "Album3"]
-    all('select')[1].all('option').map{|s| s.text}.should == []
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album1", "Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == []
     select("Album1", :from=>"Associate With")
     click_button "Update"
     page.html.should =~ /Updated albums association for Artist/
     Artist.first.albums.map{|x| x.name}.should == %w'Album1'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["Album1"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["Album1"]
     select("Album2", :from=>"Associate With")
     select("Album3", :from=>"Associate With")
     select("Album1", :from=>"Disassociate From")
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2 Album3'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
   end
 
   it "should have many to many association editing working with autocompletion" do
@@ -79,23 +79,23 @@ describe AutoForme do
     select("Artist1")
     click_button "Edit"
 
-    all('select')[0].all('option').map{|s| s.text}.should == []
+    page.all('select')[0].all('option').map{|s| s.text}.should == []
     fill_in "Associate With", :with=>a1.id
     click_button "Update"
     page.html.should =~ /Updated albums association for Artist/
     Artist.first.albums.map{|x| x.name}.should == %w'Album1'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
     fill_in "Associate With", :with=>a2.id
     select("Album1", :from=>"Disassociate From")
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album2"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album2"]
     select("Album2", :from=>"Disassociate From")
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == []
-    all('select')[0].all('option').map{|s| s.text}.should == []
+    page.all('select')[0].all('option').map{|s| s.text}.should == []
   end
 
   it "should have inline many to many association editing working" do
@@ -219,22 +219,22 @@ describe AutoForme do
     select("Artist1")
     click_button "Edit"
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album1", "Album2", "Album3"]
-    all('select')[1].all('option').map{|s| s.text}.should == []
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album1", "Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == []
     select("Album1", :from=>"Associate With")
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album1'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["Album1"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["Album1"]
     select("Album2", :from=>"Associate With")
     select("Album3", :from=>"Associate With")
     select("Album1", :from=>"Disassociate From")
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2 Album3'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
   end
 
   it "should use filter/order from associated class" do
@@ -257,21 +257,21 @@ describe AutoForme do
     select("Artist1")
     click_button "Edit"
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["B1", "E1"]
-    all('select')[1].all('option').map{|s| s.text}.should == []
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["B1", "E1"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == []
     select("E1", :from=>"Associate With")
     click_button "Update"
     Artist.first.albums.map{|x| x.name}.should == %w'E1'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["B1"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["E1"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["B1"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["E1"]
     select("B1", :from=>"Associate With")
     select("E1", :from=>"Disassociate From")
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'B1'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["E1"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["B1"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["E1"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["B1"]
 
     select("B1", :from=>"Disassociate From")
     Album.where(:name=>'B1').update(:name=>'Z1')
@@ -287,8 +287,8 @@ describe AutoForme do
     visit('/Artist/mtm_edit')
     select("Artist1")
     click_button "Edit"
-    all('select')[0].all('option').map{|s| s.text}.should == []
-    all('select')[1].all('option').map{|s| s.text}.should == []
+    page.all('select')[0].all('option').map{|s| s.text}.should == []
+    page.all('select')[1].all('option').map{|s| s.text}.should == []
   end
 
   it "should support column options on mtm_edit page" do
@@ -359,22 +359,22 @@ describe AutoForme do
     click_button "Edit"
 
     find('h2').text.should == 'Edit Albums for Artist1'
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album1", "Album2", "Album3"]
-    all('select')[1].all('option').map{|s| s.text}.should == []
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album1", "Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == []
     select("Album1", :from=>"Associate With")
     click_button "Update"
     page.html.should =~ /Updated albums association for Artist/
     Artist.first.albums.map{|x| x.name}.should == %w'Album1'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["Album1"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["Album1"]
     select("Album2", :from=>"Associate With")
     select("Album3", :from=>"Associate With")
     select("Album1", :from=>"Disassociate From")
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2 Album3'
 
-    all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
-    all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
+    page.all('select')[0].all('option').map{|s| s.text}.should == ["Album1"]
+    page.all('select')[1].all('option').map{|s| s.text}.should == ["Album2", "Album3"]
   end
 end

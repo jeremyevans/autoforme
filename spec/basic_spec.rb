@@ -38,26 +38,26 @@ describe AutoForme do
     page.find('title').text.should == 'Artist - Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     click_link 'Search'
     fill_in 'Name', :with=>'Foo'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.should == []
 
     click_link 'Artist'
     page.find('title').text.should == 'Artist - Browse'
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
-    all('td').last.find('a').click
+    page.all('td').last.find('a').click
     click_button 'Delete'
     page.find('title').text.should == 'Artist - Delete'
     page.html.should =~ /Deleted Artist/
     page.current_path.should == '/Artist/delete'
 
     click_link 'Artist'
-    all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.should == []
   end
 
   it "should have basic functionality working in a subdirectory" do
@@ -85,24 +85,24 @@ describe AutoForme do
     click_link 'Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     click_link 'Search'
     fill_in 'Name', :with=>'Foo'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.should == []
 
     click_link 'Artist'
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
-    all('td').last.find('a').click
+    page.all('td').last.find('a').click
     click_button 'Delete'
     page.html.should =~ /Deleted Artist/
     page.current_path.should == '/prefix/Artist/delete'
 
     click_link 'Artist'
-    all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.should == []
   end
 
   it "should have delete button on edit page" do
@@ -195,10 +195,10 @@ describe AutoForme do
     click_link 'Search'
     fill_in 'Search_form Artist Name', :with=>'Upd'
     click_button 'Search'
-    all('th').map{|s| s.text}.should == ["Search Artist Name", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.should == ["Search Artist Name", "Show", "Edit", "Delete"]
 
     click_link 'Artist'
-    all('th').map{|s| s.text}.should == ["Browse Artist Name", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.should == ["Browse Artist Name", "Show", "Edit", "Delete"]
   end
 
   it "should support specifying display names per type" do
@@ -306,26 +306,26 @@ describe AutoForme do
     5.times{|i| Artist.create(:name=>i.to_s)}
     visit("/Artist/browse")
     first('li.disabled a').text.should == 'Previous'
-    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
     click_link 'Next'
-    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
     click_link 'Next'
-    all('tr td:first-child').map{|s| s.text}.should == %w'4'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'4'
     first('li.disabled a').text.should == 'Next'
     click_link 'Previous'
-    all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
     click_link 'Previous'
-    all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
     first('li.disabled a').text.should == 'Previous'
 
     click_link 'Search'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
     click_link 'Next'
-    all('tr td:first-child').map{|s| s.text}.should == %w'3 4'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'3 4'
     first('li.disabled a').text.should == 'Next'
     click_link 'Previous'
-    all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
     first('li.disabled a').text.should == 'Previous'
   end
 
@@ -351,10 +351,10 @@ describe AutoForme do
     click_link 'Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
+    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
 
     click_link 'Artist'
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
+    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
   end
 
   it "should have basic functionality working" do
@@ -376,9 +376,9 @@ describe AutoForme do
     page.html.should =~ /Updated FooArtist/
 
     click_link 'FooArtist'
-    all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
-    all('td').last.find('a').click
+    page.all('td').last.find('a').click
     click_button 'Delete'
     page.html.should =~ /Deleted FooArtist/
   end
@@ -466,10 +466,10 @@ describe AutoForme do
     fill_in 'N4', :with=>'V4'
     fill_in 'N5', :with=>'Q5'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
 
     click_link 'Artist'
-    all('td').map{|s| s.text}.should == ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
   end
 
   it "should support specifying order per type" do
@@ -483,20 +483,20 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show")
-    all('option').map{|s| s.text}.should == ['', '2', '1', '0']
+    page.all('option').map{|s| s.text}.should == ['', '2', '1', '0']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == ['', '0', '1', '2']
+    page.all('option').map{|s| s.text}.should == ['', '0', '1', '2']
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == ['', '2', '0', '1']
+    page.all('option').map{|s| s.text}.should == ['', '2', '0', '1']
 
     click_link 'Search'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == ['0', '2', '1']
+    page.all('tr td:first-child').map{|s| s.text}.should == ['0', '2', '1']
 
     click_link 'Artist'
-    all('tr td:first-child').map{|s| s.text}.should == ['1', '2', '0']
+    page.all('tr td:first-child').map{|s| s.text}.should == ['1', '2', '0']
   end
 
   it "should support specifying filter per type" do
@@ -522,16 +522,16 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show")
-    all('option').map{|s| s.text}.should == ['', '0']
+    page.all('option').map{|s| s.text}.should == ['', '0']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == ['', '2']
+    page.all('option').map{|s| s.text}.should == ['', '2']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == ['', '1']
+    page.all('option').map{|s| s.text}.should == ['', '1']
     select '1'
     click_button 'Delete'
     click_button 'Delete'
@@ -539,10 +539,10 @@ describe AutoForme do
 
     click_link 'Search'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
 
     click_link 'Artist'
-    all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
   end
 
   it "should support specifying filter per type using request params" do
@@ -569,19 +569,19 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show?f=3")
-    all('option').map{|s| s.text}.should == ['', '0']
+    page.all('option').map{|s| s.text}.should == ['', '0']
 
     visit("/Artist/edit?f=1")
-    all('option').map{|s| s.text}.should == ['', '2']
+    page.all('option').map{|s| s.text}.should == ['', '2']
 
     visit("/Artist/delete?f=2")
-    all('option').map{|s| s.text}.should == ['', '1']
+    page.all('option').map{|s| s.text}.should == ['', '1']
 
     visit("/Artist/search/1?f=4")
-    all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
 
     visit("/Artist/browse?f=6")
-    all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
   end
 
   it "should support specifying filter per type using request session" do
@@ -596,16 +596,16 @@ describe AutoForme do
     visit '/session/set?n1=2'
 
     visit("/Artist/show")
-    all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.should == ['', '2', '1']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.should == ['', '2', '1']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.should == ['', '2', '1']
     select '1'
     click_button 'Delete'
     click_button 'Delete'
@@ -613,10 +613,10 @@ describe AutoForme do
 
     click_link 'Search'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
 
     click_link 'Artist'
-    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
   end
 
   it "should support session_value for restricting access by matching session variable to column value" do
@@ -638,23 +638,23 @@ describe AutoForme do
     click_button 'Create'
 
     click_link 'Show'
-    all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.should == ['', '2', '1']
 
     click_link 'Edit'
-    all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.should == ['', '2', '1']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Search'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
 
     click_link 'Artist'
-    all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
 
     click_link 'Delete'
-    all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.should == ['', '2', '1']
     select '1'
     click_button 'Delete'
   end
@@ -676,9 +676,9 @@ describe AutoForme do
     fill_in 'Num', :with=>'1.01'
     click_button 'Create'
     click_link 'Artist'
-    all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
     click_link 'Search'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
   end
 end

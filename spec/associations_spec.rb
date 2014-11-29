@@ -45,10 +45,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'Artist2'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 
   it "should use text boxes for associated objects on new/edit/search forms if associated model uses autocompleting" do
@@ -82,7 +82,7 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     fill_in 'Artist', :with=>b.id.to_s
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
   end
 
   it "should be able to used specified name formatting in other model" do
@@ -123,10 +123,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'A2A2'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
   end
 
   it "should be able to used specified name formatting for current association" do
@@ -166,10 +166,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'A2A2'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
   end
 
   it "should be able to eager load associations when loading model" do
@@ -210,10 +210,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'A2'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Album1b", "A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "A2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    all('td').map{|s| s.text}.should == ["Album1b", "A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "A2", "Show", "Edit", "Delete"]
 
     click_link 'Delete'
     select 'A2-Album1b'
@@ -271,14 +271,14 @@ describe AutoForme do
     click_button 'Create'
 
     click_link 'Show'
-    all('select option').map{|s| s.text}.should == ['', 'A-Y', 'B-X', 'B-Z']
+    page.all('select option').map{|s| s.text}.should == ['', 'A-Y', 'B-X', 'B-Z']
     select 'B-X'
     click_button 'Show'
     page.html.should =~ /Name.+X/m
     page.html.should =~ /Artist.+B/m
 
     click_link 'Edit'
-    all('select option').map{|s| s.text}.should == ['', 'X (B)', 'Y (A)', 'Z (B)']
+    page.all('select option').map{|s| s.text}.should == ['', 'X (B)', 'Y (A)', 'Z (B)']
     select 'Z (B)'
     click_button 'Edit'
     fill_in 'Name', :with=>'ZZ'
@@ -288,13 +288,13 @@ describe AutoForme do
     click_link 'Search'
     select 'A'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ'
 
     click_link 'Album'
-    all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ X'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ X'
 
     click_link 'Delete'
-    all('select option').map{|s| s.text}.should == ['', 'A-Y', 'A-ZZ', 'B-X']
+    page.all('select option').map{|s| s.text}.should == ['', 'A-Y', 'A-ZZ', 'B-X']
     select 'B-X'
     click_button 'Delete'
   end
@@ -325,15 +325,15 @@ describe AutoForme do
 
     visit("/Album/new")
     fill_in 'Name', :with=>'E'
-    all('select option').map{|s| s.text}.should == ['', 'X 0', 'Y 0', 'Z 0']
+    page.all('select option').map{|s| s.text}.should == ['', 'X 0', 'Y 0', 'Z 0']
     select 'X 0'
     click_button 'Create'
     fill_in 'Name', :with=>'D'
-    all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 0', 'Z 0']
+    page.all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 0', 'Z 0']
     select 'Y 0'
     click_button 'Create'
     fill_in 'Name', :with=>'C'
-    all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 1', 'Z 0']
+    page.all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 1', 'Z 0']
     select 'Y 1'
     click_button 'Create'
 
@@ -346,21 +346,21 @@ describe AutoForme do
     click_link 'Edit'
     select 'C'
     click_button 'Edit'
-    all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 2', 'Z 0']
+    page.all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 2', 'Z 0']
     select 'X 1'
     click_button 'Update'
 
     click_link 'Search'
-    all('select option').map{|s| s.text}.should == ['', 'X 2', 'Y 1', 'Z 0']
+    page.all('select option').map{|s| s.text}.should == ['', 'X 2', 'Y 1', 'Z 0']
     select 'X 2'
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == %w'C E'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'C E'
 
     click_link 'Album'
-    all('tr td:first-child').map{|s| s.text}.should == %w'C D E'
+    page.all('tr td:first-child').map{|s| s.text}.should == %w'C D E'
 
     click_link 'Delete'
-    all('select option').map{|s| s.text}.should == ['', 'C', 'D', 'E']
+    page.all('select option').map{|s| s.text}.should == ['', 'C', 'D', 'E']
     select 'C'
     click_button 'Delete'
     click_button 'Delete'
@@ -375,7 +375,7 @@ describe AutoForme do
     select 'X 1' 
     Artist.where(:name=>'X').update(:name=>'B')
     click_button 'Search'
-    all('tr td:first-child').map{|s| s.text}.should == []
+    page.all('tr td:first-child').map{|s| s.text}.should == []
   end
 
   it "should have working one to many and many to one association links on show and edit pages" do
@@ -552,10 +552,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'Artist2'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 
   it "should have basic many to one associations working" do
@@ -596,10 +596,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'Artist2'
     click_button 'Search'
-    all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 end
 
@@ -624,9 +624,9 @@ describe AutoForme do
 
     %w'A1 E1 L1 N1'.each{|n| Artist.create(:name=>n)}
     visit("/Album/new")
-    all('select option').map{|s| s.text}.should == ["", "A1", "E1", "L1"]
+    page.all('select option').map{|s| s.text}.should == ["", "A1", "E1", "L1"]
 
     visit("/Album/edit/#{Album.create(:name=>'Album1').id}")
-    all('select option').map{|s| s.text}.should == ["", "L1", "E1"]
+    page.all('select option').map{|s| s.text}.should == ["", "L1", "E1"]
   end
 end
