@@ -23,7 +23,7 @@ HTML
   use Rack::Csrf
 
   plugin :static_path_info unless ENV['RODA_NO_STATIC_PATH_INFO']
-  plugin :render, :layout=>{:inline=>LAYOUT}
+  plugin :render, :layout=>{:inline=>LAYOUT}, :opts=>{:default_encoding=>nil}
   plugin :not_found do
     'Unhandled Request'
   end
