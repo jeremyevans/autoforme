@@ -1,5 +1,7 @@
 === HEAD
 
+* Fix double escaping of & in inline mtm edit forms, fixing usage with rack 1.6.0 beta (jeremyevans)
+
 * Work with roda when using static_path_info plugin (jeremyevans)
 
 * Make sure the display name for an object always returns a string (jeremyevans)

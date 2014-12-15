@@ -596,7 +596,7 @@ module AutoForme
 
       t = "<div class='inline_mtm_add_associations'>"
       assocs.each do |assoc|
-        form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;redir=edit"), :class => 'mtm_add_associations', 'data-remove' => "##{assoc}_remove_list")
+        form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&redir=edit"), :class => 'mtm_add_associations', 'data-remove' => "##{assoc}_remove_list")
         t << Forme.form(obj, form_attr, form_opts) do |f|
           opts = model.column_options_for(:mtm_edit, request, assoc)
           add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts.dup
@@ -628,7 +628,7 @@ module AutoForme
     def mtm_edit_remove(assoc, mc, obj, assoc_obj)
       t = "<li>"
       t << association_link(mc, assoc_obj)
-      form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&amp;remove%5b%5d=#{model.primary_key_value(assoc_obj)}&amp;redir=edit"), :method=>'post', :class => 'mtm_remove_associations', 'data-add'=>"#add_#{assoc}")
+      form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&remove%5b%5d=#{model.primary_key_value(assoc_obj)}&redir=edit"), :method=>'post', :class => 'mtm_remove_associations', 'data-add'=>"#add_#{assoc}")
       t << Forme.form(form_attr, form_opts) do |f|
         f.button(:value=>'Remove', :class=>'btn btn-mini btn-danger')
       end.to_s
