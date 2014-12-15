@@ -13,12 +13,12 @@ module AutoForme
           @model = captures[-2]
           @action_type = captures[-1]
           @path = path
-          path_to_match = if @request.respond_to?(:path_to_match)
-            @request.path_to_match
+          remaining_path = if @request.respond_to?(:remaining_path)
+            @request.remaining_path
           else
             @env['PATH_INFO']
           end
-          @id = @params['id'] || ($1 if path_to_match =~ %r{\A\/(\w+)\z})
+          @id = @params['id'] || ($1 if remaining_path =~ %r{\A\/(\w+)\z})
         end
 
         # Redirect to the given path
