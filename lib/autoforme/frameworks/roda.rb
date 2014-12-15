@@ -13,7 +13,12 @@ module AutoForme
           @model = captures[-2]
           @action_type = captures[-1]
           @path = path
-          @id = @params['id'] || ($1 if @env['PATH_INFO'] =~ %r{\A\/(\w+)\z})
+          path_to_match = if @request.respond_to?(:path_to_match)
+            @request.path_to_match
+          else
+            @env['PATH_INFO']
+          end
+          @id = @params['id'] || ($1 if path_to_match =~ %r{\A\/(\w+)\z})
         end
 
         # Redirect to the given path
@@ -47,11 +52,12 @@ module AutoForme
 
         @route_proc = lambda do 
           r = request
-          path = r.env['SCRIPT_NAME']
-          current_matchers = matchers.dup
-          current_matchers << lambda do
-            @autoforme_action = framework.action_for(Request.new(self, path))
+          path = if r.respond_to?(:matched_path)
+            r.matched_path
+          else
+            r.env['SCRIPT_NAME']
           end
+          current_matchers = matchers + [lambda{@autoforme_action = framework.action_for(Request.new(self, path))}]
 
           r.on *current_matchers do
             @autoforme_text = @autoforme_action.handle

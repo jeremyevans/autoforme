@@ -1,5 +1,7 @@
 === HEAD
 
+* Work with roda when using static_path_info plugin (jeremyevans)
+
 * Make sure the display name for an object always returns a string (jeremyevans)
 
 === 1.0.1 (2014-08-19)

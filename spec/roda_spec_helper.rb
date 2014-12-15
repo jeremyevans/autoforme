@@ -22,6 +22,7 @@ HTML
   use Rack::Session::Cookie, :secret => '1'
   use Rack::Csrf
 
+  plugin :static_path_info unless ENV['RODA_NO_STATIC_PATH_INFO']
   plugin :render, :layout=>{:inline=>LAYOUT}
   plugin :not_found do
     'Unhandled Request'
