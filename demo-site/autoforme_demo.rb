@@ -55,7 +55,7 @@ class AutoFormeDemo < Roda
   route do |r|
     r.root do
       @page_title = 'AutoForme Demo Site'
-      view :inline => <<END
+      view :content => <<END
 <p>This is the demo site for <a href="http://autoforme.jeremyevans.net">AutoForme</a>, an admin interface for ruby web applications which uses <a href="http://forme.jeremyevans.net">Forme</a> to create the related forms.</p>
 
 <p>This demo uses <a href="http://roda.jeremyevans.net">Roda</a> as the web framework and <a href="http://sequel.jeremyevans.net">Sequel</a> as the database library.  AutoForme also supports Sinatra and Rails, but the only currently supported database library is Sequel.</p>
