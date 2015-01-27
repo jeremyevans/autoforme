@@ -102,4 +102,6 @@ END
       autoforme(:autocomplete)
     end
   end
+
+  freeze
 end
