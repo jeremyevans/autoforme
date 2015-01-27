@@ -1,3 +1,9 @@
+=== 1.0.3 (2015-01-27)
+
+* Fix homepage in gemspec (jeremyevans)
+
+* Make roda spec work with upcoming Roda 2 release (jeremyevans)
+
 === 1.0.2 (2014-12-17)
 
 * Fix double escaping of & in inline mtm edit forms, fixing usage with rack 1.6.0 beta (jeremyevans)
