@@ -3,12 +3,10 @@ require 'rubygems'
 require 'roda'
 require 'models'
 require 'securerandom'
-require 'rack/protection'
 
 class AutoFormeDemo < Roda
   use Rack::Static, :urls=>%w'/static', :root=>'public'
   use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
-  use Rack::Protection
 
   plugin :flash
   plugin :autoforme

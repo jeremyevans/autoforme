@@ -5,8 +5,6 @@ GEM
     kgio (2.9.2)
     pg (0.18.0)
     rack (1.6.0)
-    rack-protection (1.5.3)
-      rack
     rack_csrf (2.5.0)
       rack (>= 1.1.0)
     raindrops (0.10.0)
@@ -25,7 +23,6 @@ PLATFORMS
 DEPENDENCIES
   forme (>= 0.9.1)
   pg
-  rack-protection
   rack_csrf
   roda (>= 1.2.0)
   sequel
