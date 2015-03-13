@@ -5,7 +5,7 @@ require 'models'
 require 'securerandom'
 
 class AutoFormeDemo < Roda
-  use Rack::Static, :urls=>%w'/static', :root=>'public'
+  plugin :static, %w'/static'
   use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
 
   plugin :flash
