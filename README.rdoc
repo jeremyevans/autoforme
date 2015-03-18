@@ -55,8 +55,8 @@ for Sinatra:
   end
 
 Let's break down how this works.  You setup AutoForme using <tt>AutoForme.for</tt>,
-which takes 2 arguments, the controller type symbol (currently either :sinatra or :rails),
-and the controller class (either a Sinatra::Base or ActionController::Base subclass).  You
+which takes 2 arguments, the controller type symbol (currently either :sinatra, :roda, or :rails),
+and the controller class (either a Sinatra::Base, Roda, or ActionController::Base subclass).  You
 pass <tt>AutoForme.for</tt> a block, which is instance evaled at the framework level.  This
 level sets the defaults.
 
