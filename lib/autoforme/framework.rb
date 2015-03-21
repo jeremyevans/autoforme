@@ -116,10 +116,30 @@ module AutoForme
       handle_proc(association_links, model, type, request)
     end
 
+    # Set whether to register classes by name instead of by reference
+    def register_by_name(register=true)
+      opts[:register_by_name] = register
+    end
+
+    # Whether to register classes by name instead of by reference
+    def register_by_name?
+      opts[:register_by_name]
+    end
+
+    # Look up the Autoforme::Model class to use for the underlying model class instance.
+    def model_class(model_class)
+      if register_by_name?
+        model_class = model_class.name
+      end
+      @model_classes[model_class]
+    end
+
     # Add a new model to the existing framework.  
     def model(model_class, &block)
-      model = Model.for(self, model_type, model_class, &block)
-      @model_classes[model.model] = model
+      if register_by_name?
+        model_class = model_class.name
+      end
+      model = @model_classes[model_class] = Model.for(self, model_type, model_class, &block)
       @models[model.link] = model
     end
 

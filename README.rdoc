@@ -212,6 +212,21 @@ AutoForme's javascript support is contained in the autoforme.js file in the root
 of the distribution.  AutoForme's autocompleting support also requires
 https://github.com/dyve/jquery-autocomplete
 
+= Reloading Code
+
+By default, AutoForme stores classes by reference.  This can cause issues when using
+code reloading in development environments.  You can call +register_by_name+ to set
+Autoforme to store classes by name, so that if a class is removed and reloaded (giving
+a new class reference), it will use the new class instead of the reference to the old
+class.  Example:
+
+  class App < Sinatra::Base
+    AutoForme.for(:sinatra, self) do
+      register_by_name
+      model Artist
+    end
+  end
+
 = TODO
 
 * capybara-webkit tests for ajax behavior

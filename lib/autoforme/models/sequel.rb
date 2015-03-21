@@ -11,7 +11,7 @@ module AutoForme
       # Make sure the forme plugin is loaded into the model.
       def initialize(*)
         super
-        @model.plugin :forme
+        model.plugin :forme
       end
 
       # The base class for the underlying model, ::Sequel::Model.
@@ -21,7 +21,7 @@ module AutoForme
 
       # A completely empty search object, with no defaults.
       def new_search
-        @model.call({})
+        model.call({})
       end
 
       # The name of the form param for the given association.
@@ -120,7 +120,7 @@ module AutoForme
       # The namespace for form parameter names for this model, needs to match
       # the ones automatically used by Forme.
       def params_name
-        @model.send(:underscore, @model.name)
+        model.send(:underscore, model.name)
       end
 
       # Retrieve underlying model instance with matching primary key
@@ -329,7 +329,7 @@ module AutoForme
       private
 
       def dataset_for(type, request)
-        ds = @model.dataset
+        ds = model.dataset
         if filter = filter_for
           ds = filter.call(ds, type, request)
         end
@@ -337,7 +337,7 @@ module AutoForme
       end
 
       def all_dataset_for(type, request)
-        apply_dataset_options(type, request, @model.dataset)
+        apply_dataset_options(type, request, model.dataset)
       end
     end
   end

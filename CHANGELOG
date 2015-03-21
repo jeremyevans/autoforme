@@ -1,3 +1,7 @@
+=== HEAD
+
+* Add Framework#register_by_name to allow autoforme to work better when using code reloading in development (jeremyevans)
+
 === 1.0.3 (2015-01-27)
 
 * Fix homepage in gemspec (jeremyevans)

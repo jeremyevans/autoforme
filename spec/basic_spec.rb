@@ -682,3 +682,76 @@ describe AutoForme do
     page.all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
   end
 end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string]])
+    model_setup(:Artist=>[:artists])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should have basic functionality working when reloading code" do
+    app_setup do
+      register_by_name
+      model Artist
+    end
+    artist_class = Artist
+    Object.send(:remove_const, :Artist)
+    ::Artist = Class.new(artist_class) do
+      def name
+        "-#{super}-"
+      end
+      def forme_name
+        "[#{name}]"
+      end
+    end
+    visit("/Artist/new")
+    page.find('title').text.should == 'Artist - New'
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.html.should =~ /Created Artist/
+    page.current_path.should == '/Artist/new'
+
+    click_link 'Show'
+    page.find('title').text.should == 'Artist - Show'
+    select '[-TestArtistNew-]'
+    click_button 'Show'
+    page.html.should =~ /Name.+-TestArtistNew-/m
+
+    click_link 'Edit'
+    page.find('title').text.should == 'Artist - Edit'
+    select '[-TestArtistNew-]'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'TestArtistUpdate'
+    click_button 'Update'
+    page.html.should =~ /Updated Artist/
+    page.html.should =~ /Name.+-TestArtistUpdate-/m
+    page.current_path.should =~ %r{/Artist/edit/\d+}
+
+    click_link 'Search'
+    page.find('title').text.should == 'Artist - Search'
+    fill_in 'Name', :with=>'Upd'
+    click_button 'Search'
+    page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.should == ["-TestArtistUpdate-", "Show", "Edit", "Delete"]
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'Foo'
+    click_button 'Search'
+    page.all('td').map{|s| s.text}.should == []
+
+    click_link 'Artist'
+    page.find('title').text.should == 'Artist - Browse'
+    page.all('td').map{|s| s.text}.should == ["-TestArtistUpdate-", "Show", "Edit", "Delete"]
+
+    page.all('td').last.find('a').click
+    click_button 'Delete'
+    page.html.should =~ /Deleted Artist/
+    page.current_path.should == '/Artist/delete'
+
+    click_link 'Artist'
+    page.all('td').map{|s| s.text}.should == []
+  end
+end

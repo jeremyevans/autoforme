@@ -13,6 +13,9 @@ module AutoForme
     # The default supported actions for models.
     DEFAULT_SUPPORTED_ACTIONS = [:browse, :new, :show, :edit, :delete, :search, :mtm_edit]
 
+    # Regexp for valid constant names, to prevent code execution.
+    VALID_CONSTANT_NAME_REGEXP = /\A(?:::)?([A-Z]\w*(?:::[A-Z]\w*)*)\z/.freeze
+
     extend OptsAttributes
 
     # Create a new instance for the given model type and underlying model class
@@ -25,9 +28,6 @@ module AutoForme
 
     # The AutoForme::Framework class tied to the current model
     attr_reader :framework
-    
-    # The underlying model class for the current model
-    attr_reader :model
     
     # The options for the given model.
     attr_reader :opts
@@ -45,6 +45,17 @@ module AutoForme
       @model = model
       @framework = framework
       @opts = {}
+    end
+
+    # The underlying model class for the current model
+    def model
+      if @model.is_a?(Class)
+        @model
+      elsif m = VALID_CONSTANT_NAME_REGEXP.match(@model)
+        Object.module_eval("::#{m[1]}", __FILE__, __LINE__)
+      else
+        raise Error, "invalid model for AutoForme::Model, not a class or valid constant name: #{@model.inspect}"
+      end
     end
 
     # Whether the given type of action is supported for this model.
@@ -223,7 +234,7 @@ module AutoForme
 
     # The AutoForme::Model instance associated to the given association.
     def associated_model_class(assoc)
-      framework.model_classes[associated_class(assoc)]
+      framework.model_class(associated_class(assoc))
     end
 
     # The column value to display for the given object and column.
@@ -283,7 +294,7 @@ module AutoForme
     # Create a new instance of the underlying model, setting
     # defaults based on the params given.
     def new(params, request)
-      obj = @model.new
+      obj = model.new
       if params
         columns_for(:new, request).each do |col|
           if association?(col)
