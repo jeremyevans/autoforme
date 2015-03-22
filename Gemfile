@@ -7,3 +7,8 @@ gem 'tilt'
 gem 'rack_csrf'
 gem 'pg'
 gem 'unicorn'
+
+group :development, :test do
+  gem 'rspec', '>=2'
+  gem 'capybara', '>=2.1.0'
+end

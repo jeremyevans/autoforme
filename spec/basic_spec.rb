@@ -12,20 +12,20 @@ describe AutoForme do
   it "should have basic functionality working" do
     app_setup(Artist)
     visit("/Artist/new")
-    page.find('title').text.should == 'Artist - New'
+    page.title.should == 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
     page.html.should =~ /Created Artist/
     page.current_path.should == '/Artist/new'
 
     click_link 'Show'
-    page.find('title').text.should == 'Artist - Show'
+    page.title.should == 'Artist - Show'
     select 'TestArtistNew'
     click_button 'Show'
     page.html.should =~ /Name.+TestArtistNew/m
 
     click_link 'Edit'
-    page.find('title').text.should == 'Artist - Edit'
+    page.title.should == 'Artist - Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
@@ -35,7 +35,7 @@ describe AutoForme do
     page.current_path.should =~ %r{/Artist/edit/\d+}
 
     click_link 'Search'
-    page.find('title').text.should == 'Artist - Search'
+    page.title.should == 'Artist - Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
     page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
@@ -47,12 +47,12 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.should == []
 
     click_link 'Artist'
-    page.find('title').text.should == 'Artist - Browse'
+    page.title.should == 'Artist - Browse'
     page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.find('title').text.should == 'Artist - Delete'
+    page.title.should == 'Artist - Delete'
     page.html.should =~ /Deleted Artist/
     page.current_path.should == '/Artist/delete'
 
@@ -274,7 +274,7 @@ describe AutoForme do
     a.should == [:show, :browse]
     a.clear
 
-    click_link 'Delete'
+    click_link 'Delete', :match=>:first
     Artist.create(:name=>'A')
     select 'WENTSITRATSET21'
     click_button 'Delete'
@@ -653,7 +653,7 @@ describe AutoForme do
     click_link 'Artist'
     page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
 
-    click_link 'Delete'
+    click_link 'Delete', :match=>:first
     page.all('option').map{|s| s.text}.should == ['', '2', '1']
     select '1'
     click_button 'Delete'
@@ -672,7 +672,7 @@ describe AutoForme do
   it "should display decimals in float format in tables" do
     app_setup(Artist)
     visit("/Artist/new")
-    page.find('title').text.should == 'Artist - New'
+    page.title.should == 'Artist - New'
     fill_in 'Num', :with=>'1.01'
     click_button 'Create'
     click_link 'Artist'
@@ -708,20 +708,20 @@ describe AutoForme do
       end
     end
     visit("/Artist/new")
-    page.find('title').text.should == 'Artist - New'
+    page.title.should == 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
     page.html.should =~ /Created Artist/
     page.current_path.should == '/Artist/new'
 
     click_link 'Show'
-    page.find('title').text.should == 'Artist - Show'
+    page.title.should == 'Artist - Show'
     select '[-TestArtistNew-]'
     click_button 'Show'
     page.html.should =~ /Name.+-TestArtistNew-/m
 
     click_link 'Edit'
-    page.find('title').text.should == 'Artist - Edit'
+    page.title.should == 'Artist - Edit'
     select '[-TestArtistNew-]'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
@@ -731,7 +731,7 @@ describe AutoForme do
     page.current_path.should =~ %r{/Artist/edit/\d+}
 
     click_link 'Search'
-    page.find('title').text.should == 'Artist - Search'
+    page.title.should == 'Artist - Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
     page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
@@ -743,7 +743,7 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.should == []
 
     click_link 'Artist'
-    page.find('title').text.should == 'Artist - Browse'
+    page.title.should == 'Artist - Browse'
     page.all('td').map{|s| s.text}.should == ["-TestArtistUpdate-", "Show", "Edit", "Delete"]
 
     page.all('td').last.find('a').click

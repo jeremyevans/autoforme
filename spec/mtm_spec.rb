@@ -36,7 +36,7 @@ describe AutoForme do
     Album.create(:name=>'Album3')
 
     visit("/Artist/mtm_edit")
-    page.find('title').text.should == 'Artist - Many To Many Edit'
+    page.title.should == 'Artist - Many To Many Edit'
     select("Artist1")
     click_button "Edit"
 
@@ -123,7 +123,7 @@ describe AutoForme do
     click_button 'Add'
     Artist.first.refresh.albums.map{|x| x.name}.sort.should == %w'Album1 Album2'
 
-    click_button 'Remove'
+    click_button 'Remove', :match=>:first
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2'
 
     select 'Album3'
@@ -158,7 +158,7 @@ describe AutoForme do
     click_button 'Add'
     Artist.first.refresh.albums.map{|x| x.name}.sort.should == %w'Album1 Album2'
 
-    click_button 'Remove'
+    click_button 'Remove', :match=>:first
     Artist.first.refresh.albums.map{|x| x.name}.should == %w'Album2'
 
     fill_in 'Albums', :with=>a3.id.to_s
@@ -351,7 +351,7 @@ describe AutoForme do
     Album.create(:name=>'Album3')
 
     visit("/Artist/mtm_edit")
-    page.find('title').text.should == 'Artist - Many To Many Edit'
+    page.title.should == 'Artist - Many To Many Edit'
     select("Artist1")
     click_button "Edit"
 

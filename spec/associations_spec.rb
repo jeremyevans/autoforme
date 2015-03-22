@@ -215,7 +215,7 @@ describe AutoForme do
     click_link 'Album'
     page.all('td').map{|s| s.text}.should == ["Album1b", "A2", "Show", "Edit", "Delete"]
 
-    click_link 'Delete'
+    click_link 'Delete', :match=>:first
     select 'A2-Album1b'
     click_button 'Delete'
   end
@@ -293,7 +293,7 @@ describe AutoForme do
     click_link 'Album'
     page.all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ X'
 
-    click_link 'Delete'
+    click_link 'Delete', :match=>:first
     page.all('select option').map{|s| s.text}.should == ['', 'A-Y', 'A-ZZ', 'B-X']
     select 'B-X'
     click_button 'Delete'
@@ -359,7 +359,7 @@ describe AutoForme do
     click_link 'Album'
     page.all('tr td:first-child').map{|s| s.text}.should == %w'C D E'
 
-    click_link 'Delete'
+    click_link 'Delete', :match=>:first
     page.all('select option').map{|s| s.text}.should == ['', 'C', 'D', 'E']
     select 'C'
     click_button 'Delete'
@@ -410,7 +410,7 @@ describe AutoForme do
     click_link 'Artist'
     page.current_path.should == '/Artist/browse'
 
-    click_link 'Edit'
+    click_link 'Edit', :match=>:first
     select 'Artist1'
     click_button 'Edit'
     click_link 'Album1'
@@ -490,7 +490,7 @@ describe AutoForme do
     click_link 'Artist'
     page.current_path.should == '/Artist/browse'
 
-    click_link 'Edit'
+    click_link 'Edit', :match=>:first
     select 'Artist1'
     click_button 'Edit'
     click_link 'Show Associations'
