@@ -76,12 +76,12 @@ module AutoForme
     
     # Whether an mtm_edit can be displayed for the given association
     def supported_mtm_edit?(assoc, request)
-      mtm_association_select_options(request).map{|x| x.to_s}.include?(assoc)
+      mtm_association_select_options(request).map(&:to_s).include?(assoc)
     end
 
     # Whether an mtm_update can occur for the given association
     def supported_mtm_update?(assoc, request)
-      supported_mtm_edit?(assoc, request) || inline_mtm_assocs(request).map{|x| x.to_s}.include?(assoc) 
+      supported_mtm_edit?(assoc, request) || inline_mtm_assocs(request).map(&:to_s).include?(assoc) 
     end
 
     # An array of many to many association symbols to handle inline on the edit forms.

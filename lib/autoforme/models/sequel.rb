@@ -58,7 +58,7 @@ module AutoForme
       def association?(column)
         case column
         when String
-          model.associations.map{|x| x.to_s}.include?(column)
+          model.associations.map(&:to_s).include?(column)
         else
           model.association_reflection(column)
         end
@@ -103,7 +103,7 @@ module AutoForme
 
       # Array of association name strings for given association types
       def association_names(types=SUPPORTED_ASSOCIATION_TYPES)
-        model.all_association_reflections.select{|r| types.include?(r[:type])}.map{|r| r[:name]}.sort_by{|n| n.to_s}
+        model.all_association_reflections.select{|r| types.include?(r[:type])}.map{|r| r[:name]}.sort_by(&:to_s)
       end
 
       # Save the object, returning the object if successful, or nil if not.
@@ -142,7 +142,7 @@ module AutoForme
             columns[i] = reflection[:name]
           end
         end
-        columns.sort_by{|s| s.to_s}
+        columns.sort_by(&:to_s)
       end
 
       # Add a filter restricting access to only rows where the column name
