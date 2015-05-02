@@ -12,52 +12,52 @@ describe AutoForme do
   it "should have basic functionality working" do
     app_setup(Artist)
     visit("/Artist/new")
-    page.title.should == 'Artist - New'
+    page.title.must_equal 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.should =~ /Created Artist/
-    page.current_path.should == '/Artist/new'
+    page.html.must_match /Created Artist/
+    page.current_path.must_equal '/Artist/new'
 
     click_link 'Show'
-    page.title.should == 'Artist - Show'
+    page.title.must_equal 'Artist - Show'
     select 'TestArtistNew'
     click_button 'Show'
-    page.html.should =~ /Name.+TestArtistNew/m
+    page.html.must_match /Name.+TestArtistNew/m
 
     click_link 'Edit'
-    page.title.should == 'Artist - Edit'
+    page.title.must_equal 'Artist - Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.should =~ /Updated Artist/
-    page.html.should =~ /Name.+TestArtistUpdate/m
-    page.current_path.should =~ %r{/Artist/edit/\d+}
+    page.html.must_match /Updated Artist/
+    page.html.must_match /Name.+TestArtistUpdate/m
+    page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
-    page.title.should == 'Artist - Search'
+    page.title.must_equal 'Artist - Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
-    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     click_link 'Search'
     fill_in 'Name', :with=>'Foo'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.must_equal []
 
     click_link 'Artist'
-    page.title.should == 'Artist - Browse'
-    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.title.must_equal 'Artist - Browse'
+    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.title.should == 'Artist - Delete'
-    page.html.should =~ /Deleted Artist/
-    page.current_path.should == '/Artist/delete'
+    page.title.must_equal 'Artist - Delete'
+    page.html.must_match /Deleted Artist/
+    page.current_path.must_equal '/Artist/delete'
 
     click_link 'Artist'
-    page.all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.must_equal []
   end
 
   it "should have basic functionality working in a subdirectory" do
@@ -65,44 +65,44 @@ describe AutoForme do
     visit("/prefix/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.should =~ /Created Artist/
-    page.current_path.should == '/prefix/Artist/new'
+    page.html.must_match /Created Artist/
+    page.current_path.must_equal '/prefix/Artist/new'
 
     click_link 'Show'
     select 'TestArtistNew'
     click_button 'Show'
-    page.html.should =~ /Name.+TestArtistNew/m
+    page.html.must_match /Name.+TestArtistNew/m
 
     click_link 'Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.should =~ /Updated Artist/
-    page.html.should =~ /Name.+TestArtistUpdate/m
-    page.current_path.should =~ %r{/prefix/Artist/edit/\d+}
+    page.html.must_match /Updated Artist/
+    page.html.must_match /Name.+TestArtistUpdate/m
+    page.current_path.must_match %r{/prefix/Artist/edit/\d+}
 
     click_link 'Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
-    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     click_link 'Search'
     fill_in 'Name', :with=>'Foo'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.must_equal []
 
     click_link 'Artist'
-    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.html.should =~ /Deleted Artist/
-    page.current_path.should == '/prefix/Artist/delete'
+    page.html.must_match /Deleted Artist/
+    page.current_path.must_equal '/prefix/Artist/delete'
 
     click_link 'Artist'
-    page.all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.must_equal []
   end
 
   it "should have delete button on edit page" do
@@ -115,9 +115,9 @@ describe AutoForme do
     select 'TestArtistNew'
     click_button 'Edit'
     click_button 'Delete'
-    Artist.count.should == 1
+    Artist.count.must_equal 1
     click_button 'Delete'
-    Artist.count.should == 0
+    Artist.count.must_equal 0
   end
 
   it "should support custom headers and footers" do
@@ -126,7 +126,7 @@ describe AutoForme do
       page_footer "<a href='/Artist/edit'>E</a>"
     end
     visit("/Artist/browse")
-    page.html.should_not =~ /search/
+    page.html.wont_match /search/
     click_link 'N'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
@@ -151,14 +151,14 @@ describe AutoForme do
     visit("/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.current_path.should =~ %r{/Artist/edit/\d}
+    page.current_path.must_match %r{/Artist/edit/\d}
     click_button 'Update'
-    page.current_path.should =~ %r{/Artist/show/\d}
+    page.current_path.must_match %r{/Artist/show/\d}
     click_link 'Delete'
     select 'TestArtistNew'
     click_button 'Delete'
     click_button 'Delete'
-    page.current_path.should == "/Artist/new"
+    page.current_path.must_equal "/Artist/new"
   end
 
   it "should support custom form options and attributes" do
@@ -167,9 +167,9 @@ describe AutoForme do
       form_options :input_defaults=>{'text'=>{:class=>'barfoo'}}
     end
     visit("/Artist/new")
-    find('form')[:class].should == 'foobar forme artist'
-    find('form')[:action].should == '/create_artist'
-    find('form input#artist_name')[:class].should == 'barfoo'
+    find('form')[:class].must_equal 'foobar forme artist'
+    find('form')[:action].must_equal '/create_artist'
+    find('form input#artist_name')[:class].must_equal 'barfoo'
   end
 
   it "should support support specifying column options per type" do
@@ -180,25 +180,25 @@ describe AutoForme do
     visit("/Artist/new")
     fill_in 'New Artist Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.current_path.should == '/Artist/new'
+    page.current_path.must_equal '/Artist/new'
 
     click_link 'Show'
     select 'TestArtistNew'
     click_button 'Show'
-    page.html.should =~ /Show Artist Name.+TestArtistNew/m
+    page.html.must_match /Show Artist Name.+TestArtistNew/m
     click_button 'Edit'
     fill_in 'Edit Artist Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.should =~ /Edit Artist Name.+TestArtistUpdate/m
-    page.current_path.should =~ %r{/Artist/edit/\d+}
+    page.html.must_match /Edit Artist Name.+TestArtistUpdate/m
+    page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
     fill_in 'Search_form Artist Name', :with=>'Upd'
     click_button 'Search'
-    page.all('th').map{|s| s.text}.should == ["Search Artist Name", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.must_equal ["Search Artist Name", "Show", "Edit", "Delete"]
 
     click_link 'Artist'
-    page.all('th').map{|s| s.text}.should == ["Browse Artist Name", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.must_equal ["Browse Artist Name", "Show", "Edit", "Delete"]
   end
 
   it "should support specifying display names per type" do
@@ -218,18 +218,18 @@ describe AutoForme do
     visit("/Artist/show")
     select 'stArtistN'
     click_button 'Show'
-    page.html.should =~ /Name.+TestArtistNew/m
+    page.html.must_match /Name.+TestArtistNew/m
 
     click_link 'Edit'
     select 'estArtistNe'
     click_button 'Edit'
-    page.html.should =~ /Name.+TestArtistNew/m
+    page.html.must_match /Name.+TestArtistNew/m
 
     click_link 'Delete'
     select 'Artist'
     click_button 'Delete'
     click_button 'Delete'
-    Artist.count.should == 0
+    Artist.count.must_equal 0
   end
 
   it "should support create, update, delete hooks" do
@@ -258,20 +258,20 @@ describe AutoForme do
     end
     visit("/Artist/new")
     click_button 'Create'
-    a.should == [:new, :create, -1, 'create', 1, :new]
+    a.must_equal [:new, :create, -1, 'create', 1, :new]
     a.clear
 
     click_link 'Edit'
     select 'weNtsitrAtseT'
     click_button 'Edit'
-    page.html.should =~ /weNtsitrAtseT21/
+    page.html.must_match /weNtsitrAtseT21/
     click_button 'Update'
-    a.should == [:edit, :edit, :update, -2, 'update', 2, :edit]
+    a.must_equal [:edit, :edit, :update, -2, 'update', 2, :edit]
     a.clear
 
     click_link 'Show'
-    page.current_path.should == '/Artist/browse'
-    a.should == [:show, :browse]
+    page.current_path.must_equal '/Artist/browse'
+    a.must_equal [:show, :browse]
     a.clear
 
     click_link 'Delete', :match=>:first
@@ -279,13 +279,13 @@ describe AutoForme do
     select 'WENTSITRATSET21'
     click_button 'Delete'
     click_button 'Delete'
-    a.should == [:delete, :delete, :destroy, -3, 'destroy', 3, :delete]
+    a.must_equal [:delete, :delete, :destroy, -3, 'destroy', 3, :delete]
     a.clear
 
     select 'A'
     click_button 'Delete'
-    proc{click_button 'Delete'}.should raise_error
-    a.should == [:delete, :destroy, -3]
+    proc{click_button 'Delete'}.must_raise RuntimeError
+    a.must_equal [:delete, :destroy, -3]
   end
 
   it "should support specifying table class for data tables per type" do
@@ -293,10 +293,10 @@ describe AutoForme do
       table_class{|type, req| type == :browse ? 'foo' : 'bar'}
     end
     visit("/Artist/browse")
-    first('table')['class'].should == 'foo'
+    first('table')['class'].must_equal 'foo'
     click_link 'Search'
     click_button 'Search'
-    first('table')['class'].should == 'bar'
+    first('table')['class'].must_equal 'bar'
   end
 
   it "should support specifying numbers of rows per page per type" do
@@ -305,28 +305,28 @@ describe AutoForme do
     end
     5.times{|i| Artist.create(:name=>i.to_s)}
     visit("/Artist/browse")
-    first('li.disabled a').text.should == 'Previous'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
+    first('li.disabled a').text.must_equal 'Previous'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
     click_link 'Next'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
     click_link 'Next'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'4'
-    first('li.disabled a').text.should == 'Next'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'4'
+    first('li.disabled a').text.must_equal 'Next'
     click_link 'Previous'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 3'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
     click_link 'Previous'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1'
-    first('li.disabled a').text.should == 'Previous'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
+    first('li.disabled a').text.must_equal 'Previous'
 
     click_link 'Search'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
     click_link 'Next'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'3 4'
-    first('li.disabled a').text.should == 'Next'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'3 4'
+    first('li.disabled a').text.must_equal 'Next'
     click_link 'Previous'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'0 1 2'
-    first('li.disabled a').text.should == 'Previous'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
+    first('li.disabled a').text.must_equal 'Previous'
   end
 
   it "should support specifying supported actions" do
@@ -336,25 +336,25 @@ describe AutoForme do
     visit("/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.current_path.should == '/Artist/new'
-    page.html.should_not =~ /Show/
-    page.html.should_not =~ /Delete/
+    page.current_path.must_equal '/Artist/new'
+    page.html.wont_match /Show/
+    page.html.wont_match /Delete/
 
     click_link 'Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.should =~ /Name.+TestArtistUpdate/m
-    page.current_path.should =~ %r{/Artist/edit/\d+}
+    page.html.must_match /Name.+TestArtistUpdate/m
+    page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
+    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Edit"]
 
     click_link 'Artist'
-    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Edit"]
+    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Edit"]
   end
 
   it "should have basic functionality working" do
@@ -365,22 +365,22 @@ describe AutoForme do
     visit("/BarArtist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.should =~ /Created FooArtist/
-    page.current_path.should == '/BarArtist/new'
+    page.html.must_match /Created FooArtist/
+    page.current_path.must_equal '/BarArtist/new'
 
     click_link 'Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.should =~ /Updated FooArtist/
+    page.html.must_match /Updated FooArtist/
 
     click_link 'FooArtist'
-    page.all('td').map{|s| s.text}.should == ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.html.should =~ /Deleted FooArtist/
+    page.html.must_match /Deleted FooArtist/
   end
 
   it "should use text boxes on list page when autocompleting is enabled" do
@@ -392,7 +392,7 @@ describe AutoForme do
     visit('/Artist/show')
     fill_in 'Artist', :with=>a.id.to_s
     click_button 'Show'
-    page.html.should =~ /Name.+TestArtistNew/m
+    page.html.must_match /Name.+TestArtistNew/m
 
     click_link 'Edit'
     fill_in 'Artist', :with=>a.id.to_s
@@ -403,7 +403,7 @@ describe AutoForme do
     fill_in 'Artist', :with=>a.id.to_s
     click_button 'Delete'
     click_button 'Delete'
-    Artist.count.should == 0
+    Artist.count.must_equal 0
   end
 end
 
@@ -434,18 +434,18 @@ describe AutoForme do
     fill_in 'N2', :with=>'V2'
     fill_in 'N3', :with=>'V3'
     fill_in 'N4', :with=>'V4'
-    page.body.should_not =~ /<label>N5/i
+    page.body.wont_match /<label>N5/i
     click_button 'Create'
 
     click_link 'Show'
     select 'V0'
     click_button 'Show'
-    page.body.should =~ /[VN]0/i
-    page.body.should =~ /[VN]1/i
-    page.body.should =~ /[VN]2/i
-    page.body.should_not =~ /[VN]3/i
-    page.body.should =~ /[VN]4/i
-    page.body.should =~ /N5/i
+    page.body.must_match /[VN]0/i
+    page.body.must_match /[VN]1/i
+    page.body.must_match /[VN]2/i
+    page.body.wont_match /[VN]3/i
+    page.body.must_match /[VN]4/i
+    page.body.must_match /N5/i
 
     click_link 'Edit'
     select 'V0'
@@ -454,22 +454,22 @@ describe AutoForme do
     fill_in 'N1', :with=>'Q1'
     fill_in 'N2', :with=>'Q2'
     fill_in 'N3', :with=>'Q3'
-    page.body.should_not =~ /<label>N4/i
+    page.body.wont_match /<label>N4/i
     fill_in 'N5', :with=>'Q5'
     click_button 'Update'
 
     click_link 'Search'
     fill_in 'N0', :with=>'Q0'
-    page.body.should_not =~ /<label>N1/i
+    page.body.wont_match /<label>N1/i
     fill_in 'N2', :with=>'Q2'
     fill_in 'N3', :with=>'Q3'
     fill_in 'N4', :with=>'V4'
     fill_in 'N5', :with=>'Q5'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
 
     click_link 'Artist'
-    page.all('td').map{|s| s.text}.should == ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
   end
 
   it "should support specifying order per type" do
@@ -483,20 +483,20 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show")
-    page.all('option').map{|s| s.text}.should == ['', '2', '1', '0']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '1', '0']
 
     click_link 'Edit'
-    page.all('option').map{|s| s.text}.should == ['', '0', '1', '2']
+    page.all('option').map{|s| s.text}.must_equal ['', '0', '1', '2']
 
     click_link 'Delete'
-    page.all('option').map{|s| s.text}.should == ['', '2', '0', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '0', '1']
 
     click_link 'Search'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == ['0', '2', '1']
+    page.all('tr td:first-child').map{|s| s.text}.must_equal ['0', '2', '1']
 
     click_link 'Artist'
-    page.all('tr td:first-child').map{|s| s.text}.should == ['1', '2', '0']
+    page.all('tr td:first-child').map{|s| s.text}.must_equal ['1', '2', '0']
   end
 
   it "should support specifying filter per type" do
@@ -522,16 +522,16 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show")
-    page.all('option').map{|s| s.text}.should == ['', '0']
+    page.all('option').map{|s| s.text}.must_equal ['', '0']
 
     click_link 'Edit'
-    page.all('option').map{|s| s.text}.should == ['', '2']
+    page.all('option').map{|s| s.text}.must_equal ['', '2']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Delete'
-    page.all('option').map{|s| s.text}.should == ['', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '1']
     select '1'
     click_button 'Delete'
     click_button 'Delete'
@@ -539,10 +539,10 @@ describe AutoForme do
 
     click_link 'Search'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1'
 
     click_link 'Artist'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1'
   end
 
   it "should support specifying filter per type using request params" do
@@ -569,19 +569,19 @@ describe AutoForme do
     Artist.create(:n0=>'0', :n1=>'4', :n2=>'1', :n3=>'5', :n4=>'3')
 
     visit("/Artist/show?f=3")
-    page.all('option').map{|s| s.text}.should == ['', '0']
+    page.all('option').map{|s| s.text}.must_equal ['', '0']
 
     visit("/Artist/edit?f=1")
-    page.all('option').map{|s| s.text}.should == ['', '2']
+    page.all('option').map{|s| s.text}.must_equal ['', '2']
 
     visit("/Artist/delete?f=2")
-    page.all('option').map{|s| s.text}.should == ['', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '1']
 
     visit("/Artist/search/1?f=4")
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1'
 
     visit("/Artist/browse?f=6")
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1'
   end
 
   it "should support specifying filter per type using request session" do
@@ -596,16 +596,16 @@ describe AutoForme do
     visit '/session/set?n1=2'
 
     visit("/Artist/show")
-    page.all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '1']
 
     click_link 'Edit'
-    page.all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '1']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Delete'
-    page.all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '1']
     select '1'
     click_button 'Delete'
     click_button 'Delete'
@@ -613,10 +613,10 @@ describe AutoForme do
 
     click_link 'Search'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 1'
 
     click_link 'Artist'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 1'
   end
 
   it "should support session_value for restricting access by matching session variable to column value" do
@@ -638,23 +638,23 @@ describe AutoForme do
     click_button 'Create'
 
     click_link 'Show'
-    page.all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '1']
 
     click_link 'Edit'
-    page.all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '1']
     select '2'
     click_button 'Edit'
     click_button 'Update'
 
     click_link 'Search'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 1'
 
     click_link 'Artist'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'2 1'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 1'
 
     click_link 'Delete', :match=>:first
-    page.all('option').map{|s| s.text}.should == ['', '2', '1']
+    page.all('option').map{|s| s.text}.must_equal ['', '2', '1']
     select '1'
     click_button 'Delete'
   end
@@ -672,14 +672,14 @@ describe AutoForme do
   it "should display decimals in float format in tables" do
     app_setup(Artist)
     visit("/Artist/new")
-    page.title.should == 'Artist - New'
+    page.title.must_equal 'Artist - New'
     fill_in 'Num', :with=>'1.01'
     click_button 'Create'
     click_link 'Artist'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1.01'
     click_link 'Search'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'1.01'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1.01'
   end
 end
 
@@ -708,50 +708,50 @@ describe AutoForme do
       end
     end
     visit("/Artist/new")
-    page.title.should == 'Artist - New'
+    page.title.must_equal 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.should =~ /Created Artist/
-    page.current_path.should == '/Artist/new'
+    page.html.must_match /Created Artist/
+    page.current_path.must_equal '/Artist/new'
 
     click_link 'Show'
-    page.title.should == 'Artist - Show'
+    page.title.must_equal 'Artist - Show'
     select '[-TestArtistNew-]'
     click_button 'Show'
-    page.html.should =~ /Name.+-TestArtistNew-/m
+    page.html.must_match /Name.+-TestArtistNew-/m
 
     click_link 'Edit'
-    page.title.should == 'Artist - Edit'
+    page.title.must_equal 'Artist - Edit'
     select '[-TestArtistNew-]'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.should =~ /Updated Artist/
-    page.html.should =~ /Name.+-TestArtistUpdate-/m
-    page.current_path.should =~ %r{/Artist/edit/\d+}
+    page.html.must_match /Updated Artist/
+    page.html.must_match /Name.+-TestArtistUpdate-/m
+    page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
-    page.title.should == 'Artist - Search'
+    page.title.must_equal 'Artist - Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
-    page.all('th').map{|s| s.text}.should == ['Name', 'Show', 'Edit', 'Delete']
-    page.all('td').map{|s| s.text}.should == ["-TestArtistUpdate-", "Show", "Edit", "Delete"]
+    page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal ["-TestArtistUpdate-", "Show", "Edit", "Delete"]
 
     click_link 'Search'
     fill_in 'Name', :with=>'Foo'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.must_equal []
 
     click_link 'Artist'
-    page.title.should == 'Artist - Browse'
-    page.all('td').map{|s| s.text}.should == ["-TestArtistUpdate-", "Show", "Edit", "Delete"]
+    page.title.must_equal 'Artist - Browse'
+    page.all('td').map{|s| s.text}.must_equal ["-TestArtistUpdate-", "Show", "Edit", "Delete"]
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.html.should =~ /Deleted Artist/
-    page.current_path.should == '/Artist/delete'
+    page.html.must_match /Deleted Artist/
+    page.current_path.must_equal '/Artist/delete'
 
     click_link 'Artist'
-    page.all('td').map{|s| s.text}.should == []
+    page.all('td').map{|s| s.text}.must_equal []
   end
 end

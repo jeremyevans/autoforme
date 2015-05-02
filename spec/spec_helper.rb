@@ -1,19 +1,19 @@
 require 'rubygems'
 require 'capybara'
 require 'capybara/dsl'
-require 'capybara/rspec/matchers'
 require 'rack/test'
+require 'minitest/autorun'
+require 'minitest/hooks/default'
 
 module AutoFormeSpec
 end
 
 require './spec/sequel_spec_helper'
-require "./spec/#{ENV['FRAMEWORK'] || 'sinatra'}_spec_helper"
+require "./spec/#{ENV['FRAMEWORK'] || 'roda'}_spec_helper"
 
-RSpec::Core::ExampleGroup.class_eval do
+class Minitest::HooksSpec
   include Rack::Test::Methods
   include Capybara::DSL
-  include Capybara::RSpecMatchers
 
   attr_reader :app
   attr_reader :db
@@ -37,9 +37,17 @@ RSpec::Core::ExampleGroup.class_eval do
     self.app = app
     @model = @framework.models[klass.name] if klass
   end
+
+  def around
+    db ? db.transaction(:rollback=>:always){yield} : yield
+  end
   
   after do
     Capybara.reset_sessions!
     Capybara.use_default_driver
+    if Object.const_defined?(:AutoformeController)
+      Object.send(:remove_const, :AutoformeController)
+      Rails.application = nil
+    end
   end
 end

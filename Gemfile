@@ -9,6 +9,7 @@ gem 'pg'
 gem 'unicorn'
 
 group :development, :test do
-  gem 'rspec', '>=2'
+  gem 'minitest'
+  gem 'minitest-hooks'
   gem 'capybara', '>=2.1.0'
 end

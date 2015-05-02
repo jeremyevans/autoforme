@@ -38,17 +38,17 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.should =~ /Name.+Album1b/m
-    page.html.should =~ /Artist.+Artist2/m
+    page.html.must_match /Name.+Album1b/m
+    page.html.must_match /Artist.+Artist2/m
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'
     select 'Artist2'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "Artist2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 
   it "should use text boxes for associated objects on new/edit/search forms if associated model uses autocompleting" do
@@ -68,7 +68,7 @@ describe AutoForme do
     fill_in 'Name', :with=>'Album1'
     fill_in 'Artist', :with=>a.id.to_s
     click_button 'Create'
-    Album.first.artist_id.should == a.id
+    Album.first.artist_id.must_equal a.id
 
     click_link 'Edit'
     select 'Album1'
@@ -76,13 +76,13 @@ describe AutoForme do
     fill_in 'Name', :with=>'Album1b'
     fill_in 'Artist', :with=>b.id.to_s
     click_button 'Update'
-    Album.first.artist_id.should == b.id
+    Album.first.artist_id.must_equal b.id
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'
     fill_in 'Artist', :with=>b.id.to_s
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
   end
 
   it "should be able to used specified name formatting in other model" do
@@ -109,8 +109,8 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.should =~ /Name.+Album1/m
-    page.html.should =~ /Artist.+A1A1/m
+    page.html.must_match /Name.+Album1/m
+    page.html.must_match /Artist.+A1A1/m
 
     click_link 'Edit'
     select 'Album1'
@@ -123,10 +123,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'A2A2'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2A2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2A2", "Show", "Edit", "Delete"]
   end
 
   it "should be able to used specified name formatting for current association" do
@@ -152,8 +152,8 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.should =~ /Name.+Album1/m
-    page.html.should =~ /Artist.+A1A1/m
+    page.html.must_match /Name.+Album1/m
+    page.html.must_match /Artist.+A1A1/m
 
     click_link 'Edit'
     select 'Album1'
@@ -166,10 +166,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'A2A2'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2A2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "A2A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2A2", "Show", "Edit", "Delete"]
   end
 
   it "should be able to eager load associations when loading model" do
@@ -196,8 +196,8 @@ describe AutoForme do
     click_link 'Show'
     select 'A1-Album1'
     click_button 'Show'
-    page.html.should =~ /Name.+Album1/m
-    page.html.should =~ /Artist.+A1/m
+    page.html.must_match /Name.+Album1/m
+    page.html.must_match /Artist.+A1/m
 
     click_link 'Edit'
     select 'A1-Album1'
@@ -210,10 +210,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'1b'
     select 'A2'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "A2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2", "Show", "Edit", "Delete"]
 
     click_link 'Delete', :match=>:first
     select 'A2-Album1b'
@@ -271,14 +271,14 @@ describe AutoForme do
     click_button 'Create'
 
     click_link 'Show'
-    page.all('select option').map{|s| s.text}.should == ['', 'A-Y', 'B-X', 'B-Z']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'A-Y', 'B-X', 'B-Z']
     select 'B-X'
     click_button 'Show'
-    page.html.should =~ /Name.+X/m
-    page.html.should =~ /Artist.+B/m
+    page.html.must_match /Name.+X/m
+    page.html.must_match /Artist.+B/m
 
     click_link 'Edit'
-    page.all('select option').map{|s| s.text}.should == ['', 'X (B)', 'Y (A)', 'Z (B)']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'X (B)', 'Y (A)', 'Z (B)']
     select 'Z (B)'
     click_button 'Edit'
     fill_in 'Name', :with=>'ZZ'
@@ -288,13 +288,13 @@ describe AutoForme do
     click_link 'Search'
     select 'A'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'Y ZZ'
 
     click_link 'Album'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'Y ZZ X'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'Y ZZ X'
 
     click_link 'Delete', :match=>:first
-    page.all('select option').map{|s| s.text}.should == ['', 'A-Y', 'A-ZZ', 'B-X']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'A-Y', 'A-ZZ', 'B-X']
     select 'B-X'
     click_button 'Delete'
   end
@@ -325,42 +325,42 @@ describe AutoForme do
 
     visit("/Album/new")
     fill_in 'Name', :with=>'E'
-    page.all('select option').map{|s| s.text}.should == ['', 'X 0', 'Y 0', 'Z 0']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'X 0', 'Y 0', 'Z 0']
     select 'X 0'
     click_button 'Create'
     fill_in 'Name', :with=>'D'
-    page.all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 0', 'Z 0']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'X 1', 'Y 0', 'Z 0']
     select 'Y 0'
     click_button 'Create'
     fill_in 'Name', :with=>'C'
-    page.all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 1', 'Z 0']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'X 1', 'Y 1', 'Z 0']
     select 'Y 1'
     click_button 'Create'
 
     click_link 'Show'
     select 'D'
     click_button 'Show'
-    page.html.should =~ /Name.+D/m
-    page.html.should =~ /Artist.+Y 2/m
+    page.html.must_match /Name.+D/m
+    page.html.must_match /Artist.+Y 2/m
 
     click_link 'Edit'
     select 'C'
     click_button 'Edit'
-    page.all('select option').map{|s| s.text}.should == ['', 'X 1', 'Y 2', 'Z 0']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'X 1', 'Y 2', 'Z 0']
     select 'X 1'
     click_button 'Update'
 
     click_link 'Search'
-    page.all('select option').map{|s| s.text}.should == ['', 'X 2', 'Y 1', 'Z 0']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'X 2', 'Y 1', 'Z 0']
     select 'X 2'
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'C E'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'C E'
 
     click_link 'Album'
-    page.all('tr td:first-child').map{|s| s.text}.should == %w'C D E'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'C D E'
 
     click_link 'Delete', :match=>:first
-    page.all('select option').map{|s| s.text}.should == ['', 'C', 'D', 'E']
+    page.all('select option').map{|s| s.text}.must_equal ['', 'C', 'D', 'E']
     select 'C'
     click_button 'Delete'
     click_button 'Delete'
@@ -369,13 +369,13 @@ describe AutoForme do
     Artist.where(:name=>'Y').update(:name=>'A')
     fill_in 'Name', :with=>'F'
     select 'Y 1' 
-    proc{click_button 'Create'}.should raise_error(Sequel::NoMatchingRow)
+    proc{click_button 'Create'}.must_raise(Sequel::NoMatchingRow)
 
     visit("/Album/search")
     select 'X 1' 
     Artist.where(:name=>'X').update(:name=>'B')
     click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.should == []
+    page.all('tr td:first-child').map{|s| s.text}.must_equal []
   end
 
   it "should have working one to many and many to one association links on show and edit pages" do
@@ -404,21 +404,21 @@ describe AutoForme do
     select 'Album1'
     click_button 'Show'
     click_link 'Artist1'
-    page.current_path.should =~ %r{Artist/show/\d+}
+    page.current_path.must_match %r{Artist/show/\d+}
     click_link 'Album1'
-    page.current_path.should =~ %r{Album/show/\d+}
+    page.current_path.must_match %r{Album/show/\d+}
     click_link 'Artist'
-    page.current_path.should == '/Artist/browse'
+    page.current_path.must_equal '/Artist/browse'
 
     click_link 'Edit', :match=>:first
     select 'Artist1'
     click_button 'Edit'
     click_link 'Album1'
-    page.current_path.should =~ %r{Album/edit/\d+}
+    page.current_path.must_match %r{Album/edit/\d+}
     click_link 'Artist1'
-    page.current_path.should =~ %r{Artist/edit/\d+}
+    page.current_path.must_match %r{Artist/edit/\d+}
     click_link 'Albums'
-    page.current_path.should == '/Album/browse'
+    page.current_path.must_equal '/Album/browse'
   end
 
   it "should display but not link if the action is not supported " do
@@ -447,8 +447,8 @@ describe AutoForme do
     visit("/Artist/edit")
     select 'Artist1'
     click_button 'Edit'
-    page.html.should =~ /Album1/
-    page.html.should_not =~ />edit</
+    page.html.must_match /Album1/
+    page.html.wont_match />edit</
   end
 
   it "should support lazy loading association links on show and edit pages" do
@@ -471,7 +471,7 @@ describe AutoForme do
     click_link 'Edit'
     select 'Artist1'
     click_button 'Edit'
-    page.html.should_not =~ /create/
+    page.html.wont_match /create/
     click_link 'Show Associations'
     click_link 'create'
     fill_in 'Name', :with=>'Album1'
@@ -482,26 +482,26 @@ describe AutoForme do
     click_button 'Show'
     click_link 'Show Associations'
     click_link 'Artist1'
-    page.current_path.should =~ %r{Artist/show/\d+}
+    page.current_path.must_match %r{Artist/show/\d+}
     click_link 'Show Associations'
     click_link 'Album1'
-    page.current_path.should =~ %r{Album/show/\d+}
+    page.current_path.must_match %r{Album/show/\d+}
     click_link 'Show Associations'
     click_link 'Artist'
-    page.current_path.should == '/Artist/browse'
+    page.current_path.must_equal '/Artist/browse'
 
     click_link 'Edit', :match=>:first
     select 'Artist1'
     click_button 'Edit'
     click_link 'Show Associations'
     click_link 'Album1'
-    page.current_path.should =~ %r{Album/edit/\d+}
+    page.current_path.must_match %r{Album/edit/\d+}
     click_link 'Show Associations'
     click_link 'Artist1'
-    page.current_path.should =~ %r{Artist/edit/\d+}
+    page.current_path.must_match %r{Artist/edit/\d+}
     click_link 'Show Associations'
     click_link 'Albums'
-    page.current_path.should == '/Album/browse'
+    page.current_path.must_equal '/Album/browse'
   end
 end
 
@@ -545,17 +545,17 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.should =~ /Name.+Album1b/m
-    page.html.should =~ /Artist.+Artist2/m
+    page.html.must_match /Name.+Album1b/m
+    page.html.must_match /Artist.+Artist2/m
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'
     select 'Artist2'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "Artist2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 
   it "should have basic many to one associations working" do
@@ -589,17 +589,17 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.should =~ /Name.+Album1b/m
-    page.html.should =~ /Artist.+Artist2/m
+    page.html.must_match /Name.+Album1b/m
+    page.html.must_match /Artist.+Artist2/m
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'
     select 'Artist2'
     click_button 'Search'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "Artist2", "Show", "Edit", "Delete"]
 
     click_link 'Album'
-    page.all('td').map{|s| s.text}.should == ["Album1b", "Artist2", "Show", "Edit", "Delete"]
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 end
 
@@ -624,9 +624,9 @@ describe AutoForme do
 
     %w'A1 E1 L1 N1'.each{|n| Artist.create(:name=>n)}
     visit("/Album/new")
-    page.all('select option').map{|s| s.text}.should == ["", "A1", "E1", "L1"]
+    page.all('select option').map{|s| s.text}.must_equal ["", "A1", "E1", "L1"]
 
     visit("/Album/edit/#{Album.create(:name=>'Album1').id}")
-    page.all('select option').map{|s| s.text}.should == ["", "L1", "E1"]
+    page.all('select option').map{|s| s.text}.must_equal ["", "L1", "E1"]
   end
 end

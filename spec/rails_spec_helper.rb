@@ -2,15 +2,6 @@ require 'rubygems'
 require 'action_controller/railtie'
 require 'autoforme'
 
-RSpec.configure do |c|
-  c.after(:each) do |example|
-    if Object.const_defined?(:AutoformeController)
-      Object.send(:remove_const, :AutoformeController)
-      Rails.application = nil
-    end
-  end
-end
-
 class AutoFormeSpec::App
   def self.autoforme(klass=nil, opts={}, &block)
     sc = Class.new(Rails::Application)

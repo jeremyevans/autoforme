@@ -10,53 +10,25 @@ end
 
 ### Specs
 
-begin
-  require "rspec/core/rake_task"
+spec = proc do |env|
+  env.each{|k,v| ENV[k] = v}
+  sh "#{FileUtils::RUBY} -rubygems -I lib -e 'ARGV.each{|f| require f}' ./spec/*_spec.rb"
+  env.each{|k,v| ENV.delete(k)}
+end
+task :default => :roda_spec
 
-  spec = lambda do |name, files, d|
-    lib_dir = File.join(File.dirname(File.expand_path(__FILE__)), 'lib')
-    ENV['RUBYLIB'] ? (ENV['RUBYLIB'] += ":#{lib_dir}") : (ENV['RUBYLIB'] = lib_dir)
-    desc d
-    RSpec::Core::RakeTask.new(name) do |t|
-      t.pattern= files
-    end
+desc "Run specs for all frameworks"
+task :spec => [:roda_spec, :sinatra_spec, :rails_spec]
+
+%w'roda sinatra rails'.each do |framework|
+  desc "Run specs with for #{framework} with coverage"
+  task "#{framework}_spec" do
+    spec.call('FRAMEWORK'=>framework)
   end
 
-  spec_with_cov = lambda do |name, files, d|
-    spec.call(name, files, d)
-    desc "#{d} with coverage"
-    task "#{name}_cov" do
-      ENV['COVERAGE'] = '1'
-      Rake::Task[name].invoke
-    end
-  end
-  
-  task :default => [:spec]
-  spec_with_cov.call("spec", Dir["spec/*_spec.rb"], "Run specs with sinatra/sequel")
-
-  desc "Run specs with roda/sequel"
-  task :roda_spec do
-    begin
-      ENV['FRAMEWORK'] = 'roda'
-      Rake::Task[:spec].invoke
-    ensure
-      ENV.delete('FRAMEWORK')
-    end
-  end
-
-  desc "Run specs with rails/sequel"
-  task :rails_spec do
-    begin
-      ENV['FRAMEWORK'] = 'rails'
-      Rake::Task[:spec].invoke
-    ensure
-      ENV.delete('FRAMEWORK')
-    end
-  end
-
-rescue LoadError
-  task :default do
-    puts "Must install rspec >=2.0 to run the default task (which runs specs)"
+  desc "Run specs with for #{framework}"
+  task "#{framework}_spec_cov" do
+    spec.call('FRAMEWORK'=>framework, 'COVERAGE'=>'1')
   end
 end
 
