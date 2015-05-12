@@ -38,8 +38,8 @@ class Minitest::HooksSpec
     @model = @framework.models[klass.name] if klass
   end
 
-  def around
-    db ? db.transaction(:rollback=>:always){yield} : yield
+  around do |&block|
+    db ? db.transaction(:rollback=>:always){super(&block)} : super(&block)
   end
   
   after do

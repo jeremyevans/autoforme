@@ -27,4 +27,7 @@ END
   s.add_dependency('forme', [">= 0.9.2"])
   s.add_dependency('rack')
   s.add_dependency('sequel', [">= 3.0.0"])
+  s.add_development_dependency "minitest", '>=5.0.0'
+  s.add_development_dependency "minitest-hooks", '>=1.1.0'
+  s.add_development_dependency "capybara", '>=2.1.0'
 end
