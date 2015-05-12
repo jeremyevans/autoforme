@@ -3,6 +3,12 @@ require 'roda'
 require 'autoforme'
 require 'rack/csrf'
 
+begin
+  require 'tilt/erubis'
+rescue LoadError
+  require 'tilt/erb'
+end
+
 class AutoFormeSpec::App < Roda
   LAYOUT = <<HTML
 <!DOCTYPE html>
