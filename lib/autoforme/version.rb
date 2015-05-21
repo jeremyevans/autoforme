@@ -1,6 +1,6 @@
 module AutoForme
   # Version constant, use <tt>AutoForme.version</tt> instead.
-  VERSION = '1.1.0'.freeze
+  VERSION = '1.2.0'.freeze
 
   # Returns the version as a frozen string (e.g. '0.1.0')
   def self.version

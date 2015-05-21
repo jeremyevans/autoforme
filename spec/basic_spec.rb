@@ -40,7 +40,10 @@ describe AutoForme do
     click_button 'Search'
     page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
     page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    click_link 'CSV Format'
+    page.body.must_equal "Name\nTestArtistUpdate\n"
 
+    visit("/Artist/browse")
     click_link 'Search'
     fill_in 'Name', :with=>'Foo'
     click_button 'Search'
@@ -49,7 +52,10 @@ describe AutoForme do
     click_link 'Artist'
     page.title.must_equal 'Artist - Browse'
     page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
+    click_link 'CSV Format'
+    page.body.must_equal "Name\nTestArtistUpdate\n"
 
+    visit("/Artist/browse")
     page.all('td').last.find('a').click
     click_button 'Delete'
     page.title.must_equal 'Artist - Delete'
@@ -467,9 +473,13 @@ describe AutoForme do
     fill_in 'N5', :with=>'Q5'
     click_button 'Search'
     page.all('td').map{|s| s.text}.must_equal ["Q1", "Q2", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
+    click_link 'CSV Format'
+    page.body.must_equal "N1,N2,N3,N4,N5\nQ1,Q2,Q3,V4,Q5\n"
 
-    click_link 'Artist'
+    visit '/Artist/browse'
     page.all('td').map{|s| s.text}.must_equal ["Q0", "Q1", "Q3", "V4", "Q5", "Show", "Edit", "Delete"]
+    click_link 'CSV Format'
+    page.body.must_equal "N0,N1,N3,N4,N5\nQ0,Q1,Q3,V4,Q5\n"
   end
 
   it "should support specifying order per type" do

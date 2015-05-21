@@ -61,9 +61,15 @@ module AutoForme
 
           r.on *current_matchers do
             @autoforme_text = @autoforme_action.handle
-            opts = {:content=>@autoforme_text}
-            opts[:layout] = false if @autoforme_action.request.xhr?
-            view opts
+            if @autoforme_action.output_type == 'csv'
+              response['Content-Type'] = 'text/csv'
+              response['Content-Disposition'] = "attachment; filename=#{@autoforme_action.output_filename}"
+              @autoforme_text
+            elsif @autoforme_action.request.xhr?
+              @autoforme_text
+            else
+              view(:content=>@autoforme_text)
+            end
           end
         end
       end

@@ -1,3 +1,5 @@
+require 'enum_csv'
+
 module AutoForme
   # Represents an action on a model in response to a web request.
   class Action
@@ -19,6 +21,12 @@ module AutoForme
 
     # The type symbols related to the current action (e.g. :new, :create).
     attr_reader :type
+
+    # The type of output, currently nil for normal output, and 'csv' for csv output
+    attr_reader :output_type
+
+    # The filename to use for file output
+    attr_reader :output_filename
 
     # Array of strings for all action types currently supported
     ALL_SUPPORTED_ACTIONS = %w'new create show edit update delete destroy browse search mtm_edit mtm_update association_links autocomplete'.freeze
@@ -172,6 +180,17 @@ module AutoForme
         label = humanize(column)
       end
       label
+    end
+
+    # Return a string in CSV format with the results
+    def csv(meth)
+      @output_type = 'csv'
+      @output_filename = "#{model.link.downcase}_#{normalized_type}.csv"
+      columns = model.columns_for(type, request)
+      headers = columns.map{|column| column_label_for(type, request, model, column)}
+      EnumCSV.csv(model.send(meth, normalized_type, request, :all_results=>true), :headers=>headers) do |obj|
+        columns.map{|column| model.column_value(type, request, obj, column)}
+      end
     end
 
     # HTML fragment for the default page header, which uses tabs for each supported action.
@@ -392,6 +411,7 @@ module AutoForme
         html << '<li class="disabled"><a href="#">Next</a></li>'
       end
       html << "</ul>"
+      html << "<p><a href=\"#{url_for("#{type}/csv?#{h request.query_string}")}\">CSV Format</a></p>"
     end
 
     # Show page used for browse/search pages.
@@ -403,13 +423,19 @@ module AutoForme
 
     # Handle browse action by showing a table containing model objects.
     def handle_browse
-      table_page(*model.browse(type, request))
+      if request.id == 'csv'
+        csv(:browse)
+      else
+        table_page(*model.browse(type, request))
+      end
     end
 
     # Handle browse action by showing a search form if no page is selected, or the correct page of search results
     # if there is a page selected.
     def handle_search
-      if request.id
+      if request.id == 'csv'
+        csv(:search_results)
+      elsif request.id
         table_page(*model.search_results(normalized_type, request))
       else
         page do

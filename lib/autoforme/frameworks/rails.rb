@@ -48,8 +48,14 @@ module AutoForme
           if @autoforme_action = framework.action_for(Request.new(self))
             if redirect = catch(:redirect){@autoforme_text = @autoforme_action.handle; nil}
               redirect_to redirect
+            elsif @autoforme_action.output_type == 'csv'
+              response.headers['Content-Type'] = 'text/csv'
+              response.headers['Content-Disposition'] = "attachment; filename=#{@autoforme_action.output_filename}"
+              render :text=>@autoforme_text
+            elsif @autoforme_action.request.xhr?
+              render :text=>@autoforme_text
             else
-              render :inline=>"<%=raw @autoforme_text %>", :layout=>!@autoforme_action.request.xhr?
+              render :inline=>"<%=raw @autoforme_text %>", :layout=>true
             end
           else
             render :text=>'Unhandled Request', :status=>404

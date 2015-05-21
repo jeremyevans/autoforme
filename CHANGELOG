@@ -1,3 +1,7 @@
+=== 1.2.0 (2015-05-21)
+
+* Add support for returning browse and search results in CSV format (jeremyevans)
+
 === 1.1.0 (2015-03-23)
 
 * Add Framework#register_by_name to allow autoforme to work better when using code reloading in development (jeremyevans)

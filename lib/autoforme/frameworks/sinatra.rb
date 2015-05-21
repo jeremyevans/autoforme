@@ -40,9 +40,16 @@ module AutoForme
         block = lambda do
           if @autoforme_action = framework.action_for(Request.new(self))
             @autoforme_text = @autoforme_action.handle
-            opts = {}
-            opts[:layout] = false if @autoforme_action.request.xhr?
-            erb "<%= @autoforme_text %>", opts
+
+            if @autoforme_action.output_type == 'csv'
+              response['Content-Type'] = 'text/csv'
+              response['Content-Disposition'] = "attachment; filename=#{@autoforme_action.output_filename}"
+              @autoforme_text
+            elsif @autoforme_action.request.xhr?
+              @autoforme_text
+            else
+              erb "<%= @autoforme_text %>"
+            end
           else
             pass
           end

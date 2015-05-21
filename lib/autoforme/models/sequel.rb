@@ -158,7 +158,7 @@ module AutoForme
       end
 
       # Returning array of matching objects for the current search page using the given parameters.
-      def search_results(type, request)
+      def search_results(type, request, opts={})
         params = request.params
         ds = apply_associated_eager(:search, request, all_dataset_for(type, request))
         columns_for(:search_form, request).each do |c|
@@ -178,17 +178,18 @@ module AutoForme
             end
           end
         end
-        paginate(type, request, ds)
+        paginate(type, request, ds, opts)
       end
 
       # Return array of matching objects for the current page.
-      def browse(type, request)
-        paginate(type, request, apply_associated_eager(:browse, request, all_dataset_for(type, request)))
+      def browse(type, request, opts={})
+        paginate(type, request, apply_associated_eager(:browse, request, all_dataset_for(type, request)), opts)
       end
 
       # Do very simple pagination, by selecting one more object than necessary,
       # and noting if there is a next page by seeing if more objects are returned than the limit.
-      def paginate(type, request, ds)
+      def paginate(type, request, ds, opts={})
+        return ds.all if opts[:all_results]
         limit = limit_for(type, request)
         offset = ((request.id.to_i||1)-1) * limit
         objs = ds.limit(limit+1, (offset if offset > 0)).all
