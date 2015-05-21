@@ -31,14 +31,14 @@
         </div>
         <div class='last-update'>
           Last Update:
-          <span class='datetime'>2014-07-29 18:59:41 -0700</span>
+          <span class='datetime'>2015-03-21 09:29:55 -0700</span>
         </div>
       </div>
       <div id='content'>
         <div id='text'>
           <div id='description'>
             
-            <h1 id="label-AutoForme"><a href="../classes/AutoForme.html">AutoForme</a><span><a href="#label-AutoForme">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-AutoForme"><a href="../classes/AutoForme.html">AutoForme</a><span><a href="#label-AutoForme">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
             <p><a href="../classes/AutoForme.html">AutoForme</a> is an administrative web
             front end to an ORM that uses Forme [1] for building the HTML forms.  It is
@@ -57,11 +57,11 @@
             href="https://github.com/jeremyevans/scaffolding_extensions">github.com/jeremyevans/scaffolding_extensions</a></p>
             </li></ol>
             
-            <h1 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
             <pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-identifier">install</span> <span class="ruby-identifier">autoforme</span></pre>
             
-            <h1 id="label-Links">Links<span><a href="#label-Links">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Links">Links<span><a href="#label-Links">&para;</a> <a href="#top">&uarr;</a></span></h1>
             <table class="rdoc-list note-list"><tbody><tr><td class='label'>Demo Site </td><td>
             <p><a
             href="http://autoforme-demo.jeremyevans.net">autoforme-demo.jeremyevans.net</a></p>
@@ -80,7 +80,7 @@
             href="https://github.com/jeremyevans/autoforme/issues">github.com/jeremyevans/autoforme/issues</a></p>
             </td></tr></tbody></table>
             
-            <h1 id="label-Features">Features<span><a href="#label-Features">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Features">Features<span><a href="#label-Features">&para;</a> <a href="#top">&uarr;</a></span></h1>
             <ul><li>
             <p>Create, update, edit, and view model objects</p>
             </li><li>
@@ -96,7 +96,7 @@
             parameters available in the request</p>
             </li></ul>
             
-            <h1 id="label-Basic+Configuration">Basic Configuration<span><a href="#label-Basic+Configuration">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Basic+Configuration">Basic Configuration<span><a href="#label-Basic+Configuration">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
             <p><a href="../classes/AutoForme.html">AutoForme</a> is configured using a
             fairly simple DSL.  Here is an example for Sinatra:</p>
@@ -106,10 +106,11 @@
             <p>Let&#39;s break down how this works.  You setup <a
             href="../classes/AutoForme.html">AutoForme</a> using
             <code>AutoForme.for</code>, which takes 2 arguments, the controller type
-            symbol (currently either :sinatra or :rails), and the controller class
-            (either a Sinatra::Base or ActionController::Base subclass).  You pass
-            <code>AutoForme.for</code> a block, which is instance evaled at the
-            framework level.  This level sets the defaults.</p>
+            symbol (currently either :sinatra, :roda, or :rails), and the controller
+            class (either a Sinatra::Base, <a href="../classes/Roda.html">Roda</a>, or
+            ActionController::Base subclass).  You pass <code>AutoForme.for</code> a
+            block, which is instance evaled at the framework level.  This level sets
+            the defaults.</p>
             
             <p>The order call in the framework block sets the default order for all
             models.</p>
@@ -125,9 +126,9 @@
             &#39;/Album/browse&#39; to get to the web UI exposed to <a
             href="../classes/AutoForme.html">AutoForme</a>.</p>
             
-            <h1 id="label-Design">Design<span><a href="#label-Design">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Design">Design<span><a href="#label-Design">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
-            <h2 id="label-Principles">Principles<span><a href="#label-Principles">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+            <h2 id="label-Principles">Principles<span><a href="#label-Principles">&para;</a> <a href="#top">&uarr;</a></span></h2>
             <ul><li>
             <p>Use Forme to generate the forms</p>
             </li><li>
@@ -142,7 +143,7 @@
             <p>Allow customization on a per-request basis for everything</p>
             </li></ul>
             
-            <h2 id="label-Basic+Implementation">Basic Implementation<span><a href="#label-Basic+Implementation">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+            <h2 id="label-Basic+Implementation">Basic Implementation<span><a href="#label-Basic+Implementation">&para;</a> <a href="#top">&uarr;</a></span></h2>
             
             <p>The web framework controllers call <code>AutoForme.for</code> to create <a
             href="../classes/AutoForme/Framework.html">AutoForme::Framework</a>
@@ -159,7 +160,7 @@
             returns a string that the web framework then renders, or it redirects to
             another page.</p>
             
-            <h1 id="label-Advanced+Configuration">Advanced Configuration<span><a href="#label-Advanced+Configuration">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Advanced+Configuration">Advanced Configuration<span><a href="#label-Advanced+Configuration">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
             <p><a href="../classes/AutoForme.html">AutoForme</a> doesn&#39;t have all that
             many features compared to other admin frameworks, but the features it does
@@ -308,7 +309,7 @@
             <p>Means you can go to <code>/path/to/Artist/browse</code> to browse the
             artists.</p>
             
-            <h1 id="label-Javascript">Javascript<span><a href="#label-Javascript">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Javascript">Javascript<span><a href="#label-Javascript">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
             <p>By default, <a href="../classes/AutoForme.html">AutoForme</a> requires no
             javascript.  The only optional part of <a
@@ -327,7 +328,18 @@
             requires <a
             href="https://github.com/dyve/jquery-autocomplete">github.com/dyve/jquery-autocomplete</a></p>
             
-            <h1 id="label-TODO">TODO<span><a href="#label-TODO">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Reloading+Code">Reloading Code<span><a href="#label-Reloading+Code">&para;</a> <a href="#top">&uarr;</a></span></h1>
+            
+            <p>By default, <a href="../classes/AutoForme.html">AutoForme</a> stores
+            classes by reference.  This can cause issues when using code reloading in
+            development environments.  You can call <code>register_by_name</code> to
+            set Autoforme to store classes by name, so that if a class is removed and
+            reloaded (giving a new class reference), it will use the new class instead
+            of the reference to the old class.  Example:</p>
+            
+            <pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>&#x000A;  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(:<span class="ruby-identifier">sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">register_by_name</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+            
+            <h1 id="label-TODO">TODO<span><a href="#label-TODO">&para;</a> <a href="#top">&uarr;</a></span></h1>
             <ul><li>
             <p>capybara-webkit tests for ajax behavior</p>
             </li><li>
@@ -340,11 +352,11 @@
             <p>nested form objects</p>
             </li></ul>
             
-            <h1 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
             <p>MIT</p>
             
-            <h1 id="label-Author">Author<span><a href="#label-Author">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+            <h1 id="label-Author">Author<span><a href="#label-Author">&para;</a> <a href="#top">&uarr;</a></span></h1>
             
             <p>Jeremy Evans &lt;code@jeremyevans.net&gt;</p>
           </div>
