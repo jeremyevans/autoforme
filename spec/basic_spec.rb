@@ -38,6 +38,7 @@ describe AutoForme do
     page.title.must_equal 'Artist - Search'
     fill_in 'Name', :with=>'Upd'
     click_button 'Search'
+    page.all('table').first['id'].must_equal 'autoforme_table'
     page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
     page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
     click_link 'CSV Format'

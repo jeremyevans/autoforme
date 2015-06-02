@@ -1,3 +1,7 @@
+=== HEAD
+
+* Give the browse/search tables an id (jeremyevans)
+
 === 1.2.0 (2015-05-21)
 
 * Add support for returning browse and search results in CSV format (jeremyevans)
