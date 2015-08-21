@@ -227,6 +227,13 @@ class.  Example:
     end
   end
 
+= Rails
+
+Because Rails separates routing from request handling, it can be little awkward to
+use AutoForme in Rails development mode.  The best way to handle it is to call
++AutoForme.for+ in the related controller file, and have an initializer reference
+the controller class, causing the controller file to be loaded.
+
 = TODO
 
 * capybara-webkit tests for ajax behavior
