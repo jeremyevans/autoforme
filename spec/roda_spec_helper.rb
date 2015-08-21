@@ -4,6 +4,7 @@ require 'autoforme'
 require 'rack/csrf'
 
 begin
+  require 'erubis'
   require 'tilt/erubis'
 rescue LoadError
   require 'tilt/erb'
