@@ -167,8 +167,12 @@ display_name :: The string to use when referring to a model instance.  Can eithe
                 the model object and type symbol, or the model object, type symbol, and request,
                 depending on the arity of the Proc.
 link_name :: The string to use in links for the class
+edit_html :: The html to use for a particular object edit field.  Should be a proc that takes the
+             model object, column symbol, type symbol, and request and returns the html to use.
 page_footer :: Override the default footer used for pages
 page_header :: Override the default header used for pages
+show_html :: The html to use for displaying the value for an object field.  Should be a proc that takes the
+             model object, column symbol, type symbol, and request and returns the html to use.
 table_class :: The html class string to use for the browse and search tables
 
 These hook options should be callable objects that are called with the model object and the request.

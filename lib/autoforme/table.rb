@@ -56,9 +56,12 @@ module AutoForme
       objs.each do |obj|
         html << "<tr>"
         columns.each do |column|
-          val = model.column_value(type, request, obj, column)
-          val = val.to_s('F') if defined?(BigDecimal) && val.is_a?(BigDecimal)
-          html << "<td>#{h val}</td>"
+          unless val = model.show_html_for(obj, column, type, request)
+            val = model.column_value(type, request, obj, column)
+            val = val.to_s('F') if defined?(BigDecimal) && val.is_a?(BigDecimal)
+            val = h(val)
+          end
+          html << "<td>#{val}</td>"
         end
         html << "<td><a href=\"#{action.url_for("show/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-info\">Show</a></td>" if show
         html << "<td><a href=\"#{action.url_for("edit/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-primary\">Edit</a></td>" if edit

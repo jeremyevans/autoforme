@@ -39,7 +39,7 @@ module AutoForme
       :filter, :form_attributes, :form_options,
       :inline_mtm_associations, :lazy_load_association_links, :link_name, :mtm_associations,
       :order, :page_footer, :page_header, :per_page,
-      :redirect, :supported_actions, :table_class
+      :redirect, :supported_actions, :table_class, :show_html, :edit_html
 
     def initialize(model, framework)
       @model = model
@@ -141,6 +141,14 @@ module AutoForme
       end
 
       opts
+    end
+
+    def show_html_for(obj, column, type, request)
+      handle_proc(show_html || framework.show_html_for(obj, column, type, request), obj, column, type, request)
+    end
+
+    def edit_html_for(obj, column, type, request)
+      handle_proc(edit_html || framework.edit_html_for(obj, column, type, request), obj, column, type, request)
     end
 
     def order_for(type, request)

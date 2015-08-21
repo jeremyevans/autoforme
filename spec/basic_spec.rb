@@ -412,6 +412,72 @@ describe AutoForme do
     click_button 'Delete'
     Artist.count.must_equal 0
   end
+
+  it "should support show_html and edit_html" do
+    app_setup(Artist) do
+      show_html do |obj, c, t, req|
+        "#{c}#{t}-#{obj.send(c).to_s*2}"
+      end
+      edit_html do |obj, c, t, req|
+        "<label for='artist_#{c}'>#{c}#{t}</label><input type='text' id='artist_#{c}' name='#{t == :search_form ? c : "artist[#{c}]"}' value='#{obj.send(c).to_s*2}'/>"
+      end
+    end
+    visit("/Artist/new")
+    page.title.must_equal 'Artist - New'
+    fill_in 'namenew', :with=>'TAN'
+    click_button 'Create'
+    page.html.must_match /Created Artist/
+    page.current_path.must_equal '/Artist/new'
+
+    click_link 'Show'
+    page.title.must_equal 'Artist - Show'
+    select 'TAN'
+    click_button 'Show'
+    page.html.must_match /nameshow-TANTAN/
+
+    click_link 'Edit'
+    page.title.must_equal 'Artist - Edit'
+    select 'TAN'
+    click_button 'Edit'
+    fill_in 'nameedit', :with=>'TAU'
+    click_button 'Update'
+    page.html.must_match /Updated Artist/
+    page.html.must_match /nameedit.+TAUTAU/m
+    page.current_path.must_match %r{/Artist/edit/\d+}
+
+    click_link 'Search'
+    page.title.must_equal 'Artist - Search'
+    fill_in 'namesearch_form', :with=>'AU'
+    click_button 'Search'
+    page.all('table').first['id'].must_equal 'autoforme_table'
+    page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal ["namesearch-TAUTAU", "Show", "Edit", "Delete"]
+    click_link 'CSV Format'
+    page.body.must_equal "Name\nTAU\n"
+
+    visit("/Artist/browse")
+    click_link 'Search'
+    fill_in 'namesearch_form', :with=>'TAUTAU'
+    click_button 'Search'
+    page.all('td').map{|s| s.text}.must_equal []
+
+    click_link 'Artist'
+    page.title.must_equal 'Artist - Browse'
+    page.all('td').map{|s| s.text}.must_equal ["namebrowse-TAUTAU", "Show", "Edit", "Delete"]
+    click_link 'CSV Format'
+    page.body.must_equal "Name\nTAU\n"
+
+    visit("/Artist/browse")
+    page.all('td').last.find('a').click
+    page.html.must_match /namedelete-TAUTAU/
+    click_button 'Delete'
+    page.title.must_equal 'Artist - Delete'
+    page.html.must_match /Deleted Artist/
+    page.current_path.must_equal '/Artist/delete'
+
+    click_link 'Artist'
+    page.all('td').map{|s| s.text}.must_equal []
+  end
 end
 
 describe AutoForme do

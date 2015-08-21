@@ -38,7 +38,7 @@ module AutoForme
       :columns, :display_name, :filter, :form_attributes, :form_options,
       :inline_mtm_associations, :lazy_load_association_links,
       :model_type, :mtm_associations, :order, :page_footer, :page_header, :per_page,
-      :redirect, :supported_actions, :table_class
+      :redirect, :supported_actions, :table_class, :show_html, :edit_html
 
     def initialize(controller, opts={})
       @controller = controller
@@ -114,6 +114,14 @@ module AutoForme
 
     def association_links_for(model, type, request)
       handle_proc(association_links, model, type, request)
+    end
+
+    def show_html_for(obj, column, type, request)
+      handle_proc(show_html, obj, column, type, request)
+    end
+
+    def edit_html_for(obj, column, type, request)
+      handle_proc(edit_html, obj, column, type, request)
     end
 
     # Set whether to register classes by name instead of by reference

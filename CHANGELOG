@@ -1,5 +1,7 @@
 === HEAD
 
+* Add edit_html and show_html for overriding the html used for a field (jeremyevans) (#1)
+
 * Give the browse/search tables an id (jeremyevans)
 
 === 1.2.0 (2015-05-21)
