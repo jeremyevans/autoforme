@@ -305,7 +305,7 @@ module AutoForme
     def show_page(obj)
       page do
         t = ''
-        f = Forme::Form.new(obj, :formatter=>:readonly, :wrapper=>:trtd)
+        f = Forme::Form.new(obj, :formatter=>:readonly, :wrapper=>:trtd, :labeler=>:explicit)
         t << "<table class=\"#{model.table_class_for(:show, request)}\">"
         model.columns_for(type, request).each do |column|
           t << if html = model.show_html_for(obj, column, type, request)
