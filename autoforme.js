@@ -1,4 +1,4 @@
-$(function() {
+var ready = function() {
   var autoforme = $('#autoforme_content');
   var base_url = autoforme.data('url');
 
@@ -74,4 +74,8 @@ $(function() {
     });
     e.preventDefault();
   });
-});
+};
+
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
