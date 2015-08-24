@@ -24,7 +24,7 @@ supports Sinatra and Rails.  It offers the following features:
 * Allow customization for all likely configuration points, using
   any parameters available in the request
 END
-  s.add_dependency('forme', [">= 1.1.0"])
+  s.add_dependency('forme', [">= 1.4.0"])
   s.add_dependency('rack')
   s.add_dependency('enum_csv')
   s.add_dependency('sequel', [">= 3.0.0"])

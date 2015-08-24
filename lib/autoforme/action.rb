@@ -248,11 +248,11 @@ module AutoForme
       page do
         Forme.form(obj, form_attributes(:action=>url_for("create")), form_opts) do |f|
           model.columns_for(:new, request).each do |column|
+            col_opts = column_options_for(:new, request, obj, column)
             if html = model.edit_html_for(obj, column, :new, request)
-              f << f.raw(html)
-            else
-              f.input(column, column_options_for(:new, request, obj, column))
+              col_opts = col_opts.merge(:html=>html)
             end
+            f.input(column, col_opts)
           end
           f.button(:value=>'Create', :class=>'btn btn-primary')
         end
@@ -308,11 +308,11 @@ module AutoForme
         f = Forme::Form.new(obj, :formatter=>:readonly, :wrapper=>:trtd, :labeler=>:explicit)
         t << "<table class=\"#{model.table_class_for(:show, request)}\">"
         model.columns_for(type, request).each do |column|
-          t << if html = model.show_html_for(obj, column, type, request)
-            f.raw(html)
-          else
-            f.input(column, column_options_for(:show, request, obj, column)).to_s
+          col_opts = column_options_for(type, request, obj, column)
+          if html = model.show_html_for(obj, column, type, request)
+            col_opts = col_opts.merge(:html=>html)
           end
+          t << f.input(column, col_opts).to_s
         end
         t << '</table>'
         if type == :show && model.supported_action?(:edit, request)
@@ -345,11 +345,11 @@ module AutoForme
       page do
         t = Forme.form(obj, form_attributes(:action=>url_for("update/#{model.primary_key_value(obj)}")), form_opts) do |f|
           model.columns_for(:edit, request).each do |column|
+            col_opts = column_options_for(:edit, request, obj, column)
             if html = model.edit_html_for(obj, column, :edit, request)
-              f << f.raw(html)
-            else
-              f.input(column, column_options_for(:edit, request, obj, column))
+              col_opts = col_opts.merge(:html=>html)
             end
+            f.input(column, col_opts)
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
         end.to_s
@@ -453,11 +453,11 @@ module AutoForme
         page do
           Forme.form(model.new(nil, request), form_attributes(:action=>url_for("search/1"), :method=>:get), form_opts) do |f|
             model.columns_for(:search_form, request).each do |column|
+              col_opts = column_options_for(:search_form, request, f.obj, column).merge(:name=>column, :id=>column)
               if html = model.edit_html_for(f.obj, column, :search_form, request)
-                f << f.raw(html)
-              else
-                f.input(column, column_options_for(:search_form, request, f.obj, column).merge(:name=>column, :id=>column))
+                col_opts[:html] = html
               end
+              f.input(column, col_opts)
             end
             f.button(:value=>'Search', :class=>'btn btn-primary')
           end
