@@ -1,5 +1,7 @@
 === HEAD
 
+* Make autoforme.js compatible with turbolinks (mrbrdo) (#3)
+
 * Force explicit labeler on show page, so that two columns are used (jeremyevans) (#2)
 
 * Add edit_html and show_html for overriding the html used for a field (jeremyevans) (#1)
