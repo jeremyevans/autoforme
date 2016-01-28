@@ -246,7 +246,7 @@ describe AutoForme do
       before_create{|obj, req| a << -1}
       before_update{|obj, req| a << -2}
       before_destroy{|obj, req| a << -3}
-      before_new{|obj, req| obj.name = 'weNtsitrAtseT'}
+      before_new{|obj, req| obj.name = 'weNtsitrAtseT'.dup}
       before_edit{|obj, req| obj.name << '2'}
       after_create{|obj, req| a << 1 }
       after_update{|obj, req| a << 2 }

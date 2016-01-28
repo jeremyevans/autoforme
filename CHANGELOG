@@ -1,5 +1,7 @@
 === HEAD
 
+* Add support for running with --enable-frozen-string-literal on ruby 2.3 (jeremyevans)
+
 * Make autoforme.js compatible with turbolinks (mrbrdo) (#3)
 
 * Force explicit labeler on show page, so that two columns are used (jeremyevans) (#2)

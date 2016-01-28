@@ -195,7 +195,8 @@ module AutoForme
 
     # HTML fragment for the default page header, which uses tabs for each supported action.
     def tabs
-      content = '<ul class="nav nav-tabs">'
+      content = String.new
+      content << '<ul class="nav nav-tabs">'
       Model::DEFAULT_SUPPORTED_ACTIONS.each do |action_type|
         if model.supported_action?(action_type, request)
           content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{tab_name(action_type)}</a></li>"
@@ -218,7 +219,7 @@ module AutoForme
 
     # Yields and wraps the returned data in a header and footer for the page.
     def page
-      html = ''
+      html = String.new
       html << (model.page_header_for(type, request) || tabs)
       html << "<div id='autoforme_content' data-url='#{url_for('')}'>"
       html << yield.to_s
@@ -304,7 +305,7 @@ module AutoForme
     # The page to use when displaying an object, always used as a confirmation screen when deleting an object.
     def show_page(obj)
       page do
-        t = ''
+        t = String.new
         f = Forme::Form.new(obj, :formatter=>:readonly, :wrapper=>:trtd, :labeler=>:explicit)
         t << "<table class=\"#{model.table_class_for(:show, request)}\">"
         model.columns_for(type, request).each do |column|
@@ -343,7 +344,8 @@ module AutoForme
     # The page to use when editing the object.
     def edit_page(obj)
       page do
-        t = Forme.form(obj, form_attributes(:action=>url_for("update/#{model.primary_key_value(obj)}")), form_opts) do |f|
+        t = String.new
+        t << Forme.form(obj, form_attributes(:action=>url_for("update/#{model.primary_key_value(obj)}")), form_opts) do |f|
           model.columns_for(:edit, request).each do |column|
             col_opts = column_options_for(:edit, request, obj, column)
             if html = model.edit_html_for(obj, column, :edit, request)
@@ -409,7 +411,8 @@ module AutoForme
 
     # HTML fragment for the table pager, showing links to next page or previous page for browse/search forms.
     def table_pager(type, next_page)
-      html = '<ul class="pager">'
+      html = String.new
+      html << '<ul class="pager">'
       page = request.id.to_i
       if page > 1
         html << "<li><a href=\"#{url_for("#{type}/#{page-1}?#{h request.query_string}")}\">Previous</a></li>"
@@ -478,7 +481,8 @@ module AutoForme
         end
         if assoc
           page do
-            t = "<h2>Edit #{humanize(assoc)} for #{h model.object_display_name(type, request, obj)}</h2>"
+            t = String.new
+            t << "<h2>Edit #{humanize(assoc)} for #{h model.object_display_name(type, request, obj)}</h2>"
             t << Forme.form(obj, form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}")), form_opts) do |f|
               opts = model.column_options_for(:mtm_edit, request, assoc)
               add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
@@ -558,7 +562,8 @@ module AutoForme
       assocs = model.association_links_for(type, request) 
       return if assocs.empty?
       read_only = type == :show
-      t = '<h3 class="associated_records_header">Associated Records</h3>'
+      t = String.new
+      t << '<h3 class="associated_records_header">Associated Records</h3>'
       t << "<ul class='association_links'>\n"
       assocs.each do |assoc|
         mc = model.associated_model_class(assoc)
@@ -636,7 +641,8 @@ module AutoForme
       assocs = model.inline_mtm_assocs(request)
       return if assocs.empty?
 
-      t = "<div class='inline_mtm_add_associations'>"
+      t = String.new
+      t << "<div class='inline_mtm_add_associations'>"
       assocs.each do |assoc|
         form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&redir=edit"), :class => 'mtm_add_associations', 'data-remove' => "##{assoc}_remove_list")
         t << Forme.form(obj, form_attr, form_opts) do |f|
@@ -668,7 +674,8 @@ module AutoForme
 
     # Line item containing form to remove the currently associated object.
     def mtm_edit_remove(assoc, mc, obj, assoc_obj)
-      t = "<li>"
+      t = String.new
+      t << "<li>"
       t << association_link(mc, assoc_obj)
       form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&remove%5b%5d=#{model.primary_key_value(assoc_obj)}&redir=edit"), :method=>'post', :class => 'mtm_remove_associations', 'data-add'=>"#add_#{assoc}")
       t << Forme.form(form_attr, form_opts) do |f|
