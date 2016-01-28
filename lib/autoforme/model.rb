@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   # Wraps a specific model class
   class Model

@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   module Models
     # Sequel specific model class for AutoForme

@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   # Helper class for formating HTML tables used for the browse/search results pages.
   class Table

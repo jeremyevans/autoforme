@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   # Request wraps a specific web request for a given framework.
   class Request

@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   # The Framework class contains forms for a set of models, tied to web
   # framework controller.

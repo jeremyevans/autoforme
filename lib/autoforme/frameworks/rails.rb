@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   module Frameworks
     class Rails < AutoForme::Framework

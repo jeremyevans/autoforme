@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   # Version constant, use <tt>AutoForme.version</tt> instead.
   VERSION = '1.2.0'.freeze

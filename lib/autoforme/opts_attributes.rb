@@ -1,3 +1,5 @@
+# frozen-string-literal: true
+
 module AutoForme
   module OptsAttributes
     # Setup methods for each given argument such that if the method is called with an argument or
