@@ -31,4 +31,9 @@ END
   s.add_development_dependency "minitest", '>=5.0.0'
   s.add_development_dependency "minitest-hooks", '>=1.1.0'
   s.add_development_dependency "capybara", '>=2.1.0'
+  s.add_development_dependency "roda"
+  s.add_development_dependency "rack_csrf"
+  s.add_development_dependency "sinatra"
+  s.add_development_dependency "sinatra-flash"
+  s.add_development_dependency "rails"
 end
