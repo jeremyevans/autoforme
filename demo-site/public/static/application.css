@@ -12,3 +12,27 @@ input, textarea, select { width: auto; }
 
 #autoforme_content label, #autoforme_content span.label {display: inline-block; min-width: 150px; text-align:right; margin-right: 20px;}
 #autoforme_content label.option {display: inline; min-width: 0px; text-align:left; margin-right: 0px;}
+
+.navbar,
+.navbar .dropdown-menu, .dropdown-menu li a:hover {
+  background-color: #2c2c2c;
+}
+
+.navbar,
+.navbar .navbar-brand,
+.navbar .navbar-nav > li > a,
+.navbar .navbar-nav .open .dropdown-menu > li > a,
+.navbar .navbar-brand:hover,
+.navbar .navbar-nav > li > a:hover,
+.navbar .navbar-nav .open .dropdown-menu > li > a:hover,
+.navbar .navbar-brand:visited,
+.navbar .navbar-nav > li > a:visited,
+.navbar .navbar-nav .open .dropdown-menu > li > a:visited {
+  color: white;
+}
+
+.navbar .navbar-brand:hover,
+.navbar .navbar-nav > li > a:hover,
+.navbar .navbar-nav .open .dropdown-menu > li > a:hover {
+  text-decoration: underline;
+}
