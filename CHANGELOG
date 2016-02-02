@@ -1,4 +1,4 @@
-=== HEAD
+=== 1.3.0 (2016-02-02)
 
 * Add support for running with --enable-frozen-string-literal on ruby 2.3 (jeremyevans)
 
