@@ -1,17 +1,17 @@
-Thu, 21 May 2015 12:54:37 -0700
-README.rdoc	Sat, 21 Mar 2015 09:29:55 -0700
-CHANGELOG	Thu, 21 May 2015 12:40:25 -0700
-MIT-LICENSE	Sun, 22 Mar 2015 09:32:41 -0700
-lib/autoforme.rb	Sat, 16 Aug 2014 13:35:36 -0700
-lib/autoforme/action.rb	Thu, 21 May 2015 12:40:25 -0700
-lib/autoforme/framework.rb	Sat, 21 Mar 2015 09:14:54 -0700
-lib/autoforme/frameworks/rails.rb	Thu, 21 May 2015 12:40:25 -0700
-lib/autoforme/frameworks/roda.rb	Thu, 21 May 2015 12:40:25 -0700
-lib/autoforme/frameworks/sinatra.rb	Thu, 21 May 2015 12:40:25 -0700
-lib/autoforme/model.rb	Wed, 01 Apr 2015 15:48:00 -0700
-lib/autoforme/models/sequel.rb	Thu, 21 May 2015 12:40:25 -0700
-lib/autoforme/opts_attributes.rb	Fri, 13 Dec 2013 09:27:08 -0800
-lib/autoforme/request.rb	Fri, 13 Dec 2013 09:27:08 -0800
-lib/autoforme/table.rb	Sat, 16 Aug 2014 13:33:04 -0700
-lib/autoforme/version.rb	Thu, 21 May 2015 12:40:25 -0700
-lib/roda/plugins/autoforme.rb	Tue, 29 Jul 2014 18:59:30 -0700
+Tue, 02 Feb 2016 09:19:00 -0800
+README.rdoc	Fri, 21 Aug 2015 14:01:40 -0700
+CHANGELOG	Tue, 02 Feb 2016 08:55:47 -0800
+MIT-LICENSE	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/action.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/framework.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/frameworks/rails.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/frameworks/roda.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/frameworks/sinatra.rb	Tue, 02 Feb 2016 09:14:52 -0800
+lib/autoforme/model.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/models/sequel.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/opts_attributes.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/request.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/table.rb	Thu, 28 Jan 2016 16:18:39 -0800
+lib/autoforme/version.rb	Tue, 02 Feb 2016 08:55:47 -0800
+lib/roda/plugins/autoforme.rb	Thu, 28 Jan 2016 16:18:39 -0800

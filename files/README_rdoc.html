@@ -31,7 +31,7 @@
         </div>
         <div class='last-update'>
           Last Update:
-          <span class='datetime'>2015-03-21 09:29:55 -0700</span>
+          <span class='datetime'>2015-08-21 14:01:40 -0700</span>
         </div>
       </div>
       <div id='content'>
@@ -262,10 +262,18 @@
             symbol, and request, depending on the arity of the Proc.</p>
             </td></tr><tr><td class='label'>link_name </td><td>
             <p>The string to use in links for the class</p>
+            </td></tr><tr><td class='label'>edit_html </td><td>
+            <p>The html to use for a particular object edit field.  Should be a proc that
+            takes the model object, column symbol, type symbol, and request and returns
+            the html to use.</p>
             </td></tr><tr><td class='label'>page_footer </td><td>
             <p>Override the default footer used for pages</p>
             </td></tr><tr><td class='label'>page_header </td><td>
             <p>Override the default header used for pages</p>
+            </td></tr><tr><td class='label'>show_html </td><td>
+            <p>The html to use for displaying the value for an object field.  Should be a
+            proc that takes the model object, column symbol, type symbol, and request
+            and returns the html to use.</p>
             </td></tr><tr><td class='label'>table_class </td><td>
             <p>The html class string to use for the browse and search tables</p>
             </td></tr></tbody></table>
@@ -338,6 +346,15 @@
             of the reference to the old class.  Example:</p>
             
             <pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>&#x000A;  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(:<span class="ruby-identifier">sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">register_by_name</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+            
+            <h1 id="label-Rails">Rails<span><a href="#label-Rails">&para;</a> <a href="#top">&uarr;</a></span></h1>
+            
+            <p>Because Rails separates routing from request handling, it can be little
+            awkward to use <a href="../classes/AutoForme.html">AutoForme</a> in Rails
+            development mode.  The best way to handle it is to call
+            <code>AutoForme.for</code> in the related controller file, and have an
+            initializer reference the controller class, causing the controller file to
+            be loaded.</p>
             
             <h1 id="label-TODO">TODO<span><a href="#label-TODO">&para;</a> <a href="#top">&uarr;</a></span></h1>
             <ul><li>

@@ -68,7 +68,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-autoforme-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-autoforme-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 26</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">autoforme</span>(<span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">opts</span>[<span class="ruby-value">:name</span>]] = <span class="ruby-operator">::</span><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:roda</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">route_proc</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-autoforme-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 28</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">autoforme</span>(<span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">opts</span>[<span class="ruby-value">:name</span>]] = <span class="ruby-operator">::</span><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:roda</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">route_proc</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-autoforme_route'>
@@ -86,7 +86,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-autoforme_route-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-autoforme_route-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 31</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">autoforme_route</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)&#x000A;  <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">name</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-autoforme_route-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 33</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">autoforme_route</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)&#x000A;  <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">name</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-inherited'>
@@ -103,7 +103,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-inherited-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-inherited-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 36</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">subclass</span>)&#x000A;  <span class="ruby-keyword">super</span>&#x000A;  <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value">:@autoforme_routes</span>, <span class="ruby-ivar">@autoforme_routes</span>.<span class="ruby-identifier">dup</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-inherited-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 38</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">subclass</span>)&#x000A;  <span class="ruby-keyword">super</span>&#x000A;  <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value">:@autoforme_routes</span>, <span class="ruby-ivar">@autoforme_routes</span>.<span class="ruby-identifier">dup</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
             </div>
