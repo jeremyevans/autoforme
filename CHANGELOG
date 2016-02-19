@@ -1,3 +1,9 @@
+=== HEAD
+
+* Add Request#env for getting the environment for the request (jeremyevans)
+
+* Handle search results pagination correctly when an id parameter is used (badosu, jeremyevans) (#5)
+
 === 1.3.0 (2016-02-02)
 
 * Add support for running with --enable-frozen-string-literal on ruby 2.3 (jeremyevans)

@@ -20,9 +20,11 @@ module AutoForme
     attr_reader :path
 
     # The id related to the request, which is usually the primary
-    # key of the related model instance, but for browse/search
-    # pages is used as the page
+    # key of the related model instance.
     attr_reader :id
+
+    # The HTTP request environment hash
+    attr_reader :env
 
     # The params for the current request
     attr_reader :params
