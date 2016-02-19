@@ -193,7 +193,8 @@ module AutoForme
       def paginate(type, request, ds, opts={})
         return ds.all if opts[:all_results]
         limit = limit_for(type, request)
-        offset = ((request.id.to_i||1)-1) * limit
+        %r{\/(\w+)(\z|\?)} =~ request.controller.env['PATH_INFO']
+        offset = (($1||1).to_i - 1) * limit
         objs = ds.limit(limit+1, (offset if offset > 0)).all
         next_page = false
         if objs.length > limit
