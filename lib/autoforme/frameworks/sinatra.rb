@@ -15,7 +15,7 @@ module AutoForme
           @model = captures[0]
           @action_type = captures[1]
           @path = @env['SCRIPT_NAME']
-          @id = @params[:id] || captures[2]
+          set_id(captures[2])
         end
 
         # Redirect to the given path

@@ -53,5 +53,17 @@ module AutoForme
     def set_flash_now_error(message)
       @controller.flash.now[:error] = message
     end
+
+    private
+
+    def set_id(path_id)
+      @id = path_id
+      if param_id = @params['id']
+        case @action_type
+        when 'show', 'edit', 'delete', 'mtm_edit'
+          @id = param_id
+        end
+      end
+    end
   end
 end
