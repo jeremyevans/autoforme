@@ -21,7 +21,7 @@ module AutoForme
             @env['PATH_INFO']
           end
 
-          path_id = $1 if remaining_path =~ %r{\A\/(\w+)\z}
+          path_id = $1 if remaining_path =~ %r{\A\/([\w-]+)\z}
           set_id(path_id)
         end
 

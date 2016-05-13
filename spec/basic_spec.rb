@@ -142,6 +142,23 @@ describe AutoForme do
     click_button 'Edit'
   end
 
+  it "should support showing models with custom ids" do
+    db_setup(:tracks => proc do
+      column :id, String, :primary_key => true
+      column :name, String
+    end)
+
+    model_setup(:Track => [:tracks])
+    Track.unrestrict_primary_key
+    app_setup(Track)
+
+    Track.create(:id => 'dark-side', :name => 'The Dark Side of the Moon')
+
+    visit("/Track/show/dark-side")
+
+    page.html.must_include 'The Dark Side of the Moon'
+  end
+
   it "should support custom redirects" do
     app_setup(Artist) do
       redirect do |obj, type, req|
