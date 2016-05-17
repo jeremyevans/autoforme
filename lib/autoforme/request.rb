@@ -64,6 +64,7 @@ module AutoForme
           @id = param_id
         end
       end
+      @id = nil if @id && @id.empty?
     end
   end
 end

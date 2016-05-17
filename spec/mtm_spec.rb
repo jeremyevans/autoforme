@@ -37,6 +37,7 @@ describe AutoForme do
 
     visit("/Artist/mtm_edit")
     page.title.must_equal 'Artist - Many To Many Edit'
+    click_button "Edit"
     select("Artist1")
     click_button "Edit"
 

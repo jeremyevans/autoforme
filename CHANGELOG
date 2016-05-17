@@ -1,5 +1,7 @@
 === HEAD
 
+* Handle selecting a blank object during show/edit/delete/mtm_edit by showing the same page (jeremyevans)
+
 * Support UUID primary keys (badosu, jeremyevans) (#6)
 
 * Add Request#env for getting the environment for the request (jeremyevans)

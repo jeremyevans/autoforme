@@ -20,12 +20,14 @@ describe AutoForme do
 
     click_link 'Show'
     page.title.must_equal 'Artist - Show'
+    click_button 'Show'
     select 'TestArtistNew'
     click_button 'Show'
     page.html.must_match /Name.+TestArtistNew/m
 
     click_link 'Edit'
     page.title.must_equal 'Artist - Edit'
+    click_button 'Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
@@ -179,6 +181,7 @@ describe AutoForme do
     click_button 'Update'
     page.current_path.must_match %r{/Artist/show/\d}
     click_link 'Delete'
+    click_button 'Delete'
     select 'TestArtistNew'
     click_button 'Delete'
     click_button 'Delete'

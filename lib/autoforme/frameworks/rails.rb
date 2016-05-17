@@ -14,6 +14,7 @@ module AutoForme
           @action_type = @params['autoforme_action']
           @path = @env['SCRIPT_NAME']
           @id = @params['id']
+          @id = nil if @id && @id.empty?
         end
 
         # Implement redirects in the Rails support using throw/catch, similar to
