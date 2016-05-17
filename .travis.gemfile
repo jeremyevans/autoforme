@@ -4,6 +4,7 @@ gemspec
 
 if RUBY_VERSION < '2.0'
   gem 'rake', '< 10'
+  gem 'mime-types', '< 2'
 else
   gem 'rake'
 end
