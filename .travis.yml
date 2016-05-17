@@ -17,3 +17,5 @@ matrix:
     - rvm: ruby-head
 gemfile: .travis.gemfile
 script: bundle exec rake spec
+before_install:
+  - gem install bundler
