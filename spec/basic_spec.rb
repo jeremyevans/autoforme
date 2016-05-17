@@ -332,28 +332,32 @@ describe AutoForme do
     end
     5.times{|i| Artist.create(:name=>i.to_s)}
     visit("/Artist/browse")
-    first('li.disabled a').text.must_equal 'Previous'
+    pager_class = lambda do |text|
+      node = all('ul.pager li').select{|n| n[:class] if n.find('a').text == text}.first
+      node[:class] if node
+    end
+    pager_class.call("Previous").must_equal 'disabled'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
     click_link 'Next'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
     click_link 'Next'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'4'
-    first('li.disabled a').text.must_equal 'Next'
+    pager_class.call("Next").must_equal 'disabled'
     click_link 'Previous'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
     click_link 'Previous'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
-    first('li.disabled a').text.must_equal 'Previous'
+    pager_class.call("Previous").must_equal 'disabled'
 
     click_link 'Search'
     click_button 'Search'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
     click_link 'Next'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'3 4'
-    first('li.disabled a').text.must_equal 'Next'
+    pager_class.call("Next").must_equal 'disabled'
     click_link 'Previous'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
-    first('li.disabled a').text.must_equal 'Previous'
+    pager_class.call("Previous").must_equal 'disabled'
   end
 
   it "should support specifying supported actions" do
