@@ -1,5 +1,7 @@
 === HEAD
 
+* Support UUID primary keys (badosu, jeremyevans) (#6)
+
 * Add Request#env for getting the environment for the request (jeremyevans)
 
 * Handle search results pagination correctly when an id parameter is used (badosu, jeremyevans) (#5)
