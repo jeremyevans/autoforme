@@ -5,7 +5,9 @@ require 'logger'
 module AutoFormeSpec
   TYPE_MAP = {:string=>String, :integer=>Integer, :decimal=>Numeric}
   def self.db_setup(tables)
-    db = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite:/')
+    db_url = ENV['DATABASE_URL']
+    db_url ||= defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby' ? 'jdbc:sqlite::memory:' : 'sqlite:/'
+    db = Sequel.connect(db_url)
     #db.loggers << Logger.new($stdout)
     tables.each do |table, table_spec|
       db.create_table(table) do

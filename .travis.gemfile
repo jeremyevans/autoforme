@@ -1,0 +1,23 @@
+source 'https://rubygems.org'
+
+gemspec
+
+if RUBY_VERSION < '2.0'
+  gem 'rake', '< 10'
+else
+  gem 'rake'
+end
+
+platforms :ruby do
+  gem 'sqlite3'
+end
+
+platforms :jruby do
+  gem 'jdbc-sqlite3'
+end
+
+if RUBY_VERSION < '1.9'
+  gem 'capybara', :git => 'https://github.com/jeremyevans/capybara', :tag => '2.1.0.187'
+  gem 'nokogiri', '< 1.6'
+  gem 'rails', '< 4'
+end
