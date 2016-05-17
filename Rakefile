@@ -18,7 +18,11 @@ end
 task :default => :roda_spec
 
 desc "Run specs for all frameworks"
-task :spec => [:roda_spec, :sinatra_spec, :rails_spec]
+spec_tasks = [:roda_spec, :sinatra_spec]
+if RUBY_VERSION >= '1.9'
+  spec_tasks << :rails_spec
+end
+task :spec => spec_tasks
 
 %w'roda sinatra rails'.each do |framework|
   desc "Run specs with for #{framework} with coverage"
