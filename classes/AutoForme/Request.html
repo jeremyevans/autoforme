@@ -52,6 +52,7 @@
             <ol>
               <li><a target="docwin" href="#attribute-i-action_type">action_type</a></li>
               <li><a target="docwin" href="#attribute-i-controller">controller</a></li>
+              <li><a target="docwin" href="#attribute-i-env">env</a></li>
               <li><a target="docwin" href="#attribute-i-id">id</a></li>
               <li><a target="docwin" href="#attribute-i-method">method</a></li>
               <li><a target="docwin" href="#attribute-i-model">model</a></li>
@@ -93,13 +94,23 @@
                   </tr>
                   <tr class='top-aligned-row context-row'>
                     <td class='context-item-name'>
+                      <a name='attribute-i-env'>env</a>
+                    </td>
+                    <td class='context-item-value'>[R]</td>
+                    <td class='context-item-desc'>
+                      
+                      <p>The HTTP request environment hash</p>
+                    </td>
+                  </tr>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>
                       <a name='attribute-i-id'>id</a>
                     </td>
                     <td class='context-item-value'>[R]</td>
                     <td class='context-item-desc'>
                       
                       <p>The id related to the request, which is usually the primary key of the
-                      related model instance, but for browse/search pages is used as the page</p>
+                      related model instance.</p>
                     </td>
                   </tr>
                   <tr class='top-aligned-row context-row'>
@@ -172,7 +183,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-post-3F-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-post-3F-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 34</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">post?</span>&#x000A;  <span class="ruby-identifier">method</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;POST&#39;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-post-3F-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 36</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">post?</span>&#x000A;  <span class="ruby-identifier">method</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;POST&#39;</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-query_string'>
@@ -189,7 +200,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-query_string-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-query_string-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 39</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_string</span>&#x000A;  <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;QUERY_STRING&#39;</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-query_string-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 41</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_string</span>&#x000A;  <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;QUERY_STRING&#39;</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-set_flash_notice'>
@@ -207,7 +218,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-set_flash_notice-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-set_flash_notice-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 45</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_flash_notice</span>(<span class="ruby-identifier">message</span>)&#x000A;  <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-identifier">message</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-set_flash_notice-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 47</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_flash_notice</span>(<span class="ruby-identifier">message</span>)&#x000A;  <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-identifier">message</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-set_flash_now_error'>
@@ -225,7 +236,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-set_flash_now_error-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-set_flash_now_error-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 51</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_flash_now_error</span>(<span class="ruby-identifier">message</span>)&#x000A;  <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-identifier">message</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-set_flash_now_error-source'><span class="ruby-comment"># File lib/autoforme/request.rb, line 53</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_flash_now_error</span>(<span class="ruby-identifier">message</span>)&#x000A;  <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-identifier">message</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
             </div>
