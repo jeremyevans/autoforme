@@ -1,5 +1,5 @@
 require File.expand_path("../lib/autoforme/version", __FILE__)
-spec = Gem::Specification.new do |s|
+Gem::Specification.new do |s|
   s.name = 'autoforme'
   s.version = AutoForme.version.dup
   s.platform = Gem::Platform::RUBY

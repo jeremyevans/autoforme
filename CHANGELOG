@@ -1,4 +1,4 @@
-=== HEAD
+=== 1.4.0 (2016-05-18)
 
 * Handle selecting a blank object during show/edit/delete/mtm_edit by showing the same page (jeremyevans)
 
