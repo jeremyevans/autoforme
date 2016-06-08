@@ -1,10 +1,13 @@
 #!/usr/bin/env/ruby
 require 'rubygems'
 require 'roda'
-require 'models'
+require ::File.expand_path('../models',  __FILE__)
 require 'securerandom'
 
-class AutoFormeDemo < Roda
+class AutoFormeDemo::App < Roda
+  include AutoFormeDemo
+  opts[:root] = File.dirname(__FILE__)
+
   plugin :static, %w'/static'
   use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
 
@@ -19,6 +22,12 @@ class AutoFormeDemo < Roda
   def self.setup_autoforme(name, &block)
     autoforme(:name=>name) do
       form_options :input_defaults=>{'text'=>{:size=>50}, 'checkbox'=>{:label_position=>:before}}
+      def self.model(mod, &b)
+        super(mod) do
+          class_display_name mod.name.sub('AutoFormeDemo::', '')
+          instance_exec(&b) if b
+        end
+      end
       instance_exec(&block)
     end
   end
@@ -93,7 +102,7 @@ END
 
     r.get 'autoforme.js' do
       response['Content-Type'] = 'text/javascript'
-      File.read('../autoforme.js')
+      File.read(File.expand_path('../../autoforme.js', __FILE__))
     end
 
     r.post 'reset' do

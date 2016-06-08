@@ -1,4 +1,5 @@
-class Artist < Sequel::Model
+module AutoFormeDemo
+class Artist < Sequel::Model(DB)
   one_to_many :albums
   plugin :nested_attributes
   nested_attributes :albums
@@ -7,4 +8,5 @@ class Artist < Sequel::Model
     super
     validates_presence(:name)
   end
+end
 end
