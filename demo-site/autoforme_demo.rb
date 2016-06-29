@@ -8,7 +8,7 @@ class AutoFormeDemo::App < Roda
   include AutoFormeDemo
   opts[:root] = File.dirname(__FILE__)
 
-  plugin :static, %w'/static'
+  plugin :public
   use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
 
   plugin :flash
@@ -72,6 +72,8 @@ class AutoFormeDemo::App < Roda
   end
 
   route do |r|
+    r.public
+
     r.root do
       @page_title = 'AutoForme Demo Site'
       view :content => <<END
