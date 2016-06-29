@@ -9,6 +9,7 @@ CREATE_TABLES_FILE = File.join(File.dirname(__FILE__), 'create_tables.rb')
 require  ::File.expand_path('../create_tables',  __FILE__)
 
 Model = Class.new(Sequel::Model)
+Model.db = DB
 Model.plugin :defaults_setter
 Model.plugin :validation_helpers
 Model.plugin :forme
