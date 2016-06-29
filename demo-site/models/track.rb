@@ -1,5 +1,5 @@
 module AutoFormeDemo
-class Track < Sequel::Model(DB)
+class Track < Model
   many_to_one :album
 end
 end
