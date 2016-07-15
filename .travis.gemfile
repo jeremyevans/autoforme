@@ -28,4 +28,6 @@ if RUBY_VERSION < '1.9'
 elsif RUBY_VERSION < '2.2'
   gem 'rails', '< 5'
   gem 'rack', '< 2'
+else
+  gem 'sinatra', '>= 1.4'
 end
