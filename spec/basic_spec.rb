@@ -114,6 +114,73 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.must_equal []
   end
 
+  it "should have basic functionality working with namespaced models" do
+    begin
+      def Artist.name; "Object::Artist"; end
+      app_setup(Artist)
+      visit("/Object::Artist/new")
+      page.title.must_equal 'Object::Artist - New'
+      fill_in 'Name', :with=>'TestArtistNew'
+      click_button 'Create'
+      page.html.must_match /Created Object::Artist/
+      page.current_path.must_equal '/Object::Artist/new'
+
+      click_link 'Show'
+      page.title.must_equal 'Object::Artist - Show'
+      click_button 'Show'
+      select 'TestArtistNew'
+      click_button 'Show'
+      page.html.must_match /Name.+TestArtistNew/m
+
+      click_link 'Edit'
+      page.title.must_equal 'Object::Artist - Edit'
+      click_button 'Edit'
+      select 'TestArtistNew'
+      click_button 'Edit'
+      fill_in 'Name', :with=>'TestArtistUpdate'
+      click_button 'Update'
+      page.html.must_match /Updated Object::Artist/
+      page.html.must_match /Name.+TestArtistUpdate/m
+      page.current_path.must_match %r{/Object::Artist/edit/\d+}
+
+      click_link 'Search'
+      page.title.must_equal 'Object::Artist - Search'
+      fill_in 'Name', :with=>'Upd'
+      click_button 'Search'
+      page.all('table').first['id'].must_equal 'autoforme_table'
+      page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
+      page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
+      click_link 'CSV Format'
+      page.body.must_equal "Name\nTestArtistUpdate\n"
+
+      visit("/Object::Artist/browse")
+      click_link 'Search'
+      fill_in 'Name', :with=>'Foo'
+      click_button 'Search'
+      page.all('td').map{|s| s.text}.must_equal []
+
+      click_link 'Object::Artist'
+      page.title.must_equal 'Object::Artist - Browse'
+      page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
+      click_link 'CSV Format'
+      page.body.must_equal "Name\nTestArtistUpdate\n"
+
+      visit("/Object::Artist/browse")
+      page.all('td').last.find('a').click
+      click_button 'Delete'
+      page.title.must_equal 'Object::Artist - Delete'
+      page.html.must_match /Deleted Object::Artist/
+      page.current_path.must_equal '/Object::Artist/delete'
+
+      click_link 'Object::Artist'
+      page.all('td').map{|s| s.text}.must_equal []
+    ensure
+      class << Artist
+        remove_method :name
+      end
+    end
+  end
+
   it "should have delete button on edit page" do
     app_setup(Artist)
     visit("/Artist/new")
