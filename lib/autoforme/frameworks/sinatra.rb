@@ -58,8 +58,8 @@ module AutoForme
         end
 
         prefix = Regexp.escape(framework.prefix) if framework.prefix
-        @controller.get %r{\A#{prefix}/(\w+)/(\w+)(?:/([\w-]+))?\z}, &block
-        @controller.post %r{\A#{prefix}/(\w+)/(\w+)(?:/([\w-]+))?\z}, &block
+        @controller.get %r{\A#{prefix}/([\w:]+)/(\w+)(?:/([\w-]+))?\z}, &block
+        @controller.post %r{\A#{prefix}/([\w:]+)/(\w+)(?:/([\w-]+))?\z}, &block
       end
     end
   end
