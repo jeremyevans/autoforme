@@ -30,9 +30,14 @@ task :spec => spec_tasks
     spec.call('FRAMEWORK'=>framework)
   end
 
-  desc "Run specs with for #{framework}"
+  desc "Run specs with coverage for #{framework}"
   task "#{framework}_spec_cov" do
     spec.call('FRAMEWORK'=>framework, 'COVERAGE'=>'1')
+  end
+
+  desc "Run specs with -w for #{framework}, some warnings filtered"
+  task "#{framework}_spec_w" do
+    spec.call('FRAMEWORK'=>framework, 'RUBYOPT'=>'-w', 'WARNING'=>'1')
   end
 end
 

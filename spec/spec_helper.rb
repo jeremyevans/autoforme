@@ -1,15 +1,37 @@
 require 'rubygems'
-require 'capybara'
-require 'capybara/dsl'
-require 'rack/test'
-require 'minitest/autorun'
-require 'minitest/hooks/default'
 
 module AutoFormeSpec
 end
 
-require './spec/sequel_spec_helper'
+if ENV['COVERAGE']
+  ENV.delete('COVERAGE')
+  require 'coverage'
+  require 'simplecov'
+
+  SimpleCov.instance_eval do
+    start do
+      add_filter "/spec/"
+      add_group('Missing'){|src| src.covered_percent < 100}
+      add_group('Covered'){|src| src.covered_percent == 100}
+    end
+  end
+end
+
 require "./spec/#{ENV['FRAMEWORK'] || 'roda'}_spec_helper"
+
+require 'capybara'
+require 'capybara/dsl'
+require 'rack/test'
+gem 'minitest'
+require 'minitest/autorun'
+require 'minitest/hooks/default'
+
+if ENV['WARNING']
+  require 'warning'
+  Warning.ignore([:missing_ivar, :fixnum])
+end
+
+require './spec/sequel_spec_helper'
 
 class Minitest::HooksSpec
   include Rack::Test::Methods
