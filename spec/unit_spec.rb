@@ -445,6 +445,6 @@ end
 
 describe AutoForme do
   it ".version should return a typical version string" do
-    AutoForme.version.must_match /\A\d+\.\d+\.\d+\z/
+    AutoForme.version.must_match(/\A\d+\.\d+\.\d+\z/)
   end
 end

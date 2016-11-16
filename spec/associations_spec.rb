@@ -38,8 +38,8 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.must_match /Name.+Album1b/m
-    page.html.must_match /Artist.+Artist2/m
+    page.html.must_match(/Name.+Album1b/m)
+    page.html.must_match(/Artist.+Artist2/m)
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'
@@ -109,8 +109,8 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.must_match /Name.+Album1/m
-    page.html.must_match /Artist.+A1A1/m
+    page.html.must_match(/Name.+Album1/m)
+    page.html.must_match(/Artist.+A1A1/m)
 
     click_link 'Edit'
     select 'Album1'
@@ -152,8 +152,8 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.must_match /Name.+Album1/m
-    page.html.must_match /Artist.+A1A1/m
+    page.html.must_match(/Name.+Album1/m)
+    page.html.must_match(/Artist.+A1A1/m)
 
     click_link 'Edit'
     select 'Album1'
@@ -196,8 +196,8 @@ describe AutoForme do
     click_link 'Show'
     select 'A1-Album1'
     click_button 'Show'
-    page.html.must_match /Name.+Album1/m
-    page.html.must_match /Artist.+A1/m
+    page.html.must_match(/Name.+Album1/m)
+    page.html.must_match(/Artist.+A1/m)
 
     click_link 'Edit'
     select 'A1-Album1'
@@ -274,8 +274,8 @@ describe AutoForme do
     page.all('select option').map{|s| s.text}.must_equal ['', 'A-Y', 'B-X', 'B-Z']
     select 'B-X'
     click_button 'Show'
-    page.html.must_match /Name.+X/m
-    page.html.must_match /Artist.+B/m
+    page.html.must_match(/Name.+X/m)
+    page.html.must_match(/Artist.+B/m)
 
     click_link 'Edit'
     page.all('select option').map{|s| s.text}.must_equal ['', 'X (B)', 'Y (A)', 'Z (B)']
@@ -340,8 +340,8 @@ describe AutoForme do
     click_link 'Show'
     select 'D'
     click_button 'Show'
-    page.html.must_match /Name.+D/m
-    page.html.must_match /Artist.+Y 2/m
+    page.html.must_match(/Name.+D/m)
+    page.html.must_match(/Artist.+Y 2/m)
 
     click_link 'Edit'
     select 'C'
@@ -447,8 +447,8 @@ describe AutoForme do
     visit("/Artist/edit")
     select 'Artist1'
     click_button 'Edit'
-    page.html.must_match /Album1/
-    page.html.wont_match />edit</
+    page.html.must_include 'Album1'
+    page.html.wont_include '>edit<'
   end
 
   it "should support lazy loading association links on show and edit pages" do
@@ -471,7 +471,7 @@ describe AutoForme do
     click_link 'Edit'
     select 'Artist1'
     click_button 'Edit'
-    page.html.wont_match /create/
+    page.html.wont_include 'create'
     click_link 'Show Associations'
     click_link 'create'
     fill_in 'Name', :with=>'Album1'
@@ -545,8 +545,8 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.must_match /Name.+Album1b/m
-    page.html.must_match /Artist.+Artist2/m
+    page.html.must_match(/Name.+Album1b/m)
+    page.html.must_match(/Artist.+Artist2/m)
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'
@@ -589,8 +589,8 @@ describe AutoForme do
     click_link 'Show'
     select 'Album1'
     click_button 'Show'
-    page.html.must_match /Name.+Album1b/m
-    page.html.must_match /Artist.+Artist2/m
+    page.html.must_match(/Name.+Album1b/m)
+    page.html.must_match(/Artist.+Artist2/m)
 
     click_link 'Search'
     fill_in 'Name', :with=>'1b'

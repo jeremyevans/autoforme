@@ -17,9 +17,9 @@ describe AutoForme do
     end
 
     visit("/Artist/browse")
-    page.html.wont_match /MTM/
+    page.html.wont_include 'MTM'
     visit("/Artist/mtm_edit")
-    page.html.must_match /Unhandled Request/
+    page.html.must_include 'Unhandled Request'
   end
 
   it "should have basic many to many association editing working" do
@@ -46,7 +46,7 @@ describe AutoForme do
     page.all('select')[1].all('option').map{|s| s.text}.must_equal []
     select("Album1", :from=>"Associate With")
     click_button "Update"
-    page.html.must_match /Updated albums association for Artist/
+    page.html.must_include 'Updated albums association for Artist'
     Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
 
     page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album2", "Album3"]
@@ -74,7 +74,7 @@ describe AutoForme do
     Artist.create(:name=>'Artist1')
     a1 = Album.create(:name=>'Album1')
     a2 = Album.create(:name=>'Album2')
-    a3 = Album.create(:name=>'Album3')
+    Album.create(:name=>'Album3')
 
     visit("/Artist/mtm_edit")
     select("Artist1")
@@ -83,7 +83,7 @@ describe AutoForme do
     page.all('select')[0].all('option').map{|s| s.text}.must_equal []
     fill_in "Associate With", :with=>a1.id
     click_button "Update"
-    page.html.must_match /Updated albums association for Artist/
+    page.html.must_include 'Updated albums association for Artist'
     Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
 
     page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album1"]
@@ -117,7 +117,7 @@ describe AutoForme do
     click_button "Edit"
     select 'Album1'
     click_button 'Add'
-    page.html.must_match /Updated albums association for Artist/
+    page.html.must_include 'Updated albums association for Artist'
     Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
 
     select 'Album2'
@@ -152,7 +152,7 @@ describe AutoForme do
     click_button "Edit"
     fill_in 'Albums', :with=>a1.id.to_s
     click_button 'Add'
-    page.html.must_match /Updated albums association for Artist/
+    page.html.must_include 'Updated albums association for Artist'
     Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
 
     fill_in 'Albums', :with=>a2.id.to_s
@@ -185,7 +185,7 @@ describe AutoForme do
     click_link 'Edit'
     select 'Artist1'
     click_button 'Edit'
-    page.html.wont_match /Albums/
+    page.html.wont_include 'Albums'
 
     visit("/Album/new")
     fill_in 'Name', :with=>'Album1'
@@ -201,7 +201,7 @@ describe AutoForme do
     click_button 'Show'
     click_link 'Artist1'
     page.current_path.must_match %r{Artist/show/\d+}
-    page.html.wont_match /Albums/
+    page.html.wont_include 'Albums'
   end
 
   it "should have many to many association editing working when associated class is not using autoforme" do
@@ -364,7 +364,7 @@ describe AutoForme do
     page.all('select')[1].all('option').map{|s| s.text}.must_equal []
     select("Album1", :from=>"Associate With")
     click_button "Update"
-    page.html.must_match /Updated albums association for Artist/
+    page.html.must_include 'Updated albums association for Artist'
     Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
 
     page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album2", "Album3"]

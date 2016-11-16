@@ -15,7 +15,7 @@ describe AutoForme do
     page.title.must_equal 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.must_match /Created Artist/
+    page.html.must_include 'Created Artist'
     page.current_path.must_equal '/Artist/new'
 
     click_link 'Show'
@@ -23,7 +23,7 @@ describe AutoForme do
     click_button 'Show'
     select 'TestArtistNew'
     click_button 'Show'
-    page.html.must_match /Name.+TestArtistNew/m
+    page.html.must_match(/Name.+TestArtistNew/m)
 
     click_link 'Edit'
     page.title.must_equal 'Artist - Edit'
@@ -32,8 +32,8 @@ describe AutoForme do
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.must_match /Updated Artist/
-    page.html.must_match /Name.+TestArtistUpdate/m
+    page.html.must_include 'Updated Artist'
+    page.html.must_match(/Name.+TestArtistUpdate/m)
     page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
@@ -62,7 +62,7 @@ describe AutoForme do
     page.all('td').last.find('a').click
     click_button 'Delete'
     page.title.must_equal 'Artist - Delete'
-    page.html.must_match /Deleted Artist/
+    page.html.must_include 'Deleted Artist'
     page.current_path.must_equal '/Artist/delete'
 
     click_link 'Artist'
@@ -74,21 +74,21 @@ describe AutoForme do
     visit("/prefix/Artist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.must_match /Created Artist/
+    page.html.must_include 'Created Artist'
     page.current_path.must_equal '/prefix/Artist/new'
 
     click_link 'Show'
     select 'TestArtistNew'
     click_button 'Show'
-    page.html.must_match /Name.+TestArtistNew/m
+    page.html.must_match(/Name.+TestArtistNew/m)
 
     click_link 'Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.must_match /Updated Artist/
-    page.html.must_match /Name.+TestArtistUpdate/m
+    page.html.must_include 'Updated Artist'
+    page.html.must_match(/Name.+TestArtistUpdate/m)
     page.current_path.must_match %r{/prefix/Artist/edit/\d+}
 
     click_link 'Search'
@@ -107,7 +107,7 @@ describe AutoForme do
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.html.must_match /Deleted Artist/
+    page.html.must_include 'Deleted Artist'
     page.current_path.must_equal '/prefix/Artist/delete'
 
     click_link 'Artist'
@@ -122,7 +122,7 @@ describe AutoForme do
       page.title.must_equal 'Object::Artist - New'
       fill_in 'Name', :with=>'TestArtistNew'
       click_button 'Create'
-      page.html.must_match /Created Object::Artist/
+      page.html.must_include 'Created Object::Artist'
       page.current_path.must_equal '/Object::Artist/new'
 
       click_link 'Show'
@@ -130,7 +130,7 @@ describe AutoForme do
       click_button 'Show'
       select 'TestArtistNew'
       click_button 'Show'
-      page.html.must_match /Name.+TestArtistNew/m
+      page.html.must_match(/Name.+TestArtistNew/m)
 
       click_link 'Edit'
       page.title.must_equal 'Object::Artist - Edit'
@@ -139,8 +139,8 @@ describe AutoForme do
       click_button 'Edit'
       fill_in 'Name', :with=>'TestArtistUpdate'
       click_button 'Update'
-      page.html.must_match /Updated Object::Artist/
-      page.html.must_match /Name.+TestArtistUpdate/m
+      page.html.must_include 'Updated Object::Artist'
+      page.html.must_match(/Name.+TestArtistUpdate/m)
       page.current_path.must_match %r{/Object::Artist/edit/\d+}
 
       click_link 'Search'
@@ -169,7 +169,7 @@ describe AutoForme do
       page.all('td').last.find('a').click
       click_button 'Delete'
       page.title.must_equal 'Object::Artist - Delete'
-      page.html.must_match /Deleted Object::Artist/
+      page.html.must_include 'Deleted Object::Artist'
       page.current_path.must_equal '/Object::Artist/delete'
 
       click_link 'Object::Artist'
@@ -202,7 +202,7 @@ describe AutoForme do
       page_footer "<a href='/Artist/edit'>E</a>"
     end
     visit("/Artist/browse")
-    page.html.wont_match /search/
+    page.html.wont_include 'search'
     click_link 'N'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
@@ -279,11 +279,11 @@ describe AutoForme do
     click_link 'Show'
     select 'TestArtistNew'
     click_button 'Show'
-    page.html.must_match /Show Artist Name.+TestArtistNew/m
+    page.html.must_match(/Show Artist Name.+TestArtistNew/m)
     click_button 'Edit'
     fill_in 'Edit Artist Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.must_match /Edit Artist Name.+TestArtistUpdate/m
+    page.html.must_match(/Edit Artist Name.+TestArtistUpdate/m)
     page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
@@ -312,12 +312,12 @@ describe AutoForme do
     visit("/Artist/show")
     select 'stArtistN'
     click_button 'Show'
-    page.html.must_match /Name.+TestArtistNew/m
+    page.html.must_match(/Name.+TestArtistNew/m)
 
     click_link 'Edit'
     select 'estArtistNe'
     click_button 'Edit'
-    page.html.must_match /Name.+TestArtistNew/m
+    page.html.must_match(/Name.+TestArtistNew/m)
 
     click_link 'Delete'
     select 'Artist'
@@ -358,7 +358,7 @@ describe AutoForme do
     click_link 'Edit'
     select 'weNtsitrAtseT'
     click_button 'Edit'
-    page.html.must_match /weNtsitrAtseT21/
+    page.html.must_include 'weNtsitrAtseT21'
     click_button 'Update'
     a.must_equal [:edit, :edit, :update, -2, 'update', 2, :edit]
     a.clear
@@ -435,15 +435,15 @@ describe AutoForme do
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
     page.current_path.must_equal '/Artist/new'
-    page.html.wont_match /Show/
-    page.html.wont_match /Delete/
+    page.html.wont_include 'Show'
+    page.html.wont_include 'Delete'
 
     click_link 'Edit'
     select 'TestArtistNew'
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.must_match /Name.+TestArtistUpdate/m
+    page.html.must_match(/Name.+TestArtistUpdate/m)
     page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
@@ -455,7 +455,7 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Edit"]
   end
 
-  it "should have basic functionality working" do
+  it "should have working link_name and class_display_name" do
     app_setup(Artist) do
       class_display_name "FooArtist"
       link_name "BarArtist"
@@ -463,7 +463,7 @@ describe AutoForme do
     visit("/BarArtist/new")
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.must_match /Created FooArtist/
+    page.html.must_include 'Created FooArtist'
     page.current_path.must_equal '/BarArtist/new'
 
     click_link 'Edit'
@@ -471,14 +471,14 @@ describe AutoForme do
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.must_match /Updated FooArtist/
+    page.html.must_include 'Updated FooArtist'
 
     click_link 'FooArtist'
     page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.html.must_match /Deleted FooArtist/
+    page.html.must_include 'Deleted FooArtist'
   end
 
   it "should use text boxes on list page when autocompleting is enabled" do
@@ -490,7 +490,7 @@ describe AutoForme do
     visit('/Artist/show')
     fill_in 'Artist', :with=>a.id.to_s
     click_button 'Show'
-    page.html.must_match /Name.+TestArtistNew/m
+    page.html.must_match(/Name.+TestArtistNew/m)
 
     click_link 'Edit'
     fill_in 'Artist', :with=>a.id.to_s
@@ -517,14 +517,14 @@ describe AutoForme do
     page.title.must_equal 'Artist - New'
     fill_in 'namenew', :with=>'TAN'
     click_button 'Create'
-    page.html.must_match /Created Artist/
+    page.html.must_include 'Created Artist'
     page.current_path.must_equal '/Artist/new'
 
     click_link 'Show'
     page.title.must_equal 'Artist - Show'
     select 'TAN'
     click_button 'Show'
-    page.html.must_match /nameshow-TANTAN/
+    page.html.must_include 'nameshow-TANTAN'
 
     click_link 'Edit'
     page.title.must_equal 'Artist - Edit'
@@ -532,8 +532,8 @@ describe AutoForme do
     click_button 'Edit'
     fill_in 'nameedit', :with=>'TAU'
     click_button 'Update'
-    page.html.must_match /Updated Artist/
-    page.html.must_match /nameedit.+TAUTAU/m
+    page.html.must_include 'Updated Artist'
+    page.html.must_match(/nameedit.+TAUTAU/m)
     page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
@@ -560,10 +560,10 @@ describe AutoForme do
 
     visit("/Artist/browse")
     page.all('td').last.find('a').click
-    page.html.must_match /namedelete-TAUTAU/
+    page.html.must_include 'namedelete-TAUTAU'
     click_button 'Delete'
     page.title.must_equal 'Artist - Delete'
-    page.html.must_match /Deleted Artist/
+    page.html.must_include 'Deleted Artist'
     page.current_path.must_equal '/Artist/delete'
 
     click_link 'Artist'
@@ -598,18 +598,18 @@ describe AutoForme do
     fill_in 'N2', :with=>'V2'
     fill_in 'N3', :with=>'V3'
     fill_in 'N4', :with=>'V4'
-    page.body.wont_match /<label>N5/i
+    page.body.wont_match(/<label>N5/i)
     click_button 'Create'
 
     click_link 'Show'
     select 'V0'
     click_button 'Show'
-    page.body.must_match /[VN]0/i
-    page.body.must_match /[VN]1/i
-    page.body.must_match /[VN]2/i
-    page.body.wont_match /[VN]3/i
-    page.body.must_match /[VN]4/i
-    page.body.must_match /N5/i
+    page.body.must_match(/[VN]0/i)
+    page.body.must_match(/[VN]1/i)
+    page.body.must_match(/[VN]2/i)
+    page.body.wont_match(/[VN]3/i)
+    page.body.must_match(/[VN]4/i)
+    page.body.must_match(/N5/i)
 
     click_link 'Edit'
     select 'V0'
@@ -618,13 +618,13 @@ describe AutoForme do
     fill_in 'N1', :with=>'Q1'
     fill_in 'N2', :with=>'Q2'
     fill_in 'N3', :with=>'Q3'
-    page.body.wont_match /<label>N4/i
+    page.body.wont_match(/<label>N4/i)
     fill_in 'N5', :with=>'Q5'
     click_button 'Update'
 
     click_link 'Search'
     fill_in 'N0', :with=>'Q0'
-    page.body.wont_match /<label>N1/i
+    page.body.wont_match(/<label>N1/i)
     fill_in 'N2', :with=>'Q2'
     fill_in 'N3', :with=>'Q3'
     fill_in 'N4', :with=>'V4'
@@ -879,14 +879,14 @@ describe AutoForme do
     page.title.must_equal 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
-    page.html.must_match /Created Artist/
+    page.html.must_include 'Created Artist'
     page.current_path.must_equal '/Artist/new'
 
     click_link 'Show'
     page.title.must_equal 'Artist - Show'
     select '[-TestArtistNew-]'
     click_button 'Show'
-    page.html.must_match /Name.+-TestArtistNew-/m
+    page.html.must_match(/Name.+-TestArtistNew-/m)
 
     click_link 'Edit'
     page.title.must_equal 'Artist - Edit'
@@ -894,8 +894,8 @@ describe AutoForme do
     click_button 'Edit'
     fill_in 'Name', :with=>'TestArtistUpdate'
     click_button 'Update'
-    page.html.must_match /Updated Artist/
-    page.html.must_match /Name.+-TestArtistUpdate-/m
+    page.html.must_include 'Updated Artist'
+    page.html.must_match(/Name.+-TestArtistUpdate-/m)
     page.current_path.must_match %r{/Artist/edit/\d+}
 
     click_link 'Search'
@@ -916,7 +916,7 @@ describe AutoForme do
 
     page.all('td').last.find('a').click
     click_button 'Delete'
-    page.html.must_match /Deleted Artist/
+    page.html.must_include 'Deleted Artist'
     page.current_path.must_equal '/Artist/delete'
 
     click_link 'Artist'
