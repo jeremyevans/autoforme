@@ -55,7 +55,7 @@ HTML
       end.inspect
       config.active_support.deprecation = :stderr
       config.middleware.delete(ActionDispatch::ShowExceptions)
-      config.middleware.delete("Rack::Lock")
+      config.middleware.delete(Rack::Lock)
       config.secret_key_base = 'foo'
       config.eager_load = true
       initialize!
