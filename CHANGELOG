@@ -1,5 +1,7 @@
 === HEAD
 
+* Fix some deprecation warnings on Rails 5 (jeremyevans)
+
 * Make sinatra routes handle namespaced models by default (jeremyevans)
 
 === 1.4.0 (2016-05-18)

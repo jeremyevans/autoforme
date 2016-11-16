@@ -8,7 +8,7 @@ module AutoForme
           @controller = request
           @params = request.params
           @session = request.session
-          @env = request.env
+          @env = request.request.env
           @method = @env['REQUEST_METHOD']
           @model = @params['autoforme_model']
           @action_type = @params['autoforme_action']
@@ -54,14 +54,14 @@ module AutoForme
             elsif @autoforme_action.output_type == 'csv'
               response.headers['Content-Type'] = 'text/csv'
               response.headers['Content-Disposition'] = "attachment; filename=#{@autoforme_action.output_filename}"
-              render :text=>@autoforme_text
+              render :html=>@autoforme_text
             elsif @autoforme_action.request.xhr?
-              render :text=>@autoforme_text
+              render :html=>@autoforme_text
             else
               render :inline=>"<%=raw @autoforme_text %>", :layout=>true
             end
           else
-            render :text=>'Unhandled Request', :status=>404
+            render :plain=>'Unhandled Request', :status=>404
           end
         end
       end
