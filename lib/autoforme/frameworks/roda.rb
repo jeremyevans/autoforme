@@ -63,7 +63,7 @@ module AutoForme
           end
           current_matchers = matchers + [lambda{@autoforme_action = framework.action_for(Request.new(self, path))}]
 
-          r.on *current_matchers do
+          r.on(*current_matchers) do
             @autoforme_text = @autoforme_action.handle
             if @autoforme_action.output_type == 'csv'
               response['Content-Type'] = 'text/csv'

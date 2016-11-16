@@ -279,7 +279,7 @@ module AutoForme
         display = display.call(callback_opts) if display.respond_to?(:call)
         limit = opts[:limit] || 10
         limit = limit.call(callback_opts) if limit.respond_to?(:call)
-        opts[:filter] ||= lambda{|ds, opts| ds.where(S.ilike(display, "%#{ds.escape_like(query)}%"))}
+        opts[:filter] ||= lambda{|ds1, _| ds1.where(S.ilike(display, "%#{ds.escape_like(query)}%"))}
         ds = opts[:filter].call(ds, callback_opts)
         ds = ds.select(S.join([S.qualify(model.table_name, model.primary_key), display], ' - ').as(:v)).
           limit(limit)

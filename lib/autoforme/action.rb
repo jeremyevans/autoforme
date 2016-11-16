@@ -319,13 +319,13 @@ module AutoForme
         end
         t << '</table>'
         if type == :show && model.supported_action?(:edit, request)
-          t << Forme.form(form_attributes(:action=>url_for("edit/#{model.primary_key_value(obj)}")), form_opts) do |f|
-            f.button(:value=>'Edit', :class=>'btn btn-primary')
+          t << Forme.form(form_attributes(:action=>url_for("edit/#{model.primary_key_value(obj)}")), form_opts) do |f1|
+            f1.button(:value=>'Edit', :class=>'btn btn-primary')
           end.to_s
         end
         if type == :delete
-          t << Forme.form(form_attributes(:action=>url_for("destroy/#{model.primary_key_value(obj)}"), :method=>:post), form_opts) do |f|
-            f.button(:value=>'Delete', :class=>'btn btn-danger')
+          t << Forme.form(form_attributes(:action=>url_for("destroy/#{model.primary_key_value(obj)}"), :method=>:post), form_opts) do |f1|
+            f1.button(:value=>'Delete', :class=>'btn btn-danger')
           end.to_s
         else
           t << association_links(obj)
@@ -473,7 +473,7 @@ module AutoForme
     # Handle the mtm_edit action by showing a list page if there is no model object selected, a list of associations for that model
     # if there is a model object but no association selected, or a mtm_edit form if there is a model object and association selected.
     def handle_mtm_edit
-      if id = request.id
+      if request.id
         obj = model.with_pk(:edit, request, request.id)
         unless assoc = params_association
           options = model.mtm_association_select_options(request)
@@ -520,7 +520,7 @@ module AutoForme
       assoc_obj = model.mtm_update(request, assoc, obj, request.params['add'], request.params['remove'])
       request.set_flash_notice("Updated #{assoc} association for #{model.class_name}") unless request.xhr?
       if request.xhr?
-        if add = request.params['add']
+        if request.params['add']
           @type = :edit
           mtm_edit_remove(assoc, model.associated_model_class(assoc), obj, assoc_obj)
         else
@@ -599,9 +599,9 @@ module AutoForme
 
         unless assoc_objs.empty?
           t << "<ul>\n"
-          assoc_objs.each do |assoc_obj|
+          assoc_objs.each do |assoc_obj1|
             t << "<li>"
-            t << association_link(mc, assoc_obj)
+            t << association_link(mc, assoc_obj1)
             t << "</li>"
           end
           t << "</ul>"
