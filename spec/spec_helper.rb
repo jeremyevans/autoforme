@@ -1,4 +1,6 @@
 require 'rubygems'
+$: << File.expand_path(File.join(__FILE__, '../../lib'))
+ENV['FRAMEWORK'] ||= 'roda'
 
 module AutoFormeSpec
 end
@@ -17,7 +19,7 @@ if ENV['COVERAGE']
   end
 end
 
-require "./spec/#{ENV['FRAMEWORK'] || 'roda'}_spec_helper"
+require "./spec/#{ENV['FRAMEWORK']}_spec_helper"
 
 require 'capybara'
 require 'capybara/dsl'
