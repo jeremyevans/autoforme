@@ -34,7 +34,7 @@ module AutoForme
     ALL_SUPPORTED_ACTIONS = %w'new create show edit update delete destroy browse search mtm_edit mtm_update association_links autocomplete'.freeze
 
     # Map of regular type symbols to normalized type symbols
-    NORMALIZED_ACTION_MAP = {:create=>:new, :update=>:edit, :destroy=>:delete, :mtm_update=>:mtm_edit}
+    NON_IDEMPOTENT_TYPES = NORMALIZED_ACTION_MAP = {:create=>:new, :update=>:edit, :destroy=>:delete, :mtm_update=>:mtm_edit}
 
     # Map of type symbols to HTML titles
     TITLE_MAP = {:new=>'New', :show=>'Show', :edit=>'Edit', :delete=>'Delete', :browse=>'Browse', :search=>'Search', :mtm_edit=>'Many To Many Edit'}
@@ -54,9 +54,9 @@ module AutoForme
     # As a side-effect, this sets up additional state related to the request.
     def supported?
       return false unless ALL_SUPPORTED_ACTIONS.include?(request.action_type)
-      @type = request.action_type.to_sym
-      @normalized_type = NORMALIZED_ACTION_MAP.fetch(@type, @type)
-      return false unless idempotent? || request.post?
+      type = @type = request.action_type.to_sym
+      @normalized_type = NORMALIZED_ACTION_MAP.fetch(type, type)
+      return false if NON_IDEMPOTENT_TYPES[type] && !request.post?
 
       case type
       when :mtm_edit
@@ -98,11 +98,6 @@ module AutoForme
     # Convert input to a string adn HTML escape it.
     def h(s)
       Rack::Utils.escape_html(s.to_s)
-    end
-
-    # Return whether the current action is an idempotent action.
-    def idempotent?
-      type == normalized_type
     end
 
     # Get request parameters for the model.  Used when retrieving form

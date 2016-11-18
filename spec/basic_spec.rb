@@ -58,6 +58,9 @@ describe AutoForme do
     click_link 'CSV Format'
     page.body.must_equal "Name\nTestArtistUpdate\n"
 
+    visit("/Artist/destroy/#{Artist.first.id}")
+    page.html.must_include 'Unhandled Request'
+
     visit("/Artist/browse")
     page.all('td').last.find('a').click
     click_button 'Delete'
