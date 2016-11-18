@@ -54,9 +54,9 @@ module AutoForme
             elsif @autoforme_action.output_type == 'csv'
               response.headers['Content-Type'] = 'text/csv'
               response.headers['Content-Disposition'] = "attachment; filename=#{@autoforme_action.output_filename}"
-              render :html=>@autoforme_text
+              render :body=>@autoforme_text
             elsif @autoforme_action.request.xhr?
-              render :html=>@autoforme_text
+              render :html=>@autoforme_text.html_safe
             else
               render :inline=>"<%=raw @autoforme_text %>", :layout=>true
             end
