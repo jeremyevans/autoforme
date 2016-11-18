@@ -5,21 +5,19 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
     <link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
     <script type='text/javascript'>
-      //<![CDATA[
-        function popupCode(url) {
-          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
-        }
-        
-        function toggleCode(id) {
-          var code = document.getElementById(id)
-        
-          code.style.display = code.style.display != 'block' ? 'block' : 'none'
-          return true
-        }
-        
-        // Make codeblocks hidden by default
-        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
-      //]]>
+      function popupCode(url) {
+        window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+      }
+      
+      function toggleCode(id) {
+        var code = document.getElementById(id)
+      
+        code.style.display = code.style.display != 'block' ? 'block' : 'none'
+        return true
+      }
+      
+      // Make codeblocks hidden by default
+      document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
     </script>
   </head>
   <body class='page'>
@@ -31,7 +29,7 @@
         </h1>
         <ol class='paths'>
           <li>
-            <a target="docwin" href="../../files/lib/autoforme/table_rb.html">lib/autoforme/table.rb</a>
+            <a href="../../files/lib/autoforme/table_rb.html">lib/autoforme/table.rb</a>
           </li>
         </ol>
         <div class='parent'>
@@ -50,19 +48,18 @@
             <h2>Methods</h2>
             <h3>Public Class</h3>
             <ol>
-              <li><a target="docwin" href="#method-c-new">new</a></li>
+              <li><a href="#method-c-new">new</a></li>
             </ol>
             <h3>Public Instance</h3>
             <ol>
-              <li><a target="docwin" href="#attribute-i-action">action</a></li>
-              <li><a target="docwin" href="#attribute-i-columns">columns</a></li>
-              <li><a target="docwin" href="#method-i-h">h</a></li>
-              <li><a target="docwin" href="#attribute-i-model">model</a></li>
-              <li><a target="docwin" href="#attribute-i-objs">objs</a></li>
-              <li><a target="docwin" href="#attribute-i-opts">opts</a></li>
-              <li><a target="docwin" href="#attribute-i-request">request</a></li>
-              <li><a target="docwin" href="#method-i-to_s">to_s</a></li>
-              <li><a target="docwin" href="#attribute-i-type">type</a></li>
+              <li><a href="#attribute-i-action">action</a></li>
+              <li><a href="#attribute-i-columns">columns</a></li>
+              <li><a href="#method-i-h">h</a></li>
+              <li><a href="#attribute-i-model">model</a></li>
+              <li><a href="#attribute-i-objs">objs</a></li>
+              <li><a href="#attribute-i-request">request</a></li>
+              <li><a href="#method-i-to_s">to_s</a></li>
+              <li><a href="#attribute-i-type">type</a></li>
             </ol>
           </div>
           <div id='context'>
@@ -114,16 +111,6 @@
                   </tr>
                   <tr class='top-aligned-row context-row'>
                     <td class='context-item-name'>
-                      <a name='attribute-i-opts'>opts</a>
-                    </td>
-                    <td class='context-item-value'>[R]</td>
-                    <td class='context-item-desc'>
-                      
-                      <p>Any options for the table</p>
-                    </td>
-                  </tr>
-                  <tr class='top-aligned-row context-row'>
-                    <td class='context-item-name'>
                       <a name='attribute-i-request'>request</a>
                     </td>
                     <td class='context-item-value'>[R]</td>
@@ -151,7 +138,7 @@
                 <a name='method-c-new'></a>
                 <div class='synopsis'>
                   <span class='name'>new</span>
-                  <span class='arguments'>(action, objs, opts={})</span>
+                  <span class='arguments'>(action, objs)</span>
                 </div>
                 <div class='description'>
                   
@@ -160,7 +147,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-c-new-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-c-new-source'><span class="ruby-comment"># File lib/autoforme/table.rb, line 27</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">action</span>, <span class="ruby-identifier">objs</span>, <span class="ruby-identifier">opts</span>={})&#x000A;  <span class="ruby-ivar">@action</span> = <span class="ruby-identifier">action</span>&#x000A;  <span class="ruby-ivar">@request</span> = <span class="ruby-identifier">action</span>.<span class="ruby-identifier">request</span>&#x000A;  <span class="ruby-ivar">@model</span> = <span class="ruby-identifier">action</span>.<span class="ruby-identifier">model</span>&#x000A;  <span class="ruby-ivar">@type</span> = <span class="ruby-identifier">action</span>.<span class="ruby-identifier">normalized_type</span>&#x000A;  <span class="ruby-ivar">@columns</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-ivar">@objs</span> = <span class="ruby-identifier">objs</span>&#x000A;  <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-c-new-source'><span class="ruby-comment"># File lib/autoforme/table.rb, line 23</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">action</span>, <span class="ruby-identifier">objs</span>)&#x000A;  <span class="ruby-ivar">@action</span> = <span class="ruby-identifier">action</span>&#x000A;  <span class="ruby-ivar">@request</span> = <span class="ruby-identifier">action</span>.<span class="ruby-identifier">request</span>&#x000A;  <span class="ruby-ivar">@model</span> = <span class="ruby-identifier">action</span>.<span class="ruby-identifier">model</span>&#x000A;  <span class="ruby-ivar">@type</span> = <span class="ruby-identifier">action</span>.<span class="ruby-identifier">normalized_type</span>&#x000A;  <span class="ruby-ivar">@columns</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-ivar">@objs</span> = <span class="ruby-identifier">objs</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <h2>Public Instance methods</h2>
@@ -177,7 +164,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-h-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-h-source'><span class="ruby-comment"># File lib/autoforme/table.rb, line 37</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">h</span>(<span class="ruby-identifier">s</span>)&#x000A;  <span class="ruby-identifier">action</span>.<span class="ruby-identifier">h</span>(<span class="ruby-identifier">s</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-h-source'><span class="ruby-comment"># File lib/autoforme/table.rb, line 32</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">h</span>(<span class="ruby-identifier">s</span>)&#x000A;  <span class="ruby-identifier">action</span>.<span class="ruby-identifier">h</span>(<span class="ruby-identifier">s</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
               <div class='method public-instance' id='method-method-i-to_s'>
@@ -194,7 +181,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('method-i-to_s-source'); return false">
                     [show source]
                   </a>
-                  <pre id='method-i-to_s-source'><span class="ruby-comment"># File lib/autoforme/table.rb, line 42</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>&#x000A;  <span class="ruby-identifier">html</span> = <span class="ruby-constant">String</span>.<span class="ruby-identifier">new</span>&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;table id=\&quot;autoforme_table\&quot; class=\&quot;#{model.table_class_for(type, request)}\&quot;&gt;&quot;</span>&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">caption</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:caption</span>]&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;caption&gt;#{h caption}&lt;/caption&gt;&quot;</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;thead&gt;&lt;tr&gt;&quot;</span>&#x000A;  <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;th&gt;#{h action.column_label_for(type, request, model, column)}&lt;/th&gt;&quot;</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;th&gt;Show&lt;/th&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">show</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">supported_action?</span>(<span class="ruby-value">:show</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;th&gt;Edit&lt;/th&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">edit</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">supported_action?</span>(<span class="ruby-value">:edit</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;th&gt;Delete&lt;/th&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">delete</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">supported_action?</span>(<span class="ruby-value">:delete</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;/tr&gt;&lt;/thead&gt;&quot;</span>&#x000A;&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;tbody&gt;&quot;</span>&#x000A;  <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">obj</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;tr&gt;&quot;</span>&#x000A;    <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column</span><span class="ruby-operator">|</span>&#x000A;      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">val</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">show_html_for</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">column_value</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>)&#x000A;        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">val</span>.<span class="ruby-identifier">to_s</span>(<span class="ruby-string">&#39;F&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-constant">BigDecimal</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">BigDecimal</span>)&#x000A;        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">h</span>(<span class="ruby-identifier">val</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;#{val}&lt;/td&gt;&quot;</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;&lt;a href=\&quot;#{action.url_for(&quot;show/#{model.primary_key_value(obj)}&quot;)}\&quot; class=\&quot;btn btn-mini btn-info\&quot;&gt;Show&lt;/a&gt;&lt;/td&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">show</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;&lt;a href=\&quot;#{action.url_for(&quot;edit/#{model.primary_key_value(obj)}&quot;)}\&quot; class=\&quot;btn btn-mini btn-primary\&quot;&gt;Edit&lt;/a&gt;&lt;/td&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">edit</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;&lt;a href=\&quot;#{action.url_for(&quot;delete/#{model.primary_key_value(obj)}&quot;)}\&quot; class=\&quot;btn btn-mini btn-danger\&quot;&gt;Delete&lt;/a&gt;&lt;/td&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">delete</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;/tr&gt;&quot;</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;/tbody&gt;&lt;/table&gt;&quot;</span>&#x000A;  <span class="ruby-identifier">html</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                  <pre id='method-i-to_s-source'><span class="ruby-comment"># File lib/autoforme/table.rb, line 37</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>&#x000A;  <span class="ruby-identifier">html</span> = <span class="ruby-constant">String</span>.<span class="ruby-identifier">new</span>&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;table id=\&quot;autoforme_table\&quot; class=\&quot;#{model.table_class_for(type, request)}\&quot;&gt;&quot;</span>&#x000A;&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;thead&gt;&lt;tr&gt;&quot;</span>&#x000A;  <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;th&gt;#{h action.column_label_for(type, request, model, column)}&lt;/th&gt;&quot;</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;th&gt;Show&lt;/th&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">show</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">supported_action?</span>(<span class="ruby-value">:show</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;th&gt;Edit&lt;/th&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">edit</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">supported_action?</span>(<span class="ruby-value">:edit</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;th&gt;Delete&lt;/th&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">delete</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">supported_action?</span>(<span class="ruby-value">:delete</span>, <span class="ruby-identifier">request</span>)&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;/tr&gt;&lt;/thead&gt;&quot;</span>&#x000A;&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;tbody&gt;&quot;</span>&#x000A;  <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">obj</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;tr&gt;&quot;</span>&#x000A;    <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column</span><span class="ruby-operator">|</span>&#x000A;      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">val</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">show_html_for</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)&#x000A;        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">column_value</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>)&#x000A;        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">val</span>.<span class="ruby-identifier">to_s</span>(<span class="ruby-string">&#39;F&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-constant">BigDecimal</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">BigDecimal</span>)&#x000A;        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">h</span>(<span class="ruby-identifier">val</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;#{val}&lt;/td&gt;&quot;</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;&lt;a href=\&quot;#{action.url_for(&quot;show/#{model.primary_key_value(obj)}&quot;)}\&quot; class=\&quot;btn btn-mini btn-info\&quot;&gt;Show&lt;/a&gt;&lt;/td&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">show</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;&lt;a href=\&quot;#{action.url_for(&quot;edit/#{model.primary_key_value(obj)}&quot;)}\&quot; class=\&quot;btn btn-mini btn-primary\&quot;&gt;Edit&lt;/a&gt;&lt;/td&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">edit</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;td&gt;&lt;a href=\&quot;#{action.url_for(&quot;delete/#{model.primary_key_value(obj)}&quot;)}\&quot; class=\&quot;btn btn-mini btn-danger\&quot;&gt;Delete&lt;/a&gt;&lt;/td&gt;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">delete</span>&#x000A;    <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;/tr&gt;&quot;</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&lt;/tbody&gt;&lt;/table&gt;&quot;</span>&#x000A;  <span class="ruby-identifier">html</span>&#x000A;<span class="ruby-keyword">end</span></pre>
                 </div>
               </div>
             </div>
@@ -204,7 +191,7 @@
       <div id='footer-push'></div>
     </div>
     <div id='footer'>
-      <a target="docwin" href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+      <a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
     </div>
   </body>
 </html>
