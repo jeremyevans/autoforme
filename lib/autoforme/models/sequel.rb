@@ -21,11 +21,6 @@ module AutoForme
         S::Model
       end
 
-      # A completely empty search object, with no defaults.
-      def new_search
-        model.call({})
-      end
-
       # The name of the form param for the given association.
       def form_param_name(assoc)
         "#{model.send(:underscore, model.name)}[#{association_key(assoc)}]"
