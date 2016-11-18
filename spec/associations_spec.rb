@@ -70,6 +70,11 @@ describe AutoForme do
     click_button 'Create'
     Album.first.artist_id.must_equal a.id
 
+    click_link 'Show'
+    select 'Album1'
+    click_button 'Show'
+    page.body.must_include 'TestArtist'
+
     click_link 'Edit'
     select 'Album1'
     click_button 'Edit'
@@ -83,6 +88,15 @@ describe AutoForme do
     fill_in 'Artist', :with=>b.id.to_s
     click_button 'Search'
     page.all('td').map{|s| s.text}.must_equal ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
+
+    visit '/Artist/autocomplete?q=Test'
+    page.body.must_match(/\d+ - TestArtist\n\d+ - TestArtist2/m)
+
+    visit '/Album/autocomplete/artist?q=Test'
+    page.body.must_match(/\d+ - TestArtist\n\d+ - TestArtist2/m)
+
+    visit '/Album/autocomplete/artist?type=edit&q=Test'
+    page.body.must_match(/\d+ - TestArtist\n\d+ - TestArtist2/m)
   end
 
   it "should be able to used specified name formatting in other model" do
@@ -172,6 +186,49 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2A2", "Show", "Edit", "Delete"]
   end
 
+  it "should be able to used specified name formatting for current association" do
+    app_setup do
+      model Artist
+      model Album do
+        columns [:name, :artist]
+        column_options :artist=>{:name_method=>:name}
+      end
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'A1'
+    click_button 'Create'
+    fill_in 'Name', :with=>'A2'
+    click_button 'Create'
+
+    visit("/Album/new")
+    fill_in 'Name', :with=>'Album1'
+    select 'A1'
+    click_button 'Create'
+
+    click_link 'Show'
+    select 'Album1'
+    click_button 'Show'
+    page.html.must_match(/Name.+Album1/m)
+    page.html.must_match(/Artist.+A1/m)
+
+    click_link 'Edit'
+    select 'Album1'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'Album1b'
+    select 'A2'
+    click_button 'Update'
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'1b'
+    select 'A2'
+    click_button 'Search'
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2", "Show", "Edit", "Delete"]
+
+    click_link 'Album'
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2", "Show", "Edit", "Delete"]
+  end
+
   it "should be able to eager load associations when loading model" do
     app_setup do
       model Artist
@@ -187,6 +244,50 @@ describe AutoForme do
     click_button 'Create'
     fill_in 'Name', :with=>'A2'
     click_button 'Create'
+
+    visit("/Album/new")
+    fill_in 'Name', :with=>'Album1'
+    select 'A1'
+    click_button 'Create'
+
+    click_link 'Show'
+    select 'A1-Album1'
+    click_button 'Show'
+    page.html.must_match(/Name.+Album1/m)
+    page.html.must_match(/Artist.+A1/m)
+
+    click_link 'Edit'
+    select 'A1-Album1'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'Album1b'
+    select 'A2'
+    click_button 'Update'
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'1b'
+    select 'A2'
+    click_button 'Search'
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2", "Show", "Edit", "Delete"]
+
+    click_link 'Album'
+    page.all('td').map{|s| s.text}.must_equal ["Album1b", "A2", "Show", "Edit", "Delete"]
+
+    click_link 'Delete', :match=>:first
+    select 'A2-Album1b'
+    click_button 'Delete'
+  end
+
+  it "should be able to eager load associations when loading model without autoforme for associated model" do
+    app_setup do
+      model Album do
+        columns [:name, :artist]
+        eager :artist
+        display_name{|obj| "#{obj.associations[:artist].name}-#{obj.name}"}
+      end
+    end
+
+    Artist.create(:name=>'A1')
+    Artist.create(:name=>'A2')
 
     visit("/Album/new")
     fill_in 'Name', :with=>'Album1'
@@ -419,6 +520,31 @@ describe AutoForme do
     page.current_path.must_match %r{Artist/edit/\d+}
     click_link 'Albums'
     page.current_path.must_equal '/Album/browse'
+
+    visit "/Album/association_links/#{Artist.first.id}"
+    click_link 'Artist1'
+    click_button 'Update'
+    page.current_path.must_match %r{Artist/edit/\d+}
+  end
+
+  it "should have working associations listed without links if there is no autoforme for other model" do
+    app_setup do
+      model Artist do
+        association_links :all
+      end
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'Artist1'
+    click_button 'Create'
+
+    Artist.first.add_album(:name=>'Album1')
+    click_link 'Edit'
+    select 'Artist1'
+    click_button 'Edit'
+    page.html.must_include 'Album1'
+    page.html.wont_include 'create'
+    page.html.wont_include '/Album'
   end
 
   it "should display but not link if the action is not supported " do

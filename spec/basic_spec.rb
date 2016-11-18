@@ -569,6 +569,39 @@ describe AutoForme do
     click_link 'Artist'
     page.all('td').map{|s| s.text}.must_equal []
   end
+
+  it "should correct handle validation errors" do
+    app_setup(Artist)
+    Artist.send(:define_method, :validate) do
+      errors.add(:name, "bad name") if name == 'Foo'
+    end
+
+    visit("/Artist/new")
+    page.title.must_equal 'Artist - New'
+    fill_in 'Name', :with=>'Foo'
+    click_button 'Create'
+    page.html.must_include 'Error Creating Artist'
+    page.html.must_include 'bad name'
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.html.must_include 'Created Artist'
+    page.current_path.must_equal '/Artist/new'
+
+    click_link 'Edit'
+    page.title.must_equal 'Artist - Edit'
+    click_button 'Edit'
+    select 'TestArtistNew'
+    click_button 'Edit'
+    fill_in 'Name', :with=>'Foo'
+    click_button 'Update'
+    page.html.must_include 'Error Updating Artist'
+    page.html.must_include 'bad name'
+    fill_in 'Name', :with=>'TestArtistUpdate'
+    click_button 'Update'
+    page.html.must_include 'Updated Artist'
+    page.html.must_match(/Name.+TestArtistUpdate/m)
+    page.current_path.must_match %r{/Artist/edit/\d+}
+  end
 end
 
 describe AutoForme do
@@ -916,6 +949,88 @@ describe AutoForme do
 
     page.all('td').last.find('a').click
     click_button 'Delete'
+    page.html.must_include 'Deleted Artist'
+    page.current_path.must_equal '/Artist/delete'
+
+    click_link 'Artist'
+    page.all('td').map{|s| s.text}.must_equal []
+  end
+end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string], [:i, :integer]])
+    model_setup(:Artist=>[:artists])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should have basic functionality working" do
+    app_setup(Artist)
+    visit("/Artist/new")
+    page.title.must_equal 'Artist - New'
+    fill_in 'Name', :with=>'TestArtistNew'
+    fill_in 'I', :with=>'3'
+    click_button 'Create'
+
+    click_link 'Search'
+    fill_in 'I', :with=>'2'
+    click_button 'Search'
+    page.all('th').map{|s| s.text}.must_equal ['I', 'Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal []
+
+    click_link 'Search'
+    fill_in 'I', :with=>'3'
+    click_button 'Search'
+    page.all('th').map{|s| s.text}.must_equal ['I', 'Name', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal ["3", "TestArtistNew", "Show", "Edit", "Delete"]
+  end
+end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[])
+    model_setup(:Artist=>[:artists])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should have basic functionality working with no columns" do
+    app_setup(Artist)
+    visit("/Artist/new")
+    page.title.must_equal 'Artist - New'
+    click_button 'Create'
+    page.html.must_include 'Created Artist'
+    page.current_path.must_equal '/Artist/new'
+    id = Artist.first.id.to_s
+
+    click_link 'Show'
+    page.title.must_equal 'Artist - Show'
+    click_button 'Show'
+    select id
+    click_button 'Show'
+
+    click_link 'Edit'
+    page.title.must_equal 'Artist - Edit'
+    click_button 'Edit'
+    select id
+    click_button 'Edit'
+    click_button 'Update'
+    page.html.must_include 'Updated Artist'
+    page.current_path.must_equal "/Artist/edit/#{id}"
+
+    click_link 'Artist'
+    page.title.must_equal 'Artist - Browse'
+    page.all('td').map{|s| s.text}.must_equal ["Show", "Edit", "Delete"]
+    click_link 'CSV Format'
+    page.body.must_equal "\n\n"
+
+    visit("/Artist/browse")
+    page.all('td').last.find('a').click
+    click_button 'Delete'
+    page.title.must_equal 'Artist - Delete'
     page.html.must_include 'Deleted Artist'
     page.current_path.must_equal '/Artist/delete'
 

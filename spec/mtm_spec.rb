@@ -22,6 +22,44 @@ describe AutoForme do
     page.html.must_include 'Unhandled Request'
   end
 
+  it "should have working Model#associated_object_display_name" do
+    mod = nil
+    app_setup do
+      model Artist
+      model Album do
+        mod = self
+      end
+    end
+
+    mod.associated_object_display_name(:artist, nil, Artist.load(:name=>'a')).must_equal 'a'
+  end
+
+  it "should have Model#associated_object_display_name respect :name_method column option" do
+    mod = nil
+    app_setup do
+      model Artist
+      model Album do
+        column_options :artist=>{:name_method=>:id}
+        mod = self
+      end
+    end
+
+    mod.associated_object_display_name(:artist, nil, Artist.load(:id=>1)).must_equal 1
+  end
+
+  it "should have Model#associated_object_display_name raise Error if not valid" do
+    mod = nil
+    app_setup do
+      model Artist
+      model Album do
+        column_options :artist=>{:name_method=>Object.new}
+        mod = self
+      end
+    end
+
+    proc{mod.associated_object_display_name(:artist, nil, Artist.load(:name=>'a'))}.must_raise AutoForme::Error
+  end
+
   it "should have basic many to many association editing working" do
     app_setup do
       model Artist do
@@ -74,7 +112,7 @@ describe AutoForme do
     Artist.create(:name=>'Artist1')
     a1 = Album.create(:name=>'Album1')
     a2 = Album.create(:name=>'Album2')
-    Album.create(:name=>'Album3')
+    a3 = Album.create(:name=>'Album3')
 
     visit("/Artist/mtm_edit")
     select("Artist1")
@@ -92,6 +130,19 @@ describe AutoForme do
     click_button "Update"
     Artist.first.refresh.albums.map{|x| x.name}.must_equal %w'Album2'
 
+    visit "/Artist/autocomplete/albums?type=association&q=Album"
+    page.body.must_match(/#{a1.id} - Album1\n#{a2.id} - Album2\n#{a3.id} - Album3/m)
+
+    visit "/Artist/autocomplete/albums?type=association&q=3"
+    page.body.wont_match(/#{a1.id} - Album1\n#{a2.id} - Album2\n#{a3.id} - Album3/m)
+    page.body.must_match(/#{a3.id} - Album3/m)
+
+    visit "/Artist/autocomplete/albums?type=association&exclude=#{Artist.first.id}&q=Album"
+    page.body.must_match(/#{a1.id} - Album1\n#{a3.id} - Album3/m)
+
+    visit("/Artist/mtm_edit")
+    select("Artist1")
+    click_button "Edit"
     page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album2"]
     select("Album2", :from=>"Disassociate From")
     click_button "Update"
@@ -165,6 +216,32 @@ describe AutoForme do
     fill_in 'Albums', :with=>a3.id.to_s
     click_button 'Add'
     Artist.first.refresh.albums.map{|x| x.name}.sort.must_equal %w'Album2 Album3'
+  end
+
+  it "should have inline many to many association editing working with xhr" do
+    app_setup do
+      model Artist do
+        inline_mtm_associations do |req|
+          def req.xhr?; action_type == 'mtm_update' end
+          :albums
+        end
+      end
+      model Album
+    end
+
+    Artist.create(:name=>'Artist1')
+    album = Album.create(:name=>'Album1')
+
+    visit("/Artist/edit")
+    select("Artist1")
+    click_button "Edit"
+    select 'Album1'
+    click_button 'Add'
+    Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
+
+    click_button 'Remove'
+    Artist.first.refresh.albums.map{|x| x.name}.must_equal []
+    page.body.must_equal "<option value=\"#{album.id}\">Album1</option>"
   end
 
   it "should have working many to many association links on show and edit pages" do

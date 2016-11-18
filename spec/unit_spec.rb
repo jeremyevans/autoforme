@@ -306,6 +306,12 @@ describe AutoForme do
     model.autocomplete_options{|type, req| {:limit=>req}}
     model.autocomplete(:type=>:show, :query=>'oo', :request=>1).must_equal ["#{a.id} - FooBar"]
   end
+
+  it "should support looking up model classes when registering by name" do
+    framework.register_by_name
+    framework.model(Artist)
+    framework.model_class(Artist).link.must_equal 'Artist'
+  end
 end
 
 describe AutoForme do
@@ -331,6 +337,7 @@ describe AutoForme do
       end
     end
 
+    model.association?('artist').must_equal true
     artist.autocomplete_options({})
     model.autocomplete(:query=>'foo', :association=>:artist).must_equal []
     a = Artist.create(:name=>'FooBar')
@@ -353,6 +360,35 @@ describe AutoForme do
     artist.autocomplete_options :filter=>proc{|ds, opts| ds.where(:name=>opts[:query])}
     model.autocomplete(:query=>'foo', :association=>:artist).must_equal []
     model.autocomplete(:query=>'FooBar', :association=>:artist).must_equal ["#{a.id} - FooBar"]
+  end
+end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string]], :albums_artists=>[[:album_id, :integer, {:table=>:albums}], [:artist_id, :integer, {:table=>:artists}]])
+    model_setup(:Artist=>[:artists, [[:one_through_one, :album], [:many_to_many, :albums]]], :Album=>[:albums])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Album)
+    Object.send(:remove_const, :Artist)
+  end
+
+
+  it "should handle not include unhandled association types in association links" do
+    app_setup do
+      model Artist do
+        association_links :album
+      end
+      model Album
+    end
+
+    artist = Artist.create(:name=>'Ar')
+    artist.add_album(:name=>'Album1')
+    visit "/Artist/association_links/#{artist.id}"
+    page.html.wont_include 'Album1'
+    click_link 'Album'
+    page.html.must_include 'Album1'
+    page.current_path.must_equal '/Album/browse'
   end
 end
 
@@ -446,6 +482,13 @@ end
 describe AutoForme do
   it ".version should return a typical version string" do
     AutoForme.version.must_match(/\A\d+\.\d+\.\d+\z/)
+  end
+end
+
+describe AutoForme::Model do
+  it "#model should raise error if underlying model is not a valid class string" do
+    mod = AutoForme::Model.new('artist', nil)
+    proc{mod.model}.must_raise AutoForme::Error
   end
 end
 
