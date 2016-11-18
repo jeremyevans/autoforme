@@ -21,17 +21,13 @@ module AutoForme
     # An array of objects to show in the table
     attr_reader :objs
 
-    # Any options for the table
-    attr_reader :opts
-
-    def initialize(action, objs, opts={})
+    def initialize(action, objs)
       @action = action
       @request = action.request
       @model = action.model
       @type = action.normalized_type
       @columns = model.columns_for(type, request)
       @objs = objs
-      @opts = opts
     end
     
     def h(s)
@@ -42,9 +38,6 @@ module AutoForme
     def to_s
       html = String.new
       html << "<table id=\"autoforme_table\" class=\"#{model.table_class_for(type, request)}\">"
-      if caption = opts[:caption]
-        html << "<caption>#{h caption}</caption>"
-      end
 
       html << "<thead><tr>"
       columns.each do |column|
