@@ -319,15 +319,8 @@ module AutoForme
     end
 
     # An array of pairs for the select options to return for the given type.
-    def select_options(type, request, opts={})
-      case nm = opts[:name_method]
-      when Symbol, String
-        all_rows_for(type, request).map{|obj| [obj.send(nm), primary_key_value(obj)]}
-      when nil
-        all_rows_for(type, request).map{|obj| [object_display_name(type, request, obj), primary_key_value(obj)]}
-      else
-        all_rows_for(type, request).map{|obj| [nm.call(obj), primary_key_value(obj)]}
-      end
+    def select_options(type, request)
+      all_rows_for(type, request).map{|obj| [object_display_name(type, request, obj), primary_key_value(obj)]}
     end
 
     # A human readable string representing the object.
@@ -335,7 +328,7 @@ module AutoForme
       apply_name_method(display_name_for, obj, type, request).to_s
     end
 
-    # A human reable string for the associated object.
+    # A human readable string for the associated object.
     def associated_object_display_name(assoc, request, obj)
       apply_name_method(column_options_for(:mtm_edit, request, assoc)[:name_method], obj, :mtm_edit, request)
     end
