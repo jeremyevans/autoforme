@@ -1,8 +1,8 @@
-=== HEAD
+=== 1.5.0 (2016-11-18)
 
 * Allow autocompleting for associated objects even if current class doesn't support autocompleting (jeremyevans)
 
-* Fix check for non-idempotent GET requests (jeremyevans)
+* [SECURITY] Fix check for non-idempotent GET requests (jeremyevans)
 
 * Fix some deprecation warnings on Rails 5 (jeremyevans)
 
