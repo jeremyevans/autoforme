@@ -27,7 +27,7 @@ module AutoForme
       unless klass = @mutex.synchronize{map[type]}
         require "autoforme/#{map_type}s/#{type}"
         unless klass = @mutex.synchronize{map[type]}
-          raise Error, "unsupported framework: #{type.inspect}"
+          raise Error, "unsupported #{map_type}: #{type.inspect}"
         end
       end
       klass

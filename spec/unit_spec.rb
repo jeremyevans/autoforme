@@ -448,3 +448,21 @@ describe AutoForme do
     AutoForme.version.must_match(/\A\d+\.\d+\.\d+\z/)
   end
 end
+
+describe AutoForme do
+  before do
+    class << AutoForme
+      def require(f); end
+    end
+  end
+  after do
+    class << AutoForme
+      remove_method :require
+    end
+  end
+
+  it "should raise error when trying to use unsupported framework or model" do
+    proc{AutoForme.framework_class_for(:foo)}.must_raise AutoForme::Error
+    proc{AutoForme.model_class_for(:foo)}.must_raise AutoForme::Error
+  end
+end
