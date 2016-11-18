@@ -141,8 +141,6 @@ module AutoForme
           "edit/#{model.primary_key_value(obj)}"
         when :mtm_edit
           "mtm_edit/#{model.primary_key_value(obj)}?association=#{params_association}"
-        else
-          raise Error, "Unhandled redirect type: #{type.inspect}"
         end
         path = url_for(path)
       end
