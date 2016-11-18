@@ -53,11 +53,10 @@ module AutoForme
     #
     # As a side-effect, this sets up additional state related to the request.
     def supported?
-      return false unless idempotent? || request.post?
       return false unless ALL_SUPPORTED_ACTIONS.include?(request.action_type)
-
       @type = request.action_type.to_sym
       @normalized_type = NORMALIZED_ACTION_MAP.fetch(@type, @type)
+      return false unless idempotent? || request.post?
 
       case type
       when :mtm_edit

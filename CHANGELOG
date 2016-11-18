@@ -1,5 +1,7 @@
 === HEAD
 
+* Fix check for non-idempotent GET requests (jeremyevans)
+
 * Fix some deprecation warnings on Rails 5 (jeremyevans)
 
 * Make sinatra routes handle namespaced models by default (jeremyevans)
