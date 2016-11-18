@@ -1,5 +1,7 @@
 === HEAD
 
+* Allow autocompleting for associated objects even if current class doesn't support autocompleting (jeremyevans)
+
 * Fix check for non-idempotent GET requests (jeremyevans)
 
 * Fix some deprecation warnings on Rails 5 (jeremyevans)
