@@ -18,7 +18,9 @@ module AutoForme
           remaining_path = if @request.respond_to?(:remaining_path)
             @request.remaining_path
           else
+            # :nocov:
             @env['PATH_INFO']
+            # :nocov:
           end
 
           path_id = $1 if remaining_path =~ %r{\A\/([\w-]+)\z}
@@ -59,7 +61,9 @@ module AutoForme
           path = if r.respond_to?(:matched_path)
             r.matched_path
           else
+            # :nocov:
             r.env['SCRIPT_NAME']
+            # :nocov:
           end
           current_matchers = matchers + [lambda{@autoforme_action = framework.action_for(Request.new(self, path))}]
 
