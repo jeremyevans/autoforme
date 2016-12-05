@@ -329,7 +329,7 @@ describe AutoForme do
       model Album do
         columns [:name, :artist]
         eager_graph :artist
-        order{|type, req| type == :edit ? [:albums__name, :artist__name] : [:artist__name, :albums__name]}
+        order{|type, req| type == :edit ? [Sequel[:albums][:name], Sequel[:artist][:name]] : [Sequel[:artist][:name], Sequel[:albums][:name]]}
         display_name{|obj, type| type == :edit ? "#{obj.name} (#{obj.artist.name})" : "#{obj.artist.name}-#{obj.name}"}
       end
     end
@@ -349,7 +349,7 @@ describe AutoForme do
       model Album do
         columns [:name, :artist]
         eager_graph :artist
-        order{|type, req| type == :edit ? [:albums__name, :artist__name] : [:artist__name, :albums__name]}
+        order{|type, req| type == :edit ? [Sequel[:albums][:name], Sequel[:artist][:name]] : [Sequel[:artist][:name], Sequel[:albums][:name]]}
         display_name{|obj, type| type == :edit ? "#{obj.name} (#{obj.artist.name})" : "#{obj.artist.name}-#{obj.name}"}
       end
     end
@@ -647,7 +647,7 @@ describe AutoForme do
       model Album do
         columns [:name, :artist]
         eager_graph :artist
-        order :artist__name
+        order Sequel[:artist][:name]
       end
     end
 
@@ -688,7 +688,7 @@ describe AutoForme do
     app_setup do
       model Artist do
         eager_graph :albums
-        order :albums__name
+        order Sequel[:albums][:name]
       end
       model Album do
         columns [:name, :artist]
