@@ -68,7 +68,7 @@ describe AutoForme do
   end
 
   it "should handle order lookup" do
-    model.order_for(:browse, nil).must_equal nil
+    model.order_for(:browse, nil).must_be_nil
     framework.order :bar
     model.order_for(:browse, nil).must_equal :bar
     framework.order{|mod, type, req| [mod.name.to_sym, type, req]}
@@ -80,7 +80,7 @@ describe AutoForme do
   end
 
   it "should handle eager lookup" do
-    model.eager_for(:browse, nil).must_equal nil
+    model.eager_for(:browse, nil).must_be_nil
     model.eager [:foo]
     model.eager_for(:browse, nil).must_equal [:foo]
     model.eager{|type, req| [type, req]}
@@ -88,7 +88,7 @@ describe AutoForme do
   end
 
   it "should handle eager_graph lookup" do
-    model.eager_graph_for(:browse, nil).must_equal nil
+    model.eager_graph_for(:browse, nil).must_be_nil
     model.eager_graph [:foo]
     model.eager_graph_for(:browse, nil).must_equal [:foo]
     model.eager_graph{|type, req| [type, req]}
@@ -96,7 +96,7 @@ describe AutoForme do
   end
 
   it "should handle filter lookup" do
-    model.filter_for.must_equal nil
+    model.filter_for.must_be_nil
     framework.filter{|mod| lambda{|ds, type, req| [ds, mod.name.to_sym, type, req]}}
     model.filter_for.call(1, :browse, 2).must_equal [1, :Artist, :browse, 2]
     model.filter{|ds, type, req| [ds, type, req]}
@@ -104,7 +104,7 @@ describe AutoForme do
   end
 
   it "should handle redirect lookup" do
-    model.redirect_for.must_equal nil
+    model.redirect_for.must_be_nil
     framework.redirect{|mod| lambda{|obj, type, req| [obj, mod.name.to_sym, type, req]}}
     model.redirect_for.call(1, :new, 2).must_equal [1, :Artist, :new, 2]
     model.redirect{|obj, type, req| [obj, type, req]}
@@ -112,7 +112,7 @@ describe AutoForme do
   end
 
   it "should handle display_name lookup" do
-    model.display_name_for.must_equal nil
+    model.display_name_for.must_be_nil
     framework.display_name :foo
     model.display_name_for.must_equal :foo
     framework.display_name{|mod| mod.name.to_sym}
@@ -248,7 +248,7 @@ describe AutoForme do
   end
 
   it "should handle page_header lookup" do
-    model.page_header_for(:show, nil).must_equal nil
+    model.page_header_for(:show, nil).must_be_nil
     framework.page_header "foo"
     model.page_header_for(:show, nil).must_equal 'foo'
     framework.page_header{|mod, type, req| "#{mod} #{type} #{req}"}
@@ -260,7 +260,7 @@ describe AutoForme do
   end
 
   it "should handle page_footer lookup" do
-    model.page_footer_for(:show, nil).must_equal nil
+    model.page_footer_for(:show, nil).must_be_nil
     framework.page_footer "foo"
     model.page_footer_for(:show, nil).must_equal 'foo'
     framework.page_footer{|mod, type, req| "#{mod} #{type} #{req}"}
@@ -461,7 +461,7 @@ describe AutoForme::OptsAttributes do
   end
 
   it "should act as a getter if given no arguments, and setter if given arguments or a block" do
-    @o.foo.must_equal nil
+    @o.foo.must_be_nil
     @o.foo(1).must_equal 1
     @o.foo.must_equal 1
     p = proc{}
