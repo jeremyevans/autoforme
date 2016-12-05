@@ -1,3 +1,7 @@
+=== HEAD
+
+* Use btn-xs class instead of btn-mini for small buttons (jeremyevans)
+
 === 1.5.0 (2016-11-18)
 
 * Allow autocompleting for associated objects even if current class doesn't support autocompleting (jeremyevans)

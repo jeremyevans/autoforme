@@ -59,9 +59,9 @@ module AutoForme
           end
           html << "<td>#{val}</td>"
         end
-        html << "<td><a href=\"#{action.url_for("show/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-info\">Show</a></td>" if show
-        html << "<td><a href=\"#{action.url_for("edit/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-primary\">Edit</a></td>" if edit
-        html << "<td><a href=\"#{action.url_for("delete/#{model.primary_key_value(obj)}")}\" class=\"btn btn-mini btn-danger\">Delete</a></td>" if delete
+        html << "<td><a href=\"#{action.url_for("show/#{model.primary_key_value(obj)}")}\" class=\"btn btn-xs btn-info\">Show</a></td>" if show
+        html << "<td><a href=\"#{action.url_for("edit/#{model.primary_key_value(obj)}")}\" class=\"btn btn-xs btn-primary\">Edit</a></td>" if edit
+        html << "<td><a href=\"#{action.url_for("delete/#{model.primary_key_value(obj)}")}\" class=\"btn btn-xs btn-danger\">Delete</a></td>" if delete
         html << "</tr>"
       end
       html << "</tbody></table>"
