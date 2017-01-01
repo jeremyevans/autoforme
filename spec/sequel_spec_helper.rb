@@ -7,7 +7,8 @@ module AutoFormeSpec
   def self.db_setup(tables)
     db_url = ENV['DATABASE_URL']
     db_url ||= defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby' ? 'jdbc:sqlite::memory:' : 'sqlite:/'
-    db = Sequel.connect(db_url)
+    db = Sequel.connect(db_url, :identifier_mangling=>false)
+    db.extension :freeze_datasets
     #db.loggers << Logger.new($stdout)
     tables.each do |table, table_spec|
       db.create_table(table) do

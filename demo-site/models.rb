@@ -3,7 +3,8 @@ require 'sequel'
 require 'logger'
 
 module AutoFormeDemo
-DB = Sequel.connect(ENV['AUTOFORME_DATABASE_URL'] || ENV['DATABASE_URL'] || 'sqlite:/')
+DB = Sequel.connect(ENV['AUTOFORME_DATABASE_URL'] || ENV['DATABASE_URL'] || 'sqlite:/', :identifier_mangling=>false)
+DB.freeze_datasets
 CREATE_TABLES_FILE = File.join(File.dirname(__FILE__), 'create_tables.rb')
 
 require  ::File.expand_path('../create_tables',  __FILE__)
