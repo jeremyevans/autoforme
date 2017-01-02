@@ -36,8 +36,8 @@ HTML
         layout 'layout'
 
         def session_set
-          session.merge!(params)
-          render :text=>''
+          params.each{|k,v| session[k] = v}
+          render :plain=>''
         end
 
         AutoForme.for(:rails, self, opts) do
@@ -58,6 +58,12 @@ HTML
       config.middleware.delete(Rack::Lock)
       config.secret_key_base = 'foo'
       config.eager_load = true
+      if Rails.version > '5'
+        # Force Rails to dispatch to correct controller
+        ActionDispatch::Routing::RouteSet::Dispatcher.class_eval do
+          define_method(:controller){|_| controller}
+        end
+      end
       initialize!
     end
     [sc, framework]
