@@ -1,5 +1,7 @@
 === HEAD
 
+* Work with Sinatra 2 (jeremyevans)
+
 * Use btn-xs class instead of btn-mini for small buttons (jeremyevans)
 
 === 1.5.0 (2016-11-18)

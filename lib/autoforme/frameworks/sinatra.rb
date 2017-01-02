@@ -58,8 +58,13 @@ module AutoForme
         end
 
         prefix = Regexp.escape(framework.prefix) if framework.prefix
-        @controller.get %r{\A#{prefix}/([\w:]+)/(\w+)(?:/([\w-]+))?\z}, &block
-        @controller.post %r{\A#{prefix}/([\w:]+)/(\w+)(?:/([\w-]+))?\z}, &block
+        if ::Sinatra::VERSION < '2'
+          prefix = "\\A#{prefix}"
+          suffix = "\\z"
+        end
+        regexp = %r{#{prefix}/([\w:]+)/(\w+)(?:/([\w-]+))?#{suffix}}
+        @controller.get regexp, &block
+        @controller.post regexp, &block
       end
     end
   end
