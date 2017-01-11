@@ -407,6 +407,57 @@ end
 
 describe AutoForme do
   before(:all) do
+    db_setup(:artists=>proc{primary_key :artist_id; String :name}, :albums=>[[:name, :string]], :albums_artists=>[[:album_id, :integer, {:table=>:albums}], [:artist_id, :integer, {:table=>:artists}]])
+    model_setup(:Artist=>[:artists, [[:many_to_many, :albums]]], :Album=>[:albums, [[:many_to_many, :artists]]])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Album)
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should have basic many to many association editing working" do
+    app_setup do
+      model Artist do
+        mtm_associations :albums
+      end
+      model Album
+    end
+
+    Artist.create(:name=>'Artist1')
+    Album.create(:name=>'Album1')
+    Album.create(:name=>'Album2')
+    Album.create(:name=>'Album3')
+
+    visit("/Artist/mtm_edit")
+    page.title.must_equal 'Artist - Many To Many Edit'
+    click_button "Edit"
+    select("Artist1")
+    click_button "Edit"
+
+    find('h2').text.must_equal 'Edit Albums for Artist1'
+    page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album1", "Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.must_equal []
+    select("Album1", :from=>"Associate With")
+    click_button "Update"
+    page.html.must_include 'Updated albums association for Artist'
+    Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
+
+    page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album2", "Album3"]
+    page.all('select')[1].all('option').map{|s| s.text}.must_equal ["Album1"]
+    select("Album2", :from=>"Associate With")
+    select("Album3", :from=>"Associate With")
+    select("Album1", :from=>"Disassociate From")
+    click_button "Update"
+    Artist.first.refresh.albums.map{|x| x.name}.must_equal %w'Album2 Album3'
+
+    page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album1"]
+    page.all('select')[1].all('option').map{|s| s.text}.must_equal ["Album2", "Album3"]
+  end
+
+end
+
+describe AutoForme do
+  before(:all) do
     db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string]], :albums_artists=>[[:album_id, :integer, {:table=>:albums}], [:artist_id, :integer, {:table=>:artists}]])
     model_setup(:Artist=>[:artists, [[:many_to_many, :albums]], [[:many_to_many, :other_albums, {:clone=>:albums}]]], :Album=>[:albums, [[:many_to_many, :artists]]])
   end

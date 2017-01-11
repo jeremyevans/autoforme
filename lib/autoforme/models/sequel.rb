@@ -319,7 +319,7 @@ module AutoForme
           subquery = model.db.from(ref[:join_table]).
             select(ref.qualified_right_key).
             where(ref.qualified_left_key=>obj.pk)
-          ds = ds.exclude(S.qualify(ref.associated_class.table_name, model.primary_key)=>subquery)
+          ds = ds.exclude(S.qualify(ref.associated_class.table_name, ref.associated_class.primary_key)=>subquery)
           ds = assoc_class.apply_dataset_options(:association, request, ds) if assoc_class
           ds
         end
