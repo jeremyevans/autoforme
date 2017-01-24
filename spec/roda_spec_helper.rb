@@ -11,6 +11,10 @@ rescue LoadError
 end
 
 class AutoFormeSpec::App < Roda
+  opts[:unsupported_block_result] = :raise
+  opts[:unsupported_matcher] = :raise
+  opts[:verbatim_string_matcher] = true
+
   LAYOUT = <<HTML
 <!DOCTYPE html>
 <html>

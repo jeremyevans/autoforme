@@ -8,6 +8,9 @@ require 'securerandom'
 class AutoFormeDemo::App < Roda
   include AutoFormeDemo
   opts[:root] = File.dirname(__FILE__)
+  opts[:unsupported_block_result] = :raise
+  opts[:unsupported_matcher] = :raise
+  opts[:verbatim_string_matcher] = true
 
   plugin :public
   use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
