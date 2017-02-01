@@ -121,6 +121,8 @@ END
         autoforme(type.to_sym)
       end
     end
+
+    nil
   end
 
   freeze
