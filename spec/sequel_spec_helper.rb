@@ -23,6 +23,7 @@ module AutoFormeSpec
       end
     end
 
+    db.freeze
     db
   end
 
