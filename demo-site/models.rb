@@ -50,4 +50,5 @@ end
 
 DB.reset if DB.database_type == :sqlite
 DB.loggers << Logger.new($stdout)
+DB.freeze
 end
