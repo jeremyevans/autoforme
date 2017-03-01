@@ -16,6 +16,7 @@ Model.plugin :validation_helpers
 Model.plugin :forme
 Model.plugin :association_pks
 Model.plugin :prepared_statements
+Model.plugin :subclasses
 Dir[::File.expand_path('../models/*.rb',  __FILE__)].each{|f| require f}
 
 def DB.reset
@@ -50,5 +51,6 @@ end
 
 DB.reset if DB.database_type == :sqlite
 DB.loggers << Logger.new($stdout)
+Model.freeze_descendents
 DB.freeze
 end
