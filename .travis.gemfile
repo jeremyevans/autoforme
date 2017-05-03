@@ -32,5 +32,8 @@ elsif RUBY_VERSION < '2.2'
   gem 'rack', '< 2'
   gem 'addressable', '< 2.5'
 else
+  platforms :jruby do
+    gem 'rails', '< 5.1'
+  end
   gem 'sinatra', '2.0.0.beta2'
 end
