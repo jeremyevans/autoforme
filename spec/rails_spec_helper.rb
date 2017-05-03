@@ -59,6 +59,7 @@ HTML
       config.secret_key_base = 'foo'
       config.eager_load = true
       if Rails.version > '5'
+        config.action_dispatch.cookies_serializer = :json
         # Force Rails to dispatch to correct controller
         ActionDispatch::Routing::RouteSet::Dispatcher.class_eval do
           define_method(:controller){|_| controller}
