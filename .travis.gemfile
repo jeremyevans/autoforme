@@ -35,5 +35,8 @@ else
   platforms :jruby do
     gem 'rails', '< 5.1'
   end
+  platforms :ruby do
+    gem 'rails', '< 10'
+  end
   gem 'sinatra', '2.0.0.beta2'
 end
