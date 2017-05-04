@@ -32,10 +32,9 @@ elsif RUBY_VERSION < '2.2'
   gem 'rack', '< 2'
   gem 'addressable', '< 2.5'
 else
-  platforms :jruby do
+  if defined?(JRUBY_VERSION)
     gem 'rails', '< 5.1'
-  end
-  platforms :ruby do
+  else
     gem 'rails', '< 10'
   end
   gem 'sinatra', '2.0.0.beta2'
