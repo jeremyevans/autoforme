@@ -17,6 +17,7 @@ matrix:
   allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
+    - rvm: jruby-9.1.8.0
 gemfile: .travis.gemfile
 script: bundle exec rake spec
 before_install:
