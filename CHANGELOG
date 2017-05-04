@@ -1,4 +1,4 @@
-=== 1.6.0 (2017-05-03)
+=== 1.6.0 (2017-05-04)
 
 * Fix mtm code when using model classes with different primary key names (jeremyevans)
 
