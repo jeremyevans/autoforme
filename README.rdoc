@@ -178,7 +178,7 @@ table_class :: The html class string to use for the browse and search tables
 These hook options should be callable objects that are called with the model object and the request.
 
 after_create :: Called after creating the object
-after_destroy :: Called after destroy the object
+after_destroy :: Called after destroying the object
 after_update :: Called after updating the object
 before_create :: Called before creating the object 
 before_destroy :: Called before destroy the object
