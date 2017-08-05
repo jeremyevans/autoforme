@@ -3,7 +3,7 @@ require 'sequel'
 require 'logger'
 
 module AutoFormeSpec
-  TYPE_MAP = {:string=>String, :integer=>Integer, :decimal=>Numeric}
+  TYPE_MAP = {:string=>String, :integer=>Integer, :decimal=>Numeric, :boolean=>TrueClass}
   def self.db_setup(tables)
     db_url = ENV['DATABASE_URL']
     db_url ||= defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby' ? 'jdbc:sqlite::memory:' : 'sqlite:/'

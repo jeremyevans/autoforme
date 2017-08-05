@@ -171,7 +171,7 @@ module AutoForme
             elsif column_type(c) == :string
               ds = ds.where(S.ilike(S.qualify(model.table_name, c), "%#{ds.escape_like(v.to_s)}%"))
             else
-              ds = ds.where(S.qualify(model.table_name, c)=>v.to_s)
+              ds = ds.where(S.qualify(model.table_name, c)=>model.db.typecast_value(column_type(c), v))
             end
           end
         end
