@@ -33,7 +33,6 @@ HTML
   use Rack::Session::Cookie, :secret => '1'
   use Rack::Csrf
 
-  plugin :static_path_info unless ENV['RODA_NO_STATIC_PATH_INFO']
   template_opts = {:default_encoding=>nil}
   plugin :render, :layout=>{:inline=>LAYOUT}, :template_opts=>template_opts, :opts=>template_opts
   plugin :not_found do
