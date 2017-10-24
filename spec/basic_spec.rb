@@ -616,8 +616,9 @@ describe AutoForme do
     Object.send(:remove_const, :Artist)
   end
 
-  it "should have basic functionality working" do
+  it "should typecast when searching" do
     app_setup(Artist)
+    Artist.plugin(:typecast_on_load, :active) if defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby'
     visit("/Artist/new")
     page.title.must_equal 'Artist - New'
     select 'True'
