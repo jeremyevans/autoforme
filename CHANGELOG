@@ -1,5 +1,7 @@
 === master
 
+* Respect Model#forme_namespace method for parameter names (adam12, jeremyevans) (#9)
+
 * Typecast column values when searching (jeremyevans)
 
 === 1.6.0 (2017-05-04)

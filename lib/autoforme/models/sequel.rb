@@ -10,10 +10,15 @@ module AutoForme
       # What association types to recognize.  Other association types are ignored.
       SUPPORTED_ASSOCIATION_TYPES = [:many_to_one, :one_to_one, :one_to_many, :many_to_many]
 
+      # The namespace for form parameter names for this model, needs to match
+      # the ones automatically used by Forme.
+      attr_reader :params_name
+
       # Make sure the forme plugin is loaded into the model.
       def initialize(*)
         super
         model.plugin :forme
+        @params_name = model.new.forme_namespace
       end
 
       # The base class for the underlying model, ::Sequel::Model.
@@ -23,7 +28,7 @@ module AutoForme
 
       # The name of the form param for the given association.
       def form_param_name(assoc)
-        "#{model.new.forme_namespace}[#{association_key(assoc)}]"
+        "#{params_name}[#{association_key(assoc)}]"
       end
 
       # Set the fields for the given action type to the object based on the request params.
@@ -112,12 +117,6 @@ module AutoForme
       # The primary key value for the given object.
       def primary_key_value(obj)
         obj.pk
-      end
-
-      # The namespace for form parameter names for this model, needs to match
-      # the ones automatically used by Forme.
-      def params_name
-        model.send(:underscore, model.new.forme_namespace)
       end
 
       # Retrieve underlying model instance with matching primary key
