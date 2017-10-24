@@ -1120,3 +1120,28 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.must_equal []
   end
 end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string]])
+    Namespace = Module.new
+
+    class Namespace::Artist < Sequel::Model(db[:artists])
+      def forme_namespace
+        "artist"
+      end
+    end
+  end
+  after(:all) do
+    Object.send(:remove_const, :Namespace)
+  end
+
+  it "respects the forme_namespace method on the model" do
+    app_setup(Namespace::Artist)
+    visit("/Namespace::Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.html.must_include 'Created Namespace::Artist'
+    page.current_path.must_equal '/Namespace::Artist/new'
+  end
+end
