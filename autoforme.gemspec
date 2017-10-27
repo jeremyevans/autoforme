@@ -5,16 +5,16 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc", "CHANGELOG", "MIT-LICENSE"]
-  s.rdoc_options += ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Sinatra/Rails and Sequel', '--main', 'README.rdoc']
+  s.rdoc_options += ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Roda/Sinatra/Rails and Sequel::Model', '--main', 'README.rdoc']
   s.license = "MIT"
-  s.summary = "Web Administrative Console for Sinatra/Rails and Sequel"
+  s.summary = "Web Administrative Console for Roda/Sinatra/Rails and Sequel::Model"
   s.author = "Jeremy Evans"
   s.email = "code@jeremyevans.net"
   s.homepage = "http://github.com/jeremyevans/autoforme"
   s.files = %w(MIT-LICENSE CHANGELOG README.rdoc Rakefile autoforme.js) + Dir["{spec,lib}/**/*.rb"]
   s.description = <<END
 AutoForme is an web administrative console for Sequel::Model that
-supports Sinatra and Rails.  It offers the following features:
+supports Roda, Sinatra, and Rails.  It offers the following features:
 
 * Create, update, edit, and view model objects
 * Browse and search model objects
