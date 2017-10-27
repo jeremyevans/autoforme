@@ -1,16 +1,12 @@
 #!/usr/bin/env/ruby
-require 'rubygems'
 require 'tilt/erubi'
 require 'roda'
-require ::File.expand_path('../models',  __FILE__)
+require_relative 'models'
 require 'securerandom'
 
 class AutoFormeDemo::App < Roda
   include AutoFormeDemo
   opts[:root] = File.dirname(__FILE__)
-  opts[:unsupported_block_result] = :raise
-  opts[:unsupported_matcher] = :raise
-  opts[:verbatim_string_matcher] = true
 
   plugin :public
   use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
@@ -83,7 +79,7 @@ class AutoFormeDemo::App < Roda
       view :content => <<END
 <p>This is the demo site for <a href="http://autoforme.jeremyevans.net">AutoForme</a>, an admin interface for ruby web applications which uses <a href="http://forme.jeremyevans.net">Forme</a> to create the related forms.</p>
 
-<p>This demo uses <a href="http://roda.jeremyevans.net">Roda</a> as the web framework and <a href="http://sequel.jeremyevans.net">Sequel</a> as the database library.  AutoForme also supports Sinatra and Rails, but the only currently supported database library is Sequel.</p>
+<p>This demo uses <a href="http://roda.jeremyevans.net">Roda</a> as the web framework and <a href="http://sequel.jeremyevans.net">Sequel::Model</a> as the object-relational mapper.  AutoForme also supports the Sinatra and Rails web frameworks.</p>
 
 <p>This demo contains three examples of the same types of forms, each with slightly different options:</p>
 

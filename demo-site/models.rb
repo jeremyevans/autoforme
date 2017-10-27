@@ -1,13 +1,11 @@
-require 'rubygems'
 require 'sequel'
 require 'logger'
 
 module AutoFormeDemo
-DB = Sequel.connect(ENV['AUTOFORME_DATABASE_URL'] || ENV['DATABASE_URL'] || 'sqlite:/', :identifier_mangling=>false)
-DB.extension :freeze_datasets
+DB = Sequel.connect(ENV['AUTOFORME_DATABASE_URL'] || ENV['DATABASE_URL'] || 'sqlite:/')
 CREATE_TABLES_FILE = File.join(File.dirname(__FILE__), 'create_tables.rb')
 
-require  ::File.expand_path('../create_tables',  __FILE__)
+require_relative 'create_tables'
 
 Model = Class.new(Sequel::Model)
 Model.db = DB
@@ -17,7 +15,11 @@ Model.plugin :forme
 Model.plugin :association_pks
 Model.plugin :prepared_statements
 Model.plugin :subclasses
-Dir[::File.expand_path('../models/*.rb',  __FILE__)].each{|f| require f}
+
+require_relative 'models/album'
+require_relative 'models/artist'
+require_relative 'models/tag'
+require_relative 'models/track'
 
 def DB.reset
   [:albums_tags, :tags, :tracks, :albums, :artists].each{|t| DB[t].delete}
