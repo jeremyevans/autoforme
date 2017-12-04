@@ -2,7 +2,7 @@ require 'sequel'
 require 'logger'
 
 module AutoFormeDemo
-DB = Sequel.connect(ENV['AUTOFORME_DATABASE_URL'] || ENV['DATABASE_URL'] || 'sqlite:/')
+DB = Sequel.connect(ENV.delete('AUTOFORME_DATABASE_URL') || ENV.delete('DATABASE_URL') || 'sqlite:/')
 CREATE_TABLES_FILE = File.join(File.dirname(__FILE__), 'create_tables.rb')
 
 require_relative 'create_tables'
