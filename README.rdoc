@@ -197,7 +197,7 @@ symbol and request).
 
 Additionally, AutoForme.for accepts a :prefix option that controls where the forms are mounted:
 
-  AutoForm.for(:sinatra, self, :prefix=>'/path/to') do
+  AutoForme.for(:sinatra, self, :prefix=>'/path/to') do
     model Artist
   end
 
