@@ -1,3 +1,7 @@
+=== master
+
+* Default to size of 10 for select multiple inputs (jeremyevans)
+
 === 1.7.0 (2017-10-27)
 
 * Respect Model#forme_namespace method for parameter names (adam12, jeremyevans) (#9)
