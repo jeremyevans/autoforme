@@ -29,7 +29,7 @@ module AutoForme
         end
         
         # Use Rack::Csrf for csrf protection if it is defined.
-        def csrf_token_hash
+        def csrf_token_hash(action=nil)
           {::Rack::Csrf.field=>::Rack::Csrf.token(@env)} if defined?(::Rack::Csrf)
         end
       end

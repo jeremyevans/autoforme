@@ -31,7 +31,11 @@ class AutoFormeSpec::App < Roda
 HTML
 
   use Rack::Session::Cookie, :secret => '1'
-  use Rack::Csrf
+  if ENV['RODA_ROUTE_CSRF'].to_i > 0
+    plugin :route_csrf, :require_request_specific_tokens=>ENV['RODA_ROUTE_CSRF'] == '1'
+  else
+    use Rack::Csrf
+  end
 
   template_opts = {:default_encoding=>nil}
   plugin :render, :layout=>{:inline=>LAYOUT}, :template_opts=>template_opts, :opts=>template_opts
@@ -54,6 +58,8 @@ HTML
       end
 
       route do |r|
+        check_csrf! if ENV['RODA_ROUTE_CSRF'].to_i > 0
+
         r.get 'session/set' do
           session.merge!(r.params)
           ''

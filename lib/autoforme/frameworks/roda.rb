@@ -38,8 +38,20 @@ module AutoForme
         end
         
         # Use Rack::Csrf for csrf protection if it is defined.
-        def csrf_token_hash
-          {::Rack::Csrf.field=>::Rack::Csrf.token(@env)} if defined?(::Rack::Csrf)
+        def csrf_token_hash(action=nil)
+          if @controller.respond_to?(:check_csrf!)
+            # Using route_csrf plugin
+            # :nocov:
+            token = if @controller.use_request_specific_csrf_tokens?
+              @controller.csrf_token(@controller.csrf_path(action))
+            else
+              @controller.csrf_token
+            end
+            {@controller.csrf_field=>token}
+            # :nocov:
+          elsif defined?(::Rack::Csrf)
+            {::Rack::Csrf.field=>::Rack::Csrf.token(@env)}
+          end
         end
       end
 

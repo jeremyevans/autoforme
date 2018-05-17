@@ -1,5 +1,7 @@
 === master
 
+* Add support for Roda route_csrf plugin for request-specific CSRF tokens (jeremyevans)
+
 * Default to size of 10 for select multiple inputs (jeremyevans)
 
 === 1.7.0 (2017-10-27)

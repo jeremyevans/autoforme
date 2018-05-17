@@ -29,7 +29,7 @@ module AutoForme
         end
         
         # Use Rails's form_authenticity_token for CSRF protection.
-        def csrf_token_hash
+        def csrf_token_hash(action=nil)
           vc = @controller.view_context
           {vc.request_forgery_protection_token.to_s=>vc.form_authenticity_token} if vc.protect_against_forgery?
         end
