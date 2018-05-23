@@ -5,6 +5,9 @@ require 'autoforme'
 class AutoFormeSpec::App
   def self.autoforme(klass=nil, opts={}, &block)
     sc = Class.new(Rails::Application)
+    def sc.name
+      "AutoForme Test"
+    end
     framework = nil
     sc.class_eval do
       controller = Class.new(ActionController::Base)
@@ -50,13 +53,14 @@ HTML
         end
       end
 
-      config.secret_token = routes.append do
+      st = routes.append do
         get 'session/set', :controller=>'autoforme', :action=>'session_set'
       end.inspect
+      config.secret_token = st if Rails.respond_to?(:version) && Rails.version < '5.2'
       config.active_support.deprecation = :stderr
       config.middleware.delete(ActionDispatch::ShowExceptions)
       config.middleware.delete(Rack::Lock)
-      config.secret_key_base = 'foo'
+      config.secret_key_base = st*15
       config.eager_load = true
       if Rails.version > '4.2'
         config.action_dispatch.cookies_serializer = :json
