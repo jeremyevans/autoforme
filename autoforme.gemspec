@@ -3,7 +3,6 @@ Gem::Specification.new do |s|
   s.name = 'autoforme'
   s.version = AutoForme.version.dup
   s.platform = Gem::Platform::RUBY
-  s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc", "CHANGELOG", "MIT-LICENSE"]
   s.rdoc_options += ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Roda/Sinatra/Rails and Sequel::Model', '--main', 'README.rdoc']
   s.license = "MIT"
