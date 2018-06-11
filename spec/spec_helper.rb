@@ -30,7 +30,7 @@ require 'minitest/hooks/default'
 
 if ENV['WARNING']
   require 'warning'
-  Warning.ignore([:missing_ivar, :fixnum])
+  Warning.ignore([:missing_ivar, :fixnum, :not_reached])
 end
 
 require './spec/sequel_spec_helper'
