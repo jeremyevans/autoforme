@@ -573,7 +573,7 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.must_equal []
   end
 
-  it "should correct handle validation errors" do
+  it "should correctly handle validation errors" do
     app_setup(Artist)
     Artist.send(:define_method, :validate) do
       errors.add(:name, "bad name") if name == 'Foo'
