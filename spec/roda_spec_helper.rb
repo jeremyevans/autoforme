@@ -19,17 +19,31 @@ class AutoFormeSpec::App < Roda
 <html>
 <head><title><%= @autoforme_action.title if @autoforme_action %></title></head>
 <body>
-<% if flash[:notice] %>
-  <div class="alert alert-success"><p><%= flash[:notice] %></p></div>
+<% if notice = opts[:sessions_convert_symbols] ? flash['notice'] : flash[:notice] %>
+  <div class="alert alert-success"><p><%= notice %></p></div>
 <% end %>
-<% if flash[:error] %>
-  <div class="alert alert-error"><p><%= flash[:error] %></p></div>
+<% if error = opts[:sessions_convert_symbols] ? flash['error'] : flash[:error] %>
+  <div class="alert alert-error"><p><%= error %></p></div>
 <% end %>
 <%= yield %>
 </body></html>"
 HTML
 
-  use Rack::Session::Cookie, :secret => '1'
+  plugin :flash
+
+  if RUBY_VERSION >= '2' && defined?(Roda::RodaVersionNumber) && Roda::RodaVersionNumber >= 30100
+    if ENV['RODA_ROUTE_CSRF'] == '0'
+      require 'roda/session_middleware'
+      opts[:sessions_convert_symbols] = true
+      use RodaSessionMiddleware, :cipher_secret=>SecureRandom.random_bytes(32), :hmac_secret=>SecureRandom.random_bytes(32)
+    else
+      ENV['RODA_ROUTE_CSRF'] ||= '1'
+      plugin :sessions, :cipher_secret=>SecureRandom.random_bytes(32), :hmac_secret=>SecureRandom.random_bytes(32)
+    end
+  else
+    use Rack::Session::Cookie, :secret => '1'
+  end
+
   if ENV['RODA_ROUTE_CSRF'].to_i > 0
     plugin :route_csrf, :require_request_specific_tokens=>ENV['RODA_ROUTE_CSRF'] == '1'
   else
@@ -41,7 +55,6 @@ HTML
   plugin :not_found do
     'Unhandled Request'
   end
-  plugin :flash
 
   def self.autoforme(klass=nil, opts={}, &block)
     sc = Class.new(self)

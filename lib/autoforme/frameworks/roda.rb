@@ -37,6 +37,18 @@ module AutoForme
           @env['HTTP_X_REQUESTED_WITH'] =~ /XMLHttpRequest/i
         end
         
+        # Set the flash at notice level when redirecting, so it shows
+        # up on the redirected page.
+        def set_flash_notice(message)
+          @controller.flash[flash_symbol_keys? ? :notice : 'notice'] = message
+        end
+
+        # Set the current flash at error level, used when displaying
+        # pages when there is an error.
+        def set_flash_now_error(message)
+          @controller.flash.now[flash_symbol_keys? ? :error : 'error'] = message
+        end
+
         # Use Rack::Csrf for csrf protection if it is defined.
         def csrf_token_hash(action=nil)
           if @controller.respond_to?(:check_csrf!)
@@ -52,6 +64,12 @@ module AutoForme
           elsif defined?(::Rack::Csrf)
             {::Rack::Csrf.field=>::Rack::Csrf.token(@env)}
           end
+        end
+
+        private
+
+        def flash_symbol_keys?
+          !@controller.opts[:sessions_convert_symbols]
         end
       end
 

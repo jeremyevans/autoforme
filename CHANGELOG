@@ -1,5 +1,7 @@
 === master
 
+* Add support for using flash string keys in the Roda support, to work with Roda's sessions plugin (jeremyevans)
+
 * Show correct page title on error pages (jeremyevans)
 
 === 1.8.0 (2018-06-11)
