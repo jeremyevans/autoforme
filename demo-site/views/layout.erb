@@ -53,11 +53,11 @@
     
     <div class="container">
       <div class="row">
-        <% if flash[:notice] %>
-          <div class="alert alert-success"><p><%= flash[:notice] %></p></div>
+        <% if flash['notice'] %>
+          <div class="alert alert-success"><p><%= flash['notice'] %></p></div>
         <% end %>
-        <% if flash[:error] %>
-          <div class="alert alert-error"><p><%= flash[:error] %></p></div>
+        <% if flash['error'] %>
+          <div class="alert alert-danger"><p><%= flash['error'] %></p></div>
         <% end %>
         <%= yield %>
       </div>

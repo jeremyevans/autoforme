@@ -9,11 +9,12 @@ class AutoFormeDemo::App < Roda
   opts[:root] = File.dirname(__FILE__)
 
   plugin :public
-  use Rack::Session::Cookie, :secret=>SecureRandom.random_bytes(20)
 
   plugin :flash
   plugin :autoforme
   plugin :render
+  plugin :route_csrf
+  plugin :sessions, :cipher_secret=>SecureRandom.random_bytes(32), :hmac_secret=>SecureRandom.random_bytes(32), :key=>'autoforme-demo.session'
 
   Forme.register_config(:mine, :base=>:default, :labeler=>:explicit, :wrapper=>:div)
   Forme.default_config = :mine
@@ -73,6 +74,7 @@ class AutoFormeDemo::App < Roda
 
   route do |r|
     r.public
+    check_csrf!
 
     r.root do
       @page_title = 'AutoForme Demo Site'
