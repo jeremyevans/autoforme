@@ -12,6 +12,8 @@ input, textarea, select { width: auto; }
 
 #autoforme_content label, #autoforme_content span.label {display: inline-block; min-width: 150px; text-align:right; margin-right: 20px;}
 #autoforme_content label.option {display: inline; min-width: 0px; text-align:left; margin-right: 0px;}
+span.error_message {color: red; }
+input.error, select.error, textarea.error {border-color: red; }
 
 .navbar,
 .navbar .dropdown-menu, .dropdown-menu li a:hover {
