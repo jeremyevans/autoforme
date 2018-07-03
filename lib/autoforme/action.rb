@@ -87,7 +87,7 @@ module AutoForme
       else
         return false unless model.supported_action?(normalized_type, request)
 
-        if title = TITLE_MAP[type]
+        if title = TITLE_MAP[@normalized_type]
           @title = "#{model.class_name} - #{title}"
         end
       end

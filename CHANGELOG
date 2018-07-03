@@ -1,3 +1,7 @@
+=== master
+
+* Show correct page title on error pages (jeremyevans)
+
 === 1.8.0 (2018-06-11)
 
 * Add support for Roda route_csrf plugin for request-specific CSRF tokens (jeremyevans)
