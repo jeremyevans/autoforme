@@ -31,14 +31,14 @@ HTML
 
   plugin :flash
 
-  if RUBY_VERSION >= '2' && defined?(Roda::RodaVersionNumber) && Roda::RodaVersionNumber >= 30100
+  if defined?(Roda::RodaVersionNumber) && Roda::RodaVersionNumber >= 30100
     if ENV['RODA_ROUTE_CSRF'] == '0'
       require 'roda/session_middleware'
       opts[:sessions_convert_symbols] = true
-      use RodaSessionMiddleware, :cipher_secret=>SecureRandom.random_bytes(32), :hmac_secret=>SecureRandom.random_bytes(32)
+      use RodaSessionMiddleware, :secret=>SecureRandom.random_bytes(64)
     else
       ENV['RODA_ROUTE_CSRF'] ||= '1'
-      plugin :sessions, :cipher_secret=>SecureRandom.random_bytes(32), :hmac_secret=>SecureRandom.random_bytes(32)
+      plugin :sessions, :secret=>SecureRandom.random_bytes(64)
     end
   else
     use Rack::Session::Cookie, :secret => '1'
