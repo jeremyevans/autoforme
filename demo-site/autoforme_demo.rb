@@ -14,7 +14,7 @@ class AutoFormeDemo::App < Roda
   plugin :autoforme
   plugin :render
   plugin :route_csrf
-  plugin :sessions, :cipher_secret=>SecureRandom.random_bytes(32), :hmac_secret=>SecureRandom.random_bytes(32), :key=>'autoforme-demo.session'
+  plugin :sessions, :secret=>SecureRandom.random_bytes(64), :key=>'autoforme-demo.session'
 
   Forme.register_config(:mine, :base=>:default, :labeler=>:explicit, :wrapper=>:div)
   Forme.default_config = :mine
