@@ -1,4 +1,4 @@
-=== master
+=== 1.9.0 (2018-07-18)
 
 * Add support for using flash string keys in the Roda support, to work with Roda's sessions plugin (jeremyevans)
 
