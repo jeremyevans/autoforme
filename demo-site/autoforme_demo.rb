@@ -9,6 +9,7 @@ class AutoFormeDemo::App < Roda
   opts[:root] = File.dirname(__FILE__)
 
   plugin :public
+  plugin :common_logger
 
   plugin :flash
   plugin :autoforme
