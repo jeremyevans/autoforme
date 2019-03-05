@@ -13,6 +13,7 @@ class AutoFormeSpec::App < Roda
   opts[:unsupported_block_result] = :raise
   opts[:unsupported_matcher] = :raise
   opts[:verbatim_string_matcher] = true
+  opts[:check_dynamic_arity] = opts[:check_arity] = :warn
 
   LAYOUT = <<HTML
 <!DOCTYPE html>
