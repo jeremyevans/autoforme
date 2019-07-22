@@ -56,16 +56,14 @@ Roda::RodaPlugins::AutoForme::InstanceMethods
 </div>
 <div class='description'>
 
-<p>If this route matches the named or default <a
-href="../AutoForme.html">AutoForme</a> route, dispatch to <a
-href="../AutoForme.html">AutoForme</a>.</p>
+<p>If this route matches the named or default <a href="../AutoForme.html"><code>AutoForme</code></a> route, dispatch to <a href="../AutoForme.html"><code>AutoForme</code></a>.</p>
 
 </div>
 <div class='source'>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-autoforme-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-autoforme-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 45</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)&#x000A;  <span class="ruby-identifier">instance_exec</span>(<span class="ruby-operator">&amp;</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">autoforme_route</span>(<span class="ruby-identifier">name</span>))&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre id='method-i-autoforme-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>&#x000A;<span class="line-num">46</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)&#x000A;<span class="line-num">47</span>   <span class="ruby-identifier">instance_exec</span>(<span class="ruby-operator">&amp;</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">autoforme_route</span>(<span class="ruby-identifier">name</span>))&#x000A;<span class="line-num">48</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>

@@ -115,9 +115,7 @@ AutoForme
 <td class='context-item-value'>1</td>
 <td>&nbsp;</td>
 <td class='context-item-desc'>
-<p>The major version of <a href="AutoForme.html">AutoForme</a>, updated only
-for major changes that are likely to require modification to apps using <a
-href="AutoForme.html">AutoForme</a>.</p>
+<p>The major version of <a href="AutoForme.html"><code>AutoForme</code></a>, updated only for major changes that are likely to require modification to apps using <a href="AutoForme.html"><code>AutoForme</code></a>.</p>
 </td>
 </tr>
 <tr class='top-aligned-row context-row'>
@@ -126,8 +124,7 @@ href="AutoForme.html">AutoForme</a>.</p>
 <td class='context-item-value'>9</td>
 <td>&nbsp;</td>
 <td class='context-item-desc'>
-<p>The minor version of <a href="AutoForme.html">AutoForme</a>, updated for
-new feature releases of <a href="AutoForme.html">AutoForme</a>.</p>
+<p>The minor version of <a href="AutoForme.html"><code>AutoForme</code></a>, updated for new feature releases of <a href="AutoForme.html"><code>AutoForme</code></a>.</p>
 </td>
 </tr>
 <tr class='top-aligned-row context-row'>
@@ -142,11 +139,10 @@ new feature releases of <a href="AutoForme.html">AutoForme</a>.</p>
 <tr class='top-aligned-row context-row'>
 <td class='context-item-name'>TINY</td>
 <td>=</td>
-<td class='context-item-value'>0</td>
+<td class='context-item-value'>1</td>
 <td>&nbsp;</td>
 <td class='context-item-desc'>
-<p>The patch version of <a href="AutoForme.html">AutoForme</a>, updated only
-for bug fixes from the last feature release.</p>
+<p>The patch version of <a href="AutoForme.html"><code>AutoForme</code></a>, updated only for bug fixes from the last feature release.</p>
 </td>
 </tr>
 <tr class='top-aligned-row context-row'>
@@ -164,8 +160,7 @@ for bug fixes from the last feature release.</p>
 <td class='context-item-value'>MAJOR*10000 + MINOR*100 + TINY</td>
 <td>&nbsp;</td>
 <td class='context-item-desc'>
-<p>The full version of <a href="AutoForme.html">AutoForme</a> as a number
-(1.8.0 =&gt; 10800)</p>
+<p>The full version of <a href="AutoForme.html"><code>AutoForme</code></a> as a number (1.8.0 =&gt; 10800)</p>
 </td>
 </tr>
 </table>
@@ -188,8 +183,7 @@ for bug fixes from the last feature release.</p>
 </td></tr><tr><td class='label'>controller </td><td>
 <p>The controller class in which to load the forms</p>
 </td></tr><tr><td class='label'>opts </td><td>
-<p>Options hash.  Current supports a :prefix option if you want to mount the
-forms in a different prefix.</p>
+<p>Options hash.  Current supports a :prefix option if you want to mount the forms in a different prefix.</p>
 </td></tr></tbody></table>
 
 <p>Example:</p>
@@ -201,7 +195,7 @@ forms in a different prefix.</p>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-for-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-c-for-source'><span class="ruby-comment"># File lib/autoforme.rb, line 47</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-keyword">for</span>(<span class="ruby-identifier ruby-title">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-constant">Framework</span>.<span class="ruby-identifier">for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre id='method-c-for-source'>   <span class="ruby-comment"># File lib/autoforme.rb</span>&#x000A;<span class="line-num">48</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-keyword">for</span>(<span class="ruby-identifier ruby-title">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;<span class="line-num">49</span>   <span class="ruby-constant">Framework</span>.<span class="ruby-identifier">for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;<span class="line-num">50</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-class' id='method-method-c-version'>
@@ -220,7 +214,7 @@ forms in a different prefix.</p>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-version-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-c-version-source'><span class="ruby-comment"># File lib/autoforme/version.rb, line 21</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">version</span>&#x000A;  <span class="ruby-constant">VERSION</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre id='method-c-version-source'>   <span class="ruby-comment"># File lib/autoforme/version.rb</span>&#x000A;<span class="line-num">22</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">version</span>&#x000A;<span class="line-num">23</span>   <span class="ruby-constant">VERSION</span>&#x000A;<span class="line-num">24</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>

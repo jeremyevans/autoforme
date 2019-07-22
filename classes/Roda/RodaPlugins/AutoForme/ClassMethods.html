@@ -58,16 +58,14 @@ Roda::RodaPlugins::AutoForme::ClassMethods
 </div>
 <div class='description'>
 
-<p>Setup <a href="../AutoForme.html">AutoForme</a> for the given <a
-href="../../../Roda.html">Roda</a> class using the given options and block.
-If the :name option is given, store this configuration for the given name.</p>
+<p>Setup <a href="../AutoForme.html"><code>AutoForme</code></a> for the given <a href="../../../Roda.html"><code>Roda</code></a> class using the given options and block.  If the :name option is given, store this configuration for the given name.</p>
 
 </div>
 <div class='source'>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-autoforme-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-autoforme-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 27</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme</span>(<span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;  <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">opts</span>[<span class="ruby-value">:name</span>]] = <span class="ruby-operator">::</span><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:roda</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">route_proc</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre id='method-i-autoforme-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>&#x000A;<span class="line-num">28</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme</span>(<span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;<span class="line-num">29</span>   <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">opts</span>[<span class="ruby-value">:name</span>]] = <span class="ruby-operator">::</span><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:roda</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">route_proc</span>&#x000A;<span class="line-num">30</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-autoforme_route'>
@@ -79,15 +77,14 @@ If the :name option is given, store this configuration for the given name.</p>
 </div>
 <div class='description'>
 
-<p>Retrieve the route proc for the named or default <a
-href="../AutoForme.html">AutoForme</a>.</p>
+<p>Retrieve the route proc for the named or default <a href="../AutoForme.html"><code>AutoForme</code></a>.</p>
 
 </div>
 <div class='source'>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-autoforme_route-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-autoforme_route-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 32</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme_route</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)&#x000A;  <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">name</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre id='method-i-autoforme_route-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>&#x000A;<span class="line-num">33</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme_route</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)&#x000A;<span class="line-num">34</span>   <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">name</span>]&#x000A;<span class="line-num">35</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-inherited'>
@@ -106,7 +103,7 @@ href="../AutoForme.html">AutoForme</a>.</p>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-inherited-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-inherited-source'><span class="ruby-comment"># File lib/roda/plugins/autoforme.rb, line 37</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inherited</span>(<span class="ruby-identifier">subclass</span>)&#x000A;  <span class="ruby-keyword">super</span>&#x000A;  <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value">:@autoforme_routes</span>, <span class="ruby-ivar">@autoforme_routes</span>.<span class="ruby-identifier">dup</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre id='method-i-inherited-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>&#x000A;<span class="line-num">38</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inherited</span>(<span class="ruby-identifier">subclass</span>)&#x000A;<span class="line-num">39</span>   <span class="ruby-keyword">super</span>&#x000A;<span class="line-num">40</span>   <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value">:@autoforme_routes</span>, <span class="ruby-ivar">@autoforme_routes</span>.<span class="ruby-identifier">dup</span>)&#x000A;<span class="line-num">41</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>

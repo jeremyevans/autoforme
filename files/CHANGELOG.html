@@ -30,41 +30,42 @@ CHANGELOG
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2018-07-18 08:12:52 -0700</span>
+<span class='datetime'>2019-07-22 11:16:20 -0700</span>
 </div>
 </div>
 <div id='content'>
 <div id='text'>
 <div id='description'>
+<h3 id="label-1.9.1+-282019-07-22-29">1.9.1 (2019-07-22)<span><a href="#label-1.9.1+-282019-07-22-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li><table class="rdoc-list label-list"><tbody><tr><td class='label'>SECURITY</td><td>
+<p>Escape object display name when displaying association links (adam12)</p>
+</td></tr></tbody></table>
+</li></ul>
+
 <h3 id="label-1.9.0+-282018-07-18-29">1.9.0 (2018-07-18)<span><a href="#label-1.9.0+-282018-07-18-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Add support for using flash string keys in the <a
-href="../classes/Roda.html">Roda</a> support, to work with Roda&#39;s
-sessions plugin (jeremyevans)</p>
+<p>Add support for using flash string keys in the <a href="../classes/Roda.html"><code>Roda</code></a> support, to work with Roda&#39;s sessions plugin (jeremyevans)</p>
 </li><li>
 <p>Show correct page title on error pages (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.8.0+-282018-06-11-29">1.8.0 (2018-06-11)<span><a href="#label-1.8.0+-282018-06-11-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Add support for <a href="../classes/Roda.html">Roda</a> route_csrf plugin
-for request-specific CSRF tokens (jeremyevans)</p>
+<p>Add support for <a href="../classes/Roda.html"><code>Roda</code></a> route_csrf plugin for request-specific CSRF tokens (jeremyevans)</p>
 </li><li>
 <p>Default to size of 10 for select multiple inputs (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.7.0+-282017-10-27-29">1.7.0 (2017-10-27)<span><a href="#label-1.7.0+-282017-10-27-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Respect Model#forme_namespace method for parameter names (adam12,
-jeremyevans) (#9)</p>
+<p>Respect Model#forme_namespace method for parameter names (adam12, jeremyevans) (#9)</p>
 </li><li>
 <p>Typecast column values when searching (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.6.0+-282017-05-04-29">1.6.0 (2017-05-04)<span><a href="#label-1.6.0+-282017-05-04-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Fix mtm code when using model classes with different primary key names
-(jeremyevans)</p>
+<p>Fix mtm code when using model classes with different primary key names (jeremyevans)</p>
 </li><li>
 <p>Work with Sinatra 2 (jeremyevans)</p>
 </li><li>
@@ -73,8 +74,7 @@ jeremyevans) (#9)</p>
 
 <h3 id="label-1.5.0+-282016-11-18-29">1.5.0 (2016-11-18)<span><a href="#label-1.5.0+-282016-11-18-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Allow autocompleting for associated objects even if current class
-doesn&#39;t support autocompleting (jeremyevans)</p>
+<p>Allow autocompleting for associated objects even if current class doesn&#39;t support autocompleting (jeremyevans)</p>
 </li><li><table class="rdoc-list label-list"><tbody><tr><td class='label'>SECURITY</td><td>
 <p>Fix check for non-idempotent GET requests (jeremyevans)</p>
 </td></tr></tbody></table>
@@ -86,68 +86,57 @@ doesn&#39;t support autocompleting (jeremyevans)</p>
 
 <h3 id="label-1.4.0+-282016-05-18-29">1.4.0 (2016-05-18)<span><a href="#label-1.4.0+-282016-05-18-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Handle selecting a blank object during show/edit/delete/mtm_edit by showing
-the same page (jeremyevans)</p>
+<p>Handle selecting a blank object during show/edit/delete/mtm_edit by showing the same page (jeremyevans)</p>
 </li><li>
 <p>Support UUID primary keys (badosu, jeremyevans) (#6)</p>
 </li><li>
 <p>Add Request#env for getting the environment for the request (jeremyevans)</p>
 </li><li>
-<p>Handle search results pagination correctly when an id parameter is used
-(badosu, jeremyevans) (#5)</p>
+<p>Handle search results pagination correctly when an id parameter is used (badosu, jeremyevans) (#5)</p>
 </li></ul>
 
 <h3 id="label-1.3.0+-282016-02-02-29">1.3.0 (2016-02-02)<span><a href="#label-1.3.0+-282016-02-02-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Add support for running with –enable-frozen-string-literal on ruby 2.3
-(jeremyevans)</p>
+<p>Add support for running with –enable-frozen-string-literal on ruby 2.3 (jeremyevans)</p>
 </li><li>
 <p>Make autoforme.js compatible with turbolinks (mrbrdo) (#3)</p>
 </li><li>
-<p>Force explicit labeler on show page, so that two columns are used
-(jeremyevans) (#2)</p>
+<p>Force explicit labeler on show page, so that two columns are used (jeremyevans) (#2)</p>
 </li><li>
-<p>Add edit_html and show_html for overriding the html used for a field
-(jeremyevans) (#1)</p>
+<p>Add edit_html and show_html for overriding the html used for a field (jeremyevans) (#1)</p>
 </li><li>
 <p>Give the browse/search tables an id (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.2.0+-282015-05-21-29">1.2.0 (2015-05-21)<span><a href="#label-1.2.0+-282015-05-21-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Add support for returning browse and search results in CSV format
-(jeremyevans)</p>
+<p>Add support for returning browse and search results in CSV format (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.1.0+-282015-03-23-29">1.1.0 (2015-03-23)<span><a href="#label-1.1.0+-282015-03-23-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Add Framework#register_by_name to allow autoforme to work better when using
-code reloading in development (jeremyevans)</p>
+<p>Add Framework#register_by_name to allow autoforme to work better when using code reloading in development (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.0.3+-282015-01-27-29">1.0.3 (2015-01-27)<span><a href="#label-1.0.3+-282015-01-27-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
 <p>Fix homepage in gemspec (jeremyevans)</p>
 </li><li>
-<p>Make roda spec work with upcoming <a href="../classes/Roda.html">Roda</a> 2
-release (jeremyevans)</p>
+<p>Make roda spec work with upcoming <a href="../classes/Roda.html"><code>Roda</code></a> 2 release (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.0.2+-282014-12-17-29">1.0.2 (2014-12-17)<span><a href="#label-1.0.2+-282014-12-17-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Fix double escaping of &amp; in inline mtm edit forms, fixing usage with
-rack 1.6.0 beta (jeremyevans)</p>
+<p>Fix double escaping of &amp; in inline mtm edit forms, fixing usage with rack 1.6.0 beta (jeremyevans)</p>
 </li><li>
 <p>Work with roda when using static_path_info plugin (jeremyevans)</p>
 </li><li>
-<p>Make sure the display name for an object always returns a string
-(jeremyevans)</p>
+<p>Make sure the display name for an object always returns a string (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-1.0.1+-282014-08-19-29">1.0.1 (2014-08-19)<span><a href="#label-1.0.1+-282014-08-19-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Display BigDecimal values in float format on browse/search pages
-(jeremyevans)</p>
+<p>Display BigDecimal values in float format on browse/search pages (jeremyevans)</p>
 </li><li>
 <p>Work on roda with all template frameworks, not just erb (jeremyevans)</p>
 </li></ul>
@@ -165,14 +154,12 @@ rack 1.6.0 beta (jeremyevans)</p>
 <ul><li>
 <p>Make Models::Sequel#mtm_update compatible with Sequel 4.10+ (jeremyevans)</p>
 </li><li>
-<p>Display boolean column false values in the search/browse tables
-(jeremyevans)</p>
+<p>Display boolean column false values in the search/browse tables (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-0.5.4+-282014-01-06-29">0.5.4 (2014-01-06)<span><a href="#label-0.5.4+-282014-01-06-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Qualify associated foreign key columns when searching, fixing issues when
-eager_graph is used on the model (jeremyevans)</p>
+<p>Qualify associated foreign key columns when searching, fixing issues when eager_graph is used on the model (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-0.5.3+-282014-01-02-29">0.5.3 (2014-01-02)<span><a href="#label-0.5.3+-282014-01-02-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
@@ -186,26 +173,20 @@ eager_graph is used on the model (jeremyevans)</p>
 
 <h3 id="label-0.5.2+-282013-12-18-29">0.5.2 (2013-12-18)<span><a href="#label-0.5.2+-282013-12-18-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Use default empty option when picking a many to many association to edit
-(jeremyevans)</p>
+<p>Use default empty option when picking a many to many association to edit (jeremyevans)</p>
 </li><li>
-<p>Don&#39;t force user to pick many to many association to edit if only one
-choice is available (jeremyevans)</p>
+<p>Don&#39;t force user to pick many to many association to edit if only one choice is available (jeremyevans)</p>
 </li><li>
-<p>Don&#39;t show many to many edit link for models without many to many
-associations (jeremyevans)</p>
+<p>Don&#39;t show many to many edit link for models without many to many associations (jeremyevans)</p>
 </li><li>
-<p>Quailfy columns when searching, fixing issues when eager_graph is used on
-the model (jeremyevans)</p>
+<p>Quailfy columns when searching, fixing issues when eager_graph is used on the model (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-0.5.1+-282013-12-17-29">0.5.1 (2013-12-17)<span><a href="#label-0.5.1+-282013-12-17-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 <ul><li>
-<p>Show header with display name for current object on mtm edit page
-(jeremyevans)</p>
+<p>Show header with display name for current object on mtm edit page (jeremyevans)</p>
 </li><li>
-<p>Handle empty values for many_to_one associations on new/edit forms
-(jeremyevans)</p>
+<p>Handle empty values for many_to_one associations on new/edit forms (jeremyevans)</p>
 </li></ul>
 
 <h3 id="label-0.5.0+-282013-12-13-29">0.5.0 (2013-12-13)<span><a href="#label-0.5.0+-282013-12-13-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
