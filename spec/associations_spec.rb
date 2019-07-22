@@ -51,6 +51,50 @@ describe AutoForme do
     page.all('td').map{|s| s.text}.must_equal ["Album1b", "Artist2", "Show", "Edit", "Delete"]
   end
 
+  it "should escape display names in association links" do
+    app_setup do
+      model Artist
+      model Album do
+        columns [:name, :artist]
+      end
+      association_links :all
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'Art&"ist2'
+    click_button 'Create'
+
+    visit("/Album/new")
+    fill_in 'Name', :with=>'Album1'
+    select 'Art&"ist2'
+    click_button 'Create'
+
+    click_link 'Edit'
+    select 'Album1'
+    click_button 'Edit'
+    page.html.must_match(%r{- <a href="/Artist/edit/\d+">Art&amp;&quot;ist2})
+  end
+
+  it "should escape display names in association links" do
+    app_setup do
+      model Album do
+        columns [:name, :artist]
+      end
+      association_links :all
+    end
+
+    Artist.create(:name=>'Art&"ist2')
+    visit("/Album/new")
+    fill_in 'Name', :with=>'Album1'
+    select 'Art&"ist2'
+    click_button 'Create'
+
+    click_link 'Edit'
+    select 'Album1'
+    click_button 'Edit'
+    page.html.must_include("- Art&amp;&quot;ist2")
+  end
+
   it "should use text boxes for associated objects on new/edit/search forms if associated model uses autocompleting" do
     app_setup do
       model Artist do

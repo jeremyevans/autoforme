@@ -626,13 +626,13 @@ module AutoForme
     # page.
     def association_link(mc, assoc_obj)
       if mc
-        t = mc.object_display_name(:association, request, assoc_obj)
+        t = h(mc.object_display_name(:association, request, assoc_obj))
         if mc.supported_action?(type, request)
           t = "<a href=\"#{base_url_for("#{mc.link}/#{type}/#{mc.primary_key_value(assoc_obj)}")}\">#{t}</a>"
         end
         t
       else
-        model.default_object_display_name(assoc_obj)
+        h(model.default_object_display_name(assoc_obj))
       end
     end
 

@@ -10,7 +10,7 @@ module AutoForme
 
   # The patch version of AutoForme, updated only for bug fixes from the last
   # feature release.
-  TINY = 0
+  TINY = 1
 
   # Version constant, use <tt>AutoForme.version</tt> instead.
   VERSION = "#{MAJOR}.#{MINOR}.#{TINY}".freeze
