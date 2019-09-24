@@ -23,12 +23,20 @@ supports Roda, Sinatra, and Rails.  It offers the following features:
 * Allow customization for all likely configuration points, using
   any parameters available in the request
 END
+  s.metadata = {
+    'bug_tracker_uri'   => 'https://github.com/jeremyevans/autoforme/issues',
+    'changelog_uri'     => 'http://autoforme.jeremyevans.net/files/CHANGELOG.html',
+    'documentation_uri' => 'http://autoforme.jeremyevans.net',
+    'mailing_list_uri'  => 'https://groups.google.com/forum/#!forum/ruby-forme',
+    'source_code_uri'   => 'https://github.com/jeremyevans/autoforme',
+  }
   s.add_dependency('forme', [">= 1.6.0"])
   s.add_dependency('rack')
   s.add_dependency('enum_csv')
   s.add_dependency('sequel', [">= 3.0.0"])
   s.add_development_dependency "minitest", '>=5.0.0'
   s.add_development_dependency "minitest-hooks", '>=1.1.0'
+  s.add_development_dependency "minitest-global_expectations"
   s.add_development_dependency "capybara", '>=2.1.0'
   s.add_development_dependency "roda"
   s.add_development_dependency "tilt"
