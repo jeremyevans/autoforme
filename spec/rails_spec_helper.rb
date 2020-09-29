@@ -1,8 +1,14 @@
 require 'rubygems'
+require 'rails'
 require 'action_controller/railtie'
 require 'autoforme'
 
 class AutoFormeSpec::App
+  class << self
+    # Workaround for action_view railtie deleting the finalizer
+    attr_accessor :av_finalizer
+  end
+
   def self.autoforme(klass=nil, opts={}, &block)
     sc = Class.new(Rails::Application)
     def sc.name
@@ -16,7 +22,7 @@ class AutoFormeSpec::App
       resolver = Class.new(ActionView::Resolver)
       resolver.class_eval do
         template = ActionView::Template
-        t = [template.new(<<HTML, "layout", template.handler_for_extension(:erb), {:virtual_path=>'layout', :format=>'erb', :updated_at=>Time.now})]
+        code = (<<HTML)
 <!DOCTYPE html>
 <html>
 <head><title><%= @autoforme_action.title if @autoforme_action %></title></head>
@@ -30,6 +36,11 @@ class AutoFormeSpec::App
 <%= yield %>
 </body></html>"
 HTML
+        if Rails.version > '6'
+          t = [template.new(code, "layout", template.handler_for_extension(:erb), :virtual_path=>'layout', :format=>'erb', :locals=>[])]
+        else
+          t = [template.new(code, "layout", template.handler_for_extension(:erb), :virtual_path=>'layout', :format=>'erb', :updated_at=>Time.now)]
+        end
 
         define_method(:find_templates){|*args| t}
       end
@@ -57,6 +68,7 @@ HTML
         get 'session/set', :controller=>'autoforme', :action=>'session_set'
       end.inspect
       config.secret_token = st if Rails.respond_to?(:version) && Rails.version < '5.2'
+      config.hosts << "www.example.com" if config.respond_to?(:hosts)
       config.active_support.deprecation = :stderr
       config.middleware.delete(ActionDispatch::ShowExceptions)
       config.middleware.delete(Rack::Lock)
@@ -69,6 +81,13 @@ HTML
         # Force Rails to dispatch to correct controller
         ActionDispatch::Routing::RouteSet::Dispatcher.class_eval do
           define_method(:controller){|_| controller}
+        end
+      end
+      if Rails.version > '6'
+        if AutoFormeSpec::App.av_finalizer
+          config.action_view.finalize_compiled_template_methods = AutoFormeSpec::App.av_finalizer
+        else
+          AutoFormeSpec::App.av_finalizer = config.action_view.finalize_compiled_template_methods
         end
       end
       initialize!
