@@ -37,8 +37,10 @@ elsif RUBY_VERSION < '2.2'
   gem 'rails', '< 5'
   gem 'rack', '< 2'
   gem 'addressable', '< 2.5'
-elsif RUBY_VERSION < '2.5'
+elsif RUBY_VERSION < '2.3'
   gem 'rails', '< 5.2'
+elsif RUBY_VERSION < '2.5'
+  gem 'rails', '< 6'
 else
   if defined?(JRUBY_VERSION)
     gem 'rails', '< 5.1'
