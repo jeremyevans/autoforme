@@ -82,6 +82,7 @@ HTML
         ActionDispatch::Routing::RouteSet::Dispatcher.class_eval do
           define_method(:controller){|_| controller}
         end
+        config.session_store :cookie_store, :key=>'_autoforme_test_session'
       end
       if Rails.version > '6'
         if AutoFormeSpec::App.av_finalizer
