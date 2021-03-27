@@ -27,7 +27,7 @@ END
     'bug_tracker_uri'   => 'https://github.com/jeremyevans/autoforme/issues',
     'changelog_uri'     => 'http://autoforme.jeremyevans.net/files/CHANGELOG.html',
     'documentation_uri' => 'http://autoforme.jeremyevans.net',
-    'mailing_list_uri'  => 'https://github.com/jeremyevans/autoforme/discussions'
+    'mailing_list_uri'  => 'https://github.com/jeremyevans/autoforme/discussions',
     'source_code_uri'   => 'https://github.com/jeremyevans/autoforme',
   }
   s.add_dependency('forme', [">= 1.6.0"])
