@@ -238,6 +238,66 @@ use AutoForme in Rails development mode.  The best way to handle it is to call
 +AutoForme.for+ in the related controller file, and have an initializer reference
 the controller class, causing the controller file to be loaded.
 
+= Roda
+
+Because Roda uses a routing tree, unlike Rails and Sinatra, with Roda you need to
+dispatch to the autoforme routes at the point in the routing tree where you want
+to mount them.  Additionally, the Roda support offers a Roda plugin for easier
+configuration.
+
+To mount the autoforme routes in the root of the application, you could do:
+
+  class App < Roda
+    plugin :autoforme do
+      model Artist
+    end
+
+    route do
+      # rest of routing tree
+      autoforme
+    end
+  end
+
+To mount the routes in a subpath:
+
+  class App < Roda
+    plugin :autoforme do
+      model Artist
+    end
+
+    route do
+      r.on "admin" do
+        autoforme
+      end
+
+      # rest of routing tree
+    end
+  end
+
+To handle multiple autoforme configurations, mounted at different subpaths:
+
+  class App < Roda
+    plugin :autoforme
+
+    autoforme(name: 'artists')
+      model Artist
+    end
+    autoforme(name: 'albums')
+      model Album
+    end
+
+    route do
+      r.on "artists" do
+        autoforme('artists')
+      end
+      r.on "albums" do
+        autoforme('albums')
+      end
+
+      # rest of routing tree
+    end
+  end
+
 = TODO
 
 * capybara-webkit tests for ajax behavior
