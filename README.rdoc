@@ -161,12 +161,13 @@ These options are related to displayed output:
 
 form_attributes :: Hash of attributes to use for any form tags
 form_options :: Hash of Forme::Form options to pass for any forms created
-class_display_name :: The string to use when referring to the model class
+class_display_name :: The string to use on pages when referring to the model class.
+                      This defaults to the full class name.
 display_name :: The string to use when referring to a model instance.  Can either be a symbol
                 representing an instance method call, or a Proc called with the model object,
                 the model object and type symbol, or the model object, type symbol, and request,
                 depending on the arity of the Proc.
-link_name :: The string to use in links for the class
+link_name :: The string to use in links for the class. This defaults to +class_display_name+.
 edit_html :: The html to use for a particular object edit field.  Should be a proc that takes the
              model object, column symbol, type symbol, and request and returns the html to use.
 page_footer :: Override the default footer used for pages
