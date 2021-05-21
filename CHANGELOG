@@ -1,3 +1,7 @@
+=== master
+
+* Handle search fields that cannot be typecast correctly by returning no results (jeremyevans)
+
 === 1.9.1 (2019-07-22)
 
 * [SECURITY] Escape object display name when displaying association links (adam12)

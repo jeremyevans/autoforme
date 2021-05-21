@@ -158,7 +158,7 @@ module AutoForme
         params = request.params
         ds = apply_associated_eager(:search, request, all_dataset_for(type, request))
         columns_for(:search_form, request).each do |c|
-          if (v = params[c.to_s]) && !v.empty?
+          if (v = params[c.to_s]) && !(v = v.to_s).empty?
             if association?(c)
               ref = model.association_reflection(c)
               ads = ref.associated_dataset
@@ -168,9 +168,16 @@ module AutoForme
               primary_key = S.qualify(ref.associated_class.table_name, ref.primary_key)
               ds = ds.where(S.qualify(model.table_name, ref[:key])=>ads.where(primary_key=>v).select(primary_key))
             elsif column_type(c) == :string
-              ds = ds.where(S.ilike(S.qualify(model.table_name, c), "%#{ds.escape_like(v.to_s)}%"))
+              ds = ds.where(S.ilike(S.qualify(model.table_name, c), "%#{ds.escape_like(v)}%"))
             else
-              ds = ds.where(S.qualify(model.table_name, c)=>model.db.typecast_value(column_type(c), v))
+              begin
+                typecasted_value = model.db.typecast_value(column_type(c), v)
+              rescue S::InvalidValue
+                ds = ds.where(false)
+                break
+              else
+                ds = ds.where(S.qualify(model.table_name, c)=>typecasted_value)
+              end
             end
           end
         end

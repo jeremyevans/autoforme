@@ -954,18 +954,28 @@ describe AutoForme do
   after(:all) do
     Object.send(:remove_const, :Artist)
   end
-
-  it "should display decimals in float format in tables" do
+  before do
     app_setup(Artist)
     visit("/Artist/new")
     page.title.must_equal 'Artist - New'
     fill_in 'Num', :with=>'1.01'
     click_button 'Create'
+    visit("/Artist/browse")
+  end
+
+  it "should display decimals in float format in tables" do
     click_link 'Artist'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1.01'
     click_link 'Search'
     click_button 'Search'
     page.all('tr td:first-child').map{|s| s.text}.must_equal %w'1.01'
+  end
+
+  it "should treat invalid search fields as returning no results" do
+    click_link 'Search'
+    fill_in 'Num', :with=>'3/3/2020'
+    click_button 'Search'
+    page.all('tr td:first-child').map{|s| s.text}.must_equal []
   end
 end
 
