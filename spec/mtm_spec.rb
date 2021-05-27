@@ -507,3 +507,67 @@ describe AutoForme do
     page.all('select')[1].all('option').map{|s| s.text}.must_equal ["Album2", "Album3"]
   end
 end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string]], :albums_artists=>proc{column :album_id, :integer, :table=>:albums; column :artist_id, :integer, :table=>:artists; primary_key [:album_id, :artist_id]})
+    model_setup(:Artist=>[:artists, [[:many_to_many, :albums]]], :Album=>[:albums, [[:many_to_many, :artists]]])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Album)
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should handle unique constraint violation errors when adding associated objects" do
+    app_setup do
+      model Artist do
+        mtm_associations :albums
+      end
+      model Album
+    end
+
+    artist = Artist.create(:name=>'Artist1')
+    album = Album.create(:name=>'Album1')
+
+    visit("/Artist/mtm_edit")
+    page.title.must_equal 'Artist - Many To Many Edit'
+    select("Artist1")
+    click_button "Edit"
+
+    find('h2').text.must_equal 'Edit Albums for Artist1'
+    page.all('select')[0].all('option').map{|s| s.text}.must_equal ["Album1"]
+    page.all('select')[1].all('option').map{|s| s.text}.must_equal []
+    select("Album1", :from=>"Associate With")
+    artist.add_album(album)
+    click_button "Update"
+    page.html.must_include 'Updated albums association for Artist'
+    Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
+  end
+
+  it "should handle unique constraint violation errors when adding associated objects" do
+    app_setup do
+      model Artist do
+        mtm_associations :albums
+      end
+      model Album
+    end
+
+    artist = Artist.create(:name=>'Artist1')
+    album = Album.create(:name=>'Album1')
+    artist.add_album(album)
+
+    visit("/Artist/mtm_edit")
+    page.title.must_equal 'Artist - Many To Many Edit'
+    select("Artist1")
+    click_button "Edit"
+
+    find('h2').text.must_equal 'Edit Albums for Artist1'
+    page.all('select')[0].all('option').map{|s| s.text}.must_equal []
+    page.all('select')[1].all('option').map{|s| s.text}.must_equal ["Album1"]
+    select("Album1", :from=>"Disassociate From")
+    artist.remove_album(album)
+    click_button "Update"
+    page.html.must_include 'Updated albums association for Artist'
+    Artist.first.albums.map{|x| x.name}.must_equal []
+  end
+end

@@ -300,7 +300,11 @@ module AutoForme
               ids.each do |id|
                 next if id.to_s.empty?
                 ret = assoc_class ? assoc_class.with_pk(:association, request, id) : obj.send(:_apply_association_options, ref, ref.associated_class.dataset.clone).with_pk!(id)
-                obj.send(meth, ret)
+                begin
+                  model.db.transaction(:savepoint=>true){obj.send(meth, ret)}
+                rescue S::UniqueConstraintViolation
+                  # Already added, safe to ignore
+                end
               end
             end
           end

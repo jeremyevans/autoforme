@@ -1,5 +1,7 @@
 === master
 
+* Ignore unique constraint violations when adding associated objects in mtm_update (jeremyevans)
+
 * Handle search fields that cannot be typecast correctly by returning no results (jeremyevans)
 
 === 1.9.1 (2019-07-22)
