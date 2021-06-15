@@ -22,7 +22,6 @@ flexible in terms of configuration.
 Demo Site :: http://autoforme-demo.jeremyevans.net
 RDoc :: http://autoforme.jeremyevans.net
 Source :: https://github.com/jeremyevans/autoforme
-IRC :: irc://irc.freenode.net/forme
 Discussion Forum :: https://github.com/jeremyevans/autoforme/discussions
 Bug Tracker :: https://github.com/jeremyevans/autoforme/issues
 
