@@ -98,14 +98,26 @@ module AutoForme
         ref[:keys].zip(ref[:primary_keys].map{|k| obj.send(k)})
       end
 
+      # Array of many to many association name strings for editable
+      # many to many associations.
+      def editable_mtm_association_names
+        association_names([:many_to_many]) do |r|
+          model.method_defined?(r.add_method) && model.method_defined?(r.remove_method)
+        end
+      end
+
       # Array of many to many association name strings.
       def mtm_association_names
         association_names([:many_to_many])
       end
 
-      # Array of association name strings for given association types
+      # Array of association name strings for given association types. If a block is
+      # given, only include associations where the block returns truthy.
       def association_names(types=SUPPORTED_ASSOCIATION_TYPES)
-        model.all_association_reflections.select{|r| types.include?(r[:type])}.map{|r| r[:name]}.sort_by(&:to_s)
+        model.all_association_reflections.
+          select{|r| types.include?(r[:type]) && (!block_given? || yield(r))}.
+          map{|r| r[:name]}.
+          sort_by(&:to_s)
       end
 
       # Save the object, returning the object if successful, or nil if not.

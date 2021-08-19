@@ -571,3 +571,51 @@ describe AutoForme do
     Artist.first.albums.map{|x| x.name}.must_equal []
   end
 end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string]], :albums_artists=>[[:album_id, :integer, {:table=>:albums}], [:artist_id, :integer, {:table=>:artists}]])
+    model_setup(:Artist=>[:artists, [[:many_to_many, :albums, :read_only=>true]]], :Album=>[:albums, [[:many_to_many, :artists, :read_only=>true]]])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Album)
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should not automatically setup mtm support for read-only associations" do
+    app_setup do
+      model Artist do
+        mtm_associations :all
+        association_links :all
+      end
+      model Album do
+        mtm_associations :all
+        association_links :all
+      end
+    end
+
+    visit("/Artist/new")
+    page.html.wont_include 'MTM'
+    fill_in 'Name', :with=>'Artist1'
+    click_button 'Create'
+    click_link 'Edit'
+    select 'Artist1'
+    click_button 'Edit'
+    page.html.must_include 'Albums'
+    page.html.wont_include '>associate<'
+    visit("/Artist/mtm_edit")
+    page.html.must_include 'Unhandled Request'
+
+    visit("/Album/new")
+    page.html.wont_include 'MTM'
+    fill_in 'Name', :with=>'Album1'
+    click_button 'Create'
+    click_link 'Edit'
+    select 'Album1'
+    click_button 'Edit'
+    page.html.must_include 'Artists'
+    page.html.wont_include '>associate<'
+    visit("/Album/mtm_edit")
+    page.html.must_include 'Unhandled Request'
+  end
+end

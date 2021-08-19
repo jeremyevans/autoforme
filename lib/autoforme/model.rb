@@ -389,7 +389,7 @@ module AutoForme
     
     def normalize_mtm_associations(assocs)
       if assocs == :all
-        mtm_association_names
+        editable_mtm_association_names
       else
         Array(assocs)
       end

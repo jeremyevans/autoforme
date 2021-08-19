@@ -1,5 +1,7 @@
 === master
 
+* Do not consider read_only many_to_many associations to be editable (jeremyevans)
+
 * Ignore unique constraint violations when adding associated objects in mtm_update (jeremyevans)
 
 * Handle search fields that cannot be typecast correctly by returning no results (jeremyevans)
