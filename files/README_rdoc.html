@@ -30,7 +30,7 @@ README.rdoc
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2017-12-03 20:29:57 -0800</span>
+<span class='datetime'>2021-06-15 08:55:06 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -58,10 +58,8 @@ Last Update:
 <p><a target="_top" href="http://autoforme.jeremyevans.net">autoforme.jeremyevans.net</a></p>
 </td></tr><tr><td class='label'>Source </td><td>
 <p><a href="https://github.com/jeremyevans/autoforme">github.com/jeremyevans/autoforme</a></p>
-</td></tr><tr><td class='label'>IRC </td><td>
-<p><a href="irc://irc.freenode.net/forme">irc.freenode.net/forme</a></p>
-</td></tr><tr><td class='label'>Google Group </td><td>
-<p><a href="https://groups.google.com/forum/#!forum/ruby-forme">groups.google.com/forum/#!forum/ruby-forme</a></p>
+</td></tr><tr><td class='label'>Discussion Forum </td><td>
+<p><a href="https://github.com/jeremyevans/autoforme/discussions">github.com/jeremyevans/autoforme/discussions</a></p>
 </td></tr><tr><td class='label'>Bug Tracker </td><td>
 <p><a href="https://github.com/jeremyevans/autoforme/issues">github.com/jeremyevans/autoforme/issues</a></p>
 </td></tr></tbody></table>
@@ -131,7 +129,7 @@ Last Update:
 <p>This is an expression or an array of expressions by which to order returned rows.</p>
 </td></tr></tbody></table>
 
-<p>Note that for each of the customization options, you can do per-request customization by using a proc which is called with the type symbol and request (AutoForme::Request instance), which should return an appropriate object.</p>
+<p>Note that for each of the customization options, you can do per-request customization by using a proc which is called with the type symbol and request (<a href="../classes/AutoForme/Request.html"><code>AutoForme::Request</code></a> instance), which should return an appropriate object.</p>
 <table class="rdoc-list note-list"><tbody><tr><td class='label'>columns </td><td>
 <p>Proc called with type symbol and request, should return array of column/association symbols</p>
 </td></tr><tr><td class='label'>column_options </td><td>
@@ -183,11 +181,11 @@ Last Update:
 </td></tr><tr><td class='label'>form_options </td><td>
 <p>Hash of Forme::Form options to pass for any forms created</p>
 </td></tr><tr><td class='label'>class_display_name </td><td>
-<p>The string to use when referring to the model class</p>
+<p>The string to use on pages when referring to the model class. This defaults to the full class name.</p>
 </td></tr><tr><td class='label'>display_name </td><td>
 <p>The string to use when referring to a model instance.  Can either be a symbol representing an instance method call, or a Proc called with the model object, the model object and type symbol, or the model object, type symbol, and request, depending on the arity of the Proc.</p>
 </td></tr><tr><td class='label'>link_name </td><td>
-<p>The string to use in links for the class</p>
+<p>The string to use in links for the class. This defaults to <code>class_display_name</code>.</p>
 </td></tr><tr><td class='label'>edit_html </td><td>
 <p>The html to use for a particular object edit field.  Should be a proc that takes the model object, column symbol, type symbol, and request and returns the html to use.</p>
 </td></tr><tr><td class='label'>page_footer </td><td>
@@ -249,6 +247,22 @@ Last Update:
 <h1 id="label-Rails">Rails<span><a href="#label-Rails">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
 <p>Because Rails separates routing from request handling, it can be little awkward to use <a href="../classes/AutoForme.html"><code>AutoForme</code></a> in Rails development mode.  The best way to handle it is to call <code>AutoForme.for</code> in the related controller file, and have an initializer reference the controller class, causing the controller file to be loaded.</p>
+
+<h1 id="label-Roda"><a href="../classes/Roda.html"><code>Roda</code></a><span><a href="#label-Roda">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Because <a href="../classes/Roda.html"><code>Roda</code></a> uses a routing tree, unlike Rails and Sinatra, with <a href="../classes/Roda.html"><code>Roda</code></a> you need to dispatch to the autoforme routes at the point in the routing tree where you want to mount them.  Additionally, the <a href="../classes/Roda.html"><code>Roda</code></a> support offers a <a href="../classes/Roda.html"><code>Roda</code></a> plugin for easier configuration.</p>
+
+<p>To mount the autoforme routes in the root of the application, you could do:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Roda</span>&#x000A;  <span class="ruby-identifier">plugin</span> <span class="ruby-value">:autoforme</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;&#x000A;  <span class="ruby-identifier">route</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-comment"># rest of routing tree</span>&#x000A;    <span class="ruby-identifier">autoforme</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+
+<p>To mount the routes in a subpath:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Roda</span>&#x000A;  <span class="ruby-identifier">plugin</span> <span class="ruby-value">:autoforme</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;&#x000A;  <span class="ruby-identifier">route</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">on</span> <span class="ruby-string">&quot;admin&quot;</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">autoforme</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;&#x000A;    <span class="ruby-comment"># rest of routing tree</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+
+<p>To handle multiple autoforme configurations, mounted at different subpaths:</p>
+
+<pre>class App &lt; Roda&#x000A;  plugin :autoforme&#x000A;  autoforme(name: &#39;artists&#39;)&#x000A;    model Artist&#x000A;  end&#x000A;  autoforme(name: &#39;albums&#39;)&#x000A;    model Album&#x000A;  end&#x000A;&#x000A;  route do&#x000A;    r.on &quot;artists&quot; do&#x000A;      autoforme(&#39;artists&#39;)&#x000A;    end&#x000A;    r.on &quot;albums&quot; do&#x000A;      autoforme(&#39;albums&#39;)&#x000A;    end&#x000A;&#x000A;    # rest of routing tree&#x000A;  end&#x000A;end</pre>
 
 <h1 id="label-TODO">TODO<span><a href="#label-TODO">&para;</a> <a href="#top">&uarr;</a></span></h1>
 <ul><li>
