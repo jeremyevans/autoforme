@@ -6,11 +6,11 @@ module AutoForme
   MAJOR = 1
 
   # The minor version of AutoForme, updated for new feature releases of AutoForme.
-  MINOR = 9
+  MINOR = 10
 
   # The patch version of AutoForme, updated only for bug fixes from the last
   # feature release.
-  TINY = 1
+  TINY = 0
 
   # Version constant, use <tt>AutoForme.version</tt> instead.
   VERSION = "#{MAJOR}.#{MINOR}.#{TINY}".freeze
