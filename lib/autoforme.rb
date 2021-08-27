@@ -1,7 +1,6 @@
 # frozen-string-literal: true
 
 require 'forme'
-require 'thread'
 require 'rack/utils'
 
 module AutoForme
@@ -50,10 +49,10 @@ module AutoForme
   end
 end
 
-require 'autoforme/opts_attributes'
-require 'autoforme/model'
-require 'autoforme/framework'
-require 'autoforme/request'
-require 'autoforme/action'
-require 'autoforme/table'
-require 'autoforme/version'
+require_relative 'autoforme/opts_attributes'
+require_relative 'autoforme/model'
+require_relative 'autoforme/framework'
+require_relative 'autoforme/request'
+require_relative 'autoforme/action'
+require_relative 'autoforme/table'
+require_relative 'autoforme/version'

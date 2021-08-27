@@ -1,4 +1,3 @@
-require 'rubygems'
 $: << File.expand_path(File.join(__FILE__, '../../lib'))
 ENV['FRAMEWORK'] ||= 'roda'
 
@@ -19,7 +18,7 @@ if ENV['COVERAGE']
   end
 end
 
-require "./spec/#{ENV['FRAMEWORK']}_spec_helper"
+require_relative "#{ENV['FRAMEWORK']}_spec_helper"
 
 require 'capybara'
 require 'capybara/dsl'
@@ -35,7 +34,7 @@ if ENV['WARNING']
   Warning.ignore([:missing_ivar, :fixnum, :not_reached])
 end
 
-require './spec/sequel_spec_helper'
+require_relative 'sequel_spec_helper'
 
 class Minitest::HooksSpec
   include Rack::Test::Methods

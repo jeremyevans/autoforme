@@ -1,6 +1,5 @@
-require 'rubygems'
 require 'roda'
-require 'autoforme'
+require_relative '../lib/autoforme'
 require 'rack/csrf'
 
 begin

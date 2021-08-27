@@ -1,4 +1,4 @@
-require File.expand_path("../lib/autoforme/version", __FILE__)
+require_relative 'lib/autoforme/version'
 Gem::Specification.new do |s|
   s.name = 'autoforme'
   s.version = AutoForme.version.dup
@@ -30,6 +30,7 @@ END
     'mailing_list_uri'  => 'https://github.com/jeremyevans/autoforme/discussions',
     'source_code_uri'   => 'https://github.com/jeremyevans/autoforme',
   }
+  s.required_ruby_version = ">= 1.9.2"
   s.add_dependency('forme', [">= 1.6.0"])
   s.add_dependency('rack')
   s.add_dependency('enum_csv')

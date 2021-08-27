@@ -1,6 +1,6 @@
 # frozen-string-literal: true
 
-require 'autoforme'
+require_relative '../../autoforme'
 
 class Roda
   module RodaPlugins

@@ -1,7 +1,6 @@
-require 'rubygems'
 require 'rails'
 require 'action_controller/railtie'
-require 'autoforme'
+require_relative '../lib/autoforme'
 
 class AutoFormeSpec::App
   class << self

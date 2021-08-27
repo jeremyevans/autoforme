@@ -1,6 +1,5 @@
-require 'rubygems'
 require 'sinatra/base'
-require 'autoforme'
+require_relative '../lib/autoforme'
 require 'sinatra/flash'
 require 'rack/csrf'
 
