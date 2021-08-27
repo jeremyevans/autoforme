@@ -74,6 +74,17 @@ HTML
       config.middleware.delete(Rack::Lock)
       config.secret_key_base = st*15
       config.eager_load = true
+      if Rails.version.start_with?('4')
+        # Work around issue in backported openssl environments where
+        # secret is 64 bytes intead of 32 bytes
+        require 'active_support/message_encryptor'
+        ActiveSupport::MessageEncryptor.send :prepend, Module.new {
+          def initialize(secret, *signature_key_or_options)
+            secret = secret[0, 32]
+            super
+          end
+        }
+      end
       if Rails.version > '4.2'
         config.action_dispatch.cookies_serializer = :json
       end
