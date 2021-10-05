@@ -23,6 +23,7 @@ require_relative "#{ENV['FRAMEWORK']}_spec_helper"
 require 'capybara'
 require 'capybara/dsl'
 require 'rack/test'
+require 'tilt/erubi'
 
 ENV['MT_NO_PLUGINS'] = '1' # Work around stupid autoloading of plugins
 gem 'minitest'
