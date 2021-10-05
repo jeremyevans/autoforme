@@ -52,6 +52,7 @@ end
 gem 'sequel'
 gem 'roda'
 gem 'tilt'
+gem 'erubi'
 gem 'rack_csrf'
 gem 'sinatra-flash'
 gem 'minitest-hooks'
