@@ -316,6 +316,10 @@ module AutoForme
                   model.db.transaction(:savepoint=>true){obj.send(meth, ret)}
                 rescue S::UniqueConstraintViolation
                   # Already added, safe to ignore
+                rescue S::ConstraintViolation
+                  # Old versions of sqlite3 and jdbc-sqlite3 can raise generic
+                  # ConstraintViolation instead of UniqueConstraintViolation
+                  raise unless model.db.database_type == :sqlite
                 end
               end
             end
