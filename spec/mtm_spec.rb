@@ -595,7 +595,7 @@ describe AutoForme do
     end
 
     visit("/Artist/new")
-    page.html.wont_include 'MTM'
+    page.html.wont_include 'Artist/mtm_edit'
     fill_in 'Name', :with=>'Artist1'
     click_button 'Create'
     click_link 'Edit'
@@ -607,7 +607,7 @@ describe AutoForme do
     page.html.must_include 'Unhandled Request'
 
     visit("/Album/new")
-    page.html.wont_include 'MTM'
+    page.html.wont_include 'Album/mtm_edit'
     fill_in 'Name', :with=>'Album1'
     click_button 'Create'
     click_link 'Edit'
