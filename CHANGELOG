@@ -1,5 +1,7 @@
 === master
 
+* Add support for view_options framework option (nmb, jeremyevans) (#42)
+
 * Drop support for Ruby 1.8 (jeremyevans)
 
 === 1.10.0 (2021-08-27)

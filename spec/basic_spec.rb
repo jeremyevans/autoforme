@@ -12,6 +12,7 @@ describe AutoForme do
   it "should have basic functionality working" do
     app_setup(Artist)
     visit("/Artist/new")
+    page.html.must_include '<!DOCTYPE html>'
     page.title.must_equal 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'
     click_button 'Create'
@@ -606,6 +607,13 @@ describe AutoForme do
     page.html.must_include 'Updated Artist'
     page.html.must_match(/Name.+TestArtistUpdate/m)
     page.current_path.must_match %r{/Artist/edit/\d+}
+  end
+
+  it "should support view_options" do
+    app_setup(Artist, view_options: {:layout=>false}){}
+    visit("/Artist/browse")
+    page.html.wont_include '<!DOCTYPE html>'
+    page.all('table').first['id'].must_equal 'autoforme_table'
   end
 end
 

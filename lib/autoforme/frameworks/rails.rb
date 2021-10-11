@@ -58,7 +58,11 @@ module AutoForme
             elsif @autoforme_action.request.xhr?
               render :html=>@autoforme_text.html_safe
             else
-              render :inline=>"<%=raw @autoforme_text %>", :layout=>true
+              opts = framework.opts[:view_options]
+              opts = opts ? opts.dup : {}
+              opts[:layout] = true unless opts.has_key?(:layout)
+              opts[:inline] = "<%=raw @autoforme_text %>"
+              render opts
             end
           else
             render :plain=>'Unhandled Request', :status=>404

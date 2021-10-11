@@ -50,7 +50,9 @@ module AutoForme
             elsif @autoforme_action.request.xhr?
               @autoforme_text
             else
-              erb "<%= @autoforme_text %>".dup, framework.opts[:erb_options].dup || {}
+              opts = framework.opts[:view_options]
+              opts = opts ? opts.dup : {}
+              erb("<%= @autoforme_text %>".dup, opts ? opts.dup : {})
             end
           else
             pass

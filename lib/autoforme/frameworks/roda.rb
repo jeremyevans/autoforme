@@ -106,7 +106,10 @@ module AutoForme
             elsif @autoforme_action.request.xhr?
               @autoforme_text
             else
-              view(:content=>@autoforme_text)
+              opts = framework.opts[:view_options]
+              opts = opts ? opts.dup : {}
+              opts[:content] = @autoforme_text
+              view(opts)
             end
           end
         end
