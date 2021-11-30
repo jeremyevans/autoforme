@@ -53,16 +53,18 @@ module AutoForme
         def csrf_token_hash(action=nil)
           if @controller.respond_to?(:check_csrf!)
             # Using route_csrf plugin
-            # :nocov:
             token = if @controller.use_request_specific_csrf_tokens?
               @controller.csrf_token(@controller.csrf_path(action))
+              # :nocov:
             else
               @controller.csrf_token
+              # :nocov:
             end
             {@controller.csrf_field=>token}
             # :nocov:
           elsif defined?(::Rack::Csrf)
             {::Rack::Csrf.field=>::Rack::Csrf.token(@env)}
+            # :nocov:
           end
         end
 
