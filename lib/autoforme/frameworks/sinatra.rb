@@ -51,7 +51,6 @@ module AutoForme
               @autoforme_text
             else
               opts = framework.opts[:view_options]
-              opts = opts ? opts.dup : {}
               erb("<%= @autoforme_text %>".dup, opts ? opts.dup : {})
             end
           else
