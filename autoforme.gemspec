@@ -31,7 +31,7 @@ END
     'source_code_uri'   => 'https://github.com/jeremyevans/autoforme',
   }
   s.required_ruby_version = ">= 1.9.2"
-  s.add_dependency('forme', [">= 1.6.0"])
+  s.add_dependency('forme', [">= 2.0.0"])
   s.add_dependency('rack')
   s.add_dependency('enum_csv')
   s.add_dependency('sequel', [">= 3.0.0"])

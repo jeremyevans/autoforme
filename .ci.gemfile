@@ -58,6 +58,6 @@ gem 'sinatra-flash'
 gem 'minitest-hooks'
 gem 'minitest-global_expectations'
 gem 'enum_csv'
-gem 'forme'
+gem 'forme', '>= 2'
 gem 'capybara'
 

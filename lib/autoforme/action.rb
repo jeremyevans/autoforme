@@ -227,10 +227,15 @@ module AutoForme
     # Options to use for the form.  If the form uses POST, automatically adds the CSRF token.
     def form_opts(action=nil)
       opts = model.form_options_for(type, request).dup
-      hidden_tags = opts[:hidden_tags] = []
-      if csrf = request.csrf_token_hash(action)
-        hidden_tags << lambda{|tag| csrf if (tag.attr[:method] || tag.attr['method']).to_s.upcase == 'POST'}
+
+      opts[:_before_post] = lambda do |form|
+        if csrf_hash = request.csrf_token_hash(action)
+          csrf_hash.each do |name, value|
+            form.tag(:input, :type=>:hidden, :name=>name, :value=>value)
+          end
+        end
       end
+
       opts
     end
 

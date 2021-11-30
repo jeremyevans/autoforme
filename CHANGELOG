@@ -1,5 +1,7 @@
 === master
 
+* Require forme 2.0.0 (jeremyevans)
+
 * Add support for view_options framework option (nmb, jeremyevans) (#42)
 
 * Drop support for Ruby 1.8 (jeremyevans)
