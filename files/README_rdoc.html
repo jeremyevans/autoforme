@@ -30,7 +30,7 @@ README.rdoc
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2021-06-15 08:55:06 -0700</span>
+<span class='datetime'>2021-10-11 08:22:52 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -196,6 +196,8 @@ Last Update:
 <p>The html to use for displaying the value for an object field.  Should be a proc that takes the model object, column symbol, type symbol, and request and returns the html to use.</p>
 </td></tr><tr><td class='label'>table_class </td><td>
 <p>The html class string to use for the browse and search tables</p>
+</td></tr><tr><td class='label'>view_options </td><td>
+<p>Hash with options passed when rendering the view (how these options are used varies in each of the supported web frameworks), e.g. <code>view_options: {:layout =&gt; :formelayout}</code></p>
 </td></tr></tbody></table>
 
 <p>These hook options should be callable objects that are called with the model object and the request.</p>
