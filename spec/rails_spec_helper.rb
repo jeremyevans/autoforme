@@ -89,6 +89,7 @@ HTML
       if Rails.version > '5'
         # Force Rails to dispatch to correct controller
         ActionDispatch::Routing::RouteSet::Dispatcher.class_eval do
+          alias controller controller
           define_method(:controller){|_| controller}
         end
         config.session_store :cookie_store, :key=>'_autoforme_test_session'
