@@ -281,10 +281,10 @@ To handle multiple autoforme configurations, mounted at different subpaths:
   class App < Roda
     plugin :autoforme
 
-    autoforme(name: 'artists')
+    autoforme(name: 'artists') do
       model Artist
     end
-    autoforme(name: 'albums')
+    autoforme(name: 'albums') do
       model Album
     end
 
