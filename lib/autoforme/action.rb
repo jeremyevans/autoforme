@@ -195,7 +195,7 @@ module AutoForme
       content << '<ul class="nav nav-tabs">'
       Model::DEFAULT_SUPPORTED_ACTIONS.each do |action_type|
         if model.supported_action?(action_type, request)
-          content << "<li class=\"#{'active' if type == action_type}\"><a href=\"#{url_for(action_type)}\">#{tab_name(action_type)}</a></li>"
+          content << "<li class=\"nav-item #{'active' if type == action_type}\"><a class=\"nav-link\" href=\"#{url_for(action_type)}\">#{tab_name(action_type)}</a></li>"
         end
       end
       content << '</ul>'

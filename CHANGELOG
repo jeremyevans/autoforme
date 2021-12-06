@@ -1,3 +1,7 @@
+=== master
+
+* Make navigation tab li tag use nav-item, for Bootstrap 5 compatibility (jeremyevans)
+
 === 1.11.0 (2021-11-30)
 
 * Require forme 2.0.0 (jeremyevans)
