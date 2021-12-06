@@ -19,7 +19,6 @@ class AutoFormeDemo::App < Roda
 
   Forme.register_config(:mine, :base=>:default, :labeler=>:explicit, :wrapper=>:div)
   Forme.default_config = :mine
-  require 'forme/bs3'
 
   def self.setup_autoforme(name, &block)
     autoforme(:name=>name) do
@@ -34,18 +33,9 @@ class AutoFormeDemo::App < Roda
     end
   end
 
-  TYPES = %w'basic bootstrap3 inline autocomplete'.freeze
+  TYPES = %w'basic inline autocomplete'.freeze
 
   setup_autoforme(:basic) do
-    mtm_associations :all
-    model Artist
-    model Album
-    model Track
-    model Tag
-  end
-
-  setup_autoforme(:bootstrap3) do
-    form_options(:config=>:bs3)
     mtm_associations :all
     model Artist
     model Album

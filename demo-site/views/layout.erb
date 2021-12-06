@@ -2,65 +2,56 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>AutoForme Demo<%= " - #{@autoforme_action.title}" if @autoforme_action %></title>
     
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/jquery.autocomplete.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/auto-complete.css" />
     <link rel="stylesheet" type="text/css" href="/static/application.css" />
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/jquery.autocomplete.min.js"></script>
-    <script type="text/javascript" src="/autoforme.js"></script>
+    <link rel="icon" href="data:;base64,=">
   </head>
   
   <body>
     
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-expand-lg">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">AutoForme Demo</a>
-        </div>
+        <a class="navbar-brand" href="/">AutoForme Demo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <% TYPES.each do |type| %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= type.capitalize %> <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/<%= type %>/Artist/browse">Artist</a></li>
-                  <li><a href="/<%= type %>/Album/browse">Album</a></li>
-                  <li><a href="/<%= type %>/Track/browse">Track</a></li>
-                  <li><a href="/<%= type %>/Tag/edit">Tag</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbar-dropdown-<%= type %>" role="button" data-bs-toggle="dropdown" aria-expanded="false"><%= type.capitalize %></a>
+                <ul class="dropdown-menu" aria-labelledby="navbar-dropdown-<%= type %>">
+                  <li><a class="dropdown-item" href="/<%= type %>/Artist/browse">Artist</a></li>
+                  <li><a class="dropdown-item" href="/<%= type %>/Album/browse">Album</a></li>
+                  <li><a class="dropdown-item" href="/<%= type %>/Track/browse">Track</a></li>
+                  <li><a class="dropdown-item" href="/<%= type %>/Tag/edit">Tag</a></li>
                 </ul>
               </li>
             <% end %>
-            <li><a href="https://github.com/jeremyevans/autoforme">Code</a></li>
-            <li><a href="https://github.com/jeremyevans/autoforme/issues">Issues</a></li>
-            <li><a href="https://github.com/jeremyevans/autoforme/discussions">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://github.com/jeremyevans/autoforme">Code</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://github.com/jeremyevans/autoforme/issues">Issues</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://github.com/jeremyevans/autoforme/discussions">Forum</a></li>
           </ul>
           
-        </div><!--/.navbar-collapse -->
+        </div>
       </div>
     </nav>
     
     <div class="container">
-      <div class="row">
-        <% if flash['notice'] %>
-          <div class="alert alert-success"><p><%= flash['notice'] %></p></div>
-        <% end %>
-        <% if flash['error'] %>
-          <div class="alert alert-danger"><p><%= flash['error'] %></p></div>
-        <% end %>
-        <%= yield %>
-      </div>
+      <% if flash['notice'] %>
+        <div class="alert alert-success" role="alert"><p><%= flash['notice'] %></p></div>
+      <% end %>
+      <% if flash['error'] %>
+        <div class="alert alert-danger" role="alert"><p><%= flash['error'] %></p></div>
+      <% end %>
+      <%= yield %>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/auto-complete.min.js"></script>
+    <script type="text/javascript" src="/autoforme.js"></script>
   </body>
 </html>

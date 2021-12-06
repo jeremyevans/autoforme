@@ -214,9 +214,12 @@ AutoForme also has javascript support for the progressive enhancement of the fol
 * Loading association links via ajax if lazy_load_association_links is true.
 * Adding and removing many-to-many associated objects via ajax for inline_mtm_associations
 
-AutoForme's javascript support is contained in the autoforme.js file in the root
-of the distribution.  AutoForme's autocompleting support also requires
-https://github.com/dyve/jquery-autocomplete
+AutoForme's javascript support is contained in the +autoforme.js+ file in the root
+of the repository.  AutoForme's autocompleting support also requires
+https://github.com/Pixabay/JavaScript-autoComplete
+
+Make sure to load the +autoforme.js+ file after the DOM content has been loaded, such
+as at the end of the body.
 
 = Reloading Code
 

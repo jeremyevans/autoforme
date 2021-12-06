@@ -1,5 +1,9 @@
 === master
 
+* Switch autocomplete support to depend on Pixabay/JavaScript-autoComplete (jeremyevans)
+
+* Make autoforme.js file no longer require JQuery (jeremyevans)
+
 * Make navigation tab li tag use nav-item, for Bootstrap 5 compatibility (jeremyevans)
 
 === 1.11.0 (2021-11-30)

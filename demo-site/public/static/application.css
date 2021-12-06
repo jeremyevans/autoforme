@@ -29,12 +29,20 @@ input.error, select.error, textarea.error {border-color: red; }
 .navbar .navbar-nav .open .dropdown-menu > li > a:hover,
 .navbar .navbar-brand:visited,
 .navbar .navbar-nav > li > a:visited,
-.navbar .navbar-nav .open .dropdown-menu > li > a:visited {
+.navbar .navbar-nav .open .dropdown-menu > li > a:visited,
+a.dropdown-item,
+a.dropdown-item:hover,
+a.dropdown-item:visited
+{
   color: white;
 }
 
 .navbar .navbar-brand:hover,
 .navbar .navbar-nav > li > a:hover,
-.navbar .navbar-nav .open .dropdown-menu > li > a:hover {
+.navbar .navbar-nav .open .dropdown-menu > li > a:hover,
+a.dropdown-item:hover {
   text-decoration: underline;
+}
+
+a.dropdown-item {
 }
