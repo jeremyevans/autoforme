@@ -1,5 +1,8 @@
 (function() {
   var autoforme = document.querySelector('#autoforme_content');
+  if (!autoforme) {
+    return;
+  }
   var base_url = autoforme.getAttribute('data-url');
   var xhr_headers = {'X-Requested-With': 'XMLHttpRequest'};
 
