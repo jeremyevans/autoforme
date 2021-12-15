@@ -29,11 +29,6 @@ gem 'minitest'
 require 'minitest/global_expectations/autorun'
 require 'minitest/hooks/default'
 
-if ENV['WARNING']
-  require 'warning'
-  Warning.ignore([:missing_ivar, :fixnum, :not_reached])
-end
-
 require_relative 'sequel_spec_helper'
 
 class Minitest::HooksSpec

@@ -12,7 +12,7 @@ end
 
 spec = proc do |env|
   env.each{|k,v| ENV[k] = v}
-  sh "#{FileUtils::RUBY} spec/all.rb"
+  sh "#{FileUtils::RUBY} #{'-w' if RUBY_VERSION >= '3'} spec/all.rb"
   env.each{|k,v| ENV.delete(k)}
 end
 task :default => :roda_spec
@@ -33,11 +33,6 @@ task :spec => spec_tasks
   desc "Run specs with coverage for #{framework}"
   task "#{framework}_spec_cov" do
     spec.call('FRAMEWORK'=>framework, 'COVERAGE'=>'1')
-  end
-
-  desc "Run specs with -w for #{framework}, some warnings filtered"
-  task "#{framework}_spec_w" do
-    spec.call('FRAMEWORK'=>framework, 'RUBYOPT'=>'-w', 'WARNING'=>'1')
   end
 end
 
