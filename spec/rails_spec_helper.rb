@@ -101,6 +101,14 @@ HTML
           AutoFormeSpec::App.av_finalizer = config.action_view.finalize_compiled_template_methods
         end
       end
+      if Rails.version > '7'
+        # Work around around Rails 7 bug where these methods return frozen arrays
+        # that unshift is later called on.
+        ActiveSupport::Dependencies.singleton_class.prepend(Module.new do
+          def autoload_once_paths; []; end
+          def autoload_paths; []; end
+        end)
+      end
       initialize!
     end
     [sc, framework]
