@@ -29,9 +29,11 @@ task :spec => spec_tasks
 
   desc "Run specs with coverage for #{framework}"
   task "#{framework}_spec_cov" do
-    spec.call('FRAMEWORK'=>framework, 'COVERAGE'=>'1')
+    spec.call('FRAMEWORK'=>framework, 'COVERAGE'=>framework)
   end
 end
+
+task "spec_cov" => %w"roda_spec_cov sinatra_spec_cov rails_spec_cov"
 
 ### RDoc
 
