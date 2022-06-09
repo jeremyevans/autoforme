@@ -313,19 +313,19 @@ module AutoForme
           if html = model.show_html_for(obj, column, type, request)
             col_opts = col_opts.merge(:html=>html)
           end
-          t << f.input(column, col_opts).to_s
+          t << f.input(column, col_opts)
         end
         t << '</table>'
         if type == :show && model.supported_action?(:edit, request)
           t << Forme.form(form_attributes(:action=>url_for("edit/#{model.primary_key_value(obj)}")), form_opts) do |f1|
             f1.button(:value=>'Edit', :class=>'btn btn-primary')
-          end.to_s
+          end
         end
         if type == :delete
           form_attr = form_attributes(:action=>url_for("destroy/#{model.primary_key_value(obj)}"), :method=>:post)
           t << Forme.form(form_attr, form_opts(form_attr[:action])) do |f1|
             f1.button(:value=>'Delete', :class=>'btn btn-danger')
-          end.to_s
+          end
         else
           t << association_links(obj)
         end
@@ -356,11 +356,11 @@ module AutoForme
             f.input(column, col_opts)
           end
           f.button(:value=>'Update', :class=>'btn btn-primary')
-        end.to_s
+        end
         if model.supported_action?(:delete, request)
           t << Forme.form(form_attributes(:action=>url_for("delete/#{model.primary_key_value(obj)}")), form_opts) do |f|
             f.button(:value=>'Delete', :class=>'btn btn-danger')
-          end.to_s
+          end
         end
         t << association_links(obj)
       end
@@ -498,7 +498,7 @@ module AutoForme
               end
               f.input(assoc, {:name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>[], :size=>10}.merge!(remove_opts))
               f.button(:value=>'Update', :class=>'btn btn-primary')
-            end.to_s
+            end
           end
         else
           page do
@@ -660,7 +660,7 @@ module AutoForme
             f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj), :multiple=>false, :add_blank=>true}.merge!(add_opts))
           end
           f.button(:value=>'Add', :class=>'btn btn-xs btn-primary')
-        end.to_s
+        end
       end
       t << "</div>"
       t << "<div class='inline_mtm_remove_associations'><ul>"
@@ -685,7 +685,7 @@ module AutoForme
       form_attr = form_attributes(:action=>url_for("mtm_update/#{model.primary_key_value(obj)}?association=#{assoc}&remove%5b%5d=#{model.primary_key_value(assoc_obj)}&redir=edit"), :method=>'post', :class => 'mtm_remove_associations', 'data-add'=>"#add_#{assoc}")
       t << Forme.form(form_attr, form_opts(form_attr[:action])) do |f|
         f.button(:value=>'Remove', :class=>'btn btn-xs btn-danger')
-      end.to_s
+      end
       t << "</li>"
     end
   end
