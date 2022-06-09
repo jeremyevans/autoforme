@@ -152,17 +152,18 @@ describe AutoForme do
     click_button 'Search'
     page.all('td').map{|s| s.text}.must_equal ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
 
+    page.driver.header 'X-Requested-With', 'XMLHttpRequest'
     visit '/Artist/autocomplete?q='
-    page.find('body').text.strip.must_equal ''
+    page.body.must_equal ''
 
     visit '/Artist/autocomplete?q=Test'
-    page.body.must_match(/\d+ - TestArtist\n\d+ - TestArtist2/m)
+    page.body.must_match(/\A\d+ - TestArtist\n\d+ - TestArtist2\z/)
 
     visit '/Album/autocomplete/artist?q=Test'
-    page.body.must_match(/\d+ - TestArtist\n\d+ - TestArtist2/m)
+    page.body.must_match(/\A\d+ - TestArtist\n\d+ - TestArtist2\z/)
 
     visit '/Album/autocomplete/artist?type=edit&q=Test'
-    page.body.must_match(/\d+ - TestArtist\n\d+ - TestArtist2/m)
+    page.body.must_match(/\A\d+ - TestArtist\n\d+ - TestArtist2\z/)
   end
 
   it "should be able to used specified name formatting in other model" do
