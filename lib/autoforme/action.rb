@@ -545,7 +545,9 @@ module AutoForme
 
     # Handle autocomplete action by returning a string with one line per model object.
     def handle_autocomplete
-      unless (query = request.params['q'].to_s).empty?
+      if (query = request.params['q'].to_s).empty?
+        ''
+      else
         model.autocomplete(:type=>@subtype, :request=>request, :association=>params_association, :query=>query, :exclude=>request.params['exclude']).join("\n")
       end
     end

@@ -1,5 +1,7 @@
 === master
 
+* Handle autocomplete queries with an empty query by returning empty string (jeremyevans)
+
 * Switch autocomplete support to depend on Pixabay/JavaScript-autoComplete (jeremyevans)
 
 * Make autoforme.js file no longer require JQuery (jeremyevans)
