@@ -150,7 +150,7 @@ module AutoForme
             columns[i] = reflection[:name]
           end
         end
-        columns.sort_by(&:to_s)
+        columns.sort!
       end
 
       # Add a filter restricting access to only rows where the column name
