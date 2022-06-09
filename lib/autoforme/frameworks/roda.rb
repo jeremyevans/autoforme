@@ -40,13 +40,13 @@ module AutoForme
         # Set the flash at notice level when redirecting, so it shows
         # up on the redirected page.
         def set_flash_notice(message)
-          @controller.flash[flash_symbol_keys? ? :notice : 'notice'] = message
+          @controller.flash[flash_key(:notice)] = message
         end
 
         # Set the current flash at error level, used when displaying
         # pages when there is an error.
         def set_flash_now_error(message)
-          @controller.flash.now[flash_symbol_keys? ? :error : 'error'] = message
+          @controller.flash.now[flash_key(:error)] = message
         end
 
         # Use Rack::Csrf for csrf protection if it is defined.
@@ -62,7 +62,7 @@ module AutoForme
             end
             {@controller.csrf_field=>token}
             # :nocov:
-          elsif defined?(::Rack::Csrf)
+          elsif defined?(::Rack::Csrf) && !@controller.opts[:no_csrf]
             {::Rack::Csrf.field=>::Rack::Csrf.token(@env)}
             # :nocov:
           end
@@ -72,6 +72,12 @@ module AutoForme
 
         def flash_symbol_keys?
           !@controller.opts[:sessions_convert_symbols]
+        end
+
+        def flash_key(key)
+          # :nocov:
+          flash_symbol_keys? ? key : key.to_s
+          # :nocov:
         end
       end
 

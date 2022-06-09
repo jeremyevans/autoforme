@@ -8,7 +8,7 @@ class AutoFormeSpec::App
     attr_accessor :av_finalizer
   end
 
-  def self.autoforme(klass=nil, opts={}, &block)
+  def self._autoforme(klass=nil, opts={}, &block)
     sc = Class.new(Rails::Application)
     def sc.name
       "AutoForme Test"
@@ -95,6 +95,7 @@ HTML
         config.session_store :cookie_store, :key=>'_autoforme_test_session'
       end
       if Rails.version > '6'
+        config.action_controller.default_protect_from_forgery false if opts[:no_csrf]
         if AutoFormeSpec::App.av_finalizer
           config.action_view.finalize_compiled_template_methods = AutoFormeSpec::App.av_finalizer
         else

@@ -99,6 +99,29 @@ describe AutoForme do
     page.all('select')[1].all('option').map{|s| s.text}.must_equal ["Album2", "Album3"]
   end
 
+  it "should handle unsupported associations with a 404 response" do
+    mod = nil
+    app_setup do
+      model Artist do
+        mod = self
+        mtm_associations :albums
+      end
+      model Album
+    end
+
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'Artist1'
+    click_button 'Create'
+
+    visit '/Artist/mtm_edit/1?association=foo'
+    page.status_code.must_equal 404
+
+    visit '/Artist/mtm_edit/1?association=albums'
+    mod.mtm_associations{}
+    click_button 'Update'
+    page.status_code.must_equal 404
+  end
+
   it "should have many to many association editing working with autocompletion" do
     app_setup do
       model Artist do
@@ -369,7 +392,7 @@ describe AutoForme do
     page.all('select')[1].all('option').map{|s| s.text}.must_equal []
   end
 
-  it "should support column options on mtm_edit page" do
+  it "should support :remove column option on mtm_edit page" do
     app_setup do
       model Artist do
         mtm_associations :albums
@@ -402,6 +425,74 @@ describe AutoForme do
     check "Album12"
     check "Album2Album2"
     check "Album3Album3"
+  end
+
+  it "should support :add column option on mtm_edit page" do
+    app_setup do
+      model Artist do
+        mtm_associations :albums
+        column_options :albums=>{:as=>:checkbox, :add=>{:name_method=>proc{|obj| obj.name * 2}}}
+      end
+      model Album do
+        display_name{|obj, req| obj.name + "2"}
+      end
+    end
+
+    Artist.create(:name=>'Artist1')
+    Album.create(:name=>'Album1')
+    Album.create(:name=>'Album2')
+    Album.create(:name=>'Album3')
+
+    visit("/Artist/mtm_edit")
+    select("Artist1")
+    click_button "Edit"
+
+    check "Album1Album1"
+    click_button "Update"
+    Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
+
+    check "Album12"
+    check "Album2Album2"
+    check "Album3Album3"
+    click_button "Update"
+    Artist.first.refresh.albums.map{|x| x.name}.must_equal %w'Album2 Album3'
+
+    check "Album1Album1"
+    check "Album22"
+    check "Album32"
+  end
+
+  it "should support :add column option for inline mtm associations" do
+    app_setup do
+      model Artist do
+        inline_mtm_associations :albums
+        column_options :albums=>{:add=>{:name_method=>proc{|obj| obj.name * 2}}}
+      end
+      model Album
+    end
+
+    Artist.create(:name=>'Artist1')
+    Album.create(:name=>'Album1')
+    Album.create(:name=>'Album2')
+    Album.create(:name=>'Album3')
+
+    visit("/Artist/edit")
+    select("Artist1")
+    click_button "Edit"
+    select 'Album1Album1'
+    click_button 'Add'
+    page.html.must_include 'Updated albums association for Artist'
+    Artist.first.albums.map{|x| x.name}.must_equal %w'Album1'
+
+    select 'Album2Album2'
+    click_button 'Add'
+    Artist.first.refresh.albums.map{|x| x.name}.sort.must_equal %w'Album1 Album2'
+
+    click_button 'Remove', :match=>:first
+    Artist.first.refresh.albums.map{|x| x.name}.must_equal %w'Album2'
+
+    select 'Album3Album3'
+    click_button 'Add'
   end
 end
 

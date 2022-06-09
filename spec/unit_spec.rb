@@ -305,6 +305,8 @@ describe AutoForme do
 
     model.autocomplete_options{|type, req| {:limit=>req}}
     model.autocomplete(:type=>:show, :query=>'oo', :request=>1).must_equal ["#{a.id} - FooBar"]
+
+    model.autocomplete_options_for(:browse, nil).must_be_nil
   end
 
   it "should support looking up model classes when registering by name" do
@@ -448,7 +450,6 @@ describe AutoForme do
   end
 end
 
-
 describe AutoForme::OptsAttributes do
   before do
     @c = Class.new do
@@ -507,5 +508,27 @@ describe AutoForme do
   it "should raise error when trying to use unsupported framework or model" do
     proc{AutoForme.framework_class_for(:foo)}.must_raise AutoForme::Error
     proc{AutoForme.model_class_for(:foo)}.must_raise AutoForme::Error
+  end
+end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:albums=>[[:name, :string], [:artist_id, :integer]])
+    model_setup(:Album=>[:albums, [[:many_to_one, :artist, :key=>:nonexistant]]])
+    app_setup(Album) do
+      column_options(:name=>{:required=>true})
+    end
+  end
+  after(:all) do
+    Object.send(:remove_const, :Album)
+  end
+
+  it "should handle associations referring to keys that are not columns" do
+    model.columns_for(:browse, nil).must_equal [:artist_id, :name]
+  end
+
+  it "should not mark fields as not required if specifically configured as required" do
+    model.column_options_for(:show, nil, :name).must_equal(:required=>true)
+    model.column_options_for(:search_form, nil, :name).must_equal(:required=>true)
   end
 end

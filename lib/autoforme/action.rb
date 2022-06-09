@@ -87,9 +87,7 @@ module AutoForme
       else
         return false unless model.supported_action?(normalized_type, request)
 
-        if title = TITLE_MAP[@normalized_type]
-          @title = "#{model.class_name} - #{title}"
-        end
+        @title = "#{model.class_name} - #{TITLE_MAP[@normalized_type]}"
       end
 
       true
@@ -134,7 +132,7 @@ module AutoForme
           type.to_s
         when :edit
           "edit/#{model.primary_key_value(obj)}"
-        when :mtm_edit
+        else # when :mtm_edit
           "mtm_edit/#{model.primary_key_value(obj)}?association=#{params_association}"
         end
         path = url_for(path)

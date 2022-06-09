@@ -95,6 +95,25 @@ describe AutoForme do
     page.html.must_include("- Art&amp;&quot;ist2")
   end
 
+  it "should handle many_to_one associations without associated object" do
+    app_setup do
+      model Album do
+        columns [:name, :artist]
+      end
+      association_links :all
+    end
+
+    visit("/Album/new")
+    fill_in 'Name', :with=>'Album1'
+    click_button 'Create'
+
+    click_link 'Edit'
+    select 'Album1'
+    click_button 'Edit'
+
+    page.html.gsub(/\s+/, ' ').must_include("<ul class='association_links'> <li>Artist </li></ul>")
+  end
+
   it "should use text boxes for associated objects on new/edit/search forms if associated model uses autocompleting" do
     app_setup do
       model Artist do
@@ -132,6 +151,9 @@ describe AutoForme do
     fill_in 'Artist', :with=>b.id.to_s
     click_button 'Search'
     page.all('td').map{|s| s.text}.must_equal ["Album1b", "TestArtist2", "Show", "Edit", "Delete"]
+
+    visit '/Artist/autocomplete?q='
+    page.find('body').text.strip.must_equal ''
 
     visit '/Artist/autocomplete?q=Test'
     page.body.must_match(/\d+ - TestArtist\n\d+ - TestArtist2/m)
@@ -672,6 +694,63 @@ describe AutoForme do
     click_link 'Show Associations'
     click_link 'Albums'
     page.current_path.must_equal '/Album/browse'
+  end
+end
+
+describe AutoForme do
+  before(:all) do
+    db_setup(:artists=>[[:name, :string]], :albums=>[[:name, :string], [:artist_id, :integer, {:table=>:artists}]])
+    model_setup(:Artist=>[:artists, [[:one_to_many, :albums]]], :Album=>[:albums, [[:many_to_one, :artist]]])
+  end
+  after(:all) do
+    Object.send(:remove_const, :Album)
+    Object.send(:remove_const, :Artist)
+  end
+
+  it "should handle unsupported actions with a 404 response" do
+    app_setup do
+      model Artist
+      model Album do
+        supported_actions [:show]
+      end
+    end
+
+    unless ENV['FRAMEWORK'] == 'rails'
+      # Rails raises ActionController::RoutingError in this case.
+      # Rails apps will generally handle this as a 404, but it's
+      # not worth adding the necessary code for all versions of
+      # Rails to handle this in the tests.
+      visit '/Artist/nonexist'
+      page.status_code.must_equal 404
+    end
+
+    visit '/Artist/update'
+    page.status_code.must_equal 404
+
+    visit '/Artist/association_links?type=mtm_edit'
+    page.status_code.must_equal 404
+
+    visit '/Artist/autocomplete/foo'
+    page.status_code.must_equal 404
+
+    visit '/Artist/autocomplete/albums?type=edit'
+    page.status_code.must_equal 404
+
+    visit '/Artist/autocomplete'
+    page.status_code.must_equal 404
+
+    visit '/Album/edit'
+    page.status_code.must_equal 404
+
+  end
+
+  it "should handle request to autocomplete for an association without an autoforme model with a 404 response" do
+    app_setup do
+      model Artist
+    end
+
+    visit '/Artist/autocomplete/albums?type=edit'
+    page.status_code.must_equal 404
   end
 end
 

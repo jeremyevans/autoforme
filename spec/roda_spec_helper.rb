@@ -30,6 +30,7 @@ class AutoFormeSpec::App < Roda
 HTML
 
   plugin :flash
+  plugin :autoforme
 
   if defined?(Roda::RodaVersionNumber) && Roda::RodaVersionNumber >= 30100
     if ENV['RODA_ROUTE_CSRF'] == '0'
@@ -44,22 +45,27 @@ HTML
     use Rack::Session::Cookie, :secret => '1'
   end
 
-  if ENV['RODA_ROUTE_CSRF'].to_i > 0
-    plugin :route_csrf, :require_request_specific_tokens=>ENV['RODA_ROUTE_CSRF'] == '1'
-  else
-    use Rack::Csrf
-  end
-
   template_opts = {:default_encoding=>nil}
   plugin :render, :layout=>{:inline=>LAYOUT}, :template_opts=>template_opts, :opts=>template_opts
   plugin :not_found do
     'Unhandled Request'
   end
 
-  def self.autoforme(klass=nil, opts={}, &block)
+  def self._autoforme(klass=nil, opts={}, &block)
     sc = Class.new(self)
     framework = nil
     sc.class_eval do
+      if opts.delete(:no_csrf)
+        self.opts[:no_csrf] = true
+      else
+        if ENV['RODA_ROUTE_CSRF'].to_i > 0
+          check_csrf = true
+          plugin :route_csrf, :require_request_specific_tokens=>ENV['RODA_ROUTE_CSRF'] == '1'
+        else
+          use Rack::Csrf
+        end
+      end
+
       plugin :autoforme, opts do
         framework = self
         if klass
@@ -70,7 +76,7 @@ HTML
       end
 
       route do |r|
-        check_csrf! if ENV['RODA_ROUTE_CSRF'].to_i > 0
+        check_csrf! if check_csrf
 
         r.get 'session/set' do
           session.merge!(r.params)

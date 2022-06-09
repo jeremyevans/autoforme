@@ -4,17 +4,16 @@ ENV['FRAMEWORK'] ||= 'roda'
 module AutoFormeSpec
 end
 
-if ENV['COVERAGE']
-  ENV.delete('COVERAGE')
+if coverage = ENV.delete('COVERAGE')
   require 'coverage'
   require 'simplecov'
 
-  SimpleCov.instance_eval do
-    start do
-      add_filter "/spec/"
-      add_group('Missing'){|src| src.covered_percent < 100}
-      add_group('Covered'){|src| src.covered_percent == 100}
-    end
+  SimpleCov.start do
+    enable_coverage :branch
+    command_name coverage
+    add_filter "/spec/"
+    add_group('Missing'){|src| src.covered_percent < 100}
+    add_group('Covered'){|src| src.covered_percent == 100}
   end
 end
 
@@ -53,7 +52,7 @@ class Minitest::HooksSpec
   end
 
   def app_setup(klass=nil, opts={}, &block)
-    app, @framework = AutoFormeSpec::App.autoforme(klass, opts, &block)
+    app, @framework = AutoFormeSpec::App._autoforme(klass, opts, &block)
     self.app = app
     @model = @framework.models[klass.name] if klass
   end

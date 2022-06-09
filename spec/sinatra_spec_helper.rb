@@ -9,7 +9,6 @@ class AutoFormeSpec::App < Sinatra::Base
   enable :raise_errors
   set :environment, "test"
   register Sinatra::Flash
-  use Rack::Csrf
 
   not_found do
     'Unhandled Request'
@@ -36,10 +35,11 @@ class AutoFormeSpec::App < Sinatra::Base
 HTML
   end
 
-  def self.autoforme(klass=nil, opts={}, &block)
+  def self._autoforme(klass=nil, opts={}, &block)
     sc = Class.new(self)
     framework = nil
     sc.class_eval do
+      use Rack::Csrf unless opts[:no_csrf]
       AutoForme.for(:sinatra, self, opts) do
         framework = self
         if klass

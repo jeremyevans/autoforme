@@ -9,68 +9,70 @@ describe AutoForme do
     Object.send(:remove_const, :Artist)
   end
 
-  it "should have basic functionality working" do
-    app_setup(Artist)
-    visit("/Artist/new")
-    page.html.must_include '<!DOCTYPE html>'
-    page.title.must_equal 'Artist - New'
-    fill_in 'Name', :with=>'TestArtistNew'
-    click_button 'Create'
-    page.html.must_include 'Created Artist'
-    page.current_path.must_equal '/Artist/new'
+  [true, false].each do |no_csrf|
+    it "should have basic functionality working #{'without csrf' if no_csrf}" do
+      app_setup(Artist, :no_csrf=>no_csrf)
+      visit("/Artist/new")
+      page.html.must_include '<!DOCTYPE html>'
+      page.title.must_equal 'Artist - New'
+      fill_in 'Name', :with=>'TestArtistNew'
+      click_button 'Create'
+      page.html.must_include 'Created Artist'
+      page.current_path.must_equal '/Artist/new'
 
-    click_link 'Show'
-    page.title.must_equal 'Artist - Show'
-    click_button 'Show'
-    select 'TestArtistNew'
-    click_button 'Show'
-    page.html.must_match(/Name.+TestArtistNew/m)
+      click_link 'Show'
+      page.title.must_equal 'Artist - Show'
+      click_button 'Show'
+      select 'TestArtistNew'
+      click_button 'Show'
+      page.html.must_match(/Name.+TestArtistNew/m)
 
-    click_link 'Edit'
-    page.title.must_equal 'Artist - Edit'
-    click_button 'Edit'
-    select 'TestArtistNew'
-    click_button 'Edit'
-    fill_in 'Name', :with=>'TestArtistUpdate'
-    click_button 'Update'
-    page.html.must_include 'Updated Artist'
-    page.html.must_match(/Name.+TestArtistUpdate/m)
-    page.current_path.must_match %r{/Artist/edit/\d+}
+      click_link 'Edit'
+      page.title.must_equal 'Artist - Edit'
+      click_button 'Edit'
+      select 'TestArtistNew'
+      click_button 'Edit'
+      fill_in 'Name', :with=>'TestArtistUpdate'
+      click_button 'Update'
+      page.html.must_include 'Updated Artist'
+      page.html.must_match(/Name.+TestArtistUpdate/m)
+      page.current_path.must_match %r{/Artist/edit/\d+}
 
-    click_link 'Search'
-    page.title.must_equal 'Artist - Search'
-    fill_in 'Name', :with=>'Upd'
-    click_button 'Search'
-    page.all('table').first['id'].must_equal 'autoforme_table'
-    page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
-    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
-    click_link 'CSV Format'
-    page.body.must_equal "Name\nTestArtistUpdate\n"
+      click_link 'Search'
+      page.title.must_equal 'Artist - Search'
+      fill_in 'Name', :with=>'Upd'
+      click_button 'Search'
+      page.all('table').first['id'].must_equal 'autoforme_table'
+      page.all('th').map{|s| s.text}.must_equal ['Name', 'Show', 'Edit', 'Delete']
+      page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
+      click_link 'CSV Format'
+      page.body.must_equal "Name\nTestArtistUpdate\n"
 
-    visit("/Artist/browse")
-    click_link 'Search'
-    fill_in 'Name', :with=>'Foo'
-    click_button 'Search'
-    page.all('td').map{|s| s.text}.must_equal []
+      visit("/Artist/browse")
+      click_link 'Search'
+      fill_in 'Name', :with=>'Foo'
+      click_button 'Search'
+      page.all('td').map{|s| s.text}.must_equal []
 
-    click_link 'Artist'
-    page.title.must_equal 'Artist - Browse'
-    page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
-    click_link 'CSV Format'
-    page.body.must_equal "Name\nTestArtistUpdate\n"
+      click_link 'Artist'
+      page.title.must_equal 'Artist - Browse'
+      page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Show", "Edit", "Delete"]
+      click_link 'CSV Format'
+      page.body.must_equal "Name\nTestArtistUpdate\n"
 
-    visit("/Artist/destroy/#{Artist.first.id}")
-    page.html.must_include 'Unhandled Request'
+      visit("/Artist/destroy/#{Artist.first.id}")
+      page.html.must_include 'Unhandled Request'
 
-    visit("/Artist/browse")
-    page.all('td').last.find('a').click
-    click_button 'Delete'
-    page.title.must_equal 'Artist - Delete'
-    page.html.must_include 'Deleted Artist'
-    page.current_path.must_equal '/Artist/delete'
+      visit("/Artist/browse")
+      page.all('td').last.find('a').click
+      click_button 'Delete'
+      page.title.must_equal 'Artist - Delete'
+      page.html.must_include 'Deleted Artist'
+      page.current_path.must_equal '/Artist/delete'
 
-    click_link 'Artist'
-    page.all('td').map{|s| s.text}.must_equal []
+      click_link 'Artist'
+      page.all('td').map{|s| s.text}.must_equal []
+    end
   end
 
   it "should have basic functionality working in a subdirectory" do
@@ -270,6 +272,18 @@ describe AutoForme do
     find('form input#artist_name')[:class].must_equal 'barfoo'
   end
 
+  it "should ignore ids passed to routes not expecting ids" do
+    app_setup(Artist)
+    visit("/Artist/search/1")
+    page.title.must_equal 'Artist - Search'
+    visit("/Artist/search?id=1")
+    page.title.must_equal 'Artist - Search'
+    visit("/Artist/browse/1")
+    page.title.must_equal 'Artist - Browse'
+    visit("/Artist/browse?id=1")
+    page.title.must_equal 'Artist - Browse'
+  end
+
   it "should support support specifying column options per type" do
     app_setup(Artist) do
       column_options{|column, type, req| {:label=>"#{type.to_s.capitalize} Artist #{column.to_s.capitalize}"}}
@@ -457,6 +471,29 @@ describe AutoForme do
 
     click_link 'Artist'
     page.all('td').map{|s| s.text}.must_equal ["TestArtistUpdate", "Edit"]
+  end
+
+  it "should support specifying supported actions without edit" do
+    app_setup(Artist) do
+      supported_actions [:new, :show, :browse, :search]
+    end
+    visit("/Artist/new")
+    fill_in 'Name', :with=>'TestArtist'
+    click_button 'Create'
+    page.current_path.must_equal '/Artist/new'
+    page.html.wont_include 'Edit'
+    page.html.must_include 'Show'
+    page.html.wont_include 'Delete'
+
+    click_link 'Search'
+    fill_in 'Name', :with=>'Test'
+    click_button 'Search'
+    page.all('td').map{|s| s.text}.must_equal ["TestArtist", "Show"]
+    page.all('td').last.click_link "Show"
+    page.html.must_include 'TestArtist'
+
+    click_link 'Artist'
+    page.all('td').map{|s| s.text}.must_equal ["TestArtist", "Show"]
   end
 
   it "should have working link_name and class_display_name" do
