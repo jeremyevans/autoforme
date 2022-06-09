@@ -492,13 +492,13 @@ module AutoForme
               opts = model.column_options_for(:mtm_edit, request, assoc)
               add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts
               remove_opts = opts[:remove] ? opts.merge(opts.delete(:remove)) : opts
-              add_opts = {:name=>'add[]', :id=>'add', :label=>'Associate With'}.merge(add_opts)
+              add_opts = {:name=>'add[]', :id=>'add', :label=>'Associate With'}.merge!(add_opts)
               if model.association_autocomplete?(assoc, request)
-                f.input(assoc, {:type=>'text', :class=>'autoforme_autocomplete', :attr=>{'data-type'=>'association', 'data-column'=>assoc, 'data-exclude'=>model.primary_key_value(obj)}, :value=>''}.merge(add_opts))
+                f.input(assoc, {:type=>'text', :class=>'autoforme_autocomplete', :attr=>{'data-type'=>'association', 'data-column'=>assoc, 'data-exclude'=>model.primary_key_value(obj)}, :value=>''}.merge!(add_opts))
               else
-                f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj), :size=>10}.merge(add_opts))
+                f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj), :size=>10}.merge!(add_opts))
               end
-              f.input(assoc, {:name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>[], :size=>10}.merge(remove_opts))
+              f.input(assoc, {:name=>'remove[]', :id=>'remove', :label=>'Disassociate From', :dataset=>model.associated_mtm_objects(request, assoc, obj), :value=>[], :size=>10}.merge!(remove_opts))
               f.button(:value=>'Update', :class=>'btn btn-primary')
             end.to_s
           end
@@ -653,11 +653,11 @@ module AutoForme
         t << Forme.form(obj, form_attr, form_opts(form_attr[:action])) do |f|
           opts = model.column_options_for(:mtm_edit, request, assoc)
           add_opts = opts[:add] ? opts.merge(opts.delete(:add)) : opts.dup
-          add_opts = {:name=>'add[]', :id=>"add_#{assoc}"}.merge(add_opts)
+          add_opts = {:name=>'add[]', :id=>"add_#{assoc}"}.merge!(add_opts)
           if model.association_autocomplete?(assoc, request)
-            f.input(assoc, {:type=>'text', :class=>'autoforme_autocomplete', :attr=>{'data-type'=>'association', 'data-column'=>assoc, 'data-exclude'=>model.primary_key_value(obj)}, :value=>''}.merge(add_opts))
+            f.input(assoc, {:type=>'text', :class=>'autoforme_autocomplete', :attr=>{'data-type'=>'association', 'data-column'=>assoc, 'data-exclude'=>model.primary_key_value(obj)}, :value=>''}.merge!(add_opts))
           else
-            f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj), :multiple=>false, :add_blank=>true}.merge(add_opts))
+            f.input(assoc, {:dataset=>model.unassociated_mtm_objects(request, assoc, obj), :multiple=>false, :add_blank=>true}.merge!(add_opts))
           end
           f.button(:value=>'Add', :class=>'btn btn-xs btn-primary')
         end.to_s
