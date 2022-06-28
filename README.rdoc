@@ -6,12 +6,7 @@ integrate easily into web frameworks, and currently supports
 Roda, Sinatra, and Rails.  The only currently supported ORM is
 Sequel::Model.
 
-AutoForme's UI and capabilities are modeled on
-scaffolding_extensions [2], though AutoForme is considerably more
-flexible in terms of configuration.
-
 1. https://github.com/jeremyevans/forme
-2. https://github.com/jeremyevans/scaffolding_extensions
 
 = Installation
 
