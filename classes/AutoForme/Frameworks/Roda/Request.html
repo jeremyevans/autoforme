@@ -72,7 +72,29 @@ Superclass:
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-c-new-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>&#x000A;<span class="line-num"> 7</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">roda</span>, <span class="ruby-identifier">path</span>)&#x000A;<span class="line-num"> 8</span>   <span class="ruby-ivar">@controller</span> = <span class="ruby-identifier">roda</span> &#x000A;<span class="line-num"> 9</span>   <span class="ruby-ivar">@request</span> = <span class="ruby-identifier">roda</span>.<span class="ruby-identifier">request</span>&#x000A;<span class="line-num">10</span>   <span class="ruby-ivar">@params</span> = <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">params</span>&#x000A;<span class="line-num">11</span>   <span class="ruby-ivar">@session</span> = <span class="ruby-identifier">roda</span>.<span class="ruby-identifier">session</span>&#x000A;<span class="line-num">12</span>   <span class="ruby-identifier">captures</span> = <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">captures</span>&#x000A;<span class="line-num">13</span>   <span class="ruby-ivar">@env</span> = <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">env</span>&#x000A;<span class="line-num">14</span>   <span class="ruby-ivar">@method</span> = <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;REQUEST_METHOD&#39;</span>]&#x000A;<span class="line-num">15</span>   <span class="ruby-ivar">@model</span> = <span class="ruby-identifier">captures</span>[<span class="ruby-value">-2</span>]&#x000A;<span class="line-num">16</span>   <span class="ruby-ivar">@action_type</span> = <span class="ruby-identifier">captures</span>[<span class="ruby-value">-1</span>]&#x000A;<span class="line-num">17</span>   <span class="ruby-ivar">@path</span> = <span class="ruby-identifier">path</span>&#x000A;<span class="line-num">18</span>   <span class="ruby-identifier">remaining_path</span> = <span class="ruby-keyword">if</span> <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:remaining_path</span>)&#x000A;<span class="line-num">19</span>     <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">remaining_path</span>&#x000A;<span class="line-num">20</span>   <span class="ruby-keyword">else</span>&#x000A;<span class="line-num">21</span>     <span class="ruby-comment"># :nocov:</span>&#x000A;<span class="line-num">22</span>     <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;PATH_INFO&#39;</span>]&#x000A;<span class="line-num">23</span>     <span class="ruby-comment"># :nocov:</span>&#x000A;<span class="line-num">24</span>   <span class="ruby-keyword">end</span>&#x000A;<span class="line-num">25</span> &#x000A;<span class="line-num">26</span>   <span class="ruby-identifier">path_id</span> = <span class="ruby-node">$1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">remaining_path</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r{\A\/([\w-]+)\z}</span>&#x000A;<span class="line-num">27</span>   <span class="ruby-identifier">set_id</span>(<span class="ruby-identifier">path_id</span>)&#x000A;<span class="line-num">28</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-c-new-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>
+<span class="line-num"> 7</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">roda</span>, <span class="ruby-identifier">path</span>)
+<span class="line-num"> 8</span>   <span class="ruby-ivar">@controller</span> = <span class="ruby-identifier">roda</span> 
+<span class="line-num"> 9</span>   <span class="ruby-ivar">@request</span> = <span class="ruby-identifier">roda</span>.<span class="ruby-identifier">request</span>
+<span class="line-num">10</span>   <span class="ruby-ivar">@params</span> = <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">params</span>
+<span class="line-num">11</span>   <span class="ruby-ivar">@session</span> = <span class="ruby-identifier">roda</span>.<span class="ruby-identifier">session</span>
+<span class="line-num">12</span>   <span class="ruby-identifier">captures</span> = <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">captures</span>
+<span class="line-num">13</span>   <span class="ruby-ivar">@env</span> = <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">env</span>
+<span class="line-num">14</span>   <span class="ruby-ivar">@method</span> = <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;REQUEST_METHOD&#39;</span>]
+<span class="line-num">15</span>   <span class="ruby-ivar">@model</span> = <span class="ruby-identifier">captures</span>[<span class="ruby-value">-2</span>]
+<span class="line-num">16</span>   <span class="ruby-ivar">@action_type</span> = <span class="ruby-identifier">captures</span>[<span class="ruby-value">-1</span>]
+<span class="line-num">17</span>   <span class="ruby-ivar">@path</span> = <span class="ruby-identifier">path</span>
+<span class="line-num">18</span>   <span class="ruby-identifier">remaining_path</span> = <span class="ruby-keyword">if</span> <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:remaining_path</span>)
+<span class="line-num">19</span>     <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">remaining_path</span>
+<span class="line-num">20</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">21</span>     <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">22</span>     <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;PATH_INFO&#39;</span>]
+<span class="line-num">23</span>     <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">24</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">25</span> 
+<span class="line-num">26</span>   <span class="ruby-identifier">path_id</span> = <span class="ruby-node">$1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">remaining_path</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r{\A\/([\w-]+)\z}</span>
+<span class="line-num">27</span>   <span class="ruby-identifier">set_id</span>(<span class="ruby-identifier">path_id</span>)
+<span class="line-num">28</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <h2>Public Instance methods</h2>
@@ -91,7 +113,24 @@ Superclass:
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-csrf_token_hash-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-csrf_token_hash-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>&#x000A;<span class="line-num">53</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">csrf_token_hash</span>(<span class="ruby-identifier">action</span>=<span class="ruby-keyword">nil</span>)&#x000A;<span class="line-num">54</span>   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:check_csrf!</span>)&#x000A;<span class="line-num">55</span>     <span class="ruby-comment"># Using route_csrf plugin</span>&#x000A;<span class="line-num">56</span>     <span class="ruby-identifier">token</span> = <span class="ruby-keyword">if</span> <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">use_request_specific_csrf_tokens?</span>&#x000A;<span class="line-num">57</span>       <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_token</span>(<span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_path</span>(<span class="ruby-identifier">action</span>))&#x000A;<span class="line-num">58</span>       <span class="ruby-comment"># :nocov:</span>&#x000A;<span class="line-num">59</span>     <span class="ruby-keyword">else</span>&#x000A;<span class="line-num">60</span>       <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_token</span>&#x000A;<span class="line-num">61</span>       <span class="ruby-comment"># :nocov:</span>&#x000A;<span class="line-num">62</span>     <span class="ruby-keyword">end</span>&#x000A;<span class="line-num">63</span>     {<span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_field</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">token</span>}&#x000A;<span class="line-num">64</span>     <span class="ruby-comment"># :nocov:</span>&#x000A;<span class="line-num">65</span>   <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-operator">::</span><span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">Csrf</span>)&#x000A;<span class="line-num">66</span>     {<span class="ruby-operator">::</span><span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">Csrf</span>.<span class="ruby-identifier">field</span><span class="ruby-operator">=&gt;</span><span class="ruby-operator">::</span><span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">Csrf</span>.<span class="ruby-identifier">token</span>(<span class="ruby-ivar">@env</span>)}&#x000A;<span class="line-num">67</span>     <span class="ruby-comment"># :nocov:</span>&#x000A;<span class="line-num">68</span>   <span class="ruby-keyword">end</span>&#x000A;<span class="line-num">69</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-i-csrf_token_hash-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>
+<span class="line-num">53</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">csrf_token_hash</span>(<span class="ruby-identifier">action</span>=<span class="ruby-keyword">nil</span>)
+<span class="line-num">54</span>   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:check_csrf!</span>)
+<span class="line-num">55</span>     <span class="ruby-comment"># Using route_csrf plugin</span>
+<span class="line-num">56</span>     <span class="ruby-identifier">token</span> = <span class="ruby-keyword">if</span> <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">use_request_specific_csrf_tokens?</span>
+<span class="line-num">57</span>       <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_token</span>(<span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_path</span>(<span class="ruby-identifier">action</span>))
+<span class="line-num">58</span>       <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">59</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">60</span>       <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_token</span>
+<span class="line-num">61</span>       <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">62</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">63</span>     {<span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">csrf_field</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">token</span>}
+<span class="line-num">64</span>     <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">65</span>   <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-operator">::</span><span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">Csrf</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">opts</span>[<span class="ruby-value">:no_csrf</span>]
+<span class="line-num">66</span>     {<span class="ruby-operator">::</span><span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">Csrf</span>.<span class="ruby-identifier">field</span><span class="ruby-operator">=&gt;</span><span class="ruby-operator">::</span><span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">Csrf</span>.<span class="ruby-identifier">token</span>(<span class="ruby-ivar">@env</span>)}
+<span class="line-num">67</span>     <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">68</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">69</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-redirect'>
@@ -109,7 +148,10 @@ Superclass:
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-redirect-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-redirect-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>&#x000A;<span class="line-num">31</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">redirect</span>(<span class="ruby-identifier">path</span>)&#x000A;<span class="line-num">32</span>   <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-identifier">path</span>)&#x000A;<span class="line-num">33</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-i-redirect-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>
+<span class="line-num">31</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">redirect</span>(<span class="ruby-identifier">path</span>)
+<span class="line-num">32</span>   <span class="ruby-ivar">@request</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-identifier">path</span>)
+<span class="line-num">33</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-set_flash_notice'>
@@ -127,7 +169,10 @@ Superclass:
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-set_flash_notice-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-set_flash_notice-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>&#x000A;<span class="line-num">42</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">set_flash_notice</span>(<span class="ruby-identifier">message</span>)&#x000A;<span class="line-num">43</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>[<span class="ruby-identifier">flash_symbol_keys?</span> <span class="ruby-operator">?</span> <span class="ruby-value">:notice</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;notice&#39;</span>] = <span class="ruby-identifier">message</span>&#x000A;<span class="line-num">44</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-i-set_flash_notice-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>
+<span class="line-num">42</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">set_flash_notice</span>(<span class="ruby-identifier">message</span>)
+<span class="line-num">43</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>[<span class="ruby-identifier">flash_key</span>(<span class="ruby-value">:notice</span>)] = <span class="ruby-identifier">message</span>
+<span class="line-num">44</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-set_flash_now_error'>
@@ -145,7 +190,10 @@ Superclass:
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-set_flash_now_error-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-set_flash_now_error-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>&#x000A;<span class="line-num">48</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">set_flash_now_error</span>(<span class="ruby-identifier">message</span>)&#x000A;<span class="line-num">49</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-identifier">flash_symbol_keys?</span> <span class="ruby-operator">?</span> <span class="ruby-value">:error</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;error&#39;</span>] = <span class="ruby-identifier">message</span>&#x000A;<span class="line-num">50</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-i-set_flash_now_error-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>
+<span class="line-num">48</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">set_flash_now_error</span>(<span class="ruby-identifier">message</span>)
+<span class="line-num">49</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-identifier">flash_key</span>(<span class="ruby-value">:error</span>)] = <span class="ruby-identifier">message</span>
+<span class="line-num">50</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-xhr-3F'>
@@ -163,7 +211,10 @@ Superclass:
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-xhr-3F-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-i-xhr-3F-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>&#x000A;<span class="line-num">36</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">xhr?</span>&#x000A;<span class="line-num">37</span>   <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;HTTP_X_REQUESTED_WITH&#39;</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/XMLHttpRequest/i</span>&#x000A;<span class="line-num">38</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-i-xhr-3F-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/roda.rb</span>
+<span class="line-num">36</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">xhr?</span>
+<span class="line-num">37</span>   <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;HTTP_X_REQUESTED_WITH&#39;</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/XMLHttpRequest/i</span>
+<span class="line-num">38</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>
@@ -175,7 +226,7 @@ Superclass:
 <div id='footer-push'></div>
 </div>
 <div id='footer'>
-<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
 </div>
 </body>
 </html>

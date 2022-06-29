@@ -1,17 +1,17 @@
-Tue, 30 Nov 2021 14:24:27 -0800
-README.rdoc	Mon, 11 Oct 2021 08:22:52 -0700
-CHANGELOG	Tue, 30 Nov 2021 13:33:40 -0800
+Wed, 29 Jun 2022 09:21:09 -0700
+README.rdoc	Tue, 28 Jun 2022 09:27:52 -0700
+CHANGELOG	Wed, 29 Jun 2022 09:14:14 -0700
 MIT-LICENSE	Wed, 06 Jan 2021 08:34:12 -0800
 lib/autoforme.rb	Fri, 27 Aug 2021 11:27:57 -0700
-lib/autoforme/action.rb	Tue, 30 Nov 2021 13:33:40 -0800
+lib/autoforme/action.rb	Thu, 09 Jun 2022 13:59:39 -0700
 lib/autoforme/framework.rb	Mon, 02 Jul 2018 18:14:25 -0700
-lib/autoforme/frameworks/rails.rb	Mon, 11 Oct 2021 08:22:52 -0700
-lib/autoforme/frameworks/roda.rb	Tue, 30 Nov 2021 13:33:40 -0800
-lib/autoforme/frameworks/sinatra.rb	Mon, 11 Oct 2021 08:22:52 -0700
+lib/autoforme/frameworks/rails.rb	Thu, 09 Jun 2022 13:59:39 -0700
+lib/autoforme/frameworks/roda.rb	Thu, 09 Jun 2022 13:59:39 -0700
+lib/autoforme/frameworks/sinatra.rb	Thu, 09 Jun 2022 13:59:39 -0700
 lib/autoforme/model.rb	Thu, 19 Aug 2021 14:00:07 -0700
-lib/autoforme/models/sequel.rb	Tue, 30 Nov 2021 13:33:40 -0800
+lib/autoforme/models/sequel.rb	Thu, 09 Jun 2022 13:59:39 -0700
 lib/autoforme/opts_attributes.rb	Wed, 23 May 2018 11:16:15 -0700
 lib/autoforme/request.rb	Wed, 23 May 2018 11:16:15 -0700
 lib/autoforme/table.rb	Wed, 23 May 2018 11:16:15 -0700
-lib/autoforme/version.rb	Tue, 30 Nov 2021 13:33:40 -0800
+lib/autoforme/version.rb	Wed, 29 Jun 2022 09:14:14 -0700
 lib/roda/plugins/autoforme.rb	Fri, 27 Aug 2021 11:27:57 -0700

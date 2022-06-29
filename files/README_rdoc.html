@@ -30,7 +30,7 @@ README.rdoc
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2021-10-11 08:22:52 -0700</span>
+<span class='datetime'>2022-06-28 09:27:52 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -39,17 +39,14 @@ Last Update:
 <h1 id="label-AutoForme"><a href="../classes/AutoForme.html"><code>AutoForme</code></a><span><a href="#label-AutoForme">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
 <p><a href="../classes/AutoForme.html"><code>AutoForme</code></a> is an administrative web front end to an ORM that uses Forme [1] for building the HTML forms.  It is designed to integrate easily into web frameworks, and currently supports <a href="../classes/Roda.html"><code>Roda</code></a>, Sinatra, and Rails.  The only currently supported ORM is Sequel::Model.</p>
-
-<p>AutoForme&#39;s UI and capabilities are modeled on scaffolding_extensions [2], though <a href="../classes/AutoForme.html"><code>AutoForme</code></a> is considerably more flexible in terms of configuration.</p>
 <ol><li>
-<p><a href="https://github.com/jeremyevans/forme">github.com/jeremyevans/forme</a></p>
-</li><li>
-<p><a href="https://github.com/jeremyevans/scaffolding_extensions">github.com/jeremyevans/scaffolding_extensions</a></p>
+<p><a target="_top" href="https://github.com/jeremyevans/forme">github.com/jeremyevans/forme</a></p>
 </li></ol>
 
 <h1 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
-<pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-identifier">install</span> <span class="ruby-identifier">autoforme</span></pre>
+<pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-identifier">install</span> <span class="ruby-identifier">autoforme</span>
+</pre>
 
 <h1 id="label-Links">Links<span><a href="#label-Links">&para;</a> <a href="#top">&uarr;</a></span></h1>
 <table class="rdoc-list note-list"><tbody><tr><td class='label'>Demo Site </td><td>
@@ -57,11 +54,11 @@ Last Update:
 </td></tr><tr><td class='label'>RDoc </td><td>
 <p><a target="_top" href="http://autoforme.jeremyevans.net">autoforme.jeremyevans.net</a></p>
 </td></tr><tr><td class='label'>Source </td><td>
-<p><a href="https://github.com/jeremyevans/autoforme">github.com/jeremyevans/autoforme</a></p>
+<p><a target="_top" href="https://github.com/jeremyevans/autoforme">github.com/jeremyevans/autoforme</a></p>
 </td></tr><tr><td class='label'>Discussion Forum </td><td>
-<p><a href="https://github.com/jeremyevans/autoforme/discussions">github.com/jeremyevans/autoforme/discussions</a></p>
+<p><a target="_top" href="https://github.com/jeremyevans/autoforme/discussions">github.com/jeremyevans/autoforme/discussions</a></p>
 </td></tr><tr><td class='label'>Bug Tracker </td><td>
-<p><a href="https://github.com/jeremyevans/autoforme/issues">github.com/jeremyevans/autoforme/issues</a></p>
+<p><a target="_top" href="https://github.com/jeremyevans/autoforme/issues">github.com/jeremyevans/autoforme/issues</a></p>
 </td></tr></tbody></table>
 
 <h1 id="label-Features">Features<span><a href="#label-Features">&para;</a> <a href="#top">&uarr;</a></span></h1>
@@ -83,15 +80,27 @@ Last Update:
 
 <p><a href="../classes/AutoForme.html"><code>AutoForme</code></a> is configured using a fairly simple DSL.  Here is an example for Sinatra:</p>
 
-<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>&#x000A;  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">order</span> [<span class="ruby-value">:name</span>]&#x000A;&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">columns</span> [<span class="ruby-value">:name</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Album</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">columns</span> [<span class="ruby-value">:artist</span>, <span class="ruby-value">:name</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>
+  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">order</span> [<span class="ruby-value">:name</span>]
 
-<p>Let&#39;s break down how this works.  You setup <a href="../classes/AutoForme.html"><code>AutoForme</code></a> using <code>AutoForme.for</code>, which takes 2 arguments, the controller type symbol (currently either :sinatra, :roda, or :rails), and the controller class (either a Sinatra::Base, <a href="../classes/Roda.html"><code>Roda</code></a>, or ActionController::Base subclass).  You pass <code>AutoForme.for</code> a block, which is instance evaled at the framework level.  This level sets the defaults.</p>
+    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">columns</span> [<span class="ruby-value">:name</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">model</span> <span class="ruby-constant">Album</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">columns</span> [<span class="ruby-value">:artist</span>, <span class="ruby-value">:name</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Let’s break down how this works.  You setup <a href="../classes/AutoForme.html"><code>AutoForme</code></a> using <code>AutoForme.for</code>, which takes 2 arguments, the controller type symbol (currently either :sinatra, :roda, or :rails), and the controller class (either a Sinatra::Base, <a href="../classes/Roda.html"><code>Roda</code></a>, or ActionController::Base subclass).  You pass <code>AutoForme.for</code> a block, which is instance evaled at the framework level.  This level sets the defaults.</p>
 
 <p>The order call in the framework block sets the default order for all models.</p>
 
 <p>The model calls in the framework block take a ORM model class.  As only Sequel is currently supported, this should be a Sequel::Model subclass.  The block passed to the model method is instance evaled at the model level, and sets the configuration for that model.  In this example, the Artist model will only show the name column, and the Album model will only show the artist association and the name column.</p>
 
-<p>In your application, you can then to go &#39;/Artist/browse&#39; or &#39;/Album/browse&#39; to get to the web UI exposed to <a href="../classes/AutoForme.html"><code>AutoForme</code></a>.</p>
+<p>In your application, you can then to go ‘/Artist/browse’ or ‘/Album/browse’ to get to the web UI exposed to <a href="../classes/AutoForme.html"><code>AutoForme</code></a>.</p>
 
 <h1 id="label-Design">Design<span><a href="#label-Design">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
@@ -118,9 +127,9 @@ Last Update:
 
 <h1 id="label-Advanced+Configuration">Advanced Configuration<span><a href="#label-Advanced+Configuration">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
-<p><a href="../classes/AutoForme.html"><code>AutoForme</code></a> doesn&#39;t have all that many features compared to other admin frameworks, but the features it does have are extremely flexible.</p>
+<p><a href="../classes/AutoForme.html"><code>AutoForme</code></a> doesn’t have all that many features compared to other admin frameworks, but the features it does have are extremely flexible.</p>
 
-<p>Most of the configuration you&#39;ll do in <a href="../classes/AutoForme.html"><code>AutoForme</code></a> is at the model level (in the context of an <a href="../classes/AutoForme/Model.html"><code>AutoForme::Model</code></a> instance), so we&#39;ll start looking at the customization options there.  The most common options are probably:</p>
+<p>Most of the configuration you’ll do in <a href="../classes/AutoForme.html"><code>AutoForme</code></a> is at the model level (in the context of an <a href="../classes/AutoForme/Model.html"><code>AutoForme::Model</code></a> instance), so we’ll start looking at the customization options there.  The most common options are probably:</p>
 <table class="rdoc-list note-list"><tbody><tr><td class='label'>columns </td><td>
 <p>This is an array of column/association name symbols to use for the model.</p>
 </td></tr><tr><td class='label'>column_options </td><td>
@@ -169,7 +178,7 @@ Last Update:
 </td></tr><tr><td class='label'>per_page </td><td>
 <p>Number of records to show per page on the browse and search pages</p>
 </td></tr><tr><td class='label'>session_value </td><td>
-<p>Sets up a filter and before_create hook that makes it so access is limited to objects where the object&#39;s column value is the same as the session value with the same name.</p>
+<p>Sets up a filter and before_create hook that makes it so access is limited to objects where the object’s column value is the same as the session value with the same name.</p>
 </td></tr><tr><td class='label'>supported_actions </td><td>
 <p>Array of action symbols to support for the model, should be a subset of</p>
 <table class="rdoc-list label-list"><tbody><tr><td class='label'>:browse, :new, :show, :edit, :delete, :search, :mtm_edit</td><td></td></tr></tbody></table>
@@ -219,13 +228,16 @@ Last Update:
 <p>Called before updating the object</p>
 </td></tr></tbody></table>
 
-<p>There&#39;s also an addition before_action hook that is called with the type symbol of the request, and the request before every page.</p>
+<p>There’s also an addition before_action hook that is called with the type symbol of the request, and the request before every page.</p>
 
-<p>In addition to being specified at the model level, almost all of these options can be specified at the framework level, where they operate as default values for models that don&#39;t specify the options. Just like the model level, the framework level also allows customization on a per request basis, though framework-level Procs generally take the model class as an initial argument (in addition to the type symbol and request).</p>
+<p>In addition to being specified at the model level, almost all of these options can be specified at the framework level, where they operate as default values for models that don’t specify the options. Just like the model level, the framework level also allows customization on a per request basis, though framework-level Procs generally take the model class as an initial argument (in addition to the type symbol and request).</p>
 
 <p>Additionally, <a href="../classes/AutoForme.html#method-c-for"><code>AutoForme.for</code></a> accepts a :prefix option that controls where the forms are mounted:</p>
 
-<pre class="ruby"><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-keyword">self</span>, <span class="ruby-value">:prefix</span><span class="ruby-operator">=&gt;</span><span class="ruby-string">&#39;/path/to&#39;</span>) <span class="ruby-keyword">do</span>&#x000A;  <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre class="ruby"><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-keyword">self</span>, <span class="ruby-value">:prefix</span><span class="ruby-operator">=&gt;</span><span class="ruby-string">&#39;/path/to&#39;</span>) <span class="ruby-keyword">do</span>
+  <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>
+<span class="ruby-keyword">end</span>
+</pre>
 
 <p>Means you can go to <code>/path/to/Artist/browse</code> to browse the artists.</p>
 
@@ -238,13 +250,21 @@ Last Update:
 <p>Adding and removing many-to-many associated objects via ajax for inline_mtm_associations</p>
 </li></ul>
 
-<p>AutoForme&#39;s javascript support is contained in the autoforme.js file in the root of the distribution.  AutoForme&#39;s autocompleting support also requires <a href="https://github.com/dyve/jquery-autocomplete">github.com/dyve/jquery-autocomplete</a></p>
+<p>AutoForme’s javascript support is contained in the <code>autoforme.js</code> file in the root of the repository.  AutoForme’s autocompleting support also requires <a target="_top" href="https://github.com/Pixabay/JavaScript-autoComplete">github.com/Pixabay/JavaScript-autoComplete</a></p>
+
+<p>Make sure to load the <code>autoforme.js</code> file after the DOM content has been loaded, such as at the end of the body.</p>
 
 <h1 id="label-Reloading+Code">Reloading Code<span><a href="#label-Reloading+Code">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
 <p>By default, <a href="../classes/AutoForme.html"><code>AutoForme</code></a> stores classes by reference.  This can cause issues when using code reloading in development environments.  You can call <code>register_by_name</code> to set Autoforme to store classes by name, so that if a class is removed and reloaded (giving a new class reference), it will use the new class instead of the reference to the old class.  Example:</p>
 
-<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>&#x000A;  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">register_by_name</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>
+  <span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-keyword">self</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">register_by_name</span>
+    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
 
 <h1 id="label-Rails">Rails<span><a href="#label-Rails">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
@@ -256,15 +276,59 @@ Last Update:
 
 <p>To mount the autoforme routes in the root of the application, you could do:</p>
 
-<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Roda</span>&#x000A;  <span class="ruby-identifier">plugin</span> <span class="ruby-value">:autoforme</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;&#x000A;  <span class="ruby-identifier">route</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-comment"># rest of routing tree</span>&#x000A;    <span class="ruby-identifier">autoforme</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Roda</span>
+  <span class="ruby-identifier">plugin</span> <span class="ruby-value">:autoforme</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">route</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-comment"># rest of routing tree</span>
+    <span class="ruby-identifier">autoforme</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
 
 <p>To mount the routes in a subpath:</p>
 
-<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Roda</span>&#x000A;  <span class="ruby-identifier">plugin</span> <span class="ruby-value">:autoforme</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;&#x000A;  <span class="ruby-identifier">route</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">on</span> <span class="ruby-string">&quot;admin&quot;</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">autoforme</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;&#x000A;    <span class="ruby-comment"># rest of routing tree</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Roda</span>
+  <span class="ruby-identifier">plugin</span> <span class="ruby-value">:autoforme</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">route</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">on</span> <span class="ruby-string">&quot;admin&quot;</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">autoforme</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># rest of routing tree</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
 
 <p>To handle multiple autoforme configurations, mounted at different subpaths:</p>
 
-<pre>class App &lt; Roda&#x000A;  plugin :autoforme&#x000A;  autoforme(name: &#39;artists&#39;)&#x000A;    model Artist&#x000A;  end&#x000A;  autoforme(name: &#39;albums&#39;)&#x000A;    model Album&#x000A;  end&#x000A;&#x000A;  route do&#x000A;    r.on &quot;artists&quot; do&#x000A;      autoforme(&#39;artists&#39;)&#x000A;    end&#x000A;    r.on &quot;albums&quot; do&#x000A;      autoforme(&#39;albums&#39;)&#x000A;    end&#x000A;&#x000A;    # rest of routing tree&#x000A;  end&#x000A;end</pre>
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">App</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Roda</span>
+  <span class="ruby-identifier">plugin</span> <span class="ruby-value">:autoforme</span>
+
+  <span class="ruby-identifier">autoforme</span>(<span class="ruby-value">name:</span> <span class="ruby-string">&#39;artists&#39;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">autoforme</span>(<span class="ruby-value">name:</span> <span class="ruby-string">&#39;albums&#39;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">model</span> <span class="ruby-constant">Album</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">route</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">on</span> <span class="ruby-string">&quot;artists&quot;</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">autoforme</span>(<span class="ruby-string">&#39;artists&#39;</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">r</span>.<span class="ruby-identifier">on</span> <span class="ruby-string">&quot;albums&quot;</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">autoforme</span>(<span class="ruby-string">&#39;albums&#39;</span>)
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># rest of routing tree</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
 
 <h1 id="label-TODO">TODO<span><a href="#label-TODO">&para;</a> <a href="#top">&uarr;</a></span></h1>
 <ul><li>
@@ -296,7 +360,7 @@ Last Update:
 <div id='footer-push'></div>
 </div>
 <div id='footer'>
-<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
 </div>
 </body>
 </html>

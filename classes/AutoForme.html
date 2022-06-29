@@ -121,7 +121,7 @@ AutoForme
 <tr class='top-aligned-row context-row'>
 <td class='context-item-name'>MINOR</td>
 <td>=</td>
-<td class='context-item-value'>11</td>
+<td class='context-item-value'>12</td>
 <td>&nbsp;</td>
 <td class='context-item-desc'>
 <p>The minor version of <a href="AutoForme.html"><code>AutoForme</code></a>, updated for new feature releases of <a href="AutoForme.html"><code>AutoForme</code></a>.</p>
@@ -187,14 +187,20 @@ AutoForme
 
 <p>Example:</p>
 
-<pre class="ruby"><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Application</span>, <span class="ruby-value">:prefix</span><span class="ruby-operator">=&gt;</span><span class="ruby-string">&#39;/path&#39;</span>) <span class="ruby-keyword">do</span>&#x000A;  <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+<pre class="ruby"><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sinatra</span>, <span class="ruby-constant">Sinatra</span><span class="ruby-operator">::</span><span class="ruby-constant">Application</span>, <span class="ruby-value">:prefix</span><span class="ruby-operator">=&gt;</span><span class="ruby-string">&#39;/path&#39;</span>) <span class="ruby-keyword">do</span>
+  <span class="ruby-identifier">model</span> <span class="ruby-constant">Artist</span>
+<span class="ruby-keyword">end</span>
+</pre>
 
 </div>
 <div class='source'>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-for-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-c-for-source'>   <span class="ruby-comment"># File lib/autoforme.rb</span>&#x000A;<span class="line-num">47</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-keyword">for</span>(<span class="ruby-identifier ruby-title">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;<span class="line-num">48</span>   <span class="ruby-constant">Framework</span>.<span class="ruby-identifier">for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;<span class="line-num">49</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-c-for-source'>   <span class="ruby-comment"># File lib/autoforme.rb</span>
+<span class="line-num">47</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-keyword">for</span>(<span class="ruby-identifier ruby-title">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">48</span>   <span class="ruby-constant">Framework</span>.<span class="ruby-identifier">for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">controller</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">49</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-class' id='method-method-c-version'>
@@ -205,14 +211,17 @@ AutoForme
 </div>
 <div class='description'>
 
-<p>Returns the version as a frozen string (e.g. &#39;0.1.0&#39;)</p>
+<p>Returns the version as a frozen string (e.g. ‘0.1.0’)</p>
 
 </div>
 <div class='source'>
 <a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-version-source&#39;); return false'>
 [show source]
 </a>
-<pre id='method-c-version-source'>   <span class="ruby-comment"># File lib/autoforme/version.rb</span>&#x000A;<span class="line-num">22</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">version</span>&#x000A;<span class="line-num">23</span>   <span class="ruby-constant">VERSION</span>&#x000A;<span class="line-num">24</span> <span class="ruby-keyword">end</span></pre>
+<pre id='method-c-version-source'>   <span class="ruby-comment"># File lib/autoforme/version.rb</span>
+<span class="line-num">22</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">version</span>
+<span class="line-num">23</span>   <span class="ruby-constant">VERSION</span>
+<span class="line-num">24</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>
@@ -224,7 +233,7 @@ AutoForme
 <div id='footer-push'></div>
 </div>
 <div id='footer'>
-<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
 </div>
 </body>
 </html>
