@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.author = "Jeremy Evans"
   s.email = "code@jeremyevans.net"
   s.homepage = "http://github.com/jeremyevans/autoforme"
-  s.files = %w(MIT-LICENSE CHANGELOG README.rdoc Rakefile autoforme.js) + Dir["{spec,lib}/**/*.rb"]
+  s.files = %w(MIT-LICENSE CHANGELOG README.rdoc autoforme.js) + Dir["lib/**/*.rb"]
   s.description = <<END
 AutoForme is an web administrative console for Sequel::Model that
 supports Roda, Sinatra, and Rails.  It offers the following features:
