@@ -10,6 +10,7 @@ class AutoFormeDemo::App < Roda
 
   plugin :public
   plugin :common_logger
+  plugin :disallow_file_uploads
 
   plugin :flash
   plugin :autoforme
