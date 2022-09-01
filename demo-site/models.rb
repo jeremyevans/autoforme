@@ -2,7 +2,8 @@ require 'sequel'
 require 'logger'
 
 module AutoFormeDemo
-DB = Sequel.connect(ENV.delete('AUTOFORME_DATABASE_URL') || ENV.delete('DATABASE_URL') || 'sqlite:/')
+autoforme_database_url = ENV.delete('AUTOFORME_DATABASE_URL')
+DB = Sequel.connect(autoforme_database_url || ENV.delete('DATABASE_URL') || 'sqlite:/')
 CREATE_TABLES_FILE = File.join(File.dirname(__FILE__), 'create_tables.rb')
 
 require_relative 'create_tables'
@@ -52,7 +53,7 @@ def DB.reset
 end
 
 DB.reset if DB.database_type == :sqlite
-DB.loggers << Logger.new($stdout)
+DB.loggers << Logger.new($stdout) unless autoforme_database_url
 Model.freeze_descendents
 DB.freeze
 end
