@@ -34,6 +34,18 @@ class AutoFormeDemo::App < Roda
     end
   end
 
+  plugin :error_handler do |e|
+    case e
+    when Sequel::NoMatchingRow
+      response.status = 404
+      view(:content=>'<h1>File Not Found</h1>')
+    else
+      puts "#{e.class}: #{e.message}"
+      puts e.backtrace
+      view(:content=>'<h1>Internal Server Error</h1>')
+    end
+  end
+
   TYPES = %w'basic inline autocomplete'.freeze
 
   setup_autoforme(:basic) do
