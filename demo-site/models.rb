@@ -4,6 +4,12 @@ require 'logger'
 module AutoFormeDemo
 autoforme_database_url = ENV.delete('AUTOFORME_DATABASE_URL')
 DB = Sequel.connect(autoforme_database_url || ENV.delete('DATABASE_URL') || 'sqlite:/')
+if DB.adapter_scheme == :postgres && Sequel::Postgres::USES_PG
+  begin
+    DB.extension :pg_auto_parameterize
+  rescue LoadError
+  end
+end
 CREATE_TABLES_FILE = File.join(File.dirname(__FILE__), 'create_tables.rb')
 
 require_relative 'create_tables'
