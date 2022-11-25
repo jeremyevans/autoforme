@@ -92,7 +92,7 @@ HTML
           alias controller controller
           define_method(:controller){|_| controller}
         end
-        if Rails.version > 7 && defined?(JRUBY_VERSION)
+        if Rails.version > '7' && defined?(JRUBY_VERSION)
           # Work around apparent JRuby 9.4 keyword argument bug
           config.instance_variable_set(:@session_store, :cookie_store)
           config.instance_variable_set(:@session_options, {:key=>'_autoforme_test_session'})
