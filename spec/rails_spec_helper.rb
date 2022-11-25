@@ -92,7 +92,13 @@ HTML
           alias controller controller
           define_method(:controller){|_| controller}
         end
-        config.session_store :cookie_store, :key=>'_autoforme_test_session'
+        if Rails.version > 7 && defined?(JRUBY_VERSION)
+          # Work around apparent JRuby 9.4 keyword argument bug
+          config.instance_variable_set(:@session_store, :cookie_store)
+          config.instance_variable_set(:@session_options, {:key=>'_autoforme_test_session'})
+        else
+          config.session_store :cookie_store, :key=>'_autoforme_test_session'
+        end
       end
       if Rails.version > '6'
         config.action_controller.default_protect_from_forgery false if opts[:no_csrf]
