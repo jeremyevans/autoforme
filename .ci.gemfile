@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 if RUBY_VERSION < '2.0'
+  gem 'rails-html-sanitizer', '<1.5'
   gem 'rake', '< 10'
 elsif RUBY_VERSION < '2.3'
   gem 'rake', '< 13'
