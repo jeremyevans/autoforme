@@ -28,14 +28,17 @@ platforms :jruby do
   gem 'jdbc-sqlite3'
 end
 
+if RUBY_VERSION < '2.5'
+  gem 'loofah', '< 2.20'
+end
+
 if RUBY_VERSION < '2.2'
   gem 'nokogiri', '< 1.7'
   gem 'rails', '< 5'
   gem 'rack', '< 2'
   gem 'addressable', '< 2.5'
-elsif RUBY_VERSION < '2.3'
-  gem 'rails', '< 5.2'
 elsif RUBY_VERSION < '2.5'
+  gem 'nokogiri', '< 1.15'
   gem 'rails', '< 6'
 elsif defined?(JRUBY_VERSION) && JRUBY_VERSION < '9.4'
   gem 'rails', '< 5.1'
