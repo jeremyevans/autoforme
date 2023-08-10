@@ -40,7 +40,7 @@ task "spec_cov" => %w"roda_spec_cov sinatra_spec_cov rails_spec_cov"
 RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Sinatra/Rails and Sequel']
 
 begin
-  gem 'hanna-nouveau'
+  gem 'hanna'
   RDOC_DEFAULT_OPTS.concat(['-f', 'hanna'])
 rescue Gem::LoadError
 end
