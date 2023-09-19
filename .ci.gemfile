@@ -55,8 +55,12 @@ end
 if RUBY_VERSION < '2.4.0'
   # Until mintest 5.12.0 is fixed
   gem 'minitest', '5.11.3'
+  gem 'enum_csv', '<1.2'
+  gem 'forme', '2.4.0'
 else
   gem 'minitest'
+  gem 'enum_csv'
+  gem 'forme', '>= 2'
 end
 
 gem 'sequel'
@@ -67,7 +71,4 @@ gem 'rack_csrf'
 gem 'sinatra-flash'
 gem 'minitest-hooks'
 gem 'minitest-global_expectations'
-gem 'enum_csv'
-gem 'forme', '>= 2'
 gem 'capybara'
-
