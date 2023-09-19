@@ -57,13 +57,14 @@ if RUBY_VERSION < '2.4.0'
   gem 'minitest', '5.11.3'
   gem 'enum_csv', '<1.2'
   gem 'forme', '2.4.0'
+  gem 'sequel', '<5.72'
 else
   gem 'minitest'
   gem 'enum_csv'
   gem 'forme', '>= 2'
+  gem 'sequel'
 end
 
-gem 'sequel'
 gem 'roda'
 gem 'tilt'
 gem 'erubi'
