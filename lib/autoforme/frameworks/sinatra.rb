@@ -69,7 +69,7 @@ module AutoForme
           suffix = "\\z"
         end
         # :nocov:
-        regexp = %r{#{prefix}/([\w:]+)/(\w+)(?:/([\w-]+))?#{suffix}}
+        regexp = %r{#{prefix}/([\w:]+)/(\w+)(?:/([:\w-]+))?#{suffix}}
         @controller.get regexp, &block
         @controller.post regexp, &block
       end
