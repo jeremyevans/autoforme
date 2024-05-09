@@ -46,10 +46,10 @@ else
   gem 'rails'
 end
 
-if RUBY_VERSION < '2.2'
+if RUBY_VERSION < '2.4'
   gem 'sinatra', '< 2'
 else
-  gem 'sinatra'
+  gem 'sinatra', '> 2'
 end
 
 if RUBY_VERSION < '2.4.0'
