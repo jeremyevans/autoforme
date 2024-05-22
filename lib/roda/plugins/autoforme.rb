@@ -6,7 +6,7 @@ class Roda
   module RodaPlugins
     module AutoForme
       # Require the render plugin, since it is required.
-      def self.load_dependencies(app, opts={})
+      def self.load_dependencies(app, opts={}, &_)
         app.plugin :render
       end
 
