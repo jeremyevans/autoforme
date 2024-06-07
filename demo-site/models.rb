@@ -1,5 +1,4 @@
 require 'sequel'
-require 'logger'
 
 module AutoFormeDemo
 autoforme_database_url = ENV.delete('AUTOFORME_DATABASE_URL')
@@ -59,7 +58,10 @@ def DB.reset
 end
 
 DB.reset if DB.database_type == :sqlite
-DB.loggers << Logger.new($stdout) unless autoforme_database_url
+unless autoforme_database_url
+  require 'logger'
+  DB.loggers << Logger.new($stdout)
+end
 Model.freeze_descendents
 DB.freeze
 end
