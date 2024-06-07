@@ -1,5 +1,5 @@
 require 'sequel'
-require 'logger'
+#require 'logger'
 
 module AutoFormeSpec
   TYPE_MAP = {:string=>String, :integer=>Integer, :decimal=>Numeric, :boolean=>TrueClass}
