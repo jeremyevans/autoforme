@@ -133,6 +133,12 @@ module AutoForme
 
       # Retrieve underlying model instance with matching primary key
       def with_pk(type, request, pk)
+        begin
+          pk = typecast_value(model.primary_key, pk)
+        rescue S::InvalidValue
+          raise S::NoMatchingRow
+        end
+
         dataset_for(type, request).with_pk!(pk)
       end
 
@@ -183,7 +189,7 @@ module AutoForme
               ds = ds.where(S.ilike(S.qualify(model.table_name, c), "%#{ds.escape_like(v)}%"))
             else
               begin
-                typecasted_value = model.db.typecast_value(column_type(c), v)
+                typecasted_value = typecast_value(c, v)
               rescue S::InvalidValue
                 ds = ds.where(false)
                 break
@@ -354,6 +360,10 @@ module AutoForme
       end
 
       private
+
+      def typecast_value(column, value)
+        model.db.typecast_value(column_type(column), value)
+      end
 
       def dataset_for(type, request)
         ds = model.dataset

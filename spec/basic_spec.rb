@@ -272,6 +272,11 @@ describe AutoForme do
     find('form input#artist_name')[:class].must_equal 'barfoo'
   end
 
+  it "should raise NoMatchingRow for invalid primary key values" do
+    app_setup(Artist)
+    proc{visit("/Artist/show/a")}.must_raise Sequel::NoMatchingRow
+  end
+
   it "should ignore ids passed to routes not expecting ids" do
     app_setup(Artist)
     visit("/Artist/search/1")

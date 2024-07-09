@@ -1,5 +1,7 @@
 === master
 
+* Typecast primary key values before using them for lookup (jeremyevans)
+
 * Support colon for model names to allow easier use of namespaced models (adam12) (#46)
 
 === 1.12.0 (2022-06-29)
