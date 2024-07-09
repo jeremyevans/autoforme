@@ -39,6 +39,9 @@ class AutoFormeDemo::App < Roda
     when Sequel::NoMatchingRow
       response.status = 404
       view(:content=>'<h1>File Not Found</h1>')
+    when Roda::RodaPlugins::RouteCsrf::InvalidToken
+      response.status = 400
+      view(:content=>'<h1>Invalid or Expired Form Token</h1>')
     else
       puts "#{e.class}: #{e.message}"
       puts e.backtrace
