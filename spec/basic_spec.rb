@@ -840,15 +840,15 @@ describe AutoForme do
       filter do |ds, type, req|
         case type
         when :edit
-          ds.where{n0 > 1}
+          ds.where{n0 > '1'}
         when :show
-          ds.where{n1 > 3}
+          ds.where{n1 > '3'}
         when :delete
-          ds.where{n2 > 2}
+          ds.where{n2 > '2'}
         when :browse
-          ds.where{n3 > 6}
+          ds.where{n3 > '6'}
         when :search
-          ds.where{n4 > 4}
+          ds.where{n4 > '4'}
         end
       end
     end

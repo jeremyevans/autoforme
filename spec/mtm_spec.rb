@@ -113,10 +113,10 @@ describe AutoForme do
     fill_in 'Name', :with=>'Artist1'
     click_button 'Create'
 
-    visit '/Artist/mtm_edit/1?association=foo'
+    visit "/Artist/mtm_edit/#{Artist.first.id}?association=foo"
     page.status_code.must_equal 404
 
-    visit '/Artist/mtm_edit/1?association=albums'
+    visit "/Artist/mtm_edit/#{Artist.first.id}?association=albums"
     mod.mtm_associations{}
     click_button 'Update'
     page.status_code.must_equal 404

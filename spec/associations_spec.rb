@@ -588,7 +588,7 @@ describe AutoForme do
     click_link 'Albums'
     page.current_path.must_equal '/Album/browse'
 
-    visit "/Album/association_links/#{Artist.first.id}"
+    visit "/Album/association_links/#{Album.first.id}"
     click_link 'Artist1'
     click_button 'Update'
     page.current_path.must_match %r{Artist/edit/\d+}

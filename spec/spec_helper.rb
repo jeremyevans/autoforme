@@ -1,8 +1,7 @@
 $: << File.expand_path(File.join(__FILE__, '../../lib'))
 ENV['FRAMEWORK'] ||= 'roda'
 
-module AutoFormeSpec
-end
+require_relative 'sequel_spec_helper'
 
 if coverage = ENV.delete('COVERAGE')
   require 'coverage'
@@ -35,16 +34,19 @@ class Minitest::HooksSpec
   include Capybara::DSL
 
   attr_reader :app
-  attr_reader :db
   attr_reader :framework
   attr_reader :model
+
+  def db
+    AutoFormeSpec::DB
+  end
 
   def app=(app)
     @app = Capybara.app = app
   end
 
-  def db_setup(tables, &block)
-    @db = AutoFormeSpec.db_setup(tables)
+  def db_setup(tables)
+    AutoFormeSpec.db_setup(tables)
   end
 
   def model_setup(models)
@@ -57,8 +59,12 @@ class Minitest::HooksSpec
     @model = @framework.models[klass.name] if klass
   end
 
+  around(:all) do |&block|
+    db.transaction(:rollback=>:always, :auto_savepoint=>true){super(&block)}
+  end
+  
   around do |&block|
-    db ? db.transaction(:rollback=>:always){super(&block)} : super(&block)
+    db.transaction(:rollback=>:always, :auto_savepoint=>true){super(&block)}
   end
   
   after do

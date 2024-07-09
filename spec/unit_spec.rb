@@ -1,5 +1,7 @@
 require_relative 'spec_helper'
 
+id_cast = Sequel.cast(:id, String)
+
 describe AutoForme do
   before(:all) do
     db_setup(:artists=>[[:name, :string]])
@@ -281,16 +283,16 @@ describe AutoForme do
     model.autocomplete(:type=>:show, :query=>'boo').must_equal ["#{b.id} - BooFar"]
     model.autocomplete(:type=>:show, :query=>'oo').sort.must_equal ["#{a.id} - FooBar", "#{b.id} - BooFar"]
 
-    framework.autocomplete_options :display=>:id
+    framework.autocomplete_options :display=>id_cast
     model.autocomplete(:type=>:show, :query=>a.id.to_s).must_equal ["#{a.id} - #{a.id}"]
     framework.autocomplete_options{|mod, type, req| {:limit=>req}}
     model.autocomplete(:type=>:show, :query=>'oo', :request=>1).must_equal ["#{a.id} - FooBar"]
-    model.autocomplete_options :display=>:id
+    model.autocomplete_options :display=>id_cast
     model.autocomplete(:type=>:show, :query=>a.id.to_s).must_equal ["#{a.id} - #{a.id}"]
 
     framework.autocomplete_options({})
     model.autocomplete(:type=>:show, :query=>a.id.to_s).must_equal ["#{a.id} - #{a.id}"]
-    model.autocomplete_options :display=>proc{:id}
+    model.autocomplete_options :display=>proc{id_cast}
     model.autocomplete(:type=>:show, :query=>b.id.to_s).must_equal ["#{b.id} - #{b.id}"]
     model.autocomplete_options :limit=>1
     model.autocomplete(:type=>:show, :query=>'oo').must_equal ["#{a.id} - FooBar"]
@@ -348,9 +350,9 @@ describe AutoForme do
     b = Artist.create(:name=>'BooFar')
     model.autocomplete(:query=>'boo', :association=>:artist).must_equal ["#{b.id} - BooFar"]
     model.autocomplete(:query=>'oo', :association=>:artist).sort.must_equal ["#{a.id} - FooBar", "#{b.id} - BooFar"]
-    artist.autocomplete_options :display=>:id
+    artist.autocomplete_options :display=>id_cast
     model.autocomplete(:query=>a.id.to_s, :association=>:artist).must_equal ["#{a.id} - #{a.id}"]
-    artist.autocomplete_options :display=>proc{:id}
+    artist.autocomplete_options :display=>proc{id_cast}
     model.autocomplete(:query=>b.id.to_s, :association=>:artist).must_equal ["#{b.id} - #{b.id}"]
     artist.autocomplete_options :limit=>1
     model.autocomplete(:query=>'oo', :association=>:artist).must_equal ["#{a.id} - FooBar"]
@@ -427,10 +429,10 @@ describe AutoForme do
     c = Album.create(:name=>'Quux')
     c.add_artist(a)
     model.autocomplete(:query=>'oo', :association=>:artists, :exclude=>c.id).sort.must_equal ["#{b.id} - BooFar"]
-    artist.autocomplete_options :display=>:id
+    artist.autocomplete_options :display=>id_cast
     model.autocomplete(:query=>a.id.to_s, :association=>:artists).must_equal ["#{a.id} - #{a.id}"]
     model.autocomplete(:query=>b.id.to_s, :association=>:artists, :exclude=>c.id).must_equal ["#{b.id} - #{b.id}"]
-    artist.autocomplete_options :display=>proc{:id}
+    artist.autocomplete_options :display=>proc{id_cast}
     model.autocomplete(:query=>b.id.to_s, :association=>:artists).must_equal ["#{b.id} - #{b.id}"]
     model.autocomplete(:query=>a.id.to_s, :association=>:artists, :exclude=>c.id).must_equal []
     artist.autocomplete_options :limit=>1

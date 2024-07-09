@@ -1,16 +1,23 @@
 require 'sequel'
-#require 'logger'
+
+Sequel::Model.cache_anonymous_models = false
 
 module AutoFormeSpec
   TYPE_MAP = {:string=>String, :integer=>Integer, :decimal=>Numeric, :boolean=>TrueClass}
+
+  db_url = ENV['AUTOFORME_SPEC_DATABASE_URL']
+  db_url ||= defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby' ? 'jdbc:sqlite::memory:' : 'sqlite:/'
+  DB = Sequel.connect(db_url, :identifier_mangling=>false, :cache_schema=>false)
+  DB.extension :freeze_datasets
+  if ENV['LOG_SQLS']
+    require 'logger'
+    DB.loggers << Logger.new($stdout)
+  end
+  DB.freeze
+
   def self.db_setup(tables)
-    db_url = ENV['DATABASE_URL']
-    db_url ||= defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby' ? 'jdbc:sqlite::memory:' : 'sqlite:/'
-    db = Sequel.connect(db_url, :identifier_mangling=>false)
-    db.extension :freeze_datasets
-    #db.loggers << Logger.new($stdout)
     tables.each do |table, table_spec|
-      db.create_table(table) do
+      DB.create_table(table) do
         if table_spec.kind_of? Enumerable
           primary_key :id
           table_spec.each do |name, type, opts|
@@ -21,9 +28,6 @@ module AutoFormeSpec
         end
       end
     end
-
-    db.freeze
-    db
   end
 
   def self.model_setup(db, models)
