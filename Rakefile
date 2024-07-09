@@ -37,7 +37,7 @@ task "spec_cov" => %w"roda_spec_cov sinatra_spec_cov rails_spec_cov"
 
 ### RDoc
 
-RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Sinatra/Rails and Sequel']
+RDOC_DEFAULT_OPTS = ["--quiet", "--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Roda/Sinatra/Rails and Sequel::Model']
 
 begin
   gem 'hanna'
