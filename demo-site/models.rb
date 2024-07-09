@@ -16,10 +16,9 @@ require_relative 'create_tables'
 Model = Class.new(Sequel::Model)
 Model.db = DB
 Model.plugin :defaults_setter
-Model.plugin :validation_helpers
+Model.plugin :auto_validations
 Model.plugin :forme
 Model.plugin :association_pks
-Model.plugin :prepared_statements
 Model.plugin :subclasses
 
 require_relative 'models/album'
