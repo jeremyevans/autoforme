@@ -1,4 +1,4 @@
-=== master
+=== 1.13.0 (2024-07-10)
 
 * Typecast primary key values before using them for lookup (jeremyevans)
 
