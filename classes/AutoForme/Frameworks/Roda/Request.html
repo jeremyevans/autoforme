@@ -2,6 +2,7 @@
 <html lang='en'>
 <head>
 <title>AutoForme::Frameworks::Roda::Request</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
 <link href='../../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
 <script type='text/javascript'>
@@ -92,7 +93,7 @@ Superclass:
 <span class="line-num">23</span>     <span class="ruby-comment"># :nocov:</span>
 <span class="line-num">24</span>   <span class="ruby-keyword">end</span>
 <span class="line-num">25</span> 
-<span class="line-num">26</span>   <span class="ruby-identifier">path_id</span> = <span class="ruby-node">$1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">remaining_path</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r{\A\/([\w-]+)\z}</span>
+<span class="line-num">26</span>   <span class="ruby-identifier">path_id</span> = <span class="ruby-node">$1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">remaining_path</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r{\A\/([:\w-]+)\z}</span>
 <span class="line-num">27</span>   <span class="ruby-identifier">set_id</span>(<span class="ruby-identifier">path_id</span>)
 <span class="line-num">28</span> <span class="ruby-keyword">end</span></pre>
 </div>
@@ -226,7 +227,7 @@ Superclass:
 <div id='footer-push'></div>
 </div>
 <div id='footer'>
-<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
 </div>
 </body>
 </html>

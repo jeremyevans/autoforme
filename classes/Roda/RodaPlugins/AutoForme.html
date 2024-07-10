@@ -2,6 +2,7 @@
 <html lang='en'>
 <head>
 <title>Roda::RodaPlugins::AutoForme</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
 <link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
 <script type='text/javascript'>
@@ -84,7 +85,7 @@ Roda::RodaPlugins::AutoForme
 <div class='method public-class' id='method-method-c-load_dependencies'>
 <a name='method-c-load_dependencies'></a>
 <div class='synopsis'>
-<span class='name'>load_dependencies</span><span class='arguments'>(app, opts={})</span>
+<span class='name'>load_dependencies</span><span class='arguments'>(app, opts={}, &_)</span>
 
 </div>
 <div class='description'>
@@ -97,7 +98,7 @@ Roda::RodaPlugins::AutoForme
 [show source]
 </a>
 <pre id='method-c-load_dependencies-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>
-<span class="line-num"> 9</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">load_dependencies</span>(<span class="ruby-identifier">app</span>, <span class="ruby-identifier">opts</span>={})
+<span class="line-num"> 9</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">load_dependencies</span>(<span class="ruby-identifier">app</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_</span>)
 <span class="line-num">10</span>   <span class="ruby-identifier">app</span>.<span class="ruby-identifier">plugin</span> <span class="ruby-value">:render</span>
 <span class="line-num">11</span> <span class="ruby-keyword">end</span></pre>
 </div>
@@ -111,7 +112,7 @@ Roda::RodaPlugins::AutoForme
 <div id='footer-push'></div>
 </div>
 <div id='footer'>
-<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
 </div>
 </body>
 </html>

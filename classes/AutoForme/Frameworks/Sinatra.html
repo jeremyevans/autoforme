@@ -2,6 +2,7 @@
 <html lang='en'>
 <head>
 <title>AutoForme::Frameworks::Sinatra</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
 <link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
 <script type='text/javascript'>
@@ -102,7 +103,7 @@ Superclass:
 <span class="line-num">69</span>     <span class="ruby-identifier">suffix</span> = <span class="ruby-string">&quot;\\z&quot;</span>
 <span class="line-num">70</span>   <span class="ruby-keyword">end</span>
 <span class="line-num">71</span>   <span class="ruby-comment"># :nocov:</span>
-<span class="line-num">72</span>   <span class="ruby-identifier">regexp</span> = <span class="ruby-regexp">%r{#{prefix}/([\w:]+)/(\w+)(?:/([\w-]+))?#{suffix}}</span>
+<span class="line-num">72</span>   <span class="ruby-identifier">regexp</span> = <span class="ruby-regexp">%r{#{prefix}/([\w:]+)/(\w+)(?:/([:\w-]+))?#{suffix}}</span>
 <span class="line-num">73</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">get</span> <span class="ruby-identifier">regexp</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>
 <span class="line-num">74</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">post</span> <span class="ruby-identifier">regexp</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>
 <span class="line-num">75</span> <span class="ruby-keyword">end</span></pre>
@@ -117,7 +118,7 @@ Superclass:
 <div id='footer-push'></div>
 </div>
 <div id='footer'>
-<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+<a href="https://github.com/jeremyevans/hanna"><strong>Hanna</strong> RDoc template</a>
 </div>
 </body>
 </html>
