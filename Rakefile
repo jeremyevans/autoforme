@@ -22,7 +22,7 @@ spec_tasks = [:roda_spec, :sinatra_spec, :rails_spec]
 task :spec => spec_tasks
 
 %w'roda sinatra rails'.each do |framework|
-  desc "Run specs with for #{framework} with coverage"
+  desc "Run specs for #{framework}"
   task "#{framework}_spec" do
     spec.call('FRAMEWORK'=>framework)
   end
