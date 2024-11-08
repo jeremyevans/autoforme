@@ -116,6 +116,9 @@ HTML
           def autoload_paths; []; end
         end)
       end
+      if Rails.version > '8'
+        config.active_support.to_time_preserves_timezone = :zone
+      end
       initialize!
     end
     [sc, framework]
