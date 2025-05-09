@@ -38,7 +38,7 @@ task "spec_cov" => %w"roda_spec_cov sinatra_spec_cov rails_spec_cov"
 ### RDoc
 
 desc "Generate rdoc"
-task :website_rdoc do
+task :rdoc do
   rdoc_dir = "rdoc"
   rdoc_opts = ["--line-numbers", "--inline-source", '--title', 'AutoForme: Web Administrative Console for Roda/Sinatra/Rails and Sequel::Model']
 
