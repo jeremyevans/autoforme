@@ -44,7 +44,7 @@ if RUBY_VERSION < '2.2'
 elsif RUBY_VERSION < '2.5'
   gem 'nokogiri', '< 1.15'
   gem 'rails', '< 6'
-elsif defined?(JRUBY_VERSION) && JRUBY_VERSION < '9.4'
+elsif defined?(JRUBY_VERSION) && Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('9.4')
   gem 'rails', '< 5.1'
 else
   gem 'rails'
