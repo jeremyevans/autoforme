@@ -33,7 +33,7 @@ task :spec => spec_tasks
   end
 end
 
-task "spec_cov" => %w"roda_spec_cov sinatra_spec_cov rails_spec_cov"
+task "spec_cov" => %w"rails_spec_cov roda_spec_cov sinatra_spec_cov"
 
 ### RDoc
 
