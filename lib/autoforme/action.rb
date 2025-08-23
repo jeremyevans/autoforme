@@ -139,7 +139,6 @@ module AutoForme
       end
 
       request.redirect(path)
-      nil
     end
 
     # Handle the current action, returning an HTML string containing the page content,
