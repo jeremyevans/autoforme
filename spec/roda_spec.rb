@@ -12,6 +12,9 @@ describe AutoForme do
   it "should have basic functionality working in Roda subclass" do
     app_setup(Artist)
     self.app = Class.new(app)
+    app.autoforme_framework.must_be_kind_of AutoForme::Frameworks::Roda
+    app.autoforme_framework.models.keys.must_equal ["Artist"]
+
     visit("/Artist/new")
     page.title.must_equal 'Artist - New'
     fill_in 'Name', :with=>'TestArtistNew'

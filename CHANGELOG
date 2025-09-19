@@ -1,5 +1,7 @@
 === master
 
+* Support autoforme_framework Roda class method in Roda plugin, to allow for reflection (jeremyevans)
+
 * Omit invalid Next/Previous links instead of including them in a tag with a disabled attribute (jeremyevans)
 
 * Support pagination via filtering instead of offset using pagination_strategy :filter (requires unambiguous order) (jeremyevans)

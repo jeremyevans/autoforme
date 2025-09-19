@@ -14,6 +14,7 @@ class Roda
       # the options and block.
       def self.configure(app, opts={}, &block)
         app.instance_exec do
+          @autoforme_frameworks ||= {}
           @autoforme_routes ||= {}
           if block
             autoforme(opts, &block)
@@ -26,7 +27,13 @@ class Roda
         # options and block.  If the :name option is given, store
         # this configuration for the given name.
         def autoforme(opts={}, &block)
-          @autoforme_routes[opts[:name]] = ::AutoForme.for(:roda, self, opts, &block).route_proc
+          framework = @autoforme_frameworks[opts[:name]] = ::AutoForme.for(:roda, self, opts, &block)
+          @autoforme_routes[opts[:name]] = framework.route_proc
+        end
+
+        # Retrieve the framework the named or default AutoForme.
+        def autoforme_framework(name=nil)
+          @autoforme_frameworks[name]
         end
 
         # Retrieve the route proc for the named or default AutoForme.
@@ -37,6 +44,7 @@ class Roda
         # Copy the autoforme configurations into the subclass.
         def inherited(subclass)
           super
+          subclass.instance_variable_set(:@autoforme_frameworks, @autoforme_frameworks.dup)
           subclass.instance_variable_set(:@autoforme_routes, @autoforme_routes.dup)
         end
       end
