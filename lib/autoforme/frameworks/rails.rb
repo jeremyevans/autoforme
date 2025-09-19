@@ -6,7 +6,10 @@ module AutoForme
       class Request < AutoForme::Request
         def initialize(request)
           @controller = request
-          @params = request.params
+          @params = {}
+          request.params.each do |k, v|
+            @params[k] = v
+          end
           @session = request.session
           @env = request.request.env
           @method = @env['REQUEST_METHOD']
