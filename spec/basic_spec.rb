@@ -416,38 +416,50 @@ describe AutoForme do
     first('table')['class'].must_equal 'bar'
   end
 
-  it "should support specifying numbers of rows per page per type" do
-    app_setup(Artist) do
-      per_page{|type, req| type == :browse ? 2 : 3}
-    end
-    5.times{|i| Artist.create(:name=>i.to_s)}
-    visit("/Artist/browse")
-    pager_class = lambda do |text|
-      node = all('ul.pager li').select{|n| n[:class] if n.find('a').text == text}.first
-      node[:class] if node
-    end
-    pager_class.call("Previous").must_equal 'disabled'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
-    click_link 'Next'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
-    click_link 'Next'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'4'
-    pager_class.call("Next").must_equal 'disabled'
-    click_link 'Previous'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
-    click_link 'Previous'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
-    pager_class.call("Previous").must_equal 'disabled'
+  [[:offset, nil, "no"],
+   [:filter, :id],
+   [:filter, [:name, :id], "name, id"],
+   [:filter, [Sequel[:artists][:name].asc, Sequel[:id].asc], "artists.name ASC, id ASC"]
+  ].each do |pagination_strategy, order, order_desc|
+    it "should support specifying numbers of rows per page per type, using #{pagination_strategy} pagination strategy and #{order_desc || order} order" do
+      app_setup(Artist) do
+        order order if order
+        pagination_strategy pagination_strategy
+        per_page{|type, req| type == :browse ? 2 : 3}
+      end
+      5.times{|i| Artist.create(:name=>i.to_s)}
+      visit("/Artist/browse")
+      pager_class = lambda do |text|
+        node = all('ul.pager li').select{|n| n[:class] if n.find('a').text == text}.first
+        node[:class] if node
+      end
+      pager_class.call("Previous").must_be_nil
+      page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
+      click_link 'Next'
+      page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
+      click_link 'Next'
+      page.all('tr td:first-child').map{|s| s.text}.must_equal %w'4'
+      pager_class.call("Next").must_be_nil
+      if pagination_strategy == :offset
+        click_link 'Previous'
+        page.all('tr td:first-child').map{|s| s.text}.must_equal %w'2 3'
+        click_link 'Previous'
+        page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1'
+        pager_class.call("Previous").must_be_nil
+      end
 
-    click_link 'Search'
-    click_button 'Search'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
-    click_link 'Next'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'3 4'
-    pager_class.call("Next").must_equal 'disabled'
-    click_link 'Previous'
-    page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
-    pager_class.call("Previous").must_equal 'disabled'
+      click_link 'Search'
+      click_button 'Search'
+      page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
+      click_link 'Next'
+      page.all('tr td:first-child').map{|s| s.text}.must_equal %w'3 4'
+      pager_class.call("Next").must_be_nil
+      if pagination_strategy == :offset
+        click_link 'Previous'
+        page.all('tr td:first-child').map{|s| s.text}.must_equal %w'0 1 2'
+        pager_class.call("Previous").must_be_nil
+      end
+    end
   end
 
   it "should support specifying supported actions" do

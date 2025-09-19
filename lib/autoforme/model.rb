@@ -18,6 +18,11 @@ module AutoForme
     # Regexp for valid constant names, to prevent code execution.
     VALID_CONSTANT_NAME_REGEXP = /\A(?:::)?([A-Z]\w*(?:::[A-Z]\w*)*)\z/.freeze
 
+    # The default pagination strategy to use. Offset is used by default,
+    # as a filter strategy requires an unambiguous order, which the library
+    # cannot guarantee.
+    DEFAULT_PAGINATION_STRATEGY = :offset
+
     extend OptsAttributes
 
     # Create a new instance for the given model type and underlying model class
@@ -40,7 +45,7 @@ module AutoForme
       :column_options, :columns, :display_name, :eager, :eager_graph,
       :filter, :form_attributes, :form_options,
       :inline_mtm_associations, :lazy_load_association_links, :link_name, :mtm_associations,
-      :order, :page_footer, :page_header, :per_page,
+      :order, :page_footer, :page_header, :per_page, :pagination_strategy,
       :redirect, :supported_actions, :table_class, :show_html, :edit_html
 
     def initialize(model, framework)
@@ -93,6 +98,10 @@ module AutoForme
 
     def columns_for(type, request)
       handle_proc(columns || framework.columns_for(model, type, request), type, request) || default_columns
+    end
+
+    def pagination_strategy_for(type, request)
+      handle_proc(pagination_strategy || framework.pagination_strategy_for(model, type, request), type, request) || DEFAULT_PAGINATION_STRATEGY
     end
 
     # The options to use for the given column and request.  Instead of the model options overriding the framework

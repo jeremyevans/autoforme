@@ -212,13 +212,32 @@ module AutoForme
       def paginate(type, request, ds, opts={})
         return ds.all if opts[:all_results]
         limit = limit_for(type, request)
-        %r{\/(\d+)\z} =~ request.env['PATH_INFO']
-        offset = (($1||1).to_i - 1) * limit
-        objs = ds.limit(limit+1, (offset if offset > 0)).all
-        next_page = false
+        ds = ds.limit(limit+1)
+
+        if pagination_strategy_for(type, request) == :filter
+          order_cols = ds.send(:hash_key_symbols, Array(order_for(type, request)).map{|c| c.is_a?(S::SQL::OrderedExpression) ? c.expression : c})
+          after = Array(request.params["_after"])
+          if order_cols.length == after.length
+            begin
+              after = order_cols.zip(after).map{|c, v| typecast_value(c, v)}
+            rescue S::InvalidValue
+              # ignore pagination, assume first page
+            else
+              ds = ds.where(ds.send(:ignore_values_preceding, {}){after})
+            end
+          end
+        else # offset strategy, the default
+          %r{\/(\d+)\z} =~ request.env['PATH_INFO']
+          offset = (($1||1).to_i - 1) * limit
+          ds = ds.offset(offset) if offset > 0
+        end
+
+        objs = ds.all
+        next_page = order_cols && []
         if objs.length > limit
-          next_page = true
           objs.pop
+          last_obj = objs[-1]
+          next_page = after ? order_cols.map{|c| last_obj.send(c)} : true
         end
         [next_page, objs]
       end

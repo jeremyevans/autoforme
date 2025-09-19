@@ -414,20 +414,41 @@ module AutoForme
     def table_pager(type, next_page)
       html = String.new
       html << '<ul class="pager">'
-      page = request.id.to_i
-      if page > 1
-        html << "<li><a href=\"#{url_for("#{type}/#{page-1}?#{h request.query_string}")}\">Previous</a></li>"
+      qs = next_qs = h request.query_string
+
+      if next_page.is_a?(Array)
+        # Filter pagination, next_page contains the values for the last record of current page
+        no_previous = true
+        if next_page.empty?
+          next_page = nil
+        else
+          next_qs = qs.dup
+          params = request.params.dup
+          next_page = next_page.map(&:to_s)
+          next_page = next_page[0] if next_page.length == 1
+          params["_after"] = next_page
+          next_qs = h Rack::Utils.build_nested_query(params)
+          following = prev = "0"
+        end
       else
-        html << '<li class="disabled"><a href="#">Previous</a></li>'
-      end
-      if next_page
+        # Offset pagination, request id contains current page
+        page = request.id.to_i
         page = 1 if page < 1
-        html << "<li><a href=\"#{url_for("#{type}/#{page+1}?#{h request.query_string}")}\">Next</a></li>"
-      else
-        html << '<li class="disabled"><a href="#">Next</a></li>'
+        no_previous = page <= 1
+        prev = page-1
+        following = page+1
       end
+
+      unless no_previous
+        html << "<li><a href=\"#{url_for("#{type}/#{prev}?#{qs}")}\">Previous</a></li>"
+      end
+
+      if next_page
+        html << "<li><a href=\"#{url_for("#{type}/#{following}?#{next_qs}")}\">Next</a></li>"
+      end
+
       html << "</ul>"
-      html << "<p><a href=\"#{url_for("#{type}/csv?#{h request.query_string}")}\">CSV Format</a></p>"
+      html << "<p><a href=\"#{url_for("#{type}/csv?#{qs}")}\">CSV Format</a></p>"
     end
 
     # Show page used for browse/search pages.

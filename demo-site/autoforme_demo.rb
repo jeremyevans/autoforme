@@ -23,6 +23,8 @@ class AutoFormeDemo::App < Roda
 
   def self.setup_autoforme(name, &block)
     autoforme(:name=>name) do
+      order [:name, :id]
+      pagination_strategy :filter
       form_options :input_defaults=>{'text'=>{:size=>50}, 'checkbox'=>{:label_position=>:before}}
       def self.model(mod, &b)
         super(mod) do

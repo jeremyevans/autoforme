@@ -1,3 +1,9 @@
+=== master
+
+* Omit invalid Next/Previous links instead of including them in a tag with a disabled attribute (jeremyevans)
+
+* Support pagination via filtering instead of offset using pagination_strategy :filter (requires unambiguous order) (jeremyevans)
+
 === 1.13.0 (2024-07-10)
 
 * Typecast primary key values before using them for lookup (jeremyevans)

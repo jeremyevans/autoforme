@@ -38,7 +38,7 @@ module AutoForme
       :autocomplete_options, :before_action, :before_create, :before_destroy,
       :before_edit, :before_new, :before_update, :column_options,
       :columns, :display_name, :filter, :form_attributes, :form_options,
-      :inline_mtm_associations, :lazy_load_association_links,
+      :inline_mtm_associations, :lazy_load_association_links, :pagination_strategy,
       :model_type, :mtm_associations, :order, :page_footer, :page_header, :per_page,
       :redirect, :supported_actions, :table_class, :show_html, :edit_html
 
@@ -116,6 +116,10 @@ module AutoForme
 
     def association_links_for(model, type, request)
       handle_proc(association_links, model, type, request)
+    end
+
+    def pagination_strategy_for(model, type, request)
+      handle_proc(pagination_strategy, model, type, request)
     end
 
     def show_html_for(obj, column, type, request)
