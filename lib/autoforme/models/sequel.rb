@@ -177,7 +177,9 @@ module AutoForme
         ds = apply_associated_eager(:search, request, all_dataset_for(type, request))
         columns_for(:search_form, request).each do |c|
           if (v = params[c.to_s]) && !(v = v.to_s).empty?
-            if association?(c)
+            if filtered_ds = column_search_filter_for(ds, c, v, request)
+              ds = filtered_ds
+            elsif association?(c)
               ref = model.association_reflection(c)
               ads = ref.associated_dataset
               if model_class = associated_model_class(c)

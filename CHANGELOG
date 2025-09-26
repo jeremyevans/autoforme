@@ -1,5 +1,7 @@
 === master
 
+* Support customizing the searching done for specific columns via column_search_filter (jeremyevans)
+
 * Support autoforme_framework Roda class method in Roda plugin, to allow for reflection (jeremyevans)
 
 * Omit invalid Next/Previous links instead of including them in a tag with a disabled attribute (jeremyevans)

@@ -1219,4 +1219,77 @@ describe AutoForme do
     page.html.must_include 'Created Namespace::Artist'
     page.current_path.must_equal '/Namespace::Artist/new'
   end
+
+  it "supports column search filtering in model" do
+    app_setup(Namespace::Artist) do
+      columns do |type|
+        case type
+        when :search, :search_form
+          [:forme_namespace]
+        else
+          [:name]
+        end
+      end
+      column_search_filter do |ds, column, value|
+        if column == :forme_namespace
+          ds.where(name: value)
+        end
+      end
+    end
+    visit("/Namespace::Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.html.must_include 'Created Namespace::Artist'
+    page.current_path.must_equal '/Namespace::Artist/new'
+
+    click_link 'Search'
+    fill_in 'Forme namespace', :with=>'TestArtistNew'
+    click_button 'Search'
+    page.all('table').first['id'].must_equal 'autoforme_table'
+    page.all('th').map{|s| s.text}.must_equal ['Forme namespace', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal ["artist", "Show", "Edit", "Delete"]
+
+    click_link 'Search'
+    fill_in 'Forme namespace', :with=>'TestArtistBad'
+    click_button 'Search'
+    page.all('td').map{|s| s.text}.must_equal []
+  end
+
+  it "supports column search filtering in framework" do
+    app_setup do
+      model Namespace::Artist
+      columns do |model, type|
+        next nil unless model == Namespace::Artist
+        case type
+        when :search, :search_form
+          [:forme_namespace]
+        else
+          [:name]
+        end
+      end
+      column_search_filter do |model, ds, column, value|
+        next nil unless model == Namespace::Artist
+        if column == :forme_namespace
+          ds.where(name: value)
+        end
+      end
+    end
+    visit("/Namespace::Artist/new")
+    fill_in 'Name', :with=>'TestArtistNew'
+    click_button 'Create'
+    page.html.must_include 'Created Namespace::Artist'
+    page.current_path.must_equal '/Namespace::Artist/new'
+
+    click_link 'Search'
+    fill_in 'Forme namespace', :with=>'TestArtistNew'
+    click_button 'Search'
+    page.all('table').first['id'].must_equal 'autoforme_table'
+    page.all('th').map{|s| s.text}.must_equal ['Forme namespace', 'Show', 'Edit', 'Delete']
+    page.all('td').map{|s| s.text}.must_equal ["artist", "Show", "Edit", "Delete"]
+
+    click_link 'Search'
+    fill_in 'Forme namespace', :with=>'TestArtistBad'
+    click_button 'Search'
+    page.all('td').map{|s| s.text}.must_equal []
+  end
 end

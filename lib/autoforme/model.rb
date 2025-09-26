@@ -43,7 +43,7 @@ module AutoForme
       :autocomplete_options, :before_action, :before_create, :before_destroy,
       :before_edit, :before_new, :before_update, :class_display_name,
       :column_options, :columns, :display_name, :eager, :eager_graph,
-      :filter, :form_attributes, :form_options,
+      :filter, :form_attributes, :form_options, :column_search_filter,
       :inline_mtm_associations, :lazy_load_association_links, :link_name, :mtm_associations,
       :order, :page_footer, :page_header, :per_page, :pagination_strategy,
       :redirect, :supported_actions, :table_class, :show_html, :edit_html
@@ -102,6 +102,10 @@ module AutoForme
 
     def pagination_strategy_for(type, request)
       handle_proc(pagination_strategy || framework.pagination_strategy_for(model, type, request), type, request) || DEFAULT_PAGINATION_STRATEGY
+    end
+
+    def column_search_filter_for(dataset, column, value, request)
+      handle_proc(column_search_filter || framework.column_search_filter_for(model, dataset, column, value, request), dataset, column, value, request)
     end
 
     # The options to use for the given column and request.  Instead of the model options overriding the framework

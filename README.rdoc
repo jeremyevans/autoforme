@@ -132,6 +132,9 @@ autocomplete_options :: Enable autocompletion for this model, with the given
                         :limit :: The number of results to return
                         :filter :: Similar to callback, but overriding the default filter
                                    (a case insensitive substring search on display)
+column_search_filter :: This should be a Proc that accepts a dataset, column, value, and request,
+                        and returns a filtered dataset. This allows for customizing the search filtering,
+                        so you can use non-columns/non-associations on the search form.
 eager :: Array of associations to eagerly load in separate queries
 eager_graph :: Array of associations to eager load in the same query
                (necessary if order or filter refers to them)
