@@ -144,6 +144,8 @@ inline_mtm_associations :: Array of many to many association symbols to allow ed
 lazy_load_association_links :: Whether to show the association links directly on the show/edit pages,
                                or to load them via ajax on request
 mtm_associations :: Array of many to many association symbols to support editing on a separate page 
+pagination_strategy :: Set to :filter to paginate using a filter instead of using offsets. This requires
+                       the column have an unambiguous order.
 per_page :: Number of records to show per page on the browse and search pages
 session_value :: Sets up a filter and before_create hook that makes it so access is limited
                  to objects where the object's column value is the same as the session value
