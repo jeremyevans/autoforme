@@ -1,6 +1,6 @@
 require 'roda'
+require 'securerandom'
 require_relative '../lib/autoforme'
-require 'rack/csrf'
 
 begin
   require 'tilt/erubi'
@@ -62,6 +62,7 @@ HTML
           check_csrf = true
           plugin :route_csrf, :require_request_specific_tokens=>ENV['RODA_ROUTE_CSRF'] == '1'
         else
+          require 'rack/csrf'
           use Rack::Csrf
         end
       end
