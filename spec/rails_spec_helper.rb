@@ -118,6 +118,11 @@ HTML
       end
       if Rails.version > '8'
         config.active_support.to_time_preserves_timezone = :zone
+        if defined?(Rails::Application::RoutesReloader)
+          Rails::Application::RoutesReloader.prepend(Module.new do
+            def paths; []; end
+          end)
+        end
       end
       initialize!
     end
