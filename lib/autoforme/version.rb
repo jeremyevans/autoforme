@@ -6,7 +6,7 @@ module AutoForme
   MAJOR = 1
 
   # The minor version of AutoForme, updated for new feature releases of AutoForme.
-  MINOR = 13
+  MINOR = 14
 
   # The patch version of AutoForme, updated only for bug fixes from the last
   # feature release.
