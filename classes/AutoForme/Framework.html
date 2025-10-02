@@ -55,6 +55,7 @@ Superclass:
 <li><a href="#method-i-action_for">action_for</a></li>
 <li><a href="#method-i-association_links_for">association_links_for</a></li>
 <li><a href="#method-i-autocomplete_options_for">autocomplete_options_for</a></li>
+<li><a href="#method-i-column_search_filter_for">column_search_filter_for</a></li>
 <li><a href="#method-i-columns_for">columns_for</a></li>
 <li><a href="#attribute-i-controller">controller</a></li>
 <li><a href="#method-i-display_name_for">display_name_for</a></li>
@@ -74,6 +75,7 @@ Superclass:
 <li><a href="#method-i-order_for">order_for</a></li>
 <li><a href="#method-i-page_footer_for">page_footer_for</a></li>
 <li><a href="#method-i-page_header_for">page_header_for</a></li>
+<li><a href="#method-i-pagination_strategy_for">pagination_strategy_for</a></li>
 <li><a href="#attribute-i-prefix">prefix</a></li>
 <li><a href="#method-i-redirect_for">redirect_for</a></li>
 <li><a href="#method-i-register_by_name">register_by_name</a></li>
@@ -225,12 +227,12 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-action_for-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
-<span class="line-num">158</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">action_for</span>(<span class="ruby-identifier">request</span>)
-<span class="line-num">159</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">model</span> = <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">request</span>.<span class="ruby-identifier">model</span>]
-<span class="line-num">160</span>     <span class="ruby-identifier">action</span> = <span class="ruby-constant">Action</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">161</span>     <span class="ruby-identifier">action</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">action</span>.<span class="ruby-identifier">supported?</span>
-<span class="line-num">162</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">163</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">166</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">action_for</span>(<span class="ruby-identifier">request</span>)
+<span class="line-num">167</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">model</span> = <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">request</span>.<span class="ruby-identifier">model</span>]
+<span class="line-num">168</span>     <span class="ruby-identifier">action</span> = <span class="ruby-constant">Action</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">169</span>     <span class="ruby-identifier">action</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">action</span>.<span class="ruby-identifier">supported?</span>
+<span class="line-num">170</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">171</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-association_links_for'>
@@ -269,6 +271,25 @@ Superclass:
 <span class="line-num">113</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autocomplete_options_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
 <span class="line-num">114</span>   <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">autocomplete_options</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
 <span class="line-num">115</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-column_search_filter_for'>
+<a name='method-i-column_search_filter_for'></a>
+<div class='synopsis'>
+<span class='name'>column_search_filter_for</span><span class='arguments'>(model, dataset, column, value, request)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-column_search_filter_for-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-column_search_filter_for-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
+<span class="line-num">121</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">column_search_filter_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">dataset</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">122</span>   <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">column_search_filter</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">dataset</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">123</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-columns_for'>
@@ -323,9 +344,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-edit_html_for-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
-<span class="line-num">125</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">edit_html_for</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">126</span>   <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">edit_html</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">127</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">133</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">edit_html_for</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">134</span>   <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">edit_html</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">135</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-filter_for'>
@@ -458,13 +479,13 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-model-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
-<span class="line-num">148</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">model</span>(<span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
-<span class="line-num">149</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">register_by_name?</span>
-<span class="line-num">150</span>     <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">name</span>
-<span class="line-num">151</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">152</span>   <span class="ruby-identifier">model</span> = <span class="ruby-ivar">@model_classes</span>[<span class="ruby-identifier">model_class</span>] = <span class="ruby-constant">Model</span>.<span class="ruby-identifier">for</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">model_type</span>, <span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
-<span class="line-num">153</span>   <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">model</span>.<span class="ruby-identifier">link</span>] = <span class="ruby-identifier">model</span>
-<span class="line-num">154</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">156</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">model</span>(<span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">157</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">register_by_name?</span>
+<span class="line-num">158</span>     <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">name</span>
+<span class="line-num">159</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">160</span>   <span class="ruby-identifier">model</span> = <span class="ruby-ivar">@model_classes</span>[<span class="ruby-identifier">model_class</span>] = <span class="ruby-constant">Model</span>.<span class="ruby-identifier">for</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">model_type</span>, <span class="ruby-identifier">model_class</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">161</span>   <span class="ruby-ivar">@models</span>[<span class="ruby-identifier">model</span>.<span class="ruby-identifier">link</span>] = <span class="ruby-identifier">model</span>
+<span class="line-num">162</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-model_class'>
@@ -483,12 +504,12 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-model_class-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
-<span class="line-num">140</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">model_class</span>(<span class="ruby-identifier">model_class</span>)
-<span class="line-num">141</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">register_by_name?</span>
-<span class="line-num">142</span>     <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">name</span>
-<span class="line-num">143</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">144</span>   <span class="ruby-ivar">@model_classes</span>[<span class="ruby-identifier">model_class</span>]
-<span class="line-num">145</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">148</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">model_class</span>(<span class="ruby-identifier">model_class</span>)
+<span class="line-num">149</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">register_by_name?</span>
+<span class="line-num">150</span>     <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">name</span>
+<span class="line-num">151</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">152</span>   <span class="ruby-ivar">@model_classes</span>[<span class="ruby-identifier">model_class</span>]
+<span class="line-num">153</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-mtm_associations_for'>
@@ -567,6 +588,25 @@ Superclass:
 <span class="line-num">107</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
+<div class='method public-instance' id='method-method-i-pagination_strategy_for'>
+<a name='method-i-pagination_strategy_for'></a>
+<div class='synopsis'>
+<span class='name'>pagination_strategy_for</span><span class='arguments'>(model, type, request)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-pagination_strategy_for-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-pagination_strategy_for-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
+<span class="line-num">125</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">pagination_strategy_for</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">126</span>   <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">pagination_strategy</span>, <span class="ruby-identifier">model</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">127</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
 <div class='method public-instance' id='method-method-i-redirect_for'>
 <a name='method-i-redirect_for'></a>
 <div class='synopsis'>
@@ -602,9 +642,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-register_by_name-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
-<span class="line-num">130</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">register_by_name</span>(<span class="ruby-identifier">register</span>=<span class="ruby-keyword">true</span>)
-<span class="line-num">131</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:register_by_name</span>] = <span class="ruby-identifier">register</span>
-<span class="line-num">132</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">138</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">register_by_name</span>(<span class="ruby-identifier">register</span>=<span class="ruby-keyword">true</span>)
+<span class="line-num">139</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:register_by_name</span>] = <span class="ruby-identifier">register</span>
+<span class="line-num">140</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-register_by_name-3F'>
@@ -623,9 +663,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-register_by_name-3F-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
-<span class="line-num">135</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">register_by_name?</span>
-<span class="line-num">136</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:register_by_name</span>]
-<span class="line-num">137</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">143</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">register_by_name?</span>
+<span class="line-num">144</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:register_by_name</span>]
+<span class="line-num">145</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-show_html_for'>
@@ -642,9 +682,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-show_html_for-source'>    <span class="ruby-comment"># File lib/autoforme/framework.rb</span>
-<span class="line-num">121</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show_html_for</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">122</span>   <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">show_html</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">123</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">129</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show_html_for</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">130</span>   <span class="ruby-identifier">handle_proc</span>(<span class="ruby-identifier">show_html</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">column</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">131</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-supported_actions_for'>

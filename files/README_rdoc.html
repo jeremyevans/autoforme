@@ -29,10 +29,6 @@
 <div class='paths'>
 README.rdoc
 </div>
-<div class='last-update'>
-Last Update:
-<span class='datetime'>2022-06-28 09:27:52 -0700</span>
-</div>
 </div>
 <div id='content'>
 <div id='text'>
@@ -95,7 +91,7 @@ Last Update:
 <span class="ruby-keyword">end</span>
 </pre>
 
-<p>Let’s break down how this works.  You setup <a href="../classes/AutoForme.html"><code>AutoForme</code></a> using <code>AutoForme.for</code>, which takes 2 arguments, the controller type symbol (currently either :sinatra, :roda, or :rails), and the controller class (either a Sinatra::Base, <a href="../classes/Roda.html"><code>Roda</code></a>, or ActionController::Base subclass).  You pass <code>AutoForme.for</code> a block, which is instance evaled at the framework level.  This level sets the defaults.</p>
+<p>Let’s break down how this works.  You setup <a href="../classes/AutoForme.html"><code>AutoForme</code></a> using <a href="../classes/AutoForme.html#method-c-for"><code>AutoForme.for</code></a>, which takes 2 arguments, the controller type symbol (currently either :sinatra, :roda, or :rails), and the controller class (either a Sinatra::Base, <a href="../classes/Roda.html"><code>Roda</code></a>, or ActionController::Base subclass).  You pass <a href="../classes/AutoForme.html#method-c-for"><code>AutoForme.for</code></a> a block, which is instance evaled at the framework level.  This level sets the defaults.</p>
 
 <p>The order call in the framework block sets the default order for all models.</p>
 
@@ -122,7 +118,7 @@ Last Update:
 
 <h2 id="label-Basic+Implementation">Basic Implementation<span><a href="#label-Basic+Implementation">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
-<p>The web framework controllers call <code>AutoForme.for</code> to create <a href="../classes/AutoForme/Framework.html"><code>AutoForme::Framework</code></a> instances, which contain and set default values for <a href="../classes/AutoForme/Model.html"><code>AutoForme::Model</code></a> instances.</p>
+<p>The web framework controllers call <a href="../classes/AutoForme.html#method-c-for"><code>AutoForme.for</code></a> to create <a href="../classes/AutoForme/Framework.html"><code>AutoForme::Framework</code></a> instances, which contain and set default values for <a href="../classes/AutoForme/Model.html"><code>AutoForme::Model</code></a> instances.</p>
 
 <p>When a request comes in from the web framework, the <a href="../classes/AutoForme/Framework.html"><code>AutoForme::Framework</code></a> instance wraps request-level data in a <a href="../classes/AutoForme/Request.html"><code>AutoForme::Request</code></a>.  Then it creates an <a href="../classes/AutoForme/Action.html"><code>AutoForme::Action</code></a> to handle this request.  The <a href="../classes/AutoForme/Action.html"><code>AutoForme::Action</code></a> either returns a string that the web framework then renders, or it redirects to another page.</p>
 
@@ -162,6 +158,8 @@ Last Update:
 </td></tr><tr><td class='label'>:filter </td><td>
 <p>Similar to callback, but overriding the default filter (a case insensitive substring search on display)</p>
 </td></tr></tbody></table>
+</td></tr><tr><td class='label'>column_search_filter </td><td>
+<p>This should be a Proc that accepts a dataset, column, value, and request, and returns a filtered dataset. This allows for customizing the search filtering, so you can use non-columns/non-associations on the search form.</p>
 </td></tr><tr><td class='label'>eager </td><td>
 <p>Array of associations to eagerly load in separate queries</p>
 </td></tr><tr><td class='label'>eager_graph </td><td>
@@ -176,6 +174,8 @@ Last Update:
 <p>Whether to show the association links directly on the show/edit pages, or to load them via ajax on request</p>
 </td></tr><tr><td class='label'>mtm_associations </td><td>
 <p>Array of many to many association symbols to support editing on a separate page</p>
+</td></tr><tr><td class='label'>pagination_strategy </td><td>
+<p>Set to :filter to paginate using a filter instead of using offsets. This requires the column have an unambiguous order.</p>
 </td></tr><tr><td class='label'>per_page </td><td>
 <p>Number of records to show per page on the browse and search pages</p>
 </td></tr><tr><td class='label'>session_value </td><td>
@@ -269,7 +269,7 @@ Last Update:
 
 <h1 id="label-Rails">Rails<span><a href="#label-Rails">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
-<p>Because Rails separates routing from request handling, it can be little awkward to use <a href="../classes/AutoForme.html"><code>AutoForme</code></a> in Rails development mode.  The best way to handle it is to call <code>AutoForme.for</code> in the related controller file, and have an initializer reference the controller class, causing the controller file to be loaded.</p>
+<p>Because Rails separates routing from request handling, it can be little awkward to use <a href="../classes/AutoForme.html"><code>AutoForme</code></a> in Rails development mode.  The best way to handle it is to call <a href="../classes/AutoForme.html#method-c-for"><code>AutoForme.for</code></a> in the related controller file, and have an initializer reference the controller class, causing the controller file to be loaded.</p>
 
 <h1 id="label-Roda"><a href="../classes/Roda.html"><code>Roda</code></a><span><a href="#label-Roda">&para;</a> <a href="#top">&uarr;</a></span></h1>
 

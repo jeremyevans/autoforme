@@ -41,6 +41,7 @@ Roda::RodaPlugins::AutoForme::ClassMethods
 <h3>Public Instance</h3>
 <ol>
 <li><a href="#method-i-autoforme">autoforme</a></li>
+<li><a href="#method-i-autoforme_framework">autoforme_framework</a></li>
 <li><a href="#method-i-autoforme_route">autoforme_route</a></li>
 <li><a href="#method-i-inherited">inherited</a></li>
 </ol>
@@ -66,9 +67,31 @@ Roda::RodaPlugins::AutoForme::ClassMethods
 [show source]
 </a>
 <pre id='method-i-autoforme-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>
-<span class="line-num">28</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme</span>(<span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
-<span class="line-num">29</span>   <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">opts</span>[<span class="ruby-value">:name</span>]] = <span class="ruby-operator">::</span><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:roda</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">route_proc</span>
-<span class="line-num">30</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">29</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme</span>(<span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">30</span>   <span class="ruby-identifier">framework</span> = <span class="ruby-ivar">@autoforme_frameworks</span>[<span class="ruby-identifier">opts</span>[<span class="ruby-value">:name</span>]] = <span class="ruby-operator">::</span><span class="ruby-constant">AutoForme</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:roda</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">31</span>   <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">opts</span>[<span class="ruby-value">:name</span>]] = <span class="ruby-identifier">framework</span>.<span class="ruby-identifier">route_proc</span>
+<span class="line-num">32</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-autoforme_framework'>
+<a name='method-i-autoforme_framework'></a>
+<div class='synopsis'>
+<span class='name'>autoforme_framework</span><span class='arguments'>(name=nil)</span>
+
+</div>
+<div class='description'>
+
+<p>Retrieve the framework the named or default <a href="../AutoForme.html"><code>AutoForme</code></a>.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-autoforme_framework-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-autoforme_framework-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>
+<span class="line-num">35</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme_framework</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)
+<span class="line-num">36</span>   <span class="ruby-ivar">@autoforme_frameworks</span>[<span class="ruby-identifier">name</span>]
+<span class="line-num">37</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-autoforme_route'>
@@ -87,9 +110,9 @@ Roda::RodaPlugins::AutoForme::ClassMethods
 [show source]
 </a>
 <pre id='method-i-autoforme_route-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>
-<span class="line-num">33</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme_route</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)
-<span class="line-num">34</span>   <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">name</span>]
-<span class="line-num">35</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">40</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autoforme_route</span>(<span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span>)
+<span class="line-num">41</span>   <span class="ruby-ivar">@autoforme_routes</span>[<span class="ruby-identifier">name</span>]
+<span class="line-num">42</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-inherited'>
@@ -108,10 +131,11 @@ Roda::RodaPlugins::AutoForme::ClassMethods
 [show source]
 </a>
 <pre id='method-i-inherited-source'>   <span class="ruby-comment"># File lib/roda/plugins/autoforme.rb</span>
-<span class="line-num">38</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inherited</span>(<span class="ruby-identifier">subclass</span>)
-<span class="line-num">39</span>   <span class="ruby-keyword">super</span>
-<span class="line-num">40</span>   <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value">:@autoforme_routes</span>, <span class="ruby-ivar">@autoforme_routes</span>.<span class="ruby-identifier">dup</span>)
-<span class="line-num">41</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">45</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">inherited</span>(<span class="ruby-identifier">subclass</span>)
+<span class="line-num">46</span>   <span class="ruby-keyword">super</span>
+<span class="line-num">47</span>   <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value">:@autoforme_frameworks</span>, <span class="ruby-ivar">@autoforme_frameworks</span>.<span class="ruby-identifier">dup</span>)
+<span class="line-num">48</span>   <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-value">:@autoforme_routes</span>, <span class="ruby-ivar">@autoforme_routes</span>.<span class="ruby-identifier">dup</span>)
+<span class="line-num">49</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>

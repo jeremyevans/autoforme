@@ -74,16 +74,19 @@ Superclass:
 <pre id='method-c-new-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/rails.rb</span>
 <span class="line-num"> 7</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">request</span>)
 <span class="line-num"> 8</span>   <span class="ruby-ivar">@controller</span> = <span class="ruby-identifier">request</span>
-<span class="line-num"> 9</span>   <span class="ruby-ivar">@params</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">params</span>
-<span class="line-num">10</span>   <span class="ruby-ivar">@session</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">session</span>
-<span class="line-num">11</span>   <span class="ruby-ivar">@env</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>
-<span class="line-num">12</span>   <span class="ruby-ivar">@method</span> = <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;REQUEST_METHOD&#39;</span>]
-<span class="line-num">13</span>   <span class="ruby-ivar">@model</span> = <span class="ruby-ivar">@params</span>[<span class="ruby-string">&#39;autoforme_model&#39;</span>]
-<span class="line-num">14</span>   <span class="ruby-ivar">@action_type</span> = <span class="ruby-ivar">@params</span>[<span class="ruby-string">&#39;autoforme_action&#39;</span>]
-<span class="line-num">15</span>   <span class="ruby-ivar">@path</span> = <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;SCRIPT_NAME&#39;</span>]
-<span class="line-num">16</span>   <span class="ruby-ivar">@id</span> = <span class="ruby-ivar">@params</span>[<span class="ruby-string">&#39;id&#39;</span>]
-<span class="line-num">17</span>   <span class="ruby-ivar">@id</span> = <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@id</span>.<span class="ruby-identifier">empty?</span>
-<span class="line-num">18</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num"> 9</span>   <span class="ruby-ivar">@params</span> = {}
+<span class="line-num">10</span>   <span class="ruby-identifier">request</span>.<span class="ruby-identifier">params</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+<span class="line-num">11</span>     <span class="ruby-ivar">@params</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">v</span>
+<span class="line-num">12</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">13</span>   <span class="ruby-ivar">@session</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">session</span>
+<span class="line-num">14</span>   <span class="ruby-ivar">@env</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>
+<span class="line-num">15</span>   <span class="ruby-ivar">@method</span> = <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;REQUEST_METHOD&#39;</span>]
+<span class="line-num">16</span>   <span class="ruby-ivar">@model</span> = <span class="ruby-ivar">@params</span>[<span class="ruby-string">&#39;autoforme_model&#39;</span>]
+<span class="line-num">17</span>   <span class="ruby-ivar">@action_type</span> = <span class="ruby-ivar">@params</span>[<span class="ruby-string">&#39;autoforme_action&#39;</span>]
+<span class="line-num">18</span>   <span class="ruby-ivar">@path</span> = <span class="ruby-ivar">@env</span>[<span class="ruby-string">&#39;SCRIPT_NAME&#39;</span>]
+<span class="line-num">19</span>   <span class="ruby-ivar">@id</span> = <span class="ruby-ivar">@params</span>[<span class="ruby-string">&#39;id&#39;</span>]
+<span class="line-num">20</span>   <span class="ruby-ivar">@id</span> = <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@id</span>.<span class="ruby-identifier">empty?</span>
+<span class="line-num">21</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <h2>Public Instance methods</h2>
@@ -103,14 +106,14 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-csrf_token_hash-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/rails.rb</span>
-<span class="line-num">32</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">csrf_token_hash</span>(<span class="ruby-identifier">action</span>=<span class="ruby-keyword">nil</span>)
-<span class="line-num">33</span>   <span class="ruby-identifier">vc</span> = <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">view_context</span>
-<span class="line-num">34</span>   <span class="ruby-comment"># :nocov:</span>
-<span class="line-num">35</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">vc</span>.<span class="ruby-identifier">protect_against_forgery?</span>
-<span class="line-num">36</span>   <span class="ruby-comment"># :nocov:</span>
-<span class="line-num">37</span>     {<span class="ruby-identifier">vc</span>.<span class="ruby-identifier">request_forgery_protection_token</span>.<span class="ruby-identifier">to_s</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">vc</span>.<span class="ruby-identifier">form_authenticity_token</span>}
-<span class="line-num">38</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">39</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">35</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">csrf_token_hash</span>(<span class="ruby-identifier">action</span>=<span class="ruby-keyword">nil</span>)
+<span class="line-num">36</span>   <span class="ruby-identifier">vc</span> = <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">view_context</span>
+<span class="line-num">37</span>   <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">38</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">vc</span>.<span class="ruby-identifier">protect_against_forgery?</span>
+<span class="line-num">39</span>   <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">40</span>     {<span class="ruby-identifier">vc</span>.<span class="ruby-identifier">request_forgery_protection_token</span>.<span class="ruby-identifier">to_s</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">vc</span>.<span class="ruby-identifier">form_authenticity_token</span>}
+<span class="line-num">41</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">42</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-redirect'>
@@ -129,9 +132,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-redirect-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/rails.rb</span>
-<span class="line-num">22</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">redirect</span>(<span class="ruby-identifier">path</span>)
-<span class="line-num">23</span>   <span class="ruby-identifier">throw</span> <span class="ruby-value">:redirect</span>, <span class="ruby-identifier">path</span>
-<span class="line-num">24</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">25</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">redirect</span>(<span class="ruby-identifier">path</span>)
+<span class="line-num">26</span>   <span class="ruby-identifier">throw</span> <span class="ruby-value">:redirect</span>, <span class="ruby-identifier">path</span>
+<span class="line-num">27</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-xhr-3F'>
@@ -150,9 +153,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-xhr-3F-source'>   <span class="ruby-comment"># File lib/autoforme/frameworks/rails.rb</span>
-<span class="line-num">27</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">xhr?</span>
-<span class="line-num">28</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
-<span class="line-num">29</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">30</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">xhr?</span>
+<span class="line-num">31</span>   <span class="ruby-ivar">@controller</span>.<span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
+<span class="line-num">32</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 </div>

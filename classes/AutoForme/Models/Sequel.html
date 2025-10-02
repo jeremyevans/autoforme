@@ -189,19 +189,19 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-apply_associated_eager-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">228</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">apply_associated_eager</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
-<span class="line-num">229</span>   <span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>
-<span class="line-num">230</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">col</span>)
-<span class="line-num">231</span>       <span class="ruby-keyword">if</span> <span class="ruby-identifier">model</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">col</span>)
-<span class="line-num">232</span>         <span class="ruby-identifier">eager</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">eager_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">model</span>.<span class="ruby-identifier">eager_graph_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">233</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">col</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">eager</span>)
-<span class="line-num">234</span>       <span class="ruby-keyword">else</span>
-<span class="line-num">235</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">col</span>)
-<span class="line-num">236</span>       <span class="ruby-keyword">end</span>
-<span class="line-num">237</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">238</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">239</span>   <span class="ruby-identifier">ds</span>
-<span class="line-num">240</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">249</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">apply_associated_eager</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
+<span class="line-num">250</span>   <span class="ruby-identifier">columns_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>
+<span class="line-num">251</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">col</span>)
+<span class="line-num">252</span>       <span class="ruby-keyword">if</span> <span class="ruby-identifier">model</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">col</span>)
+<span class="line-num">253</span>         <span class="ruby-identifier">eager</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">eager_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">model</span>.<span class="ruby-identifier">eager_graph_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">254</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">col</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">eager</span>)
+<span class="line-num">255</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">256</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">col</span>)
+<span class="line-num">257</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">258</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">259</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">260</span>   <span class="ruby-identifier">ds</span>
+<span class="line-num">261</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-apply_dataset_options'>
@@ -220,19 +220,19 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-apply_dataset_options-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">256</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">apply_dataset_options</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
-<span class="line-num">257</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">apply_filter</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
-<span class="line-num">258</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">order</span> = <span class="ruby-identifier">order_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">259</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">order</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">order</span>)
-<span class="line-num">260</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">261</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">eager</span> = <span class="ruby-identifier">eager_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">262</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">eager</span>)
-<span class="line-num">263</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">264</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">eager_graph</span> = <span class="ruby-identifier">eager_graph_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">265</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager_graph</span>(<span class="ruby-identifier">eager_graph</span>)
-<span class="line-num">266</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">267</span>   <span class="ruby-identifier">ds</span>
-<span class="line-num">268</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">277</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">apply_dataset_options</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
+<span class="line-num">278</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">apply_filter</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
+<span class="line-num">279</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">order</span> = <span class="ruby-identifier">order_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">280</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">order</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">order</span>)
+<span class="line-num">281</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">282</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">eager</span> = <span class="ruby-identifier">eager_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">283</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager</span>(<span class="ruby-identifier">eager</span>)
+<span class="line-num">284</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">285</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">eager_graph</span> = <span class="ruby-identifier">eager_graph_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">286</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">eager_graph</span>(<span class="ruby-identifier">eager_graph</span>)
+<span class="line-num">287</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">288</span>   <span class="ruby-identifier">ds</span>
+<span class="line-num">289</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-apply_filter'>
@@ -251,12 +251,12 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-apply_filter-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">248</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">apply_filter</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
-<span class="line-num">249</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter</span> = <span class="ruby-identifier">filter_for</span>
-<span class="line-num">250</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">251</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">252</span>   <span class="ruby-identifier">ds</span>
-<span class="line-num">253</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">269</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">apply_filter</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
+<span class="line-num">270</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter</span> = <span class="ruby-identifier">filter_for</span>
+<span class="line-num">271</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">272</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">273</span>   <span class="ruby-identifier">ds</span>
+<span class="line-num">274</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-associated_class'>
@@ -296,13 +296,13 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-associated_mtm_objects-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">340</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">associated_mtm_objects</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>)
-<span class="line-num">341</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{assoc}_dataset&quot;</span>)
-<span class="line-num">342</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)
-<span class="line-num">343</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">apply_dataset_options</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
-<span class="line-num">344</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">345</span>   <span class="ruby-identifier">ds</span>
-<span class="line-num">346</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">361</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">associated_mtm_objects</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>)
+<span class="line-num">362</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{assoc}_dataset&quot;</span>)
+<span class="line-num">363</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)
+<span class="line-num">364</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">apply_dataset_options</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>)
+<span class="line-num">365</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">366</span>   <span class="ruby-identifier">ds</span>
+<span class="line-num">367</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-associated_new_column_values'>
@@ -369,9 +369,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-association_autocomplete-3F-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">271</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">association_autocomplete?</span>(<span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">272</span>   (<span class="ruby-identifier">c</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">273</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">292</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">association_autocomplete?</span>(<span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">293</span>   (<span class="ruby-identifier">c</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">294</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-association_key'>
@@ -474,32 +474,32 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-autocomplete-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">282</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autocomplete</span>(<span class="ruby-identifier">opts</span>={})
-<span class="line-num">283</span>   <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">query</span>, <span class="ruby-identifier">exclude</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">values_at</span>(<span class="ruby-value">:type</span>, <span class="ruby-value">:request</span>, <span class="ruby-value">:association</span>, <span class="ruby-value">:query</span>, <span class="ruby-value">:exclude</span>)
-<span class="line-num">284</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc</span>
-<span class="line-num">285</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">exclude</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">association_type</span>(<span class="ruby-identifier">assoc</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:edit</span>
-<span class="line-num">286</span>       <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)
-<span class="line-num">287</span>       <span class="ruby-identifier">block</span> = <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>
-<span class="line-num">288</span>         <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">exclude</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">right_primary_key</span>)<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">from</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:join_table</span>]).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:left_key</span>]<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">exclude</span>).<span class="ruby-identifier">select</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:right_key</span>]))
-<span class="line-num">289</span>       <span class="ruby-keyword">end</span>
-<span class="line-num">290</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">291</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>).<span class="ruby-identifier">autocomplete</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:type</span><span class="ruby-operator">=&gt;</span><span class="ruby-value">:association</span>, <span class="ruby-value">:association</span><span class="ruby-operator">=&gt;</span><span class="ruby-keyword">nil</span>), <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
-<span class="line-num">292</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">293</span>   <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">294</span>   <span class="ruby-identifier">callback_opts</span> = {<span class="ruby-value">:type</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">type</span>, <span class="ruby-value">:request</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">request</span>, <span class="ruby-value">:query</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">query</span>}
-<span class="line-num">295</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">296</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:callback</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:callback</span>]
-<span class="line-num">297</span>   <span class="ruby-identifier">display</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:display</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-value">:name</span>)
-<span class="line-num">298</span>   <span class="ruby-identifier">display</span> = <span class="ruby-identifier">display</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">display</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:call</span>)
-<span class="line-num">299</span>   <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:limit</span>] <span class="ruby-operator">||</span> <span class="ruby-value">10</span>
-<span class="line-num">300</span>   <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:call</span>)
-<span class="line-num">301</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:filter</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">lambda</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">ds1</span>, <span class="ruby-identifier">_</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ds1</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">ilike</span>(<span class="ruby-identifier">display</span>, <span class="ruby-node">&quot;%#{ds.escape_like(query)}%&quot;</span>))}
-<span class="line-num">302</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:filter</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">callback_opts</span>)
-<span class="line-num">303</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">select</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">join</span>([<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">model</span>.<span class="ruby-identifier">primary_key</span>), <span class="ruby-identifier">display</span>], <span class="ruby-string">&#39; - &#39;</span>).<span class="ruby-identifier">as</span>(<span class="ruby-value">:v</span>)).
-<span class="line-num">304</span>     <span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
-<span class="line-num">305</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-keyword">yield</span> <span class="ruby-identifier">ds</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
-<span class="line-num">306</span>   <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">map</span>(<span class="ruby-value">:v</span>)
-<span class="line-num">307</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">303</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">autocomplete</span>(<span class="ruby-identifier">opts</span>={})
+<span class="line-num">304</span>   <span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">query</span>, <span class="ruby-identifier">exclude</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">values_at</span>(<span class="ruby-value">:type</span>, <span class="ruby-value">:request</span>, <span class="ruby-value">:association</span>, <span class="ruby-value">:query</span>, <span class="ruby-value">:exclude</span>)
+<span class="line-num">305</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc</span>
+<span class="line-num">306</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">exclude</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">association_type</span>(<span class="ruby-identifier">assoc</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:edit</span>
+<span class="line-num">307</span>       <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)
+<span class="line-num">308</span>       <span class="ruby-identifier">block</span> = <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>
+<span class="line-num">309</span>         <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">exclude</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">right_primary_key</span>)<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">from</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:join_table</span>]).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:left_key</span>]<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">exclude</span>).<span class="ruby-identifier">select</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:right_key</span>]))
+<span class="line-num">310</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">311</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">312</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>).<span class="ruby-identifier">autocomplete</span>(<span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:type</span><span class="ruby-operator">=&gt;</span><span class="ruby-value">:association</span>, <span class="ruby-value">:association</span><span class="ruby-operator">=&gt;</span><span class="ruby-keyword">nil</span>), <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">313</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">314</span>   <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">autocomplete_options_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">315</span>   <span class="ruby-identifier">callback_opts</span> = {<span class="ruby-value">:type</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">type</span>, <span class="ruby-value">:request</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">request</span>, <span class="ruby-value">:query</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">query</span>}
+<span class="line-num">316</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">317</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:callback</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:callback</span>]
+<span class="line-num">318</span>   <span class="ruby-identifier">display</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:display</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-value">:name</span>)
+<span class="line-num">319</span>   <span class="ruby-identifier">display</span> = <span class="ruby-identifier">display</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">display</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:call</span>)
+<span class="line-num">320</span>   <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:limit</span>] <span class="ruby-operator">||</span> <span class="ruby-value">10</span>
+<span class="line-num">321</span>   <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">callback_opts</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:call</span>)
+<span class="line-num">322</span>   <span class="ruby-identifier">opts</span>[<span class="ruby-value">:filter</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">lambda</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">ds1</span>, <span class="ruby-identifier">_</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ds1</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">ilike</span>(<span class="ruby-identifier">display</span>, <span class="ruby-node">&quot;%#{ds.escape_like(query)}%&quot;</span>))}
+<span class="line-num">323</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:filter</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">callback_opts</span>)
+<span class="line-num">324</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">select</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">join</span>([<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">model</span>.<span class="ruby-identifier">primary_key</span>), <span class="ruby-identifier">display</span>], <span class="ruby-string">&#39; - &#39;</span>).<span class="ruby-identifier">as</span>(<span class="ruby-value">:v</span>)).
+<span class="line-num">325</span>     <span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+<span class="line-num">326</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-keyword">yield</span> <span class="ruby-identifier">ds</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+<span class="line-num">327</span>   <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">map</span>(<span class="ruby-value">:v</span>)
+<span class="line-num">328</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-base_class'>
@@ -539,9 +539,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-browse-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">206</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">browse</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">opts</span>={})
-<span class="line-num">207</span>   <span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">apply_associated_eager</span>(<span class="ruby-value">:browse</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)), <span class="ruby-identifier">opts</span>)
-<span class="line-num">208</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">208</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">browse</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">opts</span>={})
+<span class="line-num">209</span>   <span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">apply_associated_eager</span>(<span class="ruby-value">:browse</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)), <span class="ruby-identifier">opts</span>)
+<span class="line-num">210</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-column_type'>
@@ -560,9 +560,9 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-column_type-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">243</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">column_type</span>(<span class="ruby-identifier">column</span>)
-<span class="line-num">244</span>   (<span class="ruby-identifier">sch</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db_schema</span>[<span class="ruby-identifier">column</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">sch</span>[<span class="ruby-value">:type</span>]
-<span class="line-num">245</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">264</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">column_type</span>(<span class="ruby-identifier">column</span>)
+<span class="line-num">265</span>   (<span class="ruby-identifier">sch</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db_schema</span>[<span class="ruby-identifier">column</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">sch</span>[<span class="ruby-value">:type</span>]
+<span class="line-num">266</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-default_columns'>
@@ -674,33 +674,33 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-mtm_update-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">311</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">mtm_update</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">add</span>, <span class="ruby-identifier">remove</span>)
-<span class="line-num">312</span>   <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)
-<span class="line-num">313</span>   <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)
-<span class="line-num">314</span>   <span class="ruby-identifier">ret</span> = <span class="ruby-keyword">nil</span>
-<span class="line-num">315</span>   <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
-<span class="line-num">316</span>     [[<span class="ruby-identifier">add</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">add_method</span>], [<span class="ruby-identifier">remove</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">remove_method</span>]].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ids</span>, <span class="ruby-identifier">meth</span><span class="ruby-operator">|</span>
-<span class="line-num">317</span>       <span class="ruby-keyword">if</span> <span class="ruby-identifier">ids</span>
-<span class="line-num">318</span>         <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
-<span class="line-num">319</span>           <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
-<span class="line-num">320</span>           <span class="ruby-identifier">ret</span> = <span class="ruby-identifier">assoc_class</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">with_pk</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">id</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:_apply_association_options</span>, <span class="ruby-identifier">ref</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">clone</span>).<span class="ruby-identifier">with_pk!</span>(<span class="ruby-identifier">id</span>)
-<span class="line-num">321</span>           <span class="ruby-keyword">begin</span>
-<span class="line-num">322</span>             <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">transaction</span>(<span class="ruby-value">:savepoint</span><span class="ruby-operator">=&gt;</span><span class="ruby-keyword">true</span>){<span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-identifier">ret</span>)}
-<span class="line-num">323</span>           <span class="ruby-keyword">rescue</span> <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">UniqueConstraintViolation</span>
-<span class="line-num">324</span>             <span class="ruby-comment"># Already added, safe to ignore</span>
-<span class="line-num">325</span>           <span class="ruby-keyword">rescue</span> <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">ConstraintViolation</span>
-<span class="line-num">326</span>             <span class="ruby-comment"># Old versions of sqlite3 and jdbc-sqlite3 can raise generic</span>
-<span class="line-num">327</span>             <span class="ruby-comment"># ConstraintViolation instead of UniqueConstraintViolation</span>
-<span class="line-num">328</span>             <span class="ruby-comment"># :nocov:</span>
-<span class="line-num">329</span>             <span class="ruby-identifier">raise</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">database_type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:sqlite</span>
-<span class="line-num">330</span>             <span class="ruby-comment"># :nocov:</span>
-<span class="line-num">331</span>           <span class="ruby-keyword">end</span>
-<span class="line-num">332</span>         <span class="ruby-keyword">end</span>
-<span class="line-num">333</span>       <span class="ruby-keyword">end</span>
-<span class="line-num">334</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">335</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">336</span>   <span class="ruby-identifier">ret</span>
-<span class="line-num">337</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">332</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">mtm_update</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">add</span>, <span class="ruby-identifier">remove</span>)
+<span class="line-num">333</span>   <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)
+<span class="line-num">334</span>   <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)
+<span class="line-num">335</span>   <span class="ruby-identifier">ret</span> = <span class="ruby-keyword">nil</span>
+<span class="line-num">336</span>   <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+<span class="line-num">337</span>     [[<span class="ruby-identifier">add</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">add_method</span>], [<span class="ruby-identifier">remove</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">remove_method</span>]].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ids</span>, <span class="ruby-identifier">meth</span><span class="ruby-operator">|</span>
+<span class="line-num">338</span>       <span class="ruby-keyword">if</span> <span class="ruby-identifier">ids</span>
+<span class="line-num">339</span>         <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+<span class="line-num">340</span>           <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
+<span class="line-num">341</span>           <span class="ruby-identifier">ret</span> = <span class="ruby-identifier">assoc_class</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">with_pk</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">id</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:_apply_association_options</span>, <span class="ruby-identifier">ref</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">clone</span>).<span class="ruby-identifier">with_pk!</span>(<span class="ruby-identifier">id</span>)
+<span class="line-num">342</span>           <span class="ruby-keyword">begin</span>
+<span class="line-num">343</span>             <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">transaction</span>(<span class="ruby-value">:savepoint</span><span class="ruby-operator">=&gt;</span><span class="ruby-keyword">true</span>){<span class="ruby-identifier">obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-identifier">ret</span>)}
+<span class="line-num">344</span>           <span class="ruby-keyword">rescue</span> <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">UniqueConstraintViolation</span>
+<span class="line-num">345</span>             <span class="ruby-comment"># Already added, safe to ignore</span>
+<span class="line-num">346</span>           <span class="ruby-keyword">rescue</span> <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">ConstraintViolation</span>
+<span class="line-num">347</span>             <span class="ruby-comment"># Old versions of sqlite3 and jdbc-sqlite3 can raise generic</span>
+<span class="line-num">348</span>             <span class="ruby-comment"># ConstraintViolation instead of UniqueConstraintViolation</span>
+<span class="line-num">349</span>             <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">350</span>             <span class="ruby-identifier">raise</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">database_type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:sqlite</span>
+<span class="line-num">351</span>             <span class="ruby-comment"># :nocov:</span>
+<span class="line-num">352</span>           <span class="ruby-keyword">end</span>
+<span class="line-num">353</span>         <span class="ruby-keyword">end</span>
+<span class="line-num">354</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">355</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">356</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">357</span>   <span class="ruby-identifier">ret</span>
+<span class="line-num">358</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-paginate'>
@@ -719,19 +719,38 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-paginate-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">212</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>, <span class="ruby-identifier">opts</span>={})
-<span class="line-num">213</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">all</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:all_results</span>]
-<span class="line-num">214</span>   <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">limit_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
-<span class="line-num">215</span>   <span class="ruby-regexp">%r{\/(\d+)\z}</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-string">&#39;PATH_INFO&#39;</span>]
-<span class="line-num">216</span>   <span class="ruby-identifier">offset</span> = ((<span class="ruby-node">$1</span><span class="ruby-operator">||</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>) <span class="ruby-operator">*</span> <span class="ruby-identifier">limit</span>
-<span class="line-num">217</span>   <span class="ruby-identifier">objs</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span><span class="ruby-value">+1</span>, (<span class="ruby-identifier">offset</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)).<span class="ruby-identifier">all</span>
-<span class="line-num">218</span>   <span class="ruby-identifier">next_page</span> = <span class="ruby-keyword">false</span>
-<span class="line-num">219</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">limit</span>
-<span class="line-num">220</span>     <span class="ruby-identifier">next_page</span> = <span class="ruby-keyword">true</span>
-<span class="line-num">221</span>     <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">pop</span>
-<span class="line-num">222</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">223</span>   [<span class="ruby-identifier">next_page</span>, <span class="ruby-identifier">objs</span>]
-<span class="line-num">224</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">214</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>, <span class="ruby-identifier">opts</span>={})
+<span class="line-num">215</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">all</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:all_results</span>]
+<span class="line-num">216</span>   <span class="ruby-identifier">limit</span> = <span class="ruby-identifier">limit_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">217</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span><span class="ruby-value">+1</span>)
+<span class="line-num">218</span> 
+<span class="line-num">219</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">pagination_strategy_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:filter</span>
+<span class="line-num">220</span>     <span class="ruby-identifier">order_cols</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:hash_key_symbols</span>, <span class="ruby-constant">Array</span>(<span class="ruby-identifier">order_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>)).<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">SQL</span><span class="ruby-operator">::</span><span class="ruby-constant">OrderedExpression</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">expression</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>})
+<span class="line-num">221</span>     <span class="ruby-identifier">after</span> = <span class="ruby-constant">Array</span>(<span class="ruby-identifier">request</span>.<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;_after&quot;</span>])
+<span class="line-num">222</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">order_cols</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">after</span>.<span class="ruby-identifier">length</span>
+<span class="line-num">223</span>       <span class="ruby-keyword">begin</span>
+<span class="line-num">224</span>         <span class="ruby-identifier">after</span> = <span class="ruby-identifier">order_cols</span>.<span class="ruby-identifier">zip</span>(<span class="ruby-identifier">after</span>).<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">typecast_value</span>(<span class="ruby-identifier">c</span>, <span class="ruby-identifier">v</span>)}
+<span class="line-num">225</span>       <span class="ruby-keyword">rescue</span> <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidValue</span>
+<span class="line-num">226</span>         <span class="ruby-comment"># ignore pagination, assume first page</span>
+<span class="line-num">227</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">228</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">ds</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:ignore_values_preceding</span>, {}){<span class="ruby-identifier">after</span>})
+<span class="line-num">229</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">230</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">231</span>   <span class="ruby-keyword">else</span> <span class="ruby-comment"># offset strategy, the default</span>
+<span class="line-num">232</span>     <span class="ruby-regexp">%r{\/(\d+)\z}</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-string">&#39;PATH_INFO&#39;</span>]
+<span class="line-num">233</span>     <span class="ruby-identifier">offset</span> = ((<span class="ruby-node">$1</span><span class="ruby-operator">||</span><span class="ruby-value">1</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>) <span class="ruby-operator">*</span> <span class="ruby-identifier">limit</span>
+<span class="line-num">234</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">offset</span>(<span class="ruby-identifier">offset</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+<span class="line-num">235</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">236</span> 
+<span class="line-num">237</span>   <span class="ruby-identifier">objs</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">all</span>
+<span class="line-num">238</span>   <span class="ruby-identifier">next_page</span> = <span class="ruby-identifier">order_cols</span> <span class="ruby-operator">&amp;&amp;</span> []
+<span class="line-num">239</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">limit</span>
+<span class="line-num">240</span>     <span class="ruby-identifier">objs</span>.<span class="ruby-identifier">pop</span>
+<span class="line-num">241</span>     <span class="ruby-identifier">last_obj</span> = <span class="ruby-identifier">objs</span>[<span class="ruby-value">-1</span>]
+<span class="line-num">242</span>     <span class="ruby-identifier">next_page</span> = <span class="ruby-identifier">after</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">order_cols</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">last_obj</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">c</span>)} <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+<span class="line-num">243</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">244</span>   [<span class="ruby-identifier">next_page</span>, <span class="ruby-identifier">objs</span>]
+<span class="line-num">245</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-primary_key_value'>
@@ -798,30 +817,32 @@ Superclass:
 <span class="line-num">177</span>   <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">apply_associated_eager</span>(<span class="ruby-value">:search</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">all_dataset_for</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>))
 <span class="line-num">178</span>   <span class="ruby-identifier">columns_for</span>(<span class="ruby-value">:search_form</span>, <span class="ruby-identifier">request</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
 <span class="line-num">179</span>     <span class="ruby-keyword">if</span> (<span class="ruby-identifier">v</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">c</span>.<span class="ruby-identifier">to_s</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">v</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">empty?</span>
-<span class="line-num">180</span>       <span class="ruby-keyword">if</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">c</span>)
-<span class="line-num">181</span>         <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">c</span>)
-<span class="line-num">182</span>         <span class="ruby-identifier">ads</span> = <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_dataset</span>
-<span class="line-num">183</span>         <span class="ruby-keyword">if</span> <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">c</span>)
-<span class="line-num">184</span>           <span class="ruby-identifier">ads</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">apply_filter</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ads</span>)
-<span class="line-num">185</span>         <span class="ruby-keyword">end</span>
-<span class="line-num">186</span>         <span class="ruby-identifier">primary_key</span> = <span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">primary_key</span>)
-<span class="line-num">187</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>[<span class="ruby-value">:key</span>])<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">ads</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">primary_key</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">v</span>).<span class="ruby-identifier">select</span>(<span class="ruby-identifier">primary_key</span>))
-<span class="line-num">188</span>       <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">column_type</span>(<span class="ruby-identifier">c</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:string</span>
-<span class="line-num">189</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">ilike</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">c</span>), <span class="ruby-node">&quot;%#{ds.escape_like(v)}%&quot;</span>))
-<span class="line-num">190</span>       <span class="ruby-keyword">else</span>
-<span class="line-num">191</span>         <span class="ruby-keyword">begin</span>
-<span class="line-num">192</span>           <span class="ruby-identifier">typecasted_value</span> = <span class="ruby-identifier">typecast_value</span>(<span class="ruby-identifier">c</span>, <span class="ruby-identifier">v</span>)
-<span class="line-num">193</span>         <span class="ruby-keyword">rescue</span> <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidValue</span>
-<span class="line-num">194</span>           <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-keyword">false</span>)
-<span class="line-num">195</span>           <span class="ruby-keyword">break</span>
-<span class="line-num">196</span>         <span class="ruby-keyword">else</span>
-<span class="line-num">197</span>           <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">c</span>)<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">typecasted_value</span>)
-<span class="line-num">198</span>         <span class="ruby-keyword">end</span>
-<span class="line-num">199</span>       <span class="ruby-keyword">end</span>
-<span class="line-num">200</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">201</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">202</span>   <span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>, <span class="ruby-identifier">opts</span>)
-<span class="line-num">203</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">180</span>       <span class="ruby-keyword">if</span> <span class="ruby-identifier">filtered_ds</span> = <span class="ruby-identifier">column_search_filter_for</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">c</span>, <span class="ruby-identifier">v</span>, <span class="ruby-identifier">request</span>)
+<span class="line-num">181</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">filtered_ds</span>
+<span class="line-num">182</span>       <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">association?</span>(<span class="ruby-identifier">c</span>)
+<span class="line-num">183</span>         <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">c</span>)
+<span class="line-num">184</span>         <span class="ruby-identifier">ads</span> = <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_dataset</span>
+<span class="line-num">185</span>         <span class="ruby-keyword">if</span> <span class="ruby-identifier">model_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">c</span>)
+<span class="line-num">186</span>           <span class="ruby-identifier">ads</span> = <span class="ruby-identifier">model_class</span>.<span class="ruby-identifier">apply_filter</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ads</span>)
+<span class="line-num">187</span>         <span class="ruby-keyword">end</span>
+<span class="line-num">188</span>         <span class="ruby-identifier">primary_key</span> = <span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">primary_key</span>)
+<span class="line-num">189</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>[<span class="ruby-value">:key</span>])<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">ads</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">primary_key</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">v</span>).<span class="ruby-identifier">select</span>(<span class="ruby-identifier">primary_key</span>))
+<span class="line-num">190</span>       <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">column_type</span>(<span class="ruby-identifier">c</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:string</span>
+<span class="line-num">191</span>         <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">ilike</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">c</span>), <span class="ruby-node">&quot;%#{ds.escape_like(v)}%&quot;</span>))
+<span class="line-num">192</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">193</span>         <span class="ruby-keyword">begin</span>
+<span class="line-num">194</span>           <span class="ruby-identifier">typecasted_value</span> = <span class="ruby-identifier">typecast_value</span>(<span class="ruby-identifier">c</span>, <span class="ruby-identifier">v</span>)
+<span class="line-num">195</span>         <span class="ruby-keyword">rescue</span> <span class="ruby-constant">S</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidValue</span>
+<span class="line-num">196</span>           <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-keyword">false</span>)
+<span class="line-num">197</span>           <span class="ruby-keyword">break</span>
+<span class="line-num">198</span>         <span class="ruby-keyword">else</span>
+<span class="line-num">199</span>           <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">where</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">model</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">c</span>)<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">typecasted_value</span>)
+<span class="line-num">200</span>         <span class="ruby-keyword">end</span>
+<span class="line-num">201</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">202</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">203</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">204</span>   <span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>, <span class="ruby-identifier">opts</span>)
+<span class="line-num">205</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-session_value'>
@@ -907,18 +928,18 @@ Superclass:
 [show source]
 </a>
 <pre id='method-i-unassociated_mtm_objects-source'>    <span class="ruby-comment"># File lib/autoforme/models/sequel.rb</span>
-<span class="line-num">349</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">unassociated_mtm_objects</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>)
-<span class="line-num">350</span>   <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)
-<span class="line-num">351</span>   <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)
-<span class="line-num">352</span>   <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>
-<span class="line-num">353</span>     <span class="ruby-identifier">subquery</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">from</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:join_table</span>]).
-<span class="line-num">354</span>       <span class="ruby-identifier">select</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">qualified_right_key</span>).
-<span class="line-num">355</span>       <span class="ruby-identifier">where</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">qualified_left_key</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">obj</span>.<span class="ruby-identifier">pk</span>)
-<span class="line-num">356</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">exclude</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">primary_key</span>)<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">subquery</span>)
-<span class="line-num">357</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">apply_dataset_options</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc_class</span>
-<span class="line-num">358</span>     <span class="ruby-identifier">ds</span>
-<span class="line-num">359</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">360</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">370</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">unassociated_mtm_objects</span>(<span class="ruby-identifier">request</span>, <span class="ruby-identifier">assoc</span>, <span class="ruby-identifier">obj</span>)
+<span class="line-num">371</span>   <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">association_reflection</span>(<span class="ruby-identifier">assoc</span>)
+<span class="line-num">372</span>   <span class="ruby-identifier">assoc_class</span> = <span class="ruby-identifier">associated_model_class</span>(<span class="ruby-identifier">assoc</span>)
+<span class="line-num">373</span>   <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>
+<span class="line-num">374</span>     <span class="ruby-identifier">subquery</span> = <span class="ruby-identifier">model</span>.<span class="ruby-identifier">db</span>.<span class="ruby-identifier">from</span>(<span class="ruby-identifier">ref</span>[<span class="ruby-value">:join_table</span>]).
+<span class="line-num">375</span>       <span class="ruby-identifier">select</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">qualified_right_key</span>).
+<span class="line-num">376</span>       <span class="ruby-identifier">where</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">qualified_left_key</span><span class="ruby-operator">=&gt;</span><span class="ruby-identifier">obj</span>.<span class="ruby-identifier">pk</span>)
+<span class="line-num">377</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">exclude</span>(<span class="ruby-constant">S</span>.<span class="ruby-identifier">qualify</span>(<span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">associated_class</span>.<span class="ruby-identifier">primary_key</span>)<span class="ruby-operator">=&gt;</span><span class="ruby-identifier">subquery</span>)
+<span class="line-num">378</span>     <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">assoc_class</span>.<span class="ruby-identifier">apply_dataset_options</span>(<span class="ruby-value">:association</span>, <span class="ruby-identifier">request</span>, <span class="ruby-identifier">ds</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">assoc_class</span>
+<span class="line-num">379</span>     <span class="ruby-identifier">ds</span>
+<span class="line-num">380</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">381</span> <span class="ruby-keyword">end</span></pre>
 </div>
 </div>
 <div class='method public-instance' id='method-method-i-with_pk'>
