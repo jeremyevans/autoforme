@@ -1,8 +1,8 @@
 begin
-  # Rails 8 works but is very slow when running the specs.
+  # Rails 7.2+ works but is very slow when running the specs.
   # Try restricting the version, and if there is a Rails
-  # version < 8 installed, use that.
-  gem 'rails', '< 8'
+  # version < 7.2 installed, use that.
+  gem 'rails', '< 7.2'
 rescue LoadError
 end
 
