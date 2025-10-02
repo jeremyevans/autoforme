@@ -1,3 +1,11 @@
+begin
+  # Rails 8 works but is very slow when running the specs.
+  # Try restricting the version, and if there is a Rails
+  # version < 8 installed, use that.
+  gem 'rails', '< 8'
+rescue LoadError
+end
+
 require 'rails'
 require 'action_controller/railtie'
 require_relative '../lib/autoforme'
