@@ -125,7 +125,9 @@ HTML
         end)
       end
       if Rails.version > '8'
-        config.active_support.to_time_preserves_timezone = :zone
+        if Rails.version < '8.1'
+          config.active_support.to_time_preserves_timezone = :zone
+        end
         if defined?(Rails::Application::RoutesReloader)
           Rails::Application::RoutesReloader.prepend(Module.new do
             def paths; []; end
