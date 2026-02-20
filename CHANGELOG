@@ -1,3 +1,7 @@
+=== master
+
+* Allow model configuration methods to fallback to framework confirmation methods by returning the framework (jeremyevans)
+
 === 1.14.0 (2025-10-02)
 
 * Support customizing the searching done for specific columns via column_search_filter (jeremyevans)

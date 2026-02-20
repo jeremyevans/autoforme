@@ -67,7 +67,7 @@ module AutoForme
 
     # Whether the given type of action is supported for this model.
     def supported_action?(type, request)
-      v = (handle_proc(supported_actions || framework.supported_actions_for(model, request), request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
+      v = (handle_model_proc(supported_actions, :supported_actions_for, request) || DEFAULT_SUPPORTED_ACTIONS).include?(type)
       if v && type == :mtm_edit
         assocs = mtm_association_select_options(request)
         assocs && !assocs.empty?
@@ -78,7 +78,7 @@ module AutoForme
 
     # An array of many to many association symbols to handle via a separate mtm_edit page.
     def mtm_association_select_options(request)
-      normalize_mtm_associations(handle_proc(mtm_associations || framework.mtm_associations_for(model, request), request))
+      normalize_mtm_associations(handle_model_proc(mtm_associations, :mtm_associations_for, request))
     end
     
     # Whether an mtm_edit can be displayed for the given association
@@ -93,19 +93,19 @@ module AutoForme
 
     # An array of many to many association symbols to handle inline on the edit forms.
     def inline_mtm_assocs(request)
-      normalize_mtm_associations(handle_proc(inline_mtm_associations || framework.inline_mtm_associations_for(model, request), request))
+      normalize_mtm_associations(handle_model_proc(inline_mtm_associations, :inline_mtm_associations_for, request))
     end
 
     def columns_for(type, request)
-      handle_proc(columns || framework.columns_for(model, type, request), type, request) || default_columns
+      handle_model_proc(columns, :columns_for, type, request) || default_columns
     end
 
     def pagination_strategy_for(type, request)
-      handle_proc(pagination_strategy || framework.pagination_strategy_for(model, type, request), type, request) || DEFAULT_PAGINATION_STRATEGY
+      handle_model_proc(pagination_strategy, :pagination_strategy_for, type, request) || DEFAULT_PAGINATION_STRATEGY
     end
 
     def column_search_filter_for(dataset, column, value, request)
-      handle_proc(column_search_filter || framework.column_search_filter_for(model, dataset, column, value, request), dataset, column, value, request)
+      handle_model_proc(column_search_filter, :column_search_filter_for, dataset, column, value, request)
     end
 
     # The options to use for the given column and request.  Instead of the model options overriding the framework
@@ -159,23 +159,23 @@ module AutoForme
     end
 
     def show_html_for(obj, column, type, request)
-      handle_proc(show_html || framework.show_html_for(obj, column, type, request), obj, column, type, request)
+      handle_direct_proc(show_html, :show_html_for, obj, column, type, request)
     end
 
     def edit_html_for(obj, column, type, request)
-      handle_proc(edit_html || framework.edit_html_for(obj, column, type, request), obj, column, type, request)
+      handle_direct_proc(edit_html, :edit_html_for, obj, column, type, request)
     end
 
     def order_for(type, request)
-      handle_proc(order || framework.order_for(model, type, request), type, request)
+      handle_model_proc(order, :order_for, type, request)
     end
 
     def eager_for(type, request)
-      handle_proc(eager, type, request)
+      handle_local_proc(eager, type, request)
     end
 
     def eager_graph_for(type, request)
-      handle_proc(eager_graph, type, request)
+      handle_local_proc(eager_graph, type, request)
     end
 
     def filter_for
@@ -187,27 +187,27 @@ module AutoForme
     end
 
     def form_attributes_for(type, request)
-      framework.form_attributes_for(model, type, request).merge(handle_proc(form_attributes, type, request) || {})
+      framework.form_attributes_for(model, type, request).merge(handle_local_proc(form_attributes, type, request) || {})
     end
 
     def form_options_for(type, request)
-      framework.form_options_for(model, type, request).merge(handle_proc(form_options, type, request) || {})
+      framework.form_options_for(model, type, request).merge(handle_local_proc(form_options, type, request) || {})
     end
 
     def page_footer_for(type, request)
-      handle_proc(page_footer || framework.page_footer_for(model, type, request), type, request)
+      handle_model_proc(page_footer, :page_footer_for, type, request)
     end
 
     def page_header_for(type, request)
-      handle_proc(page_header || framework.page_header_for(model, type, request), type, request)
+      handle_model_proc(page_header, :page_header_for, type, request)
     end
 
     def table_class_for(type, request)
-      handle_proc(table_class || framework.table_class_for(model, type, request), type, request) || DEFAULT_TABLE_CLASS
+      handle_model_proc(table_class, :table_class_for, type, request) || DEFAULT_TABLE_CLASS
     end
 
     def limit_for(type, request)
-      handle_proc(per_page || framework.limit_for(model, type, request), type, request) || DEFAULT_LIMIT
+      handle_model_proc(per_page, :limit_for, type, request) || DEFAULT_LIMIT
     end
 
     def display_name_for
@@ -215,7 +215,7 @@ module AutoForme
     end
 
     def association_links_for(type, request)
-      case v = handle_proc(association_links || framework.association_links_for(model, type, request), type, request)
+      case v = handle_model_proc(association_links, :association_links_for, type, request)
       when nil
         []
       when Array
@@ -231,7 +231,7 @@ module AutoForme
 
     # Whether to lazy load association links for this model.
     def lazy_load_association_links?(type, request)
-      v = handle_proc(lazy_load_association_links, type, request)
+      v = handle_local_proc(lazy_load_association_links, type, request)
       v = framework.lazy_load_association_links?(model, type, request) if v.nil?
       v || false
     end
@@ -239,7 +239,7 @@ module AutoForme
     def autocomplete_options_for(type, request)
       return unless AUTOCOMPLETE_TYPES.include?(type)
       framework_opts = framework.autocomplete_options_for(model, type, request)
-      model_opts = handle_proc(autocomplete_options, type, request)
+      model_opts = handle_local_proc(autocomplete_options, type, request)
       if model_opts
         (framework_opts || {}).merge(model_opts)
       end
@@ -391,13 +391,41 @@ module AutoForme
       end
     end
 
-    def handle_proc(v, *a)
+    # Handle a proc without a fallback to a framework method.
+    def handle_local_proc(v, *a)
+      handle_proc(v, nil, nil, *a)
+    end
+
+    def handle_model_proc(v, framework_meth, *a)
+      handle_proc(v, framework_meth, true, *a)
+    end
+
+    def handle_direct_proc(v, framework_meth, *a)
+      handle_proc(v, framework_meth, false, *a)
+    end
+
+    # Handle a proc, falling back to the framework if the
+    # is a nil or is a proc or method that returns the framework.
+    def handle_proc(v, framework_meth, add_model, *a)
       case v
+      when nil
+        framework_send(framework_meth, add_model, a)
       when Proc, Method
-        v.call(*a)
+        ret = v.call(*a)
+        if framework.equal?(ret)
+          framework_send(framework_meth, add_model, a)
+        else
+          ret
+        end
       else
         v
       end
+    end
+
+    def framework_send(meth, add_model, a)
+      return unless meth
+      a.unshift(model) if add_model
+      framework.public_send(meth, *a)
     end
     
     def normalize_mtm_associations(assocs)

@@ -48,6 +48,8 @@ describe AutoForme do
     model.columns{|type, req| req ? [type] : [:foo]}
     model.columns_for(:browse, true).must_equal [:browse]
     model.columns_for(:browse, nil).must_equal [:foo]
+    model.columns{|type, req| req ? framework : [:foo]}
+    model.columns_for(:browse, :foo).must_equal [:Artist, :browse, :foo]
   end
 
   it "should handle column options lookup" do
