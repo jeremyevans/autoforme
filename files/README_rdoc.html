@@ -33,19 +33,19 @@ README.rdoc
 <div id='content'>
 <div id='text'>
 <div id='description'>
-<h1 id="label-AutoForme"><a href="../classes/AutoForme.html"><code>AutoForme</code></a><span><a href="#label-AutoForme">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-AutoForme"><a href="#label-AutoForme"><a href="../classes/AutoForme.html"><code>AutoForme</code></a></a></h1>
 
 <p><a href="../classes/AutoForme.html"><code>AutoForme</code></a> is an administrative web front end to an ORM that uses Forme [1] for building the HTML forms.  It is designed to integrate easily into web frameworks, and currently supports <a href="../classes/Roda.html"><code>Roda</code></a>, Sinatra, and Rails.  The only currently supported ORM is Sequel::Model.</p>
 <ol><li>
 <p><a target="_top" href="https://github.com/jeremyevans/forme">github.com/jeremyevans/forme</a></p>
 </li></ol>
 
-<h1 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Installation"><a href="#label-Installation">Installation</a></h1>
 
 <pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-identifier">install</span> <span class="ruby-identifier">autoforme</span>
 </pre>
 
-<h1 id="label-Links">Links<span><a href="#label-Links">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Links"><a href="#label-Links">Links</a></h1>
 <table class="rdoc-list note-list"><tbody><tr><td class='label'>Demo Site </td><td>
 <p><a target="_top" href="http://autoforme-demo.jeremyevans.net">autoforme-demo.jeremyevans.net</a></p>
 </td></tr><tr><td class='label'>RDoc </td><td>
@@ -58,7 +58,7 @@ README.rdoc
 <p><a target="_top" href="https://github.com/jeremyevans/autoforme/issues">github.com/jeremyevans/autoforme/issues</a></p>
 </td></tr></tbody></table>
 
-<h1 id="label-Features">Features<span><a href="#label-Features">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Features"><a href="#label-Features">Features</a></h1>
 <ul><li>
 <p>Create, update, edit, and view model objects</p>
 </li><li>
@@ -73,7 +73,7 @@ README.rdoc
 <p>Allow customization for all likely configuration points, using any parameters available in the request</p>
 </li></ul>
 
-<h1 id="label-Basic+Configuration">Basic Configuration<span><a href="#label-Basic+Configuration">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Basic+Configuration"><a href="#label-Basic+Configuration">Basic Configuration</a></h1>
 
 <p><a href="../classes/AutoForme.html"><code>AutoForme</code></a> is configured using a fairly simple DSL.  Here is an example for Sinatra:</p>
 
@@ -99,9 +99,9 @@ README.rdoc
 
 <p>In your application, you can then to go ‘/Artist/browse’ or ‘/Album/browse’ to get to the web UI exposed to <a href="../classes/AutoForme.html"><code>AutoForme</code></a>.</p>
 
-<h1 id="label-Design">Design<span><a href="#label-Design">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Design"><a href="#label-Design">Design</a></h1>
 
-<h2 id="label-Principles">Principles<span><a href="#label-Principles">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<h2 id="label-Principles"><a href="#label-Principles">Principles</a></h2>
 <ul><li>
 <p>Use Forme to generate the forms</p>
 </li><li>
@@ -116,13 +116,13 @@ README.rdoc
 <p>Allow customization on a per-request basis for everything</p>
 </li></ul>
 
-<h2 id="label-Basic+Implementation">Basic Implementation<span><a href="#label-Basic+Implementation">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<h2 id="label-Basic+Implementation"><a href="#label-Basic+Implementation">Basic Implementation</a></h2>
 
 <p>The web framework controllers call <a href="../classes/AutoForme.html#method-c-for"><code>AutoForme.for</code></a> to create <a href="../classes/AutoForme/Framework.html"><code>AutoForme::Framework</code></a> instances, which contain and set default values for <a href="../classes/AutoForme/Model.html"><code>AutoForme::Model</code></a> instances.</p>
 
 <p>When a request comes in from the web framework, the <a href="../classes/AutoForme/Framework.html"><code>AutoForme::Framework</code></a> instance wraps request-level data in a <a href="../classes/AutoForme/Request.html"><code>AutoForme::Request</code></a>.  Then it creates an <a href="../classes/AutoForme/Action.html"><code>AutoForme::Action</code></a> to handle this request.  The <a href="../classes/AutoForme/Action.html"><code>AutoForme::Action</code></a> either returns a string that the web framework then renders, or it redirects to another page.</p>
 
-<h1 id="label-Advanced+Configuration">Advanced Configuration<span><a href="#label-Advanced+Configuration">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Advanced+Configuration"><a href="#label-Advanced+Configuration">Advanced Configuration</a></h1>
 
 <p><a href="../classes/AutoForme.html"><code>AutoForme</code></a> doesn’t have all that many features compared to other admin frameworks, but the features it does have are extremely flexible.</p>
 
@@ -242,7 +242,7 @@ README.rdoc
 
 <p>Means you can go to <code>/path/to/Artist/browse</code> to browse the artists.</p>
 
-<h1 id="label-Javascript">Javascript<span><a href="#label-Javascript">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Javascript"><a href="#label-Javascript">Javascript</a></h1>
 
 <p>By default, <a href="../classes/AutoForme.html"><code>AutoForme</code></a> requires no javascript.  The only optional part of <a href="../classes/AutoForme.html"><code>AutoForme</code></a> that requires javascript is the autocompleting. <a href="../classes/AutoForme.html"><code>AutoForme</code></a> also has javascript support for the progressive enhancement of the following:</p>
 <ul><li>
@@ -255,7 +255,7 @@ README.rdoc
 
 <p>Make sure to load the <code>autoforme.js</code> file after the DOM content has been loaded, such as at the end of the body.</p>
 
-<h1 id="label-Reloading+Code">Reloading Code<span><a href="#label-Reloading+Code">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Reloading+Code"><a href="#label-Reloading+Code">Reloading Code</a></h1>
 
 <p>By default, <a href="../classes/AutoForme.html"><code>AutoForme</code></a> stores classes by reference.  This can cause issues when using code reloading in development environments.  You can call <code>register_by_name</code> to set Autoforme to store classes by name, so that if a class is removed and reloaded (giving a new class reference), it will use the new class instead of the reference to the old class.  Example:</p>
 
@@ -267,11 +267,11 @@ README.rdoc
 <span class="ruby-keyword">end</span>
 </pre>
 
-<h1 id="label-Rails">Rails<span><a href="#label-Rails">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Rails"><a href="#label-Rails">Rails</a></h1>
 
 <p>Because Rails separates routing from request handling, it can be little awkward to use <a href="../classes/AutoForme.html"><code>AutoForme</code></a> in Rails development mode.  The best way to handle it is to call <a href="../classes/AutoForme.html#method-c-for"><code>AutoForme.for</code></a> in the related controller file, and have an initializer reference the controller class, causing the controller file to be loaded.</p>
 
-<h1 id="label-Roda"><a href="../classes/Roda.html"><code>Roda</code></a><span><a href="#label-Roda">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Roda"><a href="#label-Roda"><a href="../classes/Roda.html"><code>Roda</code></a></a></h1>
 
 <p>Because <a href="../classes/Roda.html"><code>Roda</code></a> uses a routing tree, unlike Rails and Sinatra, with <a href="../classes/Roda.html"><code>Roda</code></a> you need to dispatch to the autoforme routes at the point in the routing tree where you want to mount them.  Additionally, the <a href="../classes/Roda.html"><code>Roda</code></a> support offers a <a href="../classes/Roda.html"><code>Roda</code></a> plugin for easier configuration.</p>
 
@@ -331,7 +331,7 @@ README.rdoc
 <span class="ruby-keyword">end</span>
 </pre>
 
-<h1 id="label-TODO">TODO<span><a href="#label-TODO">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-TODO"><a href="#label-TODO">TODO</a></h1>
 <ul><li>
 <p>capybara-webkit tests for ajax behavior</p>
 </li><li>
@@ -344,11 +344,11 @@ README.rdoc
 <p>nested form objects</p>
 </li></ul>
 
-<h1 id="label-License">License<span><a href="#label-License">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-License"><a href="#label-License">License</a></h1>
 
 <p>MIT</p>
 
-<h1 id="label-Author">Author<span><a href="#label-Author">&para;</a> <a href="#top">&uarr;</a></span></h1>
+<h1 id="label-Author"><a href="#label-Author">Author</a></h1>
 
 <p>Jeremy Evans &lt;code@jeremyevans.net&gt;</p>
 </div>
