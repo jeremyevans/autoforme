@@ -18,9 +18,9 @@ module AutoForme
           remaining_path = if @request.respond_to?(:remaining_path)
             @request.remaining_path
           else
-            # :nocov:
+            # simplecov:disable
             @env['PATH_INFO']
-            # :nocov:
+            # simplecov:enable
           end
 
           path_id = $1 if remaining_path =~ %r{\A\/([:\w-]+)\z}
@@ -55,16 +55,16 @@ module AutoForme
             # Using route_csrf plugin
             token = if @controller.use_request_specific_csrf_tokens?
               @controller.csrf_token(@controller.csrf_path(action))
-              # :nocov:
+              # simplecov:disable
             else
               @controller.csrf_token
-              # :nocov:
+              # simplecov:enable
             end
             {@controller.csrf_field=>token}
-            # :nocov:
+            # simplecov:disable
           elsif defined?(::Rack::Csrf) && !@controller.opts[:no_csrf]
             {::Rack::Csrf.field=>::Rack::Csrf.token(@env)}
-            # :nocov:
+            # simplecov:enable
           end
         end
 
@@ -75,9 +75,9 @@ module AutoForme
         end
 
         def flash_key(key)
-          # :nocov:
+          # simplecov:disable
           flash_symbol_keys? ? key : key.to_s
-          # :nocov:
+          # simplecov:enable
         end
       end
 
@@ -99,9 +99,9 @@ module AutoForme
           path = if r.respond_to?(:matched_path)
             r.matched_path
           else
-            # :nocov:
+            # simplecov:disable
             r.env['SCRIPT_NAME']
-            # :nocov:
+            # simplecov:enable
           end
           current_matchers = matchers + [lambda{@autoforme_action = framework.action_for(Request.new(self, path))}]
 

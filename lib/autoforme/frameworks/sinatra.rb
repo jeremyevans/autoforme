@@ -30,9 +30,9 @@ module AutoForme
         
         # Use Rack::Csrf for csrf protection if it is defined.
         def csrf_token_hash(action=nil)
-          # :nocov:
+          # simplecov:disable
           if defined?(::Rack::Csrf)
-          # :nocov:
+          # simplecov:enable
             {::Rack::Csrf.field=>::Rack::Csrf.token(@env)}
           end
         end
@@ -63,12 +63,12 @@ module AutoForme
         end
 
         prefix = Regexp.escape(framework.prefix) if framework.prefix
-        # :nocov:
+        # simplecov:disable
         if ::Sinatra::VERSION < '2'
           prefix = "\\A#{prefix}"
           suffix = "\\z"
         end
-        # :nocov:
+        # simplecov:enable
         regexp = %r{#{prefix}/([\w:]+)/(\w+)(?:/([:\w-]+))?#{suffix}}
         @controller.get regexp, &block
         @controller.post regexp, &block

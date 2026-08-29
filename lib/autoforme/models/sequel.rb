@@ -346,9 +346,9 @@ module AutoForme
                 rescue S::ConstraintViolation
                   # Old versions of sqlite3 and jdbc-sqlite3 can raise generic
                   # ConstraintViolation instead of UniqueConstraintViolation
-                  # :nocov:
+                  # simplecov:disable
                   raise unless model.db.database_type == :sqlite
-                  # :nocov:
+                  # simplecov:enable
                 end
               end
             end
