@@ -13,7 +13,7 @@ if RUBY_VERSION < '2.0'
   gem 'mime-types', '< 2'
   gem 'json', '< 2'
 else
-  gem 'json'
+  gem 'json', '< 3' # Remove version restriction after Sequel 5.109 release
 end
 
 platforms :ruby do
